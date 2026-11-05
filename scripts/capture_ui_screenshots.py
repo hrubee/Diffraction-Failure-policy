@@ -95,8 +95,8 @@ def capture_all():
         mobile_page.screenshot(path=mobile_drawer_path, full_page=False)
         print(f"Captured: {mobile_drawer_path}")
 
-        # Navigate to Audit Console on Mobile via visible drawer button
-        mobile_page.click("#mobileDrawer button:has-text('Audit Console')")
+        # Navigate to Audit Console on Mobile via visible drawer link
+        mobile_page.click("#mobileDrawer a:has-text('Audit Console')")
         time.sleep(1)
         mobile_page.click("button:has-text('Sample: Bay 7 Slip')")
         time.sleep(1.5)
