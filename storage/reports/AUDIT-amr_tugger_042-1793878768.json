@@ -1,0 +1,29 @@
+{
+  "report_id": "AUDIT-amr_tugger_042-1793878768",
+  "generated_at": "2026-11-05 11:39:28 UTC",
+  "incident_metadata": {
+    "robot_id": "amr_tugger_042",
+    "facility_id": "chicago_logistics_hub_bay7",
+    "trigger_type": "tracking_error_spike",
+    "trigger_severity": "HIGH",
+    "usd_stage_path": "./storage/usd_stages/amr_tugger_042_tracking_error_spike_1793878766725917952_scene.usda"
+  },
+  "verdict": {
+    "total_scenarios_evaluated": 150,
+    "scenarios_passed": 0,
+    "scenarios_failed": 150,
+    "safety_compliance_score": 0.0,
+    "certification_status": "FAILED_CRITICAL_RISK",
+    "safe_operational_boundaries": {
+      "minimum_safe_surface_friction_mu": 1.2,
+      "maximum_tolerable_glare_severity": -0.05,
+      "recommended_max_speed_ms": 1.2
+    },
+    "failure_breakdown": {
+      "PHYSICAL_COLLISION_WITH_OBSTACLE": 150
+    },
+    "critical_recommendations": [
+      "Tighten trajectory tracking PID/MPC gains; lateral tracking drift is allowing corner collisions on low-friction turns."
+    ]
+  }
+}

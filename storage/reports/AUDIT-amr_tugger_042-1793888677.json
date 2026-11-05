@@ -1,0 +1,86 @@
+{
+  "report_id": "AUDIT-amr_tugger_042-1793888677",
+  "generated_at": "2026-11-05 14:24:37 UTC",
+  "incident_metadata": {
+    "robot_id": "amr_tugger_042",
+    "facility_id": "chicago_logistics_hub_bay7",
+    "trigger_type": "tracking_error_spike",
+    "trigger_severity": "HIGH",
+    "usd_stage_path": "./storage/usd_stages/amr_tugger_042_tracking_error_spike_1793888569210548992_scene.usda",
+    "calibrated_friction_mu": 0.43
+  },
+  "verdict": {
+    "total_scenarios_evaluated": 20,
+    "scenarios_passed": 14,
+    "scenarios_failed": 6,
+    "safety_compliance_score": 70.0,
+    "certification_status": "FAILED_CRITICAL_RISK",
+    "safe_operational_boundaries": {
+      "minimum_safe_surface_friction_mu": 0.32,
+      "maximum_tolerable_glare_severity": 0.85,
+      "recommended_max_speed_ms": 0.7
+    },
+    "failure_breakdown": {
+      "BRAKING_DISTANCE_EXCEEDED_SAFETY_MARGIN": 6
+    },
+    "critical_recommendations": [
+      "Increase dynamic braking safety distance by 45% when estimated surface friction falls below \u03bc=0.32."
+    ],
+    "regulatory_compliance": [
+      {
+        "standard": "ISO 3691-4:2023",
+        "clause": "Clause 5.2.3",
+        "title": "Dynamic Braking & Worst-Case Stopping Distance",
+        "status": "NON_COMPLIANT",
+        "requirement_summary": "Truck must achieve complete stop prior to entering hazardous perimeter under degraded surface friction.",
+        "observed_margin": "Excessive stopping distance in 6 scenarios (30.0% failure rate).",
+        "pass_criteria": "Dynamic braking failure rate \u2264 2.0% across adversarial friction sweep."
+      },
+      {
+        "standard": "ANSI/RIA R15.08-1-2020",
+        "clause": "Clause 5.3.2",
+        "title": "Personnel Detection Zone & Obstacle Clearance Envelope",
+        "status": "NON_COMPLIANT",
+        "requirement_summary": "AMRs shall maintain a minimum dynamic clearance envelope of \u2265 0.50m from detected obstacles and personnel boundaries.",
+        "observed_margin": "Detected 6 obstacle boundary penetrations during trajectory execution.",
+        "pass_criteria": "Zero boundary collisions and minimum obstacle clearance \u2265 0.50m."
+      },
+      {
+        "standard": "ISO 13849-1:2023",
+        "clause": "Category 3 PLd",
+        "title": "Systematic Safety Integrity Under Environmental Stress",
+        "status": "NON_COMPLIANT",
+        "requirement_summary": "Safety functions must withstand multi-axis environmental disruptions with hazardous failure rate < 5.0%.",
+        "observed_margin": "Systematic failure rate 30.0% violates PLd maximum allowable risk envelope.",
+        "pass_criteria": "Overall adversarial resilience score \u2265 95.0% across multi-variable stress matrix."
+      },
+      {
+        "standard": "ANSI/RIA R15.08-1-2020",
+        "clause": "Clause 5.4",
+        "title": "Traction Boundary Derating & Velocity Governors",
+        "status": "COMPLIANT",
+        "requirement_summary": "Autonomous mobile platform must enforce automated speed derating when operating on surfaces below nominal traction specifications.",
+        "observed_margin": "Enforced lower operational traction boundary at \u03bc \u2265 0.32 with speed capped at 0.7 m/s.",
+        "pass_criteria": "Formally bounded operational envelope with mathematical velocity governor curve."
+      }
+    ],
+    "sysid_summary": {
+      "estimated_surface_friction_mu": 0.43,
+      "observed_max_slip_ratio": 0.625,
+      "peak_deceleration_ms2": 5.0,
+      "max_tracking_error_m": 0.622,
+      "estimated_ambient_lux": 850.0,
+      "actuation_latency_ms": 50.0,
+      "traction_anomaly_detected": true,
+      "calibration_confidence_score": 93.5,
+      "empirical_observations": [
+        "Ingested 61 high-resolution kinematic samples across 3.95s time window.",
+        "Measured peak emergency braking deceleration |a_decel| = 5.0 m/s\u00b2.",
+        "Calculated instantaneous wheel slip ratio S = 62.5% (Threshold: 20.0%).",
+        "Derived empirical ground-truth surface coefficient \u03bc_calibrated = 0.43.",
+        "Identified control bus update latency = 50.0ms with max lateral tracking error \u0394 = 0.622m."
+      ],
+      "telemetry_sample_count": 61
+    }
+  }
+}

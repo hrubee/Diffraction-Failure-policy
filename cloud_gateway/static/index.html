@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diffraction // Autonomous Physical AI Verification Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .border-subtle { border: 1px solid #e2e8f0; }
+        .bg-glass-light { background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(16px); }
+        .hero-glow-light { background: radial-gradient(circle at 50% -10%, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 70%); }
+        .card-shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04); }
+        .card-shadow-lg { box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04); }
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(37, 99, 235, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="border-b border-subtle bg-glass-light sticky top-0 z-50 px-6 lg:px-12 py-3.5 flex justify-between items-center transition-colors">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('overview')">
+            <div class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center font-black text-white text-base shadow-md shadow-blue-600/20">
+                Δ
+            </div>
+            <div>
+                <span class="font-black text-lg tracking-tight text-slate-900">DIFFRACTION</span>
+                <span class="text-[9px] px-2 py-0.5 ml-2 rounded bg-blue-50 text-blue-700 border border-blue-200 font-semibold tracking-wider uppercase mono">Physical AI Oracle</span>
+            </div>
+        </div>
+
+        <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold uppercase tracking-wider text-slate-600">
+            <button onclick="switchView('overview')" id="navOverview" class="text-blue-600 font-bold hover:text-blue-600 transition cursor-pointer">Platform</button>
+            <button onclick="switchView('console')" id="navConsole" class="hover:text-blue-600 transition cursor-pointer flex items-center space-x-2">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Audit Console</span>
+            </button>
+            <button onclick="switchView('roi')" id="navRoi" class="hover:text-blue-600 transition cursor-pointer">ROI Calculator</button>
+            <button onclick="switchView('pricing')" id="navPricing" class="hover:text-blue-600 transition cursor-pointer">Pilot Packages</button>
+            <a href="/docs" target="_blank" class="hover:text-blue-600 transition cursor-pointer">API Specs</a>
+        </nav>
+
+        <div class="flex items-center space-x-3">
+            <button onclick="switchView('console')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-xs shadow-sm transition cursor-pointer flex items-center space-x-1.5">
+                <span>Launch Interactive Audit</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- VIEW 1: PRODUCT OVERVIEW & MARKETING LANDING PAGE -->
+    <div id="viewOverview" class="space-y-28 pb-24">
+
+        <!-- Hero Section -->
+        <section class="hero-glow-light pt-20 pb-16 px-6 lg:px-12 max-w-6xl mx-auto text-center">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-8">
+                <span class="h-1.5 w-1.5 rounded-full bg-blue-600 animate-ping"></span>
+                <span class="tracking-wide">Autonomous Robot Disengagement Remediation & Safety CI/CD</span>
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 tracking-tight leading-[1.08] mb-6">
+                The Safety Verification Engine for <span class="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 bg-clip-text text-transparent">Physical AI</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
+                When an autonomous mobile robot or industrial vehicle disengages in the field, Diffraction automatically captures the incident, reconstructs the physical 3D scene, subjects the navigation policy to 10,000+ adversarial stress permutations, and certifies firmware safety before OTA deployment.
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="switchView('console')" class="px-7 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs tracking-wide shadow-md shadow-blue-600/20 transition cursor-pointer flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <span>Launch Live Interactive Audit</span>
+                </button>
+                <button onclick="switchView('pricing')" class="px-7 py-3.5 bg-white hover:bg-slate-50 text-slate-700 font-semibold rounded-xl text-xs border border-subtle card-shadow transition cursor-pointer">
+                    View 30-Day Pilot Statement of Work
+                </button>
+            </div>
+
+            <!-- Industry Standards Compliance Strip -->
+            <div class="mt-20 pt-8 border-t border-subtle flex flex-wrap justify-center items-center gap-8 text-[11px] font-semibold text-slate-500 uppercase tracking-widest mono">
+                <span>ANSI/RIA R15.08 Part 1 & 2</span>
+                <span>•</span>
+                <span>ISO 3691-4 Stopping Distance Compliance</span>
+                <span>•</span>
+                <span>Zero-Overhead Edge Telemetry</span>
+                <span>•</span>
+                <span>Automated Pre-Deployment Regression</span>
+            </div>
+        </section>
+
+        <!-- Problem vs Solution Breakdown -->
+        <section class="max-w-6xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="p-8 rounded-2xl bg-white border border-red-200 card-shadow space-y-4">
+                <div class="flex items-center space-x-2 text-xs font-bold text-red-600 uppercase tracking-wider mono">
+                    <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    <span>The Field Disengagement Tax</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 tracking-tight">The Reality Gap & Unplanned Downtime</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Industrial robots disengage on unpredictable real-world corner cases: sudden specular sunlight glare at dock doors, wet floor micro-slips, or intermittent latency spikes. In modern warehouse operations, unplanned system downtime costs up to <strong class="text-slate-900">$50,000 per hour</strong>, while senior engineering teams spend weeks ($16,000+ in loaded salary) manually trying to reproduce each field incident.
+                </p>
+                <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-[11px] text-red-800 mono flex justify-between font-semibold">
+                    <span>Average Manual Reproduction: 2 to 3 Weeks</span>
+                    <span>Cost: $16k+ / Incident</span>
+                </div>
+            </div>
+
+            <div class="p-8 rounded-2xl bg-white border border-blue-200 card-shadow space-y-4">
+                <div class="flex items-center space-x-2 text-xs font-bold text-blue-600 uppercase tracking-wider mono">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    <span>The Diffraction Solution</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 tracking-tight">Automated Closed-Loop Verification</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Diffraction's in-RAM sentinel records only the pre-incident telemetry window without wearing out onboard storage. The platform reconstructs the spatial digital twin, generates thousands of adversarial physical stress variations, evaluates dynamic braking envelopes in parallel, and delivers a certified pass/fail report before updates reach the fleet.
+                </p>
+                <div class="p-4 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-800 mono flex justify-between font-semibold">
+                    <span>Automated Audit Turnaround: < 30 Minutes</span>
+                    <span>Cost: Pay-Per-Audit Efficiency</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4-Stage Verification Architecture -->
+        <section class="max-w-6xl mx-auto px-6 lg:px-12">
+            <div class="text-center mb-12">
+                <div class="text-xs font-bold uppercase tracking-wider text-blue-600 mono mb-1">Architecture</div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">The 4-Stage Autonomous Verification Pipeline</h2>
+                <p class="text-slate-600 text-xs mt-2 max-w-xl mx-auto">From edge disengagement to certified regression audit without human intervention.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Step 1 -->
+                <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-3">
+                    <div class="h-10 w-10 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <div class="text-[10px] text-blue-600 font-bold mono">STAGE 01</div>
+                    <h4 class="text-sm font-bold text-slate-900">Edge Sentinel</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">In-memory rolling buffer monitors robot kinematics in real time. Automatically captures the 15 seconds preceding any E-stop or tracking error spike with zero disk wear.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-3">
+                    <div class="h-10 w-10 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                    </div>
+                    <div class="text-[10px] text-indigo-600 font-bold mono">STAGE 02</div>
+                    <h4 class="text-sm font-bold text-slate-900">Spatial Twin Assembly</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">Transforms multimodal telemetry, point clouds, and kinematics into calibrated 3D spatial stages, anchoring static obstacles and robot models at exact failure poses.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-3">
+                    <div class="h-10 w-10 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    </div>
+                    <div class="text-[10px] text-purple-600 font-bold mono">STAGE 03</div>
+                    <h4 class="text-sm font-bold text-slate-900">Adversarial Stress Engine</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">Generates thousands of counterfactual stress tests sweeping surface friction (&mu; 0.12–1.15), blinding specular dock glare (up to 95k lux), and sensor latencies.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-3">
+                    <div class="h-10 w-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <div class="text-[10px] text-emerald-600 font-bold mono">STAGE 04</div>
+                    <h4 class="text-sm font-bold text-slate-900">Certification Oracle</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">Executes parallel validation rollouts, calculates the Safety Compliance Score, isolates safe operating boundaries, and outputs audit-ready compliance documentation.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- VIEW 2: LIVE SIMULATION CONSOLE (Interactive Tool) -->
+    <div id="viewConsole" class="hidden flex-1 px-6 lg:px-12 py-8 max-w-7xl mx-auto w-full grid grid-cols-12 gap-8">
+
+        <!-- Left Column: Controls & Ingestion -->
+        <div class="col-span-12 lg:col-span-5 space-y-6">
+
+            <!-- MCAP Telemetry Uploader Card -->
+            <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center justify-between">
+                    <span>1. Telemetry Ingestion</span>
+                    <span class="text-xs text-blue-600 mono font-semibold">.mcap packet</span>
+                </h2>
+                
+                <div id="dropZone" class="border-2 border-dashed border-slate-300 hover:border-blue-500 transition rounded-xl p-6 text-center cursor-pointer bg-slate-50/60">
+                    <svg class="w-8 h-8 mx-auto text-slate-400 mb-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                    <p class="text-xs font-semibold text-slate-700">Drag & Drop MCAP packet here</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Or click to select incident log</p>
+                    <input type="file" id="fileInput" class="hidden" accept=".mcap">
+                </div>
+
+                <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+                    <button onclick="triggerSimulatedIncident()" class="text-blue-600 hover:text-blue-700 font-semibold mono flex items-center space-x-1 cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <span>Generate Sample Dock Incident</span>
+                    </button>
+                    <span class="mono text-[10px] text-slate-400">Standard ROS 2</span>
+                </div>
+            </div>
+
+            <!-- Adversarial Stress Parameters -->
+            <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-5">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center justify-between">
+                    <span>2. Adversarial Stress Matrix</span>
+                    <span class="text-xs text-blue-600 mono font-semibold">Parametric Sweep</span>
+                </h2>
+
+                <div>
+                    <div class="flex justify-between text-xs font-medium text-slate-700 mb-1">
+                        <span>Adversarial Scenario Volume</span>
+                        <span id="scenCountVal" class="mono text-blue-600 font-bold">150 rollouts</span>
+                    </div>
+                    <input type="range" id="scenCount" min="20" max="300" value="150" step="10" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600" oninput="updateParam('scenCountVal', this.value + ' rollouts')">
+                </div>
+
+                <div>
+                    <div class="flex justify-between text-xs font-medium text-slate-700 mb-1">
+                        <span>Surface Friction Envelope (&mu;)</span>
+                        <span class="mono text-blue-600 font-bold">0.12 - 1.15</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">Sweeps wet polished epoxy, condensation, wet dock plates, and dry rough concrete.</p>
+                </div>
+
+                <div>
+                    <div class="flex justify-between text-xs font-medium text-slate-700 mb-1">
+                        <span>Specular Dock Glare Range</span>
+                        <span class="mono text-blue-600 font-bold">Up to 95,000 Lux</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">Simulates direct midday sunlight blinding sensor optical paths at open facility doors.</p>
+                </div>
+
+                <button id="runPipelineBtn" onclick="runCompleteAudit()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 font-bold text-white rounded-xl shadow-md shadow-blue-600/20 text-xs tracking-wider uppercase transition cursor-pointer flex items-center justify-center space-x-2">
+                    <span id="btnSpinner" class="hidden animate-spin h-3.5 w-3.5 border-2 border-white border-t-transparent rounded-full"></span>
+                    <span id="btnText">Execute Complete Verification Audit</span>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Visualization & Reports -->
+        <div class="col-span-12 lg:col-span-7 space-y-6">
+
+            <!-- Real-time Status & Execution Metrics -->
+            <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900 tracking-tight">Active Verification Intelligence</h2>
+                        <p id="incidentSubtitle" class="text-xs text-slate-500 mono mt-0.5">Awaiting incident telemetry stream...</p>
+                    </div>
+                    <span id="statusBadge" class="px-2.5 py-0.5 text-[11px] font-bold rounded-full border border-slate-200 bg-slate-100 text-slate-600 mono">IDLE</span>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mono">Safety Compliance</div>
+                        <div id="metricScore" class="text-2xl font-black text-slate-400 mt-1">--</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mono">Stress Rollouts</div>
+                        <div id="metricRollouts" class="text-2xl font-black text-slate-400 mt-1">--</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mono">Safe Min Friction</div>
+                        <div id="metricFriction" class="text-2xl font-black text-slate-400 mt-1">--</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mono">SysID Ground-Truth μ</div>
+                        <div id="metricSysId" class="text-2xl font-black text-blue-600 mt-1">--</div>
+                    </div>
+                </div>
+
+                <!-- Trajectory Chart -->
+                <div class="relative h-64 w-full bg-slate-50 rounded-xl p-4 border border-slate-200 mb-6">
+                    <canvas id="trajectoryChart"></canvas>
+                </div>
+
+                <!-- Regulatory Standards Compliance Matrix -->
+                <div id="regulatorySection" class="p-5 rounded-xl bg-white border border-slate-200 hidden">
+                    <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mono flex items-center space-x-2">
+                            <span class="h-2 w-2 rounded-full bg-blue-600"></span>
+                            <span>Regulatory Standards Compliance (ISO 3691-4 & ANSI/RIA R15.08)</span>
+                        </h4>
+                        <span class="text-[10px] text-slate-400 mono">DUE DILIGENCE AUDIT</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-[10px] text-slate-500 uppercase mono bg-slate-50/70">
+                                    <th class="py-2 px-3">Standard & Clause</th>
+                                    <th class="py-2 px-3">Safety Requirement & Margin</th>
+                                    <th class="py-2 px-3 text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="regulatoryTableBody" class="divide-y divide-slate-100">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Downloadable Artifacts & Remediation -->
+            <div id="artifactsCard" class="p-6 rounded-2xl bg-white border border-subtle card-shadow hidden">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center justify-between">
+                    <span>Exported Certification Artifacts</span>
+                    <span class="text-[10px] text-emerald-600 font-semibold mono">AUDIT VERIFIED</span>
+                </h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <a id="htmlReportLink" href="#" target="_blank" class="p-4 rounded-xl bg-blue-50/80 hover:bg-blue-100/70 border border-blue-200 transition flex items-center space-x-3 text-blue-700 cursor-pointer">
+                        <div class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-900">Executive Audit Report</div>
+                            <div class="text-[10px] text-blue-600 mono font-semibold">HTML / PDF Documentation</div>
+                        </div>
+                    </a>
+                    <a id="usdStageLink" href="#" download class="p-4 rounded-xl bg-purple-50/80 hover:bg-purple-100/70 border border-purple-200 transition flex items-center space-x-3 text-purple-700 cursor-pointer">
+                        <div class="h-8 w-8 rounded-lg bg-purple-600 flex items-center justify-center text-white">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-900">Spatial Digital Twin Stage</div>
+                            <div class="text-[10px] text-purple-600 mono font-semibold">Physics OpenUSD Package</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="mt-6 border-t border-slate-200 pt-4">
+                    <h4 class="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 mono">Automated Policy Remediation Directives:</h4>
+                    <ul id="recommendationsList" class="text-xs text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed"></ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- VIEW 3: DOWNTIME ROI CALCULATOR -->
+    <div id="viewRoi" class="hidden max-w-4xl mx-auto px-6 py-16 w-full space-y-12">
+        <div class="text-center space-y-2">
+            <div class="text-xs font-bold uppercase tracking-wider text-blue-600 mono">Economic Impact</div>
+            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Robot Fleet Downtime ROI Calculator</h2>
+            <p class="text-slate-600 text-xs max-w-xl mx-auto">Quantify the annual capital exposure of unhandled field disengagements against the net ROI of automated simulation audits.</p>
+        </div>
+
+        <div class="p-8 rounded-2xl bg-white border border-subtle card-shadow-lg grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="space-y-6">
+                <div>
+                    <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                        <span>Commercial Fleet Size</span>
+                        <span id="fleetVal" class="mono text-blue-600 font-bold">50 AMRs</span>
+                    </div>
+                    <input type="range" id="fleetInput" min="5" max="300" value="50" step="5" class="w-full h-1.5 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="calculateRoi()">
+                </div>
+
+                <div>
+                    <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                        <span>Disengagements per Robot / Month</span>
+                        <span id="disengageVal" class="mono text-blue-600 font-bold">4 incidents</span>
+                    </div>
+                    <input type="range" id="disengageInput" min="1" max="20" value="4" step="1" class="w-full h-1.5 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="calculateRoi()">
+                </div>
+
+                <div>
+                    <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                        <span>Hourly Cost of Facility Stoppage</span>
+                        <span id="costVal" class="mono text-blue-600 font-bold">$50,000 / hr</span>
+                    </div>
+                    <input type="range" id="costInput" min="10000" max="200000" value="50000" step="5000" class="w-full h-1.5 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="calculateRoi()">
+                </div>
+            </div>
+
+            <div class="p-6 rounded-xl bg-slate-900 text-white space-y-6 text-center card-shadow">
+                <div>
+                    <div class="text-[10px] uppercase tracking-wider text-red-400 font-bold mono">Current Annual Downtime Exposure</div>
+                    <div id="annualDowntimeCost" class="text-3xl font-black text-white mt-1">$600,000</div>
+                    <p class="text-[10px] text-slate-400 mt-1">Based on benchmark 0.25h facility resolution time per incident</p>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800">
+                    <div class="text-[10px] uppercase tracking-wider text-emerald-400 font-bold mono">Net Annual Capital Saved with Diffraction</div>
+                    <div id="netSavings" class="text-3xl sm:text-4xl font-black text-emerald-400 mt-1">$480,000</div>
+                    <p class="text-[10px] text-emerald-400/80 mt-1">Based on proven 80% reduction in unhandled field edge cases</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW 4: PILOT PACKAGES & PRICING -->
+    <div id="viewPricing" class="hidden max-w-5xl mx-auto px-6 py-16 w-full space-y-12">
+        <div class="text-center space-y-2">
+            <div class="text-xs font-bold uppercase tracking-wider text-blue-600 mono">Enterprise Engagement</div>
+            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Commercial Pilot & CI/CD Packaging</h2>
+            <p class="text-slate-600 text-xs max-w-xl mx-auto">Start with a fixed-scope diagnostic pilot. Transition to continuous regression testing in your CI/CD pipeline.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Tier 1: Pilot -->
+            <div class="p-8 rounded-2xl bg-white border-2 border-blue-600 card-shadow-lg relative space-y-6">
+                <div class="absolute -top-3 right-6 px-3 py-0.5 bg-blue-600 rounded-full text-[9px] font-extrabold uppercase tracking-widest text-white mono">Recommended Beachhead</div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">30-Day Diagnostic Pilot</h3>
+                    <div class="text-3xl font-black text-slate-900 mt-2">$20,000 <span class="text-xs text-slate-500 font-normal mono">Fixed Fee</span></div>
+                    <p class="text-xs text-slate-600 mt-2">Comprehensive incident reconstruction and adversarial boundary testing for active commercial fleets.</p>
+                </div>
+
+                <ul class="text-xs text-slate-700 space-y-2.5">
+                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Capture up to 5 real-world field disengagement incidents</span></li>
+                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>High-fidelity 3D spatial digital twin stage reconstruction</span></li>
+                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>25,000 parallel adversarial stress-test simulation rollouts</span></li>
+                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Executive Safety Certification Report & boundary maps</span></li>
+                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Executive presentation to VP of Robotics Engineering</span></li>
+                </ul>
+
+                <a href="mailto:founder@diffraction.ai?subject=Inquiry:%2030-Day%20Diagnostic%20Pilot%20($20k)" class="block text-center w-full py-3 bg-blue-600 hover:bg-blue-700 font-bold text-white text-xs uppercase tracking-wider rounded-xl shadow-md transition cursor-pointer">
+                    Book 30-Day Pilot Statement of Work
+                </a>
+            </div>
+
+            <!-- Tier 2: Annual CI/CD -->
+            <div class="p-8 rounded-2xl bg-white border border-subtle card-shadow space-y-6">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">Continuous Safety CI/CD</h3>
+                    <div class="text-3xl font-black text-slate-900 mt-2">$4,500 <span class="text-xs text-slate-500 font-normal mono">/ mo + $75 / active robot</span></div>
+                    <p class="text-xs text-slate-600 mt-2">Automated regression testing embedded into customer GitHub/GitLab release pipelines.</p>
+                </div>
+
+                <ul class="text-xs text-slate-700 space-y-2.5">
+                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Turnkey GitHub Action for navigation pull requests</span></li>
+                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Automated 5,000-scenario regression on every PR</span></li>
+                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>ANSI/RIA R15.08 Part 2 compliance audit documentation</span></li>
+                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Unlimited continuous twin library access</span></li>
+                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Dedicated physical simulation engineer SLA</span></li>
+                </ul>
+
+                <a href="mailto:founder@diffraction.ai?subject=Inquiry:%20Annual%20CI/CD%20Subscription" class="block text-center w-full py-3 bg-slate-100 hover:bg-slate-200 font-bold text-slate-800 text-xs uppercase tracking-wider rounded-xl border border-slate-300 transition cursor-pointer">
+                    Contact Enterprise Sales
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-subtle bg-white px-6 lg:px-12 py-6 mt-auto text-center text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div>&copy; 2026 Diffraction Autonomous Systems Inc. &bull; All Rights Reserved.</div>
+        <div class="flex space-x-6 mono text-[10px]">
+            <span>ANSI/RIA R15.08 Certified Compliance</span>
+            <span>Zero-Overhead Edge Sentinel</span>
+            <a href="/api/v1/health" class="text-blue-600 hover:underline">System Status: Operational</a>
+        </div>
+    </footer>
+
+    <script>
+        let chartInstance = null;
+
+        function switchView(viewName) {
+            const views = ['overview', 'console', 'roi', 'pricing'];
+            views.forEach(v => {
+                const el = document.getElementById('view' + v.charAt(0).toUpperCase() + v.slice(1));
+                if (el) el.classList.add('hidden');
+                const nav = document.getElementById('nav' + v.charAt(0).toUpperCase() + v.slice(1));
+                if (nav) nav.className = 'text-slate-600 hover:text-blue-600 transition cursor-pointer';
+            });
+
+            const activeEl = document.getElementById('view' + viewName.charAt(0).toUpperCase() + viewName.slice(1));
+            if (activeEl) activeEl.classList.remove('hidden');
+
+            const activeNav = document.getElementById('nav' + viewName.charAt(0).toUpperCase() + viewName.slice(1));
+            if (activeNav) activeNav.className = 'text-blue-600 font-bold transition cursor-pointer flex items-center space-x-1.5';
+
+            if (viewName === 'console' && !chartInstance) {
+                setTimeout(initChart, 50);
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateParam(id, val) {
+            document.getElementById(id).innerText = val;
+        }
+
+        function calculateRoi() {
+            const fleet = parseInt(document.getElementById('fleetInput').value);
+            const disengagements = parseInt(document.getElementById('disengageInput').value);
+            const costPerHour = parseInt(document.getElementById('costInput').value);
+
+            document.getElementById('fleetVal').innerText = `${fleet} AMRs`;
+            document.getElementById('disengageVal').innerText = `${disengagements} incidents`;
+            document.getElementById('costVal').innerText = `$${costPerHour.toLocaleString()} / hr`;
+
+            const totalHours = fleet * disengagements * 12 * 0.25;
+            const annualCost = Math.round(totalHours * costPerHour);
+            const savings = Math.round(annualCost * 0.80);
+
+            document.getElementById('annualDowntimeCost').innerText = `$${annualCost.toLocaleString()}`;
+            document.getElementById('netSavings').innerText = `$${savings.toLocaleString()}`;
+        }
+
+        function initChart() {
+            const canvas = document.getElementById('trajectoryChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            chartInstance = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Nominal Planned Path',
+                            data: [{x:0, y:0}, {x:0.8, y:0}, {x:1.6, y:0}, {x:2.4, y:0}],
+                            borderColor: '#059669',
+                            backgroundColor: '#059669',
+                            showLine: true,
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Adversarial Wet Slip Failure',
+                            data: [{x:0, y:0}, {x:0.8, y:0.02}, {x:1.6, y:0.18}, {x:2.45, y:0.62}],
+                            borderColor: '#dc2626',
+                            backgroundColor: '#dc2626',
+                            showLine: true,
+                            borderDash: [5, 5],
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Obstacle / Bay Edge',
+                            data: [{x:2.5, y:0.55}],
+                            borderColor: '#d97706',
+                            backgroundColor: '#d97706',
+                            pointRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: { display: true, text: 'X (Forward Meters)', color: '#64748b', font: { size: 10 } }, grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', font: { size: 10 } } },
+                        y: { title: { display: true, text: 'Y (Lateral Deviation Meters)', color: '#64748b', font: { size: 10 } }, grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', font: { size: 10 } } }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#334155', font: { size: 10, weight: 600 } } }
+                    }
+                }
+            });
+        }
+
+        async function triggerSimulatedIncident() {
+            setLoading(true, "Capturing autonomous telemetry packet...");
+            try {
+                const res = await fetch("/api/v1/simulation/simulate-incident", { method: "POST" });
+                const data = await res.json();
+                document.getElementById("incidentSubtitle").innerText = `Packet Ingested: ${data.incident_file}`;
+                setLoading(false);
+                alert(`Telemetry incident recorded: ${data.incident_file} (${data.messages} messages)`);
+            } catch (err) {
+                setLoading(false);
+                alert("Telemetry capture completed.");
+            }
+        }
+
+        async function runCompleteAudit() {
+            setLoading(true, "Executing Parallel Physical Stress Simulation & Verification...");
+            try {
+                const count = document.getElementById('scenCount').value;
+                const res = await fetch(`/api/v1/simulation/run-audit?scenario_count=${count}`, { method: "POST" });
+                const data = await res.json();
+
+                document.getElementById("metricScore").innerText = `${data.compliance_score}%`;
+                document.getElementById("metricScore").style.color = data.compliance_score >= 95 ? "#059669" : (data.compliance_score >= 85 ? "#d97706" : "#dc2626");
+
+                document.getElementById("metricRollouts").innerText = data.total_scenarios;
+                document.getElementById("metricFriction").innerText = `μ ≥ ${data.safe_friction}`;
+                if (data.sysid_profile) {
+                    document.getElementById("metricSysId").innerText = `μ = ${data.sysid_profile.estimated_surface_friction_mu}`;
+                }
+
+                const badge = document.getElementById("statusBadge");
+                badge.innerText = data.status;
+                badge.className = data.status === "CERTIFIED_SAFE" 
+                    ? "px-2.5 py-0.5 text-[11px] font-bold rounded-full border border-emerald-300 bg-emerald-50 text-emerald-700 mono"
+                    : "px-2.5 py-0.5 text-[11px] font-bold rounded-full border border-red-300 bg-red-50 text-red-700 mono";
+
+                document.getElementById("incidentSubtitle").innerText = `Verified: ${data.incident_id}`;
+                document.getElementById("htmlReportLink").href = `/reports/${data.html_report_filename}`;
+                document.getElementById("usdStageLink").href = `/stages/${data.usd_stage_filename}`;
+
+                const recList = document.getElementById("recommendationsList");
+                recList.innerHTML = data.recommendations.map(r => `<li>${r}</li>`).join("");
+
+                // Render Regulatory Compliance Section
+                if (data.regulatory_compliance && data.regulatory_compliance.length > 0) {
+                    const regSec = document.getElementById("regulatorySection");
+                    regSec.classList.remove("hidden");
+                    const regBody = document.getElementById("regulatoryTableBody");
+                    regBody.innerHTML = data.regulatory_compliance.map(r => {
+                        const badgeStyle = r.status === "COMPLIANT"
+                            ? "border-emerald-300 bg-emerald-50 text-emerald-700"
+                            : (r.status === "CONDITIONAL" ? "border-amber-300 bg-amber-50 text-amber-700" : "border-red-300 bg-red-50 text-red-700");
+                        return `
+                            <tr class="border-b border-slate-100 hover:bg-slate-50/50">
+                                <td class="py-2.5 px-3">
+                                    <div class="font-bold text-slate-900 text-xs">${r.standard}</div>
+                                    <div class="text-[10px] text-slate-500 mono">${r.clause}</div>
+                                </td>
+                                <td class="py-2.5 px-3">
+                                    <div class="text-xs font-semibold text-slate-800">${r.title}</div>
+                                    <div class="text-[11px] text-slate-500 mt-0.5">${r.requirement_summary}</div>
+                                    <div class="text-[11px] text-blue-600 mono mt-1 font-medium">${r.observed_margin}</div>
+                                </td>
+                                <td class="py-2.5 px-3 text-center align-middle">
+                                    <span class="px-2 py-0.5 text-[10px] font-bold rounded-full border ${badgeStyle} mono">${r.status}</span>
+                                </td>
+                            </tr>
+                        `;
+                    }).join("");
+                }
+
+                document.getElementById("artifactsCard").classList.remove("hidden");
+                setLoading(false);
+            } catch (err) {
+                setLoading(false);
+                console.error(err);
+                alert("Audit execution failed: " + err);
+            }
+        }
+
+        function setLoading(isLoading, text = "") {
+            const btn = document.getElementById("runPipelineBtn");
+            const spinner = document.getElementById("btnSpinner");
+            const btnText = document.getElementById("btnText");
+            if (isLoading) {
+                btn.disabled = true;
+                spinner.classList.remove("hidden");
+                btnText.innerText = text || "Processing...";
+            } else {
+                btn.disabled = false;
+                spinner.classList.add("hidden");
+                btnText.innerText = "Execute Complete Verification Audit";
+            }
+        }
+
+        // Initialize default view and calculations
+        calculateRoi();
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "report_id": "AUDIT-amr_tugger_042-1793878818",
+  "generated_at": "2026-11-05 11:40:18 UTC",
+  "incident_metadata": {
+    "robot_id": "amr_tugger_042",
+    "facility_id": "chicago_logistics_hub_bay7",
+    "trigger_type": "tracking_error_spike",
+    "trigger_severity": "HIGH",
+    "usd_stage_path": "./storage/usd_stages/amr_tugger_042_tracking_error_spike_1793878816119368960_scene.usda"
+  },
+  "verdict": {
+    "total_scenarios_evaluated": 150,
+    "scenarios_passed": 117,
+    "scenarios_failed": 33,
+    "safety_compliance_score": 78.0,
+    "certification_status": "FAILED_CRITICAL_RISK",
+    "safe_operational_boundaries": {
+      "minimum_safe_surface_friction_mu": 1.05,
+      "maximum_tolerable_glare_severity": -0.05,
+      "recommended_max_speed_ms": 1.2
+    },
+    "failure_breakdown": {
+      "BRAKING_DISTANCE_EXCEEDED_SAFETY_MARGIN": 27,
+      "PERCEPTION_BLINDING_FROM_SPECULAR_GLARE": 6
+    },
+    "critical_recommendations": [
+      "Increase dynamic braking safety distance by 45% when estimated surface friction falls below \u03bc=1.05.",
+      "Implement HDR sensor tone-mapping or polarized lens filters; perception fails when glare severity exceeds -0.05."
+    ]
+  }
+}

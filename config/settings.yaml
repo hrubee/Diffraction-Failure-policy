@@ -1,0 +1,61 @@
+# Physical AI Telemetry Bridge & Simulation Pipeline Configuration
+
+system:
+  environment: "production"
+  log_level: "INFO"
+
+edge:
+  buffer_duration_seconds: 20.0     # Rolling buffer retained in memory
+  post_incident_seconds: 5.0        # Seconds to record after trigger fires
+  max_ram_usage_mb: 512             # Memory ceiling for circular buffer
+  compression: "zstd"               # zstd compression for non-video channels
+  trigger_thresholds:
+    tracking_error_meters: 0.45     # Trajectory deviation trigger
+    min_stopping_distance_meters: 0.50
+    teleop_takeover_topic: "/teleop/override"
+    estop_topic: "/safety/estop"
+    cmd_vel_topic: "/cmd_vel"
+    odom_topic: "/odom"
+    joint_states_topic: "/joint_states"
+    camera_rgb_topic: "/camera/rgb/image_raw"
+    camera_depth_topic: "/camera/depth/image_raw"
+    lidar_topic: "/lidar/points"
+
+cloud_gateway:
+  host: "0.0.0.0"
+  port: 8080
+  storage_backend: "local"          # Options: local, s3, r2
+  local_storage_path: "./storage/telemetry_drops"
+  max_upload_size_mb: 250
+
+twin_synthesis:
+  usd_output_path: "./storage/usd_stages"
+  coordinate_system: "Z-up"
+  meters_per_unit: 1.0
+  default_urdf_path: "./assets/robots/amr_diff_drive.urdf"
+
+cosmos_engine:
+  provider: "nvidia_cosmos"
+  models:
+    transfer: "cosmos-1.0-transfer"
+    predict: "cosmos-1.0-autoregressive-7b"
+  perturbations:
+    friction_range: [0.12, 1.15]    # Ice/wet epoxy to dry rough concrete
+    sensor_latency_range_ms: [10, 150]
+    lighting_lux_range: [15, 95000] # Dim warehouse aisle to direct outdoor dock sun
+    glare_occlusion_prob: 0.35
+    rain_fog_prob: 0.25
+
+simulation_harness:
+  engine: "isaac_lab_headless"
+  max_parallel_envs: 1024
+  timestep_seconds: 0.01
+  max_scenario_duration_seconds: 15.0
+  collision_threshold_meters: 0.05
+  min_pass_compliance_score: 95.0
+
+reporting:
+  output_dir: "./storage/reports"
+  generate_pdf: false
+  generate_html: true
+  generate_json: true

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diffraction // Executive Briefing & Product Overview</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.5; color: #111827; background: #f9fafb; margin: 0; padding: 30px; }
+        .page { max-width: 800px; margin: 0 auto; background: #ffffff; padding: 40px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #4f46e5; padding-bottom: 15px; margin-bottom: 25px; }
+        .logo { font-size: 22px; font-weight: 800; color: #111827; }
+        .logo span { color: #4f46e5; }
+        .tagline { font-size: 13px; color: #6b7280; font-weight: 500; }
+        h2 { font-size: 16px; color: #4f46e5; margin-top: 20px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #f3f4f6; padding-bottom: 4px; }
+        p { font-size: 13px; color: #374151; margin: 6px 0; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 15px 0; }
+        .card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px; }
+        .card-title { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+        .metric { font-size: 24px; font-weight: 800; color: #4f46e5; margin: 4px 0; }
+        ul { margin: 6px 0; padding-left: 18px; font-size: 13px; color: #374151; }
+        li { margin-bottom: 4px; }
+        .callout { background: #eef2ff; border-left: 4px solid #4f46e5; padding: 12px; border-radius: 4px; margin-top: 20px; font-size: 12px; color: #312e81; }
+        .footer { margin-top: 30px; text-align: center; font-size: 11px; color: #9ca3af; border-top: 1px solid #f3f4f6; padding-top: 12px; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div>
+                <div class="logo">DIFFRACTION <span>// PHYSICAL AI ORACLE</span></div>
+                <div class="tagline">Closed-Loop Sim-to-Real Verification & Safety CI/CD for Autonomous Fleets</div>
+            </div>
+            <div style="text-align: right; font-size: 12px; color: #6b7280;">
+                <strong>Enterprise Product Brief</strong><br>
+                www.diffraction.ai
+            </div>
+        </div>
+
+        <h2>1. The Problem: The Physical AI Reality Gap & Disengagement Tax</h2>
+        <p>Commercial robotics fleets (AMRs, automated forklifts, mobile manipulators) are scaling rapidly, but real-world operational corner cases (glare blindness, wet floor slips, sensor latency) cause dangerous disengagements. Unplanned warehouse downtime costs <strong>$50,000 per hour</strong>, while reproducing a single field incident costs an OEM over <strong>$16,000 in senior engineering salary</strong>.</p>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">Average Warehouse Downtime</div>
+                <div class="metric">$50,000 / hr</div>
+                <p style="font-size: 11px; color: #6b7280;">Lost sorting throughput & customer SLA penalties.</p>
+            </div>
+            <div class="card">
+                <div class="card-title">Engineering Reproduction Time</div>
+                <div class="metric">2 to 3 Weeks</div>
+                <p style="font-size: 11px; color: #6b7280;">Manual scene recreation & parameter tuning in Gazebo.</p>
+            </div>
+        </div>
+
+        <h2>2. The Solution: Closed-Loop Autonomous Verification Engine</h2>
+        <p>Diffraction provides the industry's first automated incident remediation pipeline connecting physical robots with cloud-scale physics simulation:</p>
+        <ul>
+            <li><strong>In-RAM Disengagement Sentinel:</strong> A lightweight (<0.1MB RAM) onboard daemon buffers the rolling 15 seconds preceding any E-stop, takeover, or tracking error into an indexed container (zero SSD wear).</li>
+            <li><strong>Automated 3D Digital Twin Synthesis:</strong> Converts raw incident telemetry into calibrated 3D spatial simulation stages via our proprietary Spatial Reconstruction Engine.</li>
+            <li><strong>Adversarial Stress Engine:</strong> Sweeps surface friction (&mu; 0.12–1.15), dock specular glare (up to 95,000 lux), and sensor latencies across 10,000+ counterfactual physical rollouts.</li>
+            <li><strong>Parallel Policy Verification:</strong> Evaluates fleet navigation policies in parallel to output a formal <strong>Safety Compliance Score</strong> and certified safe operational envelope.</li>
+        </ul>
+
+        <h2>3. Commercial Offering & Pilot Packaging</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">30-Day Diagnostic Pilot ($20,000)</div>
+                <p style="font-size: 12px;">• Ingest 5 worst real-world fleet failures.<br>• 25,000 parallel adversarial rollouts.<br>• Executive Safety Audit Report & boundary maps.<br>• Certified 3D digital twin stage library.</p>
+            </div>
+            <div class="card">
+                <div class="card-title">Annual Continuous CI/CD ($4,500/mo)</div>
+                <p style="font-size: 12px;">• Turnkey GitHub/GitLab integration.<br>• Automated 5,000-scenario regression suite on every firmware pull request.<br>• De-risks ANSI/RIA R15.08 & ISO 3691-4 audits.</p>
+            </div>
+        </div>
+
+        <div class="callout">
+            <strong>The ROI Equation:</strong> One \$20,000 Diffraction audit pays for itself upon preventing a single 1-hour warehouse downtime incident or avoiding a failed regulatory certification audit.
+        </div>
+
+        <div class="footer">
+            Diffraction Autonomous Systems Inc. &bull; Confidential & Proprietary
+        </div>
+    </div>
+</body>
+</html>
