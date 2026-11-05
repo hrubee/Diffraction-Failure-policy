@@ -1,13 +1,15 @@
 """
 Programmatic OpenUSD Stage Synthesizer.
-Assembles physics-compliant, visually rich OpenUSD (.usda) digital twin scenes
-compatible with macOS Quick Look, Xcode, Blender, NVIDIA Omniverse, and Isaac Sim.
+Assembles physics-compliant, universally visible OpenUSD (.usda) digital twin scenes.
+Uses standard UsdGeomMesh polygonal geometry with displayColor and doubleSided attributes
+to ensure 100% visual compatibility across online WebGL USD viewers, macOS Quick Look,
+Xcode, Blender, NVIDIA Omniverse, and Isaac Sim.
 """
 
 from dataclasses import dataclass
 import math
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 
 @dataclass
@@ -25,6 +27,46 @@ class PhysicsMaterialParams:
     restitution: float = 0.05
 
 
+def _generate_box_mesh(
+    name: str,
+    cx: float,
+    cy: float,
+    cz: float,
+    sx: float,
+    sy: float,
+    sz: float,
+    color: Tuple[float, float, float],
+    has_physics_collision: bool = True,
+) -> str:
+    """Generates an explicit polygonal UsdGeomMesh box universally supported by all online/desktop viewers."""
+    hx, hy, hz = sx / 2.0, sy / 2.0, sz / 2.0
+    p = [
+        (round(cx - hx, 4), round(cy - hy, 4), round(cz - hz, 4)),
+        (round(cx + hx, 4), round(cy - hy, 4), round(cz - hz, 4)),
+        (round(cx + hx, 4), round(cy + hy, 4), round(cz - hz, 4)),
+        (round(cx - hx, 4), round(cy + hy, 4), round(cz - hz, 4)),
+        (round(cx - hx, 4), round(cy - hy, 4), round(cz + hz, 4)),
+        (round(cx + hx, 4), round(cy - hy, 4), round(cz + hz, 4)),
+        (round(cx + hx, 4), round(cy + hy, 4), round(cz + hz, 4)),
+        (round(cx - hx, 4), round(cy + hy, 4), round(cz + hz, 4)),
+    ]
+    pts_str = ", ".join(f"({pt[0]}, {pt[1]}, {pt[2]})" for pt in p)
+    indices = "0, 3, 2, 1, 4, 5, 6, 7, 0, 1, 5, 4, 1, 2, 6, 5, 2, 3, 7, 6, 3, 0, 4, 7"
+    counts = "4, 4, 4, 4, 4, 4"
+    r, g, b = color
+    api_schema = ' (apiSchemas = ["PhysicsCollisionAPI"])' if has_physics_collision else ""
+
+    return f"""
+        def Mesh "{name}"{api_schema}
+        {{
+            bool doubleSided = true
+            point3f[] points = [{pts_str}]
+            int[] faceVertexCounts = [{counts}]
+            int[] faceVertexIndices = [{indices}]
+            color3f[] primvars:displayColor = [({r}, {g}, {b})]
+        }}"""
+
+
 class UsdStageBuilder:
     def __init__(self, output_dir: str = "./storage/usd_stages"):
         self.output_dir = output_dir
@@ -40,14 +82,14 @@ class UsdStageBuilder:
         obstacle_pose: Optional[Dict[str, float]] = None,
     ) -> str:
         """
-        Generates a complete, visually rich and physics-accurate ASCII OpenUSD (.usda) stage:
-        - PhysicsScene (gravity and collision solvers)
-        - Ambient DomeLight + Directional Sunlight for universal viewport rendering
-        - 3D Warehouse Floor Slab with safety lane boundary stripes
-        - Visualized low-friction floor slick/spill hazard zone
-        - 3D Obstacle (Cargo Pallet + Staging Crate) at the collision point
-        - 3D Autonomous Mobile Robot Assembly (Chassis, Deck, Wheels, LiDAR, Stereo Camera, E-stop)
-        - Visual trajectory breadcrumb waypoints showing nominal path vs. slip deviation
+        Assembles a comprehensive, universally visible ASCII OpenUSD (.usda) digital twin:
+        - PhysicsScene (gravity & solvers)
+        - Ambient DomeLight + Directional Sunlight
+        - Concrete floor slab (Mesh) with safety yellow corridor lines (Meshes)
+        - Dark glossy slick spill hazard zone (Mesh)
+        - 3D Obstacle Euro-pallet & cargo crate (Meshes)
+        - 3D Autonomous Mobile Robot (Chassis, Deck, E-Stop, Wheels, LiDAR, Cameras)
+        - Trajectory breadcrumb waypoints (Green planned path vs Red slip deviation)
         """
         file_path = os.path.join(self.output_dir, f"{incident_id}_scene.usda")
 
@@ -56,34 +98,51 @@ class UsdStageBuilder:
 
         yaw_deg = round(robot_pose.yaw_rad * (180.0 / math.pi), 2)
 
-        # Generate trajectory breadcrumbs (Nominal green path vs Deviated red slip path)
-        nominal_crumbs = ""
-        for i in range(8):
-            px = round(i * 0.35, 3)
-            nominal_crumbs += f"""
-        def Cube "NominalWaypoint_{i}"
-        {{
-            double size = 1.0
-            double3 xformOp:scale = (0.08, 0.08, 0.02)
-            double3 xformOp:translate = ({px}, 0.0, 0.015)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.10, 0.85, 0.25)]
-        }}"""
+        # 1. Environment Meshes
+        floor_mesh = _generate_box_mesh("FloorSlab", 2.0, 0.0, -0.05, 24.0, 16.0, 0.10, (0.72, 0.74, 0.77))
+        stripe_left = _generate_box_mesh("CorridorLeftStripe", 2.0, 1.20, 0.005, 20.0, 0.10, 0.005, (0.96, 0.82, 0.12), False)
+        stripe_right = _generate_box_mesh("CorridorRightStripe", 2.0, -1.20, 0.005, 20.0, 0.10, 0.005, (0.96, 0.82, 0.12), False)
+        hazard_patch = _generate_box_mesh("SlickSurfaceHazardPatch", 2.40, 0.35, 0.008, 3.20, 1.80, 0.012, (0.28, 0.38, 0.48))
+        dock_wall = _generate_box_mesh("DockPerimeterWall", 4.50, 0.0, 0.60, 0.25, 6.0, 1.20, (0.45, 0.48, 0.52))
 
-        deviation_crumbs = ""
-        for j in range(5):
-            t = (j + 1) / 5.0
-            px = round(2.0 + t * (robot_pose.x - 2.0), 3)
-            py = round(t * robot_pose.y, 3)
-            deviation_crumbs += f"""
-        def Cube "DeviationWaypoint_{j}"
-        {{
-            double size = 1.0
-            double3 xformOp:scale = (0.09, 0.09, 0.025)
-            double3 xformOp:translate = ({px}, {py}, 0.02)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.95, 0.15, 0.15)]
-        }}"""
+        # 2. Obstacle Meshes
+        pallet_mesh = _generate_box_mesh("PalletBase", 0.0, 0.0, 0.07, 1.20, 0.80, 0.14, (0.68, 0.48, 0.28))
+        crate_mesh = _generate_box_mesh("CargoCrate", 0.0, 0.0, 0.515, 1.00, 0.70, 0.75, (0.92, 0.42, 0.10))
+        label_mesh = _generate_box_mesh("HazardLabelPlate", 0.0, -0.36, 0.55, 0.40, 0.02, 0.25, (0.98, 0.88, 0.15), False)
+
+        # 3. Robot Meshes
+        chassis_mesh = _generate_box_mesh("ChassisBody", 0.0, 0.0, 0.18, 0.92, 0.64, 0.26, (0.12, 0.42, 0.90))
+        deck_mesh = _generate_box_mesh("UpperDeckPlate", 0.0, 0.0, 0.32, 0.86, 0.58, 0.04, (0.18, 0.20, 0.23), False)
+        estop_mesh = _generate_box_mesh("EmergencyStop", -0.28, 0.20, 0.37, 0.09, 0.09, 0.06, (0.95, 0.10, 0.10), False)
+        wheel_l_mesh = _generate_box_mesh("LeftDriveWheel", 0.0, 0.34, 0.10, 0.20, 0.07, 0.20, (0.08, 0.08, 0.08))
+        wheel_r_mesh = _generate_box_mesh("RightDriveWheel", 0.0, -0.34, 0.10, 0.20, 0.07, 0.20, (0.08, 0.08, 0.08))
+        caster_f_mesh = _generate_box_mesh("FrontCaster", 0.35, 0.0, 0.05, 0.09, 0.09, 0.09, (0.25, 0.25, 0.25))
+        caster_r_mesh = _generate_box_mesh("RearCaster", -0.35, 0.0, 0.05, 0.09, 0.09, 0.09, (0.25, 0.25, 0.25))
+        camera_bar_mesh = _generate_box_mesh("StereoCameraBar", 0.47, 0.0, 0.24, 0.05, 0.28, 0.045, (0.15, 0.15, 0.15), False)
+        beacon_mesh = _generate_box_mesh("SafetyStrobeBeacon", -0.28, -0.20, 0.37, 0.08, 0.08, 0.08, (1.0, 0.65, 0.0), False)
+        lidar_puck_mesh = _generate_box_mesh("LidarPuck", 0.0, 0.0, 0.045, 0.13, 0.13, 0.09, (0.12, 0.12, 0.12), False)
+        lidar_optic_mesh = _generate_box_mesh("LidarOpticBand", 0.0, 0.0, 0.05, 0.134, 0.134, 0.03, (0.0, 0.75, 0.95), False)
+
+        # 4. Trajectory Waypoint Meshes
+        nominal_crumbs = "".join(
+            _generate_box_mesh(f"NominalWaypoint_{i}", round(i * 0.35, 3), 0.0, 0.015, 0.08, 0.08, 0.02, (0.10, 0.85, 0.25), False)
+            for i in range(8)
+        )
+
+        deviation_crumbs = "".join(
+            _generate_box_mesh(
+                f"DeviationWaypoint_{j}",
+                round(2.0 + ((j + 1) / 5.0) * (robot_pose.x - 2.0), 3),
+                round(((j + 1) / 5.0) * robot_pose.y, 3),
+                0.02,
+                0.09,
+                0.09,
+                0.025,
+                (0.95, 0.15, 0.15),
+                False,
+            )
+            for j in range(5)
+        )
 
         usd_content = f"""#usda 1.0
 (
@@ -128,11 +187,11 @@ def Xform "World"
     }}
 
     # -------------------------------------------------------------
-    # 2. UNIVERSAL LIGHTING RIG (Visible in QuickLook, Xcode, Blender)
+    # 2. UNIVERSAL LIGHTING RIG (Visible across all WebGL & Desktop engines)
     # -------------------------------------------------------------
     def DomeLight "WarehouseAmbientLight"
     {{
-        float inputs:intensity = 1400.0
+        float inputs:intensity = 1500.0
         color3f inputs:color = (0.95, 0.98, 1.0)
     }}
 
@@ -149,60 +208,11 @@ def Xform "World"
     # -------------------------------------------------------------
     def Xform "Environment"
     {{
-        # Solid Concrete Warehouse Floor Slab
-        def Cube "FloorSlab" (
-            apiSchemas = ["PhysicsCollisionAPI"]
-        )
-        {{
-            rel material:binding = </World/Materials/GroundSurfaceMaterial>
-            double size = 1.0
-            double3 xformOp:scale = (24.0, 16.0, 0.10)
-            double3 xformOp:translate = (2.0, 0.0, -0.05)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.72, 0.74, 0.77)]
-        }}
-
-        # Autonomous Navigation Safety Corridor Stripes (Yellow boundary lines)
-        def Cube "CorridorLeftStripe"
-        {{
-            double size = 1.0
-            double3 xformOp:scale = (20.0, 0.10, 0.005)
-            double3 xformOp:translate = (2.0, 1.20, 0.003)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.96, 0.82, 0.12)]
-        }}
-
-        def Cube "CorridorRightStripe"
-        {{
-            double size = 1.0
-            double3 xformOp:scale = (20.0, 0.10, 0.005)
-            double3 xformOp:translate = (2.0, -1.20, 0.003)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.96, 0.82, 0.12)]
-        }}
-
-        # Visual Low-Friction Spill Hazard Zone (Wet Epoxy / Oil Spill)
-        def Cube "SlickSurfaceHazardPatch" (
-            apiSchemas = ["PhysicsCollisionAPI"]
-        )
-        {{
-            rel material:binding = </World/Materials/SlickSpillMaterial>
-            double size = 1.0
-            double3 xformOp:scale = (3.20, 1.80, 0.01)
-            double3 xformOp:translate = (2.40, 0.35, 0.005)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.28, 0.38, 0.48)]
-        }}
-
-        # Loading Dock Safety Wall
-        def Cube "DockPerimeterWall"
-        {{
-            double size = 1.0
-            double3 xformOp:scale = (0.25, 6.0, 1.20)
-            double3 xformOp:translate = (4.50, 0.0, 0.60)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.45, 0.48, 0.52)]
-        }}
+{floor_mesh}
+{stripe_left}
+{stripe_right}
+{hazard_patch}
+{dock_wall}
     }}
 
     # -------------------------------------------------------------
@@ -214,36 +224,9 @@ def Xform "World"
     {{
         double3 xformOp:translate = ({obstacle_pose['x']}, {obstacle_pose['y']}, {obstacle_pose.get('z', 0.0)})
         uniform token[] xformOpOrder = ["xformOp:translate"]
-
-        # Wooden Euro-Pallet Base
-        def Cube "PalletBase"
-        {{
-            double size = 1.0
-            double3 xformOp:scale = (1.20, 0.80, 0.14)
-            double3 xformOp:translate = (0.0, 0.0, 0.07)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.68, 0.48, 0.28)]
-        }}
-
-        # Industrial Heavy Staging Crate (High-Visibility Hazard Orange)
-        def Cube "CargoCrate"
-        {{
-            double size = 1.0
-            double3 xformOp:scale = (1.00, 0.70, 0.75)
-            double3 xformOp:translate = (0.0, 0.0, 0.515)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.92, 0.42, 0.10)]
-        }}
-
-        # Top Warning Beacon / Label
-        def Cube "HazardLabelPlate"
-        {{
-            double size = 1.0
-            double3 xformOp:scale = (0.40, 0.02, 0.25)
-            double3 xformOp:translate = (0.0, -0.36, 0.55)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.98, 0.88, 0.15)]
-        }}
+{pallet_mesh}
+{crate_mesh}
+{label_mesh}
     }}
 
     # -------------------------------------------------------------
@@ -259,125 +242,17 @@ def Xform "World"
 
         custom string diffraction:urdf_source = "{urdf_reference}"
         float physics:mass = 85.0
+{chassis_mesh}
+{deck_mesh}
+{estop_mesh}
+{wheel_l_mesh}
+{wheel_r_mesh}
+{caster_f_mesh}
+{caster_r_mesh}
+{camera_bar_mesh}
+{beacon_mesh}
 
-        # Main Chassis Base (Industrial Electric Cobalt Blue)
-        def Cube "ChassisBody" (
-            apiSchemas = ["PhysicsCollisionAPI"]
-        )
-        {{
-            double size = 1.0
-            double3 xformOp:scale = (0.92, 0.64, 0.26)
-            double3 xformOp:translate = (0.0, 0.0, 0.18)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.12, 0.42, 0.90)]
-        }}
-
-        # Heavy Duty Payload Deck Plate (Dark Metallic Non-Slip Surface)
-        def Cube "UpperDeckPlate"
-        {{
-            double size = 1.0
-            double3 xformOp:scale = (0.86, 0.58, 0.04)
-            double3 xformOp:translate = (0.0, 0.0, 0.32)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.18, 0.20, 0.23)]
-        }}
-
-        # Emergency Stop (E-Stop Mushroom Button)
-        def Cylinder "EmergencyStop"
-        {{
-            double radius = 0.045
-            double height = 0.06
-            token axis = "Z"
-            double3 xformOp:translate = (-0.28, 0.20, 0.36)
-            uniform token[] xformOpOrder = ["xformOp:translate"]
-            color3f[] primvars:displayColor = [(0.95, 0.10, 0.10)]
-        }}
-
-        # Left Industrial Traction Drive Wheel
-        def Cylinder "LeftDriveWheel" (
-            apiSchemas = ["PhysicsCollisionAPI"]
-        )
-        {{
-            double radius = 0.10
-            double height = 0.07
-            token axis = "Y"
-            double3 xformOp:translate = (0.0, 0.34, 0.10)
-            uniform token[] xformOpOrder = ["xformOp:translate"]
-            color3f[] primvars:displayColor = [(0.08, 0.08, 0.08)]
-        }}
-
-        # Right Industrial Traction Drive Wheel
-        def Cylinder "RightDriveWheel" (
-            apiSchemas = ["PhysicsCollisionAPI"]
-        )
-        {{
-            double radius = 0.10
-            double height = 0.07
-            token axis = "Y"
-            double3 xformOp:translate = (0.0, -0.34, 0.10)
-            uniform token[] xformOpOrder = ["xformOp:translate"]
-            color3f[] primvars:displayColor = [(0.08, 0.08, 0.08)]
-        }}
-
-        # Front Swivel Caster Wheel
-        def Cylinder "FrontCaster"
-        {{
-            double radius = 0.045
-            double height = 0.05
-            token axis = "Z"
-            double3 xformOp:translate = (0.35, 0.0, 0.05)
-            uniform token[] xformOpOrder = ["xformOp:translate"]
-            color3f[] primvars:displayColor = [(0.25, 0.25, 0.25)]
-        }}
-
-        # Rear Swivel Caster Wheel
-        def Cylinder "RearCaster"
-        {{
-            double radius = 0.045
-            double height = 0.05
-            token axis = "Z"
-            double3 xformOp:translate = (-0.35, 0.0, 0.05)
-            uniform token[] xformOpOrder = ["xformOp:translate"]
-            color3f[] primvars:displayColor = [(0.25, 0.25, 0.25)]
-        }}
-
-        # 3D LiDAR Sensor Assembly
-        def Xform "LidarSensor"
-        {{
-            double3 xformOp:translate = (0.28, 0.0, 0.38)
-            uniform token[] xformOpOrder = ["xformOp:translate"]
-            custom string sensor:type = "lidar_3d"
-            custom int sensor:channels = 16
-
-            def Cylinder "LidarPuck"
-            {{
-                double radius = 0.065
-                double height = 0.09
-                token axis = "Z"
-                color3f[] primvars:displayColor = [(0.12, 0.12, 0.12)]
-            }}
-
-            def Cylinder "LidarOpticBand"
-            {{
-                double radius = 0.067
-                double height = 0.03
-                token axis = "Z"
-                double3 xformOp:translate = (0.0, 0.0, 0.005)
-                uniform token[] xformOpOrder = ["xformOp:translate"]
-                color3f[] primvars:displayColor = [(0.0, 0.75, 0.95)]
-            }}
-        }}
-
-        # Forward Stereo Vision Camera Bar & Optical Center Prim
-        def Cube "StereoCameraBar"
-        {{
-            double size = 1.0
-            double3 xformOp:scale = (0.05, 0.28, 0.045)
-            double3 xformOp:translate = (0.47, 0.0, 0.24)
-            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
-            color3f[] primvars:displayColor = [(0.15, 0.15, 0.15)]
-        }}
-
+        # Optical Camera Sensor Prim
         def Camera "FrontCamera"
         {{
             float focalLength = 24.0
@@ -388,15 +263,15 @@ def Xform "World"
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
         }}
 
-        # Amber Safety Strobe Beacon
-        def Cylinder "SafetyStrobeBeacon"
+        # 3D LiDAR Sensor System
+        def Xform "LidarSensor"
         {{
-            double radius = 0.04
-            double height = 0.08
-            token axis = "Z"
-            double3 xformOp:translate = (-0.28, -0.20, 0.37)
+            double3 xformOp:translate = (0.28, 0.0, 0.38)
             uniform token[] xformOpOrder = ["xformOp:translate"]
-            color3f[] primvars:displayColor = [(1.0, 0.65, 0.0)]
+            custom string sensor:type = "lidar_3d"
+            custom int sensor:channels = 16
+{lidar_puck_mesh}
+{lidar_optic_mesh}
         }}
     }}
 
@@ -405,10 +280,7 @@ def Xform "World"
     # -------------------------------------------------------------
     def Xform "TrajectoryAnalysis"
     {{
-        # Planned Nominal Trajectory Waypoints (Green)
 {nominal_crumbs}
-
-        # Actual Incident Deviation & Skid Trajectory Waypoints (Red)
 {deviation_crumbs}
     }}
 }}
