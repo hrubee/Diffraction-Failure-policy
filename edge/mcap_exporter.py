@@ -131,7 +131,8 @@ class McapExporter:
                         data=encoded_data,
                         publish_time=msg.timestamp_ns,
                     )
-                writer.add_metadata(name="diffraction_incident_metadata", metadata=metadata)
+                meta_data_dict = {k: json.dumps(v) if isinstance(v, (dict, list)) else str(v) for k, v in metadata.items()}
+                writer.add_metadata(name="diffraction_incident_metadata", data=meta_data_dict)
                 writer.finish()
             else:
                 writer = PurePythonMcapWriter(f)
