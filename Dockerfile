@@ -22,7 +22,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Ensure storage directories exist
-RUN mkdir -p storage/telemetry_drops storage/usd_stages storage/reports storage/cosmos_augmented
+RUN mkdir -p storage/telemetry_drops storage/usd_stages storage/reports storage/cosmos_augmented storage/remediation_patches
 
 EXPOSE 8080
 
