@@ -33,6 +33,7 @@ class DecoupledIncident:
     messages_by_topic: Dict[str, List[Dict[str, Any]]] = field(default_factory=dict)
     total_messages: int = 0
     duration_seconds: float = 0.0
+    embedded_urdf: Optional[str] = None
 
 
 class PurePythonMcapReader:
@@ -154,6 +155,17 @@ class McapParser:
 
         total_msgs = sum(len(msgs) for msgs in messages_by_topic.values())
 
+        # Extract embedded URDF from /robot_description or metadata if present
+        embedded_urdf = metadata_dict.get("urdf_xml")
+        if not embedded_urdf and "/robot_description" in messages_by_topic:
+            desc_msgs = messages_by_topic["/robot_description"]
+            if desc_msgs:
+                first_payload = desc_msgs[0].get("data")
+                if isinstance(first_payload, dict):
+                    embedded_urdf = first_payload.get("data") or str(first_payload)
+                elif isinstance(first_payload, str):
+                    embedded_urdf = first_payload
+
         return DecoupledIncident(
             robot_id=metadata_dict.get("robot_id", "unknown_robot"),
             urdf_hash=metadata_dict.get("urdf_hash", "default_hash"),
@@ -166,4 +178,5 @@ class McapParser:
             messages_by_topic=messages_by_topic,
             total_messages=total_msgs,
             duration_seconds=round(duration_sec, 3),
+            embedded_urdf=embedded_urdf,
         )

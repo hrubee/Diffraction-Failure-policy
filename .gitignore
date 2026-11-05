@@ -37,3 +37,10 @@ htmlcov/
 
 # Logs
 *.log
+
+# Runtime Storage Artifacts
+storage/reports/
+storage/telemetry_drops/
+storage/usd_stages/
+storage/remediation_patches/
+storage/screenshots/

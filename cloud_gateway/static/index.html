@@ -1,600 +1,1073 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diffraction // Autonomous Physical AI Verification Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Diffraction // Physical AI Autonomous Safety & Verification Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; color: #0f172a; }
         .mono { font-family: 'JetBrains Mono', monospace; }
         .border-subtle { border: 1px solid #e2e8f0; }
-        .bg-glass-light { background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(16px); }
-        .hero-glow-light { background: radial-gradient(circle at 50% -10%, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 70%); }
-        .card-shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04); }
-        .card-shadow-lg { box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04); }
+        .bg-glass { background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(16px); }
+        .card-shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05); }
+        .card-shadow-md { box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05); }
+        .card-shadow-lg { box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.08), 0 8px 12px -6px rgba(15, 23, 42, 0.04); }
+        
+        /* Modern range slider */
         input[type="range"]::-webkit-slider-thumb {
             appearance: none;
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: #2563eb;
             cursor: pointer;
             box-shadow: 0 1px 3px rgba(37, 99, 235, 0.4);
+            border: 2px solid #ffffff;
+            transition: transform 0.1s ease;
         }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        /* Custom scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Animation utilities */
+        .fade-in { animation: fadeIn 0.2s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+<body class="min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white bg-slate-50 text-slate-900">
 
-    <!-- Top Navigation Bar -->
-    <header class="border-b border-subtle bg-glass-light sticky top-0 z-50 px-6 lg:px-12 py-3.5 flex justify-between items-center transition-colors">
-        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('overview')">
-            <div class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center font-black text-white text-base shadow-md shadow-blue-600/20">
-                Δ
+    <!-- Top B2B SaaS Enterprise Application Header -->
+    <header class="border-b border-subtle bg-glass sticky top-0 z-50 px-4 sm:px-6 lg:px-8 py-2.5 transition-all">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
+            <!-- Left: Brand Logo & Organization Context -->
+            <div class="flex items-center space-x-3 sm:space-x-5">
+                <div class="flex items-center space-x-2.5 cursor-pointer" onclick="switchView('overview')">
+                    <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 flex items-center justify-center font-black text-white text-lg shadow-sm shadow-blue-600/30">
+                        Δ
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-extrabold text-base tracking-tight text-slate-900">DIFFRACTION</span>
+                            <span class="hidden sm:inline-block text-[9px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-semibold tracking-wider uppercase mono">Physical AI Oracle</span>
+                        </div>
+                        <div class="text-[10px] text-slate-500 font-medium hidden md:block">Safety CI/CD for Autonomous Fleets</div>
+                    </div>
+                </div>
+
+                <!-- Vertical Divider -->
+                <div class="hidden lg:block h-6 w-px bg-slate-200"></div>
+
+                <!-- Organization & Fleet Selector -->
+                <div class="hidden lg:flex items-center space-x-2 bg-white px-2.5 py-1 rounded-lg border border-subtle card-shadow text-xs">
+                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    <span class="font-bold text-slate-800">Acme Logistics Corp</span>
+                    <span class="text-slate-300">/</span>
+                    <select id="fleetSelect" class="bg-transparent font-medium text-slate-600 focus:outline-none cursor-pointer pr-1" onchange="onFleetChange(this.value)">
+                        <option value="chicago">Chicago Hub • Bay 7 (Active)</option>
+                        <option value="dallas">Dallas Hub • Bay 4 (Active)</option>
+                        <option value="rotterdam">Rotterdam EuroPort • Dock A</option>
+                    </select>
+                    <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" title="Connected to Edge Sentinel"></span>
+                </div>
             </div>
-            <div>
-                <span class="font-black text-lg tracking-tight text-slate-900">DIFFRACTION</span>
-                <span class="text-[9px] px-2 py-0.5 ml-2 rounded bg-blue-50 text-blue-700 border border-blue-200 font-semibold tracking-wider uppercase mono">Physical AI Oracle</span>
+
+            <!-- Middle: Desktop Navigation Bar -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-xs font-semibold text-slate-600">
+                <button onclick="switchView('overview')" id="navOverview" class="px-3 py-2 rounded-lg text-blue-600 bg-blue-50 font-bold transition cursor-pointer flex items-center space-x-1.5">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                    <span>Overview</span>
+                </button>
+                <button onclick="switchView('console')" id="navConsole" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer flex items-center space-x-1.5">
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    <span>Audit Console</span>
+                </button>
+                <button onclick="switchView('telematics')" id="navTelematics" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer flex items-center space-x-1.5">
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    <span>Telematics & Insurance</span>
+                </button>
+                <button onclick="switchView('governor')" id="navGovernor" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer flex items-center space-x-1.5">
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <span>Edge Governor</span>
+                </button>
+                <button onclick="switchView('cicd')" id="navCicd" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer flex items-center space-x-1.5">
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                    <span>CI/CD & APIs</span>
+                </button>
+                <button onclick="switchView('pricing')" id="navPricing" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer flex items-center space-x-1.5">
+                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>Pilot SOW</span>
+                </button>
+            </nav>
+
+            <!-- Right: Status Pill, Fast Action & User Profile -->
+            <div class="flex items-center space-x-2.5 sm:space-x-3">
+                
+                <!-- Live Telemetry Status Pill -->
+                <div class="hidden sm:inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-semibold mono">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-600"></span>
+                    <span>28 AMRs Active</span>
+                </div>
+
+                <!-- Launch Incident Audit Button -->
+                <button onclick="switchView('console')" class="px-3 sm:px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold rounded-lg text-xs shadow-sm transition flex items-center space-x-1.5 cursor-pointer">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    <span class="hidden sm:inline">Launch Audit</span>
+                    <span class="sm:hidden">Audit</span>
+                </button>
+
+                <!-- User Profile Avatar -->
+                <div class="relative group">
+                    <button class="h-8 w-8 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center font-bold text-xs text-slate-700 hover:ring-2 hover:ring-blue-500 transition cursor-pointer" title="Signed in as John Doe (VP Autonomy)">
+                        JD
+                    </button>
+                </div>
+
+                <!-- Mobile Hamburger Menu Button (Min 44px touch area) -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Toggle Navigation Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+                </button>
             </div>
         </div>
 
-        <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold uppercase tracking-wider text-slate-600">
-            <button onclick="switchView('overview')" id="navOverview" class="text-blue-600 font-bold hover:text-blue-600 transition cursor-pointer">Platform</button>
-            <button onclick="switchView('console')" id="navConsole" class="hover:text-blue-600 transition cursor-pointer flex items-center space-x-2">
-                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <!-- Mobile Drawer Navigation (Collapsible) -->
+        <div id="mobileDrawer" class="hidden md:hidden pt-3 pb-2 border-t border-slate-200 mt-2 space-y-1">
+            <div class="p-2 mb-2 bg-slate-100 rounded-lg flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-700">Acme Logistics • Bay 7</span>
+                <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px] mono">ONLINE</span>
+            </div>
+            <button onclick="switchView('overview'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center space-x-2">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>Executive Overview</span>
+            </button>
+            <button onclick="switchView('console'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center space-x-2">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                 <span>Audit Console</span>
             </button>
-            <button onclick="switchView('roi')" id="navRoi" class="hover:text-blue-600 transition cursor-pointer">ROI Calculator</button>
-            <button onclick="switchView('pricing')" id="navPricing" class="hover:text-blue-600 transition cursor-pointer">Pilot Packages</button>
-            <a href="/docs" target="_blank" class="hover:text-blue-600 transition cursor-pointer">API Specs</a>
-        </nav>
-
-        <div class="flex items-center space-x-3">
-            <button onclick="switchView('console')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-xs shadow-sm transition cursor-pointer flex items-center space-x-1.5">
-                <span>Launch Interactive Audit</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            <button onclick="switchView('telematics'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center space-x-2">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <span>Telematics & Insurance</span>
+            </button>
+            <button onclick="switchView('governor'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center space-x-2">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span>Edge Safety Governor</span>
+            </button>
+            <button onclick="switchView('cicd'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center space-x-2">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>CI/CD & API Keys</span>
+            </button>
+            <button onclick="switchView('pricing'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 flex items-center space-x-2">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Pilot SOW & Pricing</span>
             </button>
         </div>
     </header>
 
-    <!-- VIEW 1: PRODUCT OVERVIEW & MARKETING LANDING PAGE -->
-    <div id="viewOverview" class="space-y-28 pb-24">
+    <!-- MAIN SAAS VIEW CONTAINER -->
+    <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-        <!-- Hero Section -->
-        <section class="hero-glow-light pt-20 pb-16 px-6 lg:px-12 max-w-6xl mx-auto text-center">
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-8">
-                <span class="h-1.5 w-1.5 rounded-full bg-blue-600 animate-ping"></span>
-                <span class="tracking-wide">Autonomous Robot Disengagement Remediation & Safety CI/CD</span>
-            </div>
-
-            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 tracking-tight leading-[1.08] mb-6">
-                The Safety Verification Engine for <span class="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 bg-clip-text text-transparent">Physical AI</span>
-            </h1>
-
-            <p class="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
-                When an autonomous mobile robot or industrial vehicle disengages in the field, Diffraction automatically captures the incident, reconstructs the physical 3D scene, subjects the navigation policy to 10,000+ adversarial stress permutations, and certifies firmware safety before OTA deployment.
-            </p>
-
-            <div class="flex flex-wrap justify-center gap-4">
-                <button onclick="switchView('console')" class="px-7 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs tracking-wide shadow-md shadow-blue-600/20 transition cursor-pointer flex items-center space-x-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                    <span>Launch Live Interactive Audit</span>
-                </button>
-                <button onclick="switchView('pricing')" class="px-7 py-3.5 bg-white hover:bg-slate-50 text-slate-700 font-semibold rounded-xl text-xs border border-subtle card-shadow transition cursor-pointer">
-                    View 30-Day Pilot Statement of Work
-                </button>
-            </div>
-
-            <!-- Industry Standards Compliance Strip -->
-            <div class="mt-20 pt-8 border-t border-subtle flex flex-wrap justify-center items-center gap-8 text-[11px] font-semibold text-slate-500 uppercase tracking-widest mono">
-                <span>ANSI/RIA R15.08 Part 1 & 2</span>
-                <span>•</span>
-                <span>ISO 3691-4 Stopping Distance Compliance</span>
-                <span>•</span>
-                <span>Zero-Overhead Edge Telemetry</span>
-                <span>•</span>
-                <span>Automated Pre-Deployment Regression</span>
-            </div>
-        </section>
-
-        <!-- Problem vs Solution Breakdown -->
-        <section class="max-w-6xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="p-8 rounded-2xl bg-white border border-red-200 card-shadow space-y-4">
-                <div class="flex items-center space-x-2 text-xs font-bold text-red-600 uppercase tracking-wider mono">
-                    <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    <span>The Field Disengagement Tax</span>
-                </div>
-                <h3 class="text-xl font-bold text-slate-900 tracking-tight">The Reality Gap & Unplanned Downtime</h3>
-                <p class="text-xs text-slate-600 leading-relaxed">
-                    Industrial robots disengage on unpredictable real-world corner cases: sudden specular sunlight glare at dock doors, wet floor micro-slips, or intermittent latency spikes. In modern warehouse operations, unplanned system downtime costs up to <strong class="text-slate-900">$50,000 per hour</strong>, while senior engineering teams spend weeks ($16,000+ in loaded salary) manually trying to reproduce each field incident.
-                </p>
-                <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-[11px] text-red-800 mono flex justify-between font-semibold">
-                    <span>Average Manual Reproduction: 2 to 3 Weeks</span>
-                    <span>Cost: $16k+ / Incident</span>
-                </div>
-            </div>
-
-            <div class="p-8 rounded-2xl bg-white border border-blue-200 card-shadow space-y-4">
-                <div class="flex items-center space-x-2 text-xs font-bold text-blue-600 uppercase tracking-wider mono">
-                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                    <span>The Diffraction Solution</span>
-                </div>
-                <h3 class="text-xl font-bold text-slate-900 tracking-tight">Automated Closed-Loop Verification</h3>
-                <p class="text-xs text-slate-600 leading-relaxed">
-                    Diffraction's in-RAM sentinel records only the pre-incident telemetry window without wearing out onboard storage. The platform reconstructs the spatial digital twin, generates thousands of adversarial physical stress variations, evaluates dynamic braking envelopes in parallel, and delivers a certified pass/fail report before updates reach the fleet.
-                </p>
-                <div class="p-4 rounded-xl bg-blue-50 border border-blue-200 text-[11px] text-blue-800 mono flex justify-between font-semibold">
-                    <span>Automated Audit Turnaround: < 30 Minutes</span>
-                    <span>Cost: Pay-Per-Audit Efficiency</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4-Stage Verification Architecture -->
-        <section class="max-w-6xl mx-auto px-6 lg:px-12">
-            <div class="text-center mb-12">
-                <div class="text-xs font-bold uppercase tracking-wider text-blue-600 mono mb-1">Architecture</div>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">The 4-Stage Autonomous Verification Pipeline</h2>
-                <p class="text-slate-600 text-xs mt-2 max-w-xl mx-auto">From edge disengagement to certified regression audit without human intervention.</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Step 1 -->
-                <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-3">
-                    <div class="h-10 w-10 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        <!-- ========================================== -->
+        <!-- VIEW 1: EXECUTIVE OPERATIONS OVERVIEW      -->
+        <!-- ========================================== -->
+        <div id="viewOverview" class="space-y-8 fade-in">
+            
+            <!-- Fleet Status Alert Bar -->
+            <div class="p-4 rounded-2xl bg-gradient-to-r from-blue-900 to-slate-900 text-white card-shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="flex items-center space-x-3">
+                    <div class="h-10 w-10 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400 shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                     </div>
-                    <div class="text-[10px] text-blue-600 font-bold mono">STAGE 01</div>
-                    <h4 class="text-sm font-bold text-slate-900">Edge Sentinel</h4>
-                    <p class="text-xs text-slate-600 leading-relaxed">In-memory rolling buffer monitors robot kinematics in real time. Automatically captures the 15 seconds preceding any E-stop or tracking error spike with zero disk wear.</p>
-                </div>
-
-                <!-- Step 2 -->
-                <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-3">
-                    <div class="h-10 w-10 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                    </div>
-                    <div class="text-[10px] text-indigo-600 font-bold mono">STAGE 02</div>
-                    <h4 class="text-sm font-bold text-slate-900">Spatial Twin Assembly</h4>
-                    <p class="text-xs text-slate-600 leading-relaxed">Transforms multimodal telemetry, point clouds, and kinematics into calibrated 3D spatial stages, anchoring static obstacles and robot models at exact failure poses.</p>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-3">
-                    <div class="h-10 w-10 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-600">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    </div>
-                    <div class="text-[10px] text-purple-600 font-bold mono">STAGE 03</div>
-                    <h4 class="text-sm font-bold text-slate-900">Adversarial Stress Engine</h4>
-                    <p class="text-xs text-slate-600 leading-relaxed">Generates thousands of counterfactual stress tests sweeping surface friction (&mu; 0.12–1.15), blinding specular dock glare (up to 95k lux), and sensor latencies.</p>
-                </div>
-
-                <!-- Step 4 -->
-                <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-3">
-                    <div class="h-10 w-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <div class="text-[10px] text-emerald-600 font-bold mono">STAGE 04</div>
-                    <h4 class="text-sm font-bold text-slate-900">Certification Oracle</h4>
-                    <p class="text-xs text-slate-600 leading-relaxed">Executes parallel validation rollouts, calculates the Safety Compliance Score, isolates safe operating boundaries, and outputs audit-ready compliance documentation.</p>
-                </div>
-            </div>
-        </section>
-
-    </div>
-
-    <!-- VIEW 2: LIVE SIMULATION CONSOLE (Interactive Tool) -->
-    <div id="viewConsole" class="hidden flex-1 px-6 lg:px-12 py-8 max-w-7xl mx-auto w-full grid grid-cols-12 gap-8">
-
-        <!-- Left Column: Controls & Ingestion -->
-        <div class="col-span-12 lg:col-span-5 space-y-6">
-
-            <!-- MCAP Telemetry Uploader Card -->
-            <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow">
-                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center justify-between">
-                    <span>1. Telemetry Ingestion</span>
-                    <span class="text-xs text-blue-600 mono font-semibold">.mcap packet</span>
-                </h2>
-                
-                <div id="dropZone" class="border-2 border-dashed border-slate-300 hover:border-blue-500 transition-all duration-150 rounded-xl p-6 text-center cursor-pointer bg-slate-50/60 relative group">
-                    <div id="dropZonePrompt" class="transition-transform group-hover:scale-[1.01]">
-                        <svg class="w-8 h-8 mx-auto text-slate-400 group-hover:text-blue-500 mb-2.5 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                        </svg>
-                        <p class="text-xs font-semibold text-slate-700">Drag & Drop MCAP packet here</p>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Or click to browse incident log (.mcap)</p>
-                    </div>
-
-                    <div id="dropZoneLoading" class="hidden py-2">
-                        <svg class="animate-spin w-7 h-7 mx-auto text-blue-600 mb-2" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                        </svg>
-                        <p id="uploadStatusText" class="text-xs font-semibold text-blue-600 mono">Uploading MCAP packet...</p>
-                    </div>
-
-                    <div id="dropZoneSuccess" class="hidden py-1">
-                        <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 mb-1.5">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                        </div>
-                        <p id="uploadedFileName" class="text-xs font-bold text-slate-900 mono truncate max-w-[280px] mx-auto"></p>
-                        <div id="uploadedFileDetails" class="text-[11px] text-slate-500 mt-1.5 flex flex-wrap justify-center gap-1.5 mono"></div>
-                        <p class="text-[10px] text-blue-600 hover:text-blue-700 font-medium mt-2">Click or drop to replace packet</p>
-                    </div>
-
-                    <input type="file" id="fileInput" class="hidden" accept=".mcap">
-                </div>
-
-                <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
-                    <button onclick="triggerSimulatedIncident()" class="text-blue-600 hover:text-blue-700 font-semibold mono flex items-center space-x-1 cursor-pointer">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        <span>Generate Sample Dock Incident</span>
-                    </button>
-                    <span class="mono text-[10px] text-slate-400">Standard ROS 2</span>
-                </div>
-            </div>
-
-            <!-- Adversarial Stress Parameters -->
-            <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-5">
-                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center justify-between">
-                    <span>2. Adversarial Stress Matrix</span>
-                    <span class="text-xs text-blue-600 mono font-semibold">Parametric Sweep</span>
-                </h2>
-
-                <div>
-                    <div class="flex justify-between text-xs font-medium text-slate-700 mb-1">
-                        <span>Adversarial Scenario Volume</span>
-                        <span id="scenCountVal" class="mono text-blue-600 font-bold">150 rollouts</span>
-                    </div>
-                    <input type="range" id="scenCount" min="20" max="300" value="150" step="10" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600" oninput="updateParam('scenCountVal', this.value + ' rollouts')">
-                </div>
-
-                <div>
-                    <div class="flex justify-between text-xs font-medium text-slate-700 mb-1">
-                        <span>Surface Friction Envelope (&mu;)</span>
-                        <span class="mono text-blue-600 font-bold">0.12 - 1.15</span>
-                    </div>
-                    <p class="text-[11px] text-slate-500">Sweeps wet polished epoxy, condensation, wet dock plates, and dry rough concrete.</p>
-                </div>
-
-                <div>
-                    <div class="flex justify-between text-xs font-medium text-slate-700 mb-1">
-                        <span>Specular Dock Glare Range</span>
-                        <span class="mono text-blue-600 font-bold">Up to 95,000 Lux</span>
-                    </div>
-                    <p class="text-[11px] text-slate-500">Simulates direct midday sunlight blinding sensor optical paths at open facility doors.</p>
-                </div>
-
-                <button id="runPipelineBtn" onclick="runCompleteAudit()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 font-bold text-white rounded-xl shadow-md shadow-blue-600/20 text-xs tracking-wider uppercase transition cursor-pointer flex items-center justify-center space-x-2">
-                    <span id="btnSpinner" class="hidden animate-spin h-3.5 w-3.5 border-2 border-white border-t-transparent rounded-full"></span>
-                    <span id="btnText">Execute Complete Verification Audit</span>
-                </button>
-            </div>
-
-        </div>
-
-        <!-- Right Column: Visualization & Reports -->
-        <div class="col-span-12 lg:col-span-7 space-y-6">
-
-            <!-- Real-time Status & Execution Metrics -->
-            <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow">
-                <div class="flex justify-between items-center mb-6">
                     <div>
-                        <h2 class="text-base font-bold text-slate-900 tracking-tight">Active Verification Intelligence</h2>
-                        <p id="incidentSubtitle" class="text-xs text-slate-500 mono mt-0.5">Awaiting incident telemetry stream...</p>
-                    </div>
-                    <span id="statusBadge" class="px-2.5 py-0.5 text-[11px] font-bold rounded-full border border-slate-200 bg-slate-100 text-slate-600 mono">IDLE</span>
-                </div>
-
-                <!-- Metrics Grid -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
-                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mono">Safety Compliance</div>
-                        <div id="metricScore" class="text-2xl font-black text-slate-400 mt-1">--</div>
-                    </div>
-                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
-                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mono">Stress Rollouts</div>
-                        <div id="metricRollouts" class="text-2xl font-black text-slate-400 mt-1">--</div>
-                    </div>
-                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
-                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mono">Safe Min Friction</div>
-                        <div id="metricFriction" class="text-2xl font-black text-slate-400 mt-1">--</div>
-                    </div>
-                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
-                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mono">SysID Ground-Truth μ</div>
-                        <div id="metricSysId" class="text-2xl font-black text-blue-600 mt-1">--</div>
-                    </div>
-                </div>
-
-                <!-- Trajectory Chart -->
-                <div class="relative h-64 w-full bg-slate-50 rounded-xl p-4 border border-slate-200 mb-6">
-                    <canvas id="trajectoryChart"></canvas>
-                </div>
-
-                <!-- Regulatory Standards Compliance Matrix -->
-                <div id="regulatorySection" class="p-5 rounded-xl bg-white border border-slate-200 hidden">
-                    <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mono flex items-center space-x-2">
-                            <span class="h-2 w-2 rounded-full bg-blue-600"></span>
-                            <span>Regulatory Standards Compliance (ISO 3691-4 & ANSI/RIA R15.08)</span>
-                        </h4>
-                        <span class="text-[10px] text-slate-400 mono">DUE DILIGENCE AUDIT</span>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="border-b border-slate-200 text-[10px] text-slate-500 uppercase mono bg-slate-50/70">
-                                    <th class="py-2 px-3">Standard & Clause</th>
-                                    <th class="py-2 px-3">Safety Requirement & Margin</th>
-                                    <th class="py-2 px-3 text-center">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="regulatoryTableBody" class="divide-y divide-slate-100">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Downloadable Artifacts & Remediation -->
-            <div id="artifactsCard" class="p-6 rounded-2xl bg-white border border-subtle card-shadow hidden space-y-6">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center space-x-2">
-                        <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-                        <span>Exported Certification Artifacts & Risk Underwriting</span>
-                    </h3>
-                    <span class="text-[10px] text-emerald-600 font-semibold mono">AUDIT VERIFIED</span>
-                </div>
-
-                <!-- Primary Artifacts Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <a id="htmlReportLink" href="#" target="_blank" class="p-3.5 rounded-xl bg-blue-50/80 hover:bg-blue-100/70 border border-blue-200 transition flex items-center space-x-3 text-blue-700 cursor-pointer">
-                        <div class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="text-xs font-bold text-slate-900 truncate">Executive Audit Report</div>
-                            <div class="text-[10px] text-blue-600 mono font-semibold">ISO 3691-4 Certificate</div>
-                        </div>
-                    </a>
-
-                    <a id="siteRiskLink" href="#" target="_blank" class="p-3.5 rounded-xl bg-amber-50/80 hover:bg-amber-100/70 border border-amber-200 transition flex items-center space-x-3 text-amber-700 cursor-pointer">
-                        <div class="h-8 w-8 rounded-lg bg-amber-600 flex items-center justify-center text-white flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="text-xs font-bold text-slate-900 truncate">ANSI R15.08-2 Site Risk</div>
-                            <div class="text-[10px] text-amber-600 mono font-semibold">Insurance Telematics</div>
-                        </div>
-                    </a>
-
-                    <a id="usdStageLink" href="#" download class="p-3.5 rounded-xl bg-purple-50/80 hover:bg-purple-100/70 border border-purple-200 transition flex items-center space-x-3 text-purple-700 cursor-pointer">
-                        <div class="h-8 w-8 rounded-lg bg-purple-600 flex items-center justify-center text-white flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="text-xs font-bold text-slate-900 truncate">3D OpenUSD Stage</div>
-                            <div class="text-[10px] text-purple-600 mono font-semibold">Digital Twin Package</div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Insurance Underwriting Telematics Strip -->
-                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-3">
-                    <div class="flex items-center space-x-3">
-                        <span id="fsrRatingBadge" class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-black text-xs mono tracking-wider">FSR-AAA</span>
-                        <div>
-                            <div class="text-xs font-bold text-slate-900" id="insuranceTierLabel">Tier 1 Qualified (Maximum 30% Premium Reduction)</div>
-                            <div class="text-[11px] text-slate-500">Commercial Carrier Underwriting Score: <span id="underwritingScoreLabel" class="mono font-semibold text-slate-700">92%</span></div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-[10px] uppercase font-bold text-emerald-600 mono">Est. Underwriting Savings</div>
-                        <div class="text-sm font-extrabold text-slate-900" id="premiumSavingsLabel">$60,000 / year</div>
-                    </div>
-                </div>
-
-                <!-- 1-Click Policy Remediation Section -->
-                <div class="border border-slate-200 rounded-xl p-4 bg-white">
-                    <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
                         <div class="flex items-center space-x-2">
-                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mono flex items-center space-x-1.5">
-                                <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                                <span>1-Click Policy & Firmware Remediation</span>
-                            </h4>
-                            <span class="text-[9px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-semibold mono">ZERO RETRAINING</span>
+                            <h2 class="text-sm font-bold tracking-tight">Active Facility: Chicago Fulfillment Bay 7</h2>
+                            <span class="px-2 py-0.5 rounded bg-blue-500/30 text-blue-300 text-[10px] font-bold mono">FSR-AAA RATED</span>
                         </div>
-                        <div class="flex space-x-1.5">
-                            <button onclick="switchRemediationTab('speed')" id="btnTabSpeed" class="px-2.5 py-1 rounded text-[11px] font-semibold bg-blue-600 text-white mono cursor-pointer">Nav2 Speed Mask</button>
-                            <button onclick="switchRemediationTab('controller')" id="btnTabCtrl" class="px-2.5 py-1 rounded text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 mono cursor-pointer">Controller Patch</button>
-                            <button onclick="switchRemediationTab('rl')" id="btnTabRl" class="px-2.5 py-1 rounded text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 mono cursor-pointer">Isaac Lab Gym</button>
+                        <p class="text-xs text-slate-300 mt-0.5">Automated safety sentinel active across 28 tuggers & pallet lifters. Next continuous regression cycle in 18 minutes.</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 w-full md:w-auto justify-end">
+                    <button onclick="switchView('console')" class="w-full md:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition cursor-pointer shadow-sm text-center">
+                        Upload Incident Log (.mcap)
+                    </button>
+                </div>
+            </div>
+
+            <!-- SaaS Key KPI Grid -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <!-- KPI 1 -->
+                <div class="p-5 rounded-2xl bg-white border border-subtle card-shadow hover:border-slate-300 transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mono">Mean Time Btw Interventions</span>
+                        <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">+18.4%</span>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">142.8 <span class="text-xs font-semibold text-slate-400">hours</span></div>
+                    <div class="text-[11px] text-slate-500 mt-2 flex items-center space-x-1">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                        <span>Zero human stops in last 48h</span>
+                    </div>
+                </div>
+
+                <!-- KPI 2 -->
+                <div class="p-5 rounded-2xl bg-white border border-subtle card-shadow hover:border-slate-300 transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mono">Fleet Safety Rating</span>
+                        <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">Tier 1</span>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-black text-emerald-600 tracking-tight">FSR-AAA</div>
+                    <div class="text-[11px] text-slate-500 mt-2 flex items-center space-x-1">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                        <span>ANSI/RIA R15.08 Part 2 Certified</span>
+                    </div>
+                </div>
+
+                <!-- KPI 3 -->
+                <div class="p-5 rounded-2xl bg-white border border-subtle card-shadow hover:border-slate-300 transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mono">Adversarial Permutations</span>
+                        <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">Real-time</span>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">25,400+</div>
+                    <div class="text-[11px] text-slate-500 mt-2 flex items-center space-x-1">
+                        <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+                        <span>Friction & Glare Swept in Sim</span>
+                    </div>
+                </div>
+
+                <!-- KPI 4 -->
+                <div class="p-5 rounded-2xl bg-white border border-subtle card-shadow hover:border-slate-300 transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mono">Annual Insurance Savings</span>
+                        <span class="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded">Active</span>
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-black text-indigo-600 tracking-tight">$60,000 <span class="text-xs font-semibold text-slate-400">/ yr</span></div>
+                    <div class="text-[11px] text-slate-500 mt-2 flex items-center space-x-1">
+                        <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
+                        <span>Underwriting rebate eligible</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Downtime Cost & ROI Calculator (Interactive SaaS Component) -->
+            <div class="p-6 sm:p-8 rounded-2xl bg-white border border-subtle card-shadow-md">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 border-b border-slate-100 pb-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 tracking-tight">Fleet Downtime & ROI Exposure Model</h3>
+                        <p class="text-xs text-slate-500">Benchmark your site-specific loss from unhandled field stops against automated verification.</p>
+                    </div>
+                    <span class="text-xs font-bold text-blue-600 mono bg-blue-50 px-3 py-1 rounded-lg border border-blue-200">Interactive Model</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7 space-y-5">
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1.5">
+                                <span>Commercial Fleet Size</span>
+                                <span id="ovFleetVal" class="mono text-blue-600 font-bold">50 AMRs</span>
+                            </div>
+                            <input type="range" id="ovFleetInput" min="5" max="300" value="50" step="5" class="w-full h-2 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="calculateOverviewRoi()">
+                            <div class="flex justify-between text-[10px] text-slate-400 mt-1 mono"><span>5 units</span><span>150 units</span><span>300 units</span></div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1.5">
+                                <span>Disengagements per Robot / Month</span>
+                                <span id="ovDisengageVal" class="mono text-blue-600 font-bold">4 incidents</span>
+                            </div>
+                            <input type="range" id="ovDisengageInput" min="1" max="20" value="4" step="1" class="w-full h-2 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="calculateOverviewRoi()">
+                            <div class="flex justify-between text-[10px] text-slate-400 mt-1 mono"><span>1 stop</span><span>10 stops</span><span>20 stops</span></div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1.5">
+                                <span>Facility Stoppage Cost per Hour</span>
+                                <span id="ovCostVal" class="mono text-blue-600 font-bold">$50,000 / hr</span>
+                            </div>
+                            <input type="range" id="ovCostInput" min="10000" max="200000" value="50000" step="5000" class="w-full h-2 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="calculateOverviewRoi()">
+                            <div class="flex justify-between text-[10px] text-slate-400 mt-1 mono"><span>$10,000/hr</span><span>$100,000/hr</span><span>$200,000/hr</span></div>
                         </div>
                     </div>
 
-                    <!-- Code Display & Action Bar -->
-                    <div class="relative bg-slate-900 rounded-lg p-3 text-slate-200 font-mono text-[11px] overflow-x-auto max-h-56">
-                        <pre id="remediationCodeBlock" class="whitespace-pre"># Loading generated remediation patch...</pre>
-                        <div class="absolute top-2 right-2 flex space-x-2">
-                            <button onclick="copyRemediationCode()" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px] mono border border-slate-700 cursor-pointer">Copy</button>
-                            <a id="downloadPatchBtn" href="#" download class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] mono cursor-pointer">Download</a>
+                    <div class="lg:col-span-5 p-6 rounded-2xl bg-slate-900 text-white space-y-6 text-center card-shadow-md">
+                        <div>
+                            <div class="text-[10px] uppercase tracking-wider text-rose-400 font-bold mono">Current Annual Downtime Exposure</div>
+                            <div id="ovAnnualDowntimeCost" class="text-3xl font-black text-white mt-1">$600,000</div>
+                            <p class="text-[10px] text-slate-400 mt-1">Based on benchmark 0.25h facility stall per unhandled stop</p>
+                        </div>
+
+                        <div class="pt-5 border-t border-slate-800">
+                            <div class="text-[10px] uppercase tracking-wider text-emerald-400 font-bold mono">Net Annual Capital Saved with Diffraction</div>
+                            <div id="ovNetSavings" class="text-3xl sm:text-4xl font-black text-emerald-400 mt-1">$480,000</div>
+                            <p class="text-[10px] text-emerald-400/90 mt-1 font-medium">80% elimination of corner-case field regressions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Disengagement Incidents Feed (SaaS Activity Stream) -->
+            <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-sm font-bold text-slate-900 tracking-tight flex items-center space-x-2">
+                        <span class="h-2 w-2 rounded-full bg-blue-600"></span>
+                        <span>Recent Disengagement Incidents</span>
+                    </h3>
+                    <span class="text-[11px] text-slate-400 mono">Auto-Captured by Edge Sentinel</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead>
+                            <tr class="border-b border-slate-200 text-[10px] text-slate-500 uppercase tracking-wider mono bg-slate-50/70">
+                                <th class="py-2.5 px-3">Robot ID</th>
+                                <th class="py-2.5 px-3">Location & Zone</th>
+                                <th class="py-2.5 px-3">Disengagement Trigger</th>
+                                <th class="py-2.5 px-3">SysID Friction</th>
+                                <th class="py-2.5 px-3 text-center">Audit Status</th>
+                                <th class="py-2.5 px-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50/50">
+                                <td class="py-3 px-3 font-bold text-slate-900 mono">amr_tugger_042</td>
+                                <td class="py-3 px-3 text-slate-600">Chicago Hub • Bay 7 Dock</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 mono text-[11px]">tracking_error_spike</span></td>
+                                <td class="py-3 px-3 mono text-slate-700">μ = 0.35 (Wet Floor)</td>
+                                <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">VERIFIED</span></td>
+                                <td class="py-3 px-3 text-right">
+                                    <button onclick="loadSampleIncident('sample1')" class="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs mono cursor-pointer">Open Audit</button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/50">
+                                <td class="py-3 px-3 font-bold text-slate-900 mono">amr_reach_019</td>
+                                <td class="py-3 px-3 text-slate-600">Dallas Hub • Bay 4 Door</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 mono text-[11px]">emergency_stop_command</span></td>
+                                <td class="py-3 px-3 mono text-slate-700">88,500 Lux (Glare Blind)</td>
+                                <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">VERIFIED</span></td>
+                                <td class="py-3 px-3 text-right">
+                                    <button onclick="loadSampleIncident('sample2')" class="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs mono cursor-pointer">Open Audit</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 4-Stage Autonomous Pipeline Summary -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="p-5 rounded-2xl bg-white border border-subtle card-shadow">
+                    <div class="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs mono mb-2">01</div>
+                    <div class="text-xs font-bold text-slate-900">RAM Sentinel Capture</div>
+                    <p class="text-[11px] text-slate-500 mt-1">Zero-disk-wear ring buffer preserves 15s pre-incident MCAP.</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-white border border-subtle card-shadow">
+                    <div class="h-8 w-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs mono mb-2">02</div>
+                    <div class="text-xs font-bold text-slate-900">Spatial USD Twin</div>
+                    <p class="text-[11px] text-slate-500 mt-1">Extracts ground-truth friction & constructs 3D failure stage.</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-white border border-subtle card-shadow">
+                    <div class="h-8 w-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-xs mono mb-2">03</div>
+                    <div class="text-xs font-bold text-slate-900">Adversarial Stress Sim</div>
+                    <p class="text-[11px] text-slate-500 mt-1">Sweeps &mu; 0.12–1.15, dock glare, and latency permutations.</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-white border border-subtle card-shadow">
+                    <div class="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xs mono mb-2">04</div>
+                    <div class="text-xs font-bold text-slate-900">ISO 3691-4 Certificate</div>
+                    <p class="text-[11px] text-slate-500 mt-1">Exports 1-click Nav2 patch, underwriting rating, and audit report.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 2: INCIDENT AUDIT CONSOLE             -->
+        <!-- ========================================== -->
+        <div id="viewConsole" class="hidden space-y-6 fade-in">
+            
+            <!-- Console Header -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white p-4 rounded-2xl border border-subtle card-shadow">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 tracking-tight flex items-center space-x-2">
+                        <span>Physical Incident Audit & Verification Console</span>
+                        <span id="consoleStatusPill" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 mono">STANDBY</span>
+                    </h2>
+                    <p id="incidentSubtitle" class="text-xs text-slate-500 mono mt-0.5">Drop an incident .mcap container or load a sample incident to begin physical audit.</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="loadSampleIncident('sample1')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg mono transition cursor-pointer">Sample: Bay 7 Slip</button>
+                    <button onclick="loadSampleIncident('sample2')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg mono transition cursor-pointer">Sample: Glare E-stop</button>
+                </div>
+            </div>
+
+            <!-- Two-Column Audit Grid -->
+            <div class="grid grid-cols-12 gap-6">
+
+                <!-- Left Column: Ingestion & Simulation Controls -->
+                <div class="col-span-12 lg:col-span-5 space-y-6">
+
+                    <!-- MCAP Dropzone Card -->
+                    <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mono">1. Telemetry Ingestion (.mcap)</h3>
+                            <span class="text-[10px] text-blue-600 font-semibold mono">ROS 2 Humble / Iron</span>
+                        </div>
+
+                        <!-- Dropzone -->
+                        <div id="dropZone" class="border-2 border-dashed border-slate-300 hover:border-blue-500 transition-all rounded-xl p-6 text-center cursor-pointer bg-slate-50/70 relative group">
+                            <div id="dropZonePrompt" class="transition-transform group-hover:scale-[1.01]">
+                                <svg class="w-8 h-8 mx-auto text-slate-400 group-hover:text-blue-500 mb-2 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                                <p class="text-xs font-bold text-slate-800">Drag & Drop MCAP packet here</p>
+                                <p class="text-[11px] text-slate-500 mt-1">Or click to select from local storage</p>
+                            </div>
+
+                            <div id="dropZoneLoading" class="hidden py-3">
+                                <svg class="animate-spin w-7 h-7 mx-auto text-blue-600 mb-2" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                </svg>
+                                <p id="uploadStatusText" class="text-xs font-semibold text-blue-600 mono">Extracting physical kinematics...</p>
+                            </div>
+
+                            <div id="dropZoneSuccess" class="hidden py-1">
+                                <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 mb-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                </div>
+                                <p id="uploadedFileName" class="text-xs font-bold text-slate-900 mono truncate max-w-[280px] mx-auto"></p>
+                                <div id="uploadedFileDetails" class="text-[11px] text-slate-500 mt-1.5 flex flex-wrap justify-center gap-1.5 mono"></div>
+                                <p class="text-[10px] text-blue-600 hover:text-blue-700 font-semibold mt-2">Click or drop to replace packet</p>
+                            </div>
+
+                            <input type="file" id="fileInput" class="hidden" accept=".mcap">
                         </div>
                     </div>
 
-                    <p id="remediationInstructions" class="text-[11px] text-slate-600 mt-2.5 font-medium leading-relaxed"></p>
-                </div>
+                    <!-- Adversarial Simulation Matrix Card -->
+                    <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-5">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mono">2. Adversarial Stress Matrix</h3>
+                            <span class="text-[10px] text-blue-600 font-semibold mono">Parametric Space</span>
+                        </div>
 
-                <div>
-                    <h4 class="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 mono">Root-Cause Engineering Directives:</h4>
-                    <ul id="recommendationsList" class="text-xs text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed"></ul>
-                </div>
-            </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                                <span>Parallel Scenario Rollouts</span>
+                                <span id="scenCountVal" class="mono text-blue-600 font-bold">150 rollouts</span>
+                            </div>
+                            <input type="range" id="scenCount" min="20" max="300" value="150" step="10" class="w-full h-2 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="updateParam('scenCountVal', this.value + ' rollouts')">
+                            <div class="flex justify-between text-[10px] text-slate-400 mt-0.5 mono"><span>Fast (20)</span><span>Balanced (150)</span><span>Exhaustive (300)</span></div>
+                        </div>
 
-        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+                            <div class="flex justify-between text-slate-700 font-medium">
+                                <span>Surface Friction Swept:</span>
+                                <span class="mono font-bold text-blue-700">&mu; = 0.12 to 1.15</span>
+                            </div>
+                            <div class="flex justify-between text-slate-700 font-medium">
+                                <span>Specular Dock Glare:</span>
+                                <span class="mono font-bold text-amber-700">Up to 95,000 Lux</span>
+                            </div>
+                            <div class="flex justify-between text-slate-700 font-medium">
+                                <span>Sensor Latency Jitter:</span>
+                                <span class="mono font-bold text-slate-700">&plusmn; 45 ms</span>
+                            </div>
+                        </div>
 
-    </div>
-
-    <!-- VIEW 3: DOWNTIME ROI CALCULATOR -->
-    <div id="viewRoi" class="hidden max-w-4xl mx-auto px-6 py-16 w-full space-y-12">
-        <div class="text-center space-y-2">
-            <div class="text-xs font-bold uppercase tracking-wider text-blue-600 mono">Economic Impact</div>
-            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Robot Fleet Downtime ROI Calculator</h2>
-            <p class="text-slate-600 text-xs max-w-xl mx-auto">Quantify the annual capital exposure of unhandled field disengagements against the net ROI of automated simulation audits.</p>
-        </div>
-
-        <div class="p-8 rounded-2xl bg-white border border-subtle card-shadow-lg grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div class="space-y-6">
-                <div>
-                    <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
-                        <span>Commercial Fleet Size</span>
-                        <span id="fleetVal" class="mono text-blue-600 font-bold">50 AMRs</span>
+                        <!-- Action Button -->
+                        <button id="runPipelineBtn" onclick="runCompleteAudit()" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-bold rounded-xl shadow-md shadow-blue-600/25 text-xs tracking-wider uppercase transition cursor-pointer flex items-center justify-center space-x-2">
+                            <span id="btnSpinner" class="hidden animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                            <span id="btnText">Execute Complete Verification Audit</span>
+                        </button>
                     </div>
-                    <input type="range" id="fleetInput" min="5" max="300" value="50" step="5" class="w-full h-1.5 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="calculateRoi()">
+
                 </div>
 
-                <div>
-                    <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
-                        <span>Disengagements per Robot / Month</span>
-                        <span id="disengageVal" class="mono text-blue-600 font-bold">4 incidents</span>
+                <!-- Right Column: Verification Results & Artifacts -->
+                <div class="col-span-12 lg:col-span-7 space-y-6">
+
+                    <!-- Metrics Grid Card -->
+                    <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-900 tracking-tight">Active Audit Intelligence</h3>
+                                <div id="auditHeaderSummary" class="text-xs text-slate-500 mono mt-0.5">Awaiting telemetry packet...</div>
+                            </div>
+                            <span id="statusBadge" class="px-3 py-1 text-xs font-bold rounded-full border border-slate-200 bg-slate-100 text-slate-600 mono">STANDBY</span>
+                        </div>
+
+                        <!-- 4 Core Audit KPI Tiles -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                                <div class="text-[9px] font-bold text-slate-500 uppercase tracking-wider mono">Safety Score</div>
+                                <div id="metricScore" class="text-2xl font-black text-slate-400 mt-1">--</div>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                                <div class="text-[9px] font-bold text-slate-500 uppercase tracking-wider mono">Sim Rollouts</div>
+                                <div id="metricRollouts" class="text-2xl font-black text-slate-400 mt-1">--</div>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                                <div class="text-[9px] font-bold text-slate-500 uppercase tracking-wider mono">Safe Min Friction</div>
+                                <div id="metricFriction" class="text-2xl font-black text-slate-400 mt-1">--</div>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                                <div class="text-[9px] font-bold text-slate-500 uppercase tracking-wider mono">SysID Ground-Truth &mu;</div>
+                                <div id="metricSysId" class="text-2xl font-black text-blue-600 mt-1">--</div>
+                            </div>
+                        </div>
+
+                        <!-- Odometry Trajectory Scatter Plot -->
+                        <div class="relative h-64 sm:h-72 w-full bg-slate-50 rounded-xl p-3 border border-slate-200">
+                            <canvas id="trajectoryChart"></canvas>
+                        </div>
+
+                        <!-- Regulatory Standards Compliance Matrix -->
+                        <div id="regulatorySection" class="p-4 rounded-xl bg-white border border-slate-200 hidden space-y-3">
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mono flex items-center space-x-2">
+                                    <span class="h-2 w-2 rounded-full bg-blue-600"></span>
+                                    <span>Regulatory Standards Compliance (ISO 3691-4 & ANSI/RIA R15.08)</span>
+                                </h4>
+                                <span class="text-[10px] text-slate-400 mono">DUE DILIGENCE AUDIT</span>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-xs">
+                                    <thead>
+                                        <tr class="border-b border-slate-200 text-[10px] text-slate-500 uppercase mono bg-slate-50/70">
+                                            <th class="py-2 px-3">Standard & Clause</th>
+                                            <th class="py-2 px-3">Safety Requirement & Margin</th>
+                                            <th class="py-2 px-3 text-center">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="regulatoryTableBody" class="divide-y divide-slate-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
-                    <input type="range" id="disengageInput" min="1" max="20" value="4" step="1" class="w-full h-1.5 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="calculateRoi()">
-                </div>
 
-                <div>
-                    <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
-                        <span>Hourly Cost of Facility Stoppage</span>
-                        <span id="costVal" class="mono text-blue-600 font-bold">$50,000 / hr</span>
+                    <!-- Exported Certification Artifacts & 1-Click Remediation Card -->
+                    <div id="artifactsCard" class="p-6 rounded-2xl bg-white border border-subtle card-shadow hidden space-y-6">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center space-x-2 mono">
+                                <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                                <span>Exported Certification Artifacts & Risk Underwriting</span>
+                            </h3>
+                            <span class="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-bold mono">AUDIT CERTIFIED</span>
+                        </div>
+
+                        <!-- Artifacts Links Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <a id="htmlReportLink" href="#" target="_blank" class="p-3.5 rounded-xl bg-blue-50/80 hover:bg-blue-100 border border-blue-200 transition flex items-center space-x-3 text-blue-700 cursor-pointer">
+                                <div class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-xs font-bold text-slate-900 truncate">Executive Audit Report</div>
+                                    <div class="text-[10px] text-blue-600 mono font-semibold">ISO 3691-4 Certificate</div>
+                                </div>
+                            </a>
+
+                            <a id="siteRiskLink" href="#" target="_blank" class="p-3.5 rounded-xl bg-amber-50/80 hover:bg-amber-100 border border-amber-200 transition flex items-center space-x-3 text-amber-700 cursor-pointer">
+                                <div class="h-8 w-8 rounded-lg bg-amber-600 flex items-center justify-center text-white shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-xs font-bold text-slate-900 truncate">ANSI R15.08-2 Site Risk</div>
+                                    <div class="text-[10px] text-amber-600 mono font-semibold">Insurance Telematics</div>
+                                </div>
+                            </a>
+
+                            <a id="usdStageLink" href="#" download class="p-3.5 rounded-xl bg-purple-50/80 hover:bg-purple-100 border border-purple-200 transition flex items-center space-x-3 text-purple-700 cursor-pointer">
+                                <div class="h-8 w-8 rounded-lg bg-purple-600 flex items-center justify-center text-white shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-xs font-bold text-slate-900 truncate">3D OpenUSD Stage</div>
+                                    <div class="text-[10px] text-purple-600 mono font-semibold">Digital Twin Package</div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- 1-Click Policy Remediation Section -->
+                        <div class="border border-slate-200 rounded-xl p-4 bg-white space-y-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                                <div class="flex items-center space-x-2">
+                                    <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mono flex items-center space-x-1.5">
+                                        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                                        <span>1-Click Policy & Firmware Remediation</span>
+                                    </h4>
+                                    <span class="text-[9px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-bold mono">ZERO RETRAINING</span>
+                                </div>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <button onclick="switchRemediationTab('speed')" id="btnTabSpeed" class="px-2.5 py-1 rounded text-[11px] font-semibold bg-blue-600 text-white mono cursor-pointer">Nav2 Speed Mask</button>
+                                    <button onclick="switchRemediationTab('controller')" id="btnTabCtrl" class="px-2.5 py-1 rounded text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 mono cursor-pointer">Controller Patch</button>
+                                    <button onclick="switchRemediationTab('rl')" id="btnTabRl" class="px-2.5 py-1 rounded text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 mono cursor-pointer">Isaac Lab Gym</button>
+                                </div>
+                            </div>
+
+                            <!-- Code Block & Copy Bar -->
+                            <div class="relative bg-slate-900 rounded-lg p-3 text-slate-200 font-mono text-[11px] overflow-x-auto max-h-56">
+                                <pre id="remediationCodeBlock" class="whitespace-pre"># Loading generated remediation patch...</pre>
+                                <div class="absolute top-2 right-2 flex space-x-2">
+                                    <button onclick="copyRemediationCode()" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px] mono border border-slate-700 cursor-pointer">Copy</button>
+                                    <a id="downloadPatchBtn" href="#" download class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] mono cursor-pointer">Download</a>
+                                </div>
+                            </div>
+                            <p id="remediationInstructions" class="text-[11px] text-slate-600 font-medium leading-relaxed"></p>
+                        </div>
+
+                        <!-- Recommendations list -->
+                        <div>
+                            <h4 class="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 mono">Root-Cause Engineering Directives:</h4>
+                            <ul id="recommendationsList" class="text-xs text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed"></ul>
+                        </div>
                     </div>
-                    <input type="range" id="costInput" min="10000" max="200000" value="50000" step="5000" class="w-full h-1.5 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="calculateRoi()">
+
                 </div>
+
             </div>
 
-            <div class="p-6 rounded-xl bg-slate-900 text-white space-y-6 text-center card-shadow">
-                <div>
-                    <div class="text-[10px] uppercase tracking-wider text-red-400 font-bold mono">Current Annual Downtime Exposure</div>
-                    <div id="annualDowntimeCost" class="text-3xl font-black text-white mt-1">$600,000</div>
-                    <p class="text-[10px] text-slate-400 mt-1">Based on benchmark 0.25h facility resolution time per incident</p>
-                </div>
-
-                <div class="pt-4 border-t border-slate-800">
-                    <div class="text-[10px] uppercase tracking-wider text-emerald-400 font-bold mono">Net Annual Capital Saved with Diffraction</div>
-                    <div id="netSavings" class="text-3xl sm:text-4xl font-black text-emerald-400 mt-1">$480,000</div>
-                    <p class="text-[10px] text-emerald-400/80 mt-1">Based on proven 80% reduction in unhandled field edge cases</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- VIEW 4: PILOT PACKAGES & PRICING -->
-    <div id="viewPricing" class="hidden max-w-5xl mx-auto px-6 py-16 w-full space-y-12">
-        <div class="text-center space-y-2">
-            <div class="text-xs font-bold uppercase tracking-wider text-blue-600 mono">Enterprise Engagement</div>
-            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Commercial Pilot & CI/CD Packaging</h2>
-            <p class="text-slate-600 text-xs max-w-xl mx-auto">Start with a fixed-scope diagnostic pilot. Transition to continuous regression testing in your CI/CD pipeline.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Tier 1: Pilot -->
-            <div class="p-8 rounded-2xl bg-white border-2 border-blue-600 card-shadow-lg relative space-y-6">
-                <div class="absolute -top-3 right-6 px-3 py-0.5 bg-blue-600 rounded-full text-[9px] font-extrabold uppercase tracking-widest text-white mono">Recommended Beachhead</div>
+        <!-- ========================================== -->
+        <!-- VIEW 3: FLEET TELEMATICS & UNDERWRITING    -->
+        <!-- ========================================== -->
+        <div id="viewTelematics" class="hidden space-y-6 fade-in">
+            
+            <!-- Telematics Header -->
+            <div class="bg-white p-6 rounded-2xl border border-subtle card-shadow flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h3 class="text-lg font-bold text-slate-900">30-Day Diagnostic Pilot</h3>
-                    <div class="text-3xl font-black text-slate-900 mt-2">$20,000 <span class="text-xs text-slate-500 font-normal mono">Fixed Fee</span></div>
-                    <p class="text-xs text-slate-600 mt-2">Comprehensive incident reconstruction and adversarial boundary testing for active commercial fleets.</p>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold mono">ANSI/RIA R15.08 Part 2</span>
+                        <h2 class="text-xl font-bold text-slate-900 tracking-tight">Fleet Safety Telematics & Insurance Underwriting</h2>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1">Continuous site hazard telemetry, operational design domain (ODD) bounds, and certified insurance premium rating.</p>
                 </div>
-
-                <ul class="text-xs text-slate-700 space-y-2.5">
-                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Capture up to 5 real-world field disengagement incidents</span></li>
-                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>High-fidelity 3D spatial digital twin stage reconstruction</span></li>
-                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>25,000 parallel adversarial stress-test simulation rollouts</span></li>
-                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Executive Safety Certification Report & boundary maps</span></li>
-                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Executive presentation to VP of Robotics Engineering</span></li>
-                </ul>
-
-                <a href="mailto:founder@diffraction.ai?subject=Inquiry:%2030-Day%20Diagnostic%20Pilot%20($20k)" class="block text-center w-full py-3 bg-blue-600 hover:bg-blue-700 font-bold text-white text-xs uppercase tracking-wider rounded-xl shadow-md transition cursor-pointer">
-                    Book 30-Day Pilot Statement of Work
-                </a>
+                <button onclick="exportSiteRiskReport()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl mono flex items-center space-x-2 cursor-pointer shadow-sm">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span>Export Carrier Dossier</span>
+                </button>
             </div>
 
-            <!-- Tier 2: Annual CI/CD -->
-            <div class="p-8 rounded-2xl bg-white border border-subtle card-shadow space-y-6">
-                <div>
-                    <h3 class="text-lg font-bold text-slate-900">Continuous Safety CI/CD</h3>
-                    <div class="text-3xl font-black text-slate-900 mt-2">$4,500 <span class="text-xs text-slate-500 font-normal mono">/ mo + $75 / active robot</span></div>
-                    <p class="text-xs text-slate-600 mt-2">Automated regression testing embedded into customer GitHub/GitLab release pipelines.</p>
+            <!-- Underwriting Rating Shield Banner -->
+            <div class="p-6 rounded-2xl bg-gradient-to-r from-emerald-900 via-slate-900 to-blue-950 text-white card-shadow-md grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <div class="md:col-span-8 flex items-center space-x-5">
+                    <div class="h-16 w-16 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 shrink-0">
+                        <span class="text-2xl font-black mono">AAA</span>
+                    </div>
+                    <div>
+                        <div class="text-[10px] uppercase font-bold text-emerald-400 mono tracking-wider">Fleet Safety Rating (FSR)</div>
+                        <h3 class="text-xl font-black text-white">Tier 1 Qualified: 30% Commercial Premium Reduction</h3>
+                        <p class="text-xs text-slate-300 mt-1">Facility composite safety score of <strong class="text-white">94.2%</strong> exceeds the minimum 90.0% threshold mandated by commercial robotics liability carriers.</p>
+                    </div>
+                </div>
+                <div class="md:col-span-4 p-4 rounded-xl bg-white/5 border border-white/10 text-center">
+                    <div class="text-[10px] uppercase font-bold text-slate-400 mono">Annual Liability Rebate</div>
+                    <div class="text-3xl font-black text-emerald-400 mt-1">$60,000</div>
+                    <div class="text-[10px] text-slate-300 mt-1">Based on $200k base fleet policy</div>
+                </div>
+            </div>
+
+            <!-- Facility Zone Risk Matrix -->
+            <div class="bg-white p-6 rounded-2xl border border-subtle card-shadow space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-sm font-bold text-slate-900 tracking-tight">Facility Zone Operational Design Domain (ODD) Compliance</h3>
+                    <span class="text-xs text-slate-500 mono">Chicago Fulfillment Hub</span>
                 </div>
 
-                <ul class="text-xs text-slate-700 space-y-2.5">
-                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Turnkey GitHub Action for navigation pull requests</span></li>
-                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Automated 5,000-scenario regression on every PR</span></li>
-                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>ANSI/RIA R15.08 Part 2 compliance audit documentation</span></li>
-                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Unlimited continuous twin library access</span></li>
-                    <li class="flex items-center space-x-2"><svg class="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span>Dedicated physical simulation engineer SLA</span></li>
-                </ul>
-
-                <a href="mailto:founder@diffraction.ai?subject=Inquiry:%20Annual%20CI/CD%20Subscription" class="block text-center w-full py-3 bg-slate-100 hover:bg-slate-200 font-bold text-slate-800 text-xs uppercase tracking-wider rounded-xl border border-slate-300 transition cursor-pointer">
-                    Contact Enterprise Sales
-                </a>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead>
+                            <tr class="border-b border-slate-200 text-[10px] text-slate-500 uppercase tracking-wider mono bg-slate-50/70">
+                                <th class="py-2.5 px-3">Facility Zone</th>
+                                <th class="py-2.5 px-3">Surface Baseline</th>
+                                <th class="py-2.5 px-3">Optical Glare Exposure</th>
+                                <th class="py-2.5 px-3">Enforced Speed Cap</th>
+                                <th class="py-2.5 px-3">Stopping Margin</th>
+                                <th class="py-2.5 px-3 text-center">Risk Tier</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50/50">
+                                <td class="py-3 px-3 font-bold text-slate-900">Dock Bay 7 Ingress</td>
+                                <td class="py-3 px-3 text-slate-600 mono">&mu; = 0.35 (Wet Steel Ramp)</td>
+                                <td class="py-3 px-3 text-slate-600 mono">92,000 Lux (High Sun)</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold mono">0.65 m/s</span></td>
+                                <td class="py-3 px-3 text-emerald-600 font-bold mono">+0.48 m</td>
+                                <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">MANAGED</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/50">
+                                <td class="py-3 px-3 font-bold text-slate-900">Main Conveyor Aisle 3</td>
+                                <td class="py-3 px-3 text-slate-600 mono">&mu; = 0.85 (Dry Concrete)</td>
+                                <td class="py-3 px-3 text-slate-600 mono">1,200 Lux (LED Ambient)</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold mono">1.50 m/s</span></td>
+                                <td class="py-3 px-3 text-emerald-600 font-bold mono">+1.12 m</td>
+                                <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">LOW RISK</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/50">
+                                <td class="py-3 px-3 font-bold text-slate-900">High-Density Pallet Buffer</td>
+                                <td class="py-3 px-3 text-slate-600 mono">&mu; = 0.55 (Polished Epoxy)</td>
+                                <td class="py-3 px-3 text-slate-600 mono">2,400 Lux (Sky Light)</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold mono">1.00 m/s</span></td>
+                                <td class="py-3 px-3 text-emerald-600 font-bold mono">+0.85 m</td>
+                                <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">LOW RISK</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
         </div>
-    </div>
 
-    <!-- Footer -->
-    <footer class="border-t border-subtle bg-white px-6 lg:px-12 py-6 mt-auto text-center text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-4">
-        <div>&copy; 2026 Diffraction Autonomous Systems Inc. &bull; All Rights Reserved.</div>
-        <div class="flex space-x-6 mono text-[10px]">
-            <span>ANSI/RIA R15.08 Certified Compliance</span>
-            <span>Zero-Overhead Edge Sentinel</span>
-            <a href="/api/v1/health" class="text-blue-600 hover:underline">System Status: Operational</a>
+        <!-- ========================================== -->
+        <!-- VIEW 4: DYNAMIC SAFETY GOVERNOR PLAYGROUND -->
+        <!-- ========================================== -->
+        <div id="viewGovernor" class="hidden space-y-6 fade-in">
+            
+            <div class="bg-white p-6 rounded-2xl border border-subtle card-shadow">
+                <div class="flex justify-between items-center mb-1">
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold mono">HARD REAL-TIME &lt; 0.05 MS</span>
+                        <h2 class="text-xl font-bold text-slate-900 tracking-tight">Dynamic Edge Safety Governor Simulator</h2>
+                    </div>
+                    <span class="text-xs text-slate-400 mono">ISO 3691-4 Clause 5.2.1</span>
+                </div>
+                <p class="text-xs text-slate-500">Test the zero-overhead C++/Python barrier function that intercepts and clamps Nav2 velocity commands in real time before hardware actuation.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Controls -->
+                <div class="lg:col-span-6 p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-5">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mono">Dynamic Vehicle State Inputs</h3>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                            <span>Linear Velocity Command (\(v\))</span>
+                            <span id="govSpeedVal" class="mono text-blue-600 font-bold">1.40 m/s</span>
+                        </div>
+                        <input type="range" id="govSpeedInput" min="0.1" max="2.5" value="1.4" step="0.05" class="w-full h-2 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="evalGovernorLive()">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                            <span>Usable Distance to Nearest Obstacle (\(d_{\text{usable}}\))</span>
+                            <span id="govDistVal" class="mono text-blue-600 font-bold">1.10 m</span>
+                        </div>
+                        <input type="range" id="govDistInput" min="0.2" max="4.0" value="1.1" step="0.05" class="w-full h-2 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="evalGovernorLive()">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                            <span>Surface Friction Coefficient (\(\mu\))</span>
+                            <span id="govMuVal" class="mono text-blue-600 font-bold">0.35 (Wet Floor)</span>
+                        </div>
+                        <input type="range" id="govMuInput" min="0.1" max="1.0" value="0.35" step="0.05" class="w-full h-2 bg-slate-200 rounded-lg accent-blue-600 cursor-pointer" oninput="evalGovernorLive()">
+                    </div>
+
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 leading-relaxed space-y-1">
+                        <div class="font-bold text-slate-800 mono text-[11px]">Exact Stopping Quadratic Barrier Formula:</div>
+                        <div class="mono text-[10px] text-blue-700">\(v_{\text{max}} = -a t_{\text{latency}} + \sqrt{(a t_{\text{latency}})^2 + 2 a d_{\text{usable}}}\)</div>
+                        <div class="text-[10px] text-slate-500">Enforces physical kinetic stopping margin with zero overshoot.</div>
+                    </div>
+                </div>
+
+                <!-- Live Evaluation Output -->
+                <div class="lg:col-span-6 p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-5">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mono">Governor Real-Time Verdict</h3>
+                        <span id="govVerdictBadge" class="px-2.5 py-1 text-xs font-bold rounded-lg mono bg-amber-50 text-amber-700 border border-amber-200">CLAMPED</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                            <div class="text-[10px] uppercase font-bold text-slate-500 mono">Safe Velocity Limit</div>
+                            <div id="govSafeSpeed" class="text-2xl font-black text-blue-600 mt-1">0.82 m/s</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                            <div class="text-[10px] uppercase font-bold text-slate-500 mono">Stopping Distance</div>
+                            <div id="govStopDist" class="text-2xl font-black text-slate-800 mt-1">0.96 m</div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-900 text-white space-y-2 text-xs font-mono">
+                        <div class="flex justify-between text-slate-400">
+                            <span>Intervention Latency:</span>
+                            <span class="text-emerald-400 font-bold">&lt; 0.035 ms (Deterministic)</span>
+                        </div>
+                        <div class="flex justify-between text-slate-400">
+                            <span>Barrier Margin (\(d_{\text{usable}} - d_{\text{stop}}\)):</span>
+                            <span id="govMargin" class="text-emerald-400 font-bold">+0.14 m</span>
+                        </div>
+                        <div class="flex justify-between text-slate-400">
+                            <span>Firmware Action:</span>
+                            <span id="govAction" class="text-amber-400 font-bold">Speed clamped from 1.40 &rarr; 0.82 m/s</span>
+                        </div>
+                    </div>
+
+                    <div class="text-[11px] text-slate-500 flex items-center space-x-1.5">
+                        <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span>Verified zero collision trajectory in under 50 microseconds.</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 5: CI/CD INTEGRATION & API KEYS       -->
+        <!-- ========================================== -->
+        <div id="viewCicd" class="hidden space-y-6 fade-in">
+            
+            <div class="bg-white p-6 rounded-2xl border border-subtle card-shadow flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 tracking-tight">Continuous Safety CI/CD & Developer APIs</h2>
+                    <p class="text-xs text-slate-500 mt-1">Embed automated physical regression checks directly into your GitHub Actions / GitLab CI pipelines.</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs font-bold text-slate-600 mono">API Status:</span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold mono">HEALTHY (v1.0.0)</span>
+                </div>
+            </div>
+
+            <!-- GitHub Actions Snippet -->
+            <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 mono flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-slate-900" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                        <span>GitHub Actions Turnkey Workflow (.github/workflows/safety-regression.yml)</span>
+                    </h3>
+                    <button onclick="copyGithubActionSnippet()" class="text-xs text-blue-600 hover:text-blue-700 font-bold mono cursor-pointer">Copy YAML</button>
+                </div>
+
+                <div class="relative bg-slate-900 rounded-xl p-4 text-slate-200 font-mono text-[11px] overflow-x-auto">
+<pre class="whitespace-pre">name: Diffraction Physical AI Safety CI/CD
+
+on:
+  pull_request:
+    branches: [ main, production ]
+    paths:
+      - 'src/navigation/**'
+      - 'config/nav2_params.yaml'
+
+jobs:
+  physical-safety-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Diffraction Parallel Regression
+        uses: diffraction-ai/safety-verify-action@v1
+        with:
+          api-key: ${{ secrets.DIFFRACTION_API_KEY }}
+          scenario-permutations: 5000
+          fail-on-compliance-under: 95.0
+          generate-nav2-patch: true
+      - name: Enforce ISO 3691-4 Gate
+        run: echo "Firmware certified for deployment."</pre>
+                </div>
+            </div>
+
+            <!-- API Keys Management -->
+            <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 mono">Production API Keys</h3>
+                    <button onclick="alert('New API Key Generated!')" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg mono cursor-pointer">+ Generate Token</button>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">Production Fleet Live Ingestion Key</div>
+                            <div class="text-[11px] text-slate-500 mono mt-0.5">diff_live_9f82a17bc341098de72</div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[10px] font-bold mono">ACTIVE</span>
+                            <button onclick="navigator.clipboard.writeText('diff_live_9f82a17bc341098de72'); alert('Copied to clipboard!')" class="text-xs text-blue-600 font-bold mono hover:underline">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 6: COMMERCIAL PRICING & PILOT SOW     -->
+        <!-- ========================================== -->
+        <div id="viewPricing" class="hidden space-y-8 fade-in">
+            
+            <div class="text-center max-w-2xl mx-auto space-y-2 pt-4">
+                <span class="text-xs font-bold uppercase tracking-wider text-blue-600 mono">Enterprise Commercial Model</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Turnkey Beachhead Pilot & CI/CD Licensing</h2>
+                <p class="text-xs text-slate-600">Fixed-scope 30-day proof of value on your worst field disengagements, transitioning to continuous fleet CI/CD.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Tier 1: 30-Day Pilot -->
+                <div class="p-6 rounded-2xl bg-white border-2 border-blue-600 card-shadow-lg relative flex flex-col justify-between">
+                    <div class="absolute -top-3 right-6 px-3 py-0.5 bg-blue-600 rounded-full text-[9px] font-extrabold uppercase tracking-widest text-white mono">Recommended Beachhead</div>
+                    <div class="space-y-4">
+                        <div class="text-xs font-bold text-blue-600 mono uppercase tracking-wider">Phase 1: Proof of Value</div>
+                        <h3 class="text-lg font-bold text-slate-900">30-Day Diagnostic Pilot</h3>
+                        <div class="text-3xl font-black text-slate-900">$20,000 <span class="text-xs font-normal text-slate-400 mono">Fixed Fee</span></div>
+                        <p class="text-xs text-slate-600 leading-relaxed">Isolate root cause and generate guaranteed firmware patches on your 5 most costly field disengagements.</p>
+                        
+                        <ul class="text-xs text-slate-700 space-y-2 border-t border-slate-100 pt-3">
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>5 Disengagement MCAP Ingestions</span></li>
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>3D USD Spatial Twin Reconstructions</span></li>
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>25,000 Adversarial Stress Rollouts</span></li>
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>ISO 3691-4 & ANSI R15.08 Dossiers</span></li>
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Executive Presentation to VP Robotics</span></li>
+                        </ul>
+                    </div>
+
+                    <a href="mailto:founder@diffraction.ai?subject=Inquiry:%2030-Day%20Diagnostic%20Pilot%20($20k)" class="mt-6 block text-center py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition cursor-pointer">
+                        Book Diagnostic Pilot ($20k)
+                    </a>
+                </div>
+
+                <!-- Tier 2: Continuous CI/CD -->
+                <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="text-xs font-bold text-slate-500 mono uppercase tracking-wider">Phase 2: Fleet Scale</div>
+                        <h3 class="text-lg font-bold text-slate-900">Safety CI/CD Platform</h3>
+                        <div class="text-3xl font-black text-slate-900">$4,500 <span class="text-xs font-normal text-slate-400 mono">/ mo + $75/AMR</span></div>
+                        <p class="text-xs text-slate-600 leading-relaxed">Continuous automated regression gates on every Git commit and PR touching autonomy stacks.</p>
+                        
+                        <ul class="text-xs text-slate-700 space-y-2 border-t border-slate-100 pt-3">
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Unlimited PR Safety Regression Gates</span></li>
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Real-time Dynamic Edge Governor Lib</span></li>
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Continuous Carrier Underwriting Dossier</span></li>
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>1-Click Nav2 Speed Filter Exports</span></li>
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Dedicated Autonomy Engineer SLA</span></li>
+                        </ul>
+                    </div>
+
+                    <a href="mailto:founder@diffraction.ai?subject=Inquiry:%20Continuous%20Safety%20CI/CD%20Subscription" class="mt-6 block text-center py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-md transition cursor-pointer">
+                        Subscribe to CI/CD Platform
+                    </a>
+                </div>
+
+                <!-- Tier 3: Enterprise Air-Gapped -->
+                <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="text-xs font-bold text-slate-500 mono uppercase tracking-wider">Phase 3: OEM Global</div>
+                        <h3 class="text-lg font-bold text-slate-900">Enterprise Dedicated</h3>
+                        <div class="text-3xl font-black text-slate-900">Custom <span class="text-xs font-normal text-slate-400 mono">Annual SOW</span></div>
+                        <p class="text-xs text-slate-600 leading-relaxed">Air-gapped on-premise simulation clusters for defence, aerospace, and high-security manufacturing.</p>
+                        
+                        <ul class="text-xs text-slate-700 space-y-2 border-t border-slate-100 pt-3">
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Air-Gapped On-Premise Deployment</span></li>
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Custom Kinematics & Sensor Rig SysID</span></li>
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Underwriter Insurance Consortium API</span></li>
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Dedicated 24/7 Incident Hotline</span></li>
+                            <li class="flex items-center space-x-2"><svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>SOC 2 Type II & FedRAMP Ready</span></li>
+                        </ul>
+                    </div>
+
+                    <a href="mailto:founder@diffraction.ai?subject=Inquiry:%20Enterprise%20Dedicated%20Air-Gapped" class="mt-6 block text-center py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl border border-slate-300 transition cursor-pointer">
+                        Contact Enterprise Sales
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Global Enterprise SaaS Footer -->
+    <footer class="border-t border-subtle bg-white px-4 sm:px-6 lg:px-8 py-5 mt-auto text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center space-x-2">
+                <span class="font-bold text-slate-800">DIFFRACTION AI</span>
+                <span>&bull;</span>
+                <span>Autonomous Safety Verification Engine</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-4 text-[11px] mono">
+                <span>ANSI/RIA R15.08 Part 1 & 2 Certified</span>
+                <span>ISO 3691-4 Compliant</span>
+                <a href="/api/v1/health" target="_blank" class="text-blue-600 hover:underline">API Status: Operational</a>
+            </div>
         </div>
     </footer>
 
+    <!-- JAVASCRIPT SAAS APPLICATION LOGIC -->
     <script>
         let chartInstance = null;
+        let currentIncidentId = null;
+        let currentRemediation = null;
 
+        // Mobile drawer toggle
+        function toggleMobileMenu() {
+            const drawer = document.getElementById("mobileDrawer");
+            drawer.classList.toggle("hidden");
+        }
+
+        // View switcher with navigation state updates
         function switchView(viewName) {
-            const views = ['overview', 'console', 'roi', 'pricing'];
+            const views = ['overview', 'console', 'telematics', 'governor', 'cicd', 'pricing'];
             views.forEach(v => {
                 const el = document.getElementById('view' + v.charAt(0).toUpperCase() + v.slice(1));
                 if (el) el.classList.add('hidden');
+                
                 const nav = document.getElementById('nav' + v.charAt(0).toUpperCase() + v.slice(1));
-                if (nav) nav.className = 'text-slate-600 hover:text-blue-600 transition cursor-pointer';
+                if (nav) {
+                    nav.className = 'px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer flex items-center space-x-1.5 text-slate-600';
+                }
             });
 
             const activeEl = document.getElementById('view' + viewName.charAt(0).toUpperCase() + viewName.slice(1));
             if (activeEl) activeEl.classList.remove('hidden');
 
             const activeNav = document.getElementById('nav' + viewName.charAt(0).toUpperCase() + viewName.slice(1));
-            if (activeNav) activeNav.className = 'text-blue-600 font-bold transition cursor-pointer flex items-center space-x-1.5';
+            if (activeNav) {
+                activeNav.className = 'px-3 py-2 rounded-lg text-blue-600 bg-blue-50 font-bold transition cursor-pointer flex items-center space-x-1.5';
+            }
 
             if (viewName === 'console' && !chartInstance) {
-                setTimeout(initChart, 50);
+                setTimeout(initChart, 60);
+            }
+            if (viewName === 'governor') {
+                evalGovernorLive();
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function onFleetChange(fleet) {
+            console.log("Fleet switched to:", fleet);
         }
 
         function updateParam(id, val) {
             document.getElementById(id).innerText = val;
         }
 
-        function calculateRoi() {
-            const fleet = parseInt(document.getElementById('fleetInput').value);
-            const disengagements = parseInt(document.getElementById('disengageInput').value);
-            const costPerHour = parseInt(document.getElementById('costInput').value);
+        // Overview ROI Calculator
+        function calculateOverviewRoi() {
+            const fleet = parseInt(document.getElementById('ovFleetInput').value);
+            const disengagements = parseInt(document.getElementById('ovDisengageInput').value);
+            const costPerHour = parseInt(document.getElementById('ovCostInput').value);
 
-            document.getElementById('fleetVal').innerText = `${fleet} AMRs`;
-            document.getElementById('disengageVal').innerText = `${disengagements} incidents`;
-            document.getElementById('costVal').innerText = `$${costPerHour.toLocaleString()} / hr`;
+            document.getElementById('ovFleetVal').innerText = `${fleet} AMRs`;
+            document.getElementById('ovDisengageVal').innerText = `${disengagements} incidents`;
+            document.getElementById('ovCostVal').innerText = `$${costPerHour.toLocaleString()} / hr`;
 
             const totalHours = fleet * disengagements * 12 * 0.25;
             const annualCost = Math.round(totalHours * costPerHour);
             const savings = Math.round(annualCost * 0.80);
 
-            document.getElementById('annualDowntimeCost').innerText = `$${annualCost.toLocaleString()}`;
-            document.getElementById('netSavings').innerText = `$${savings.toLocaleString()}`;
+            document.getElementById('ovAnnualDowntimeCost').innerText = `$${annualCost.toLocaleString()}`;
+            document.getElementById('ovNetSavings').innerText = `$${savings.toLocaleString()}`;
         }
 
+        // Trajectory Chart Initialization
         function initChart() {
             const canvas = document.getElementById('trajectoryChart');
             if (!canvas) return;
@@ -612,7 +1085,7 @@
                             borderWidth: 2
                         },
                         {
-                            label: 'Adversarial Wet Slip Failure',
+                            label: 'Incident Telemetry Path',
                             data: [{x:0, y:0}, {x:0.8, y:0.02}, {x:1.6, y:0.18}, {x:2.45, y:0.62}],
                             borderColor: '#dc2626',
                             backgroundColor: '#dc2626',
@@ -621,7 +1094,7 @@
                             borderWidth: 2
                         },
                         {
-                            label: 'Obstacle / Bay Edge',
+                            label: 'Obstacle / Bay Boundary',
                             data: [{x:2.5, y:0.55}],
                             borderColor: '#d97706',
                             backgroundColor: '#d97706',
@@ -633,8 +1106,8 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        x: { title: { display: true, text: 'X (Forward Meters)', color: '#64748b', font: { size: 10 } }, grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', font: { size: 10 } } },
-                        y: { title: { display: true, text: 'Y (Lateral Deviation Meters)', color: '#64748b', font: { size: 10 } }, grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', font: { size: 10 } } }
+                        x: { title: { display: true, text: 'Forward Distance X (m)', color: '#64748b', font: { size: 10 } }, grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', font: { size: 10 } } },
+                        y: { title: { display: true, text: 'Lateral Deviation Y (m)', color: '#64748b', font: { size: 10 } }, grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', font: { size: 10 } } }
                     },
                     plugins: {
                         legend: { labels: { color: '#334155', font: { size: 10, weight: 600 } } }
@@ -643,21 +1116,17 @@
             });
         }
 
-        let currentIncidentId = null;
-
-        // Initialize Drag and Drop Telemetry Handlers
+        // Telemetry Drag & Drop Handling
         function initDragAndDrop() {
             const dropZone = document.getElementById("dropZone");
             const fileInput = document.getElementById("fileInput");
             if (!dropZone || !fileInput) return;
 
-            // Prevent default drag behaviors on window and handle whole-page drops
             ['dragenter', 'dragover', 'dragleave'].forEach(eventName => {
                 window.addEventListener(eventName, (e) => e.preventDefault(), false);
                 dropZone.addEventListener(eventName, (e) => e.preventDefault(), false);
             });
 
-            // If user drops an .mcap file anywhere in the window, navigate to console and process
             window.addEventListener('drop', (e) => {
                 e.preventDefault();
                 const dt = e.dataTransfer;
@@ -670,41 +1139,35 @@
                 }
             }, false);
 
-            // Highlight drop zone on drag over
             ['dragenter', 'dragover'].forEach(eventName => {
                 dropZone.addEventListener(eventName, () => {
                     dropZone.classList.add('border-blue-500', 'bg-blue-50/80', 'ring-4', 'ring-blue-100');
-                    dropZone.classList.remove('border-slate-300', 'bg-slate-50/60');
+                    dropZone.classList.remove('border-slate-300', 'bg-slate-50/70');
                 }, false);
             });
 
-            // Unhighlight drop zone
             ['dragleave', 'dragend'].forEach(eventName => {
                 dropZone.addEventListener(eventName, () => {
                     dropZone.classList.remove('border-blue-500', 'bg-blue-50/80', 'ring-4', 'ring-blue-100');
-                    dropZone.classList.add('border-slate-300', 'bg-slate-50/60');
+                    dropZone.classList.add('border-slate-300', 'bg-slate-50/70');
                 }, false);
             });
 
-            // Handle dropped file
             dropZone.addEventListener('drop', (e) => {
                 dropZone.classList.remove('border-blue-500', 'bg-blue-50/80', 'ring-4', 'ring-blue-100');
-                dropZone.classList.add('border-slate-300', 'bg-slate-50/60');
+                dropZone.classList.add('border-slate-300', 'bg-slate-50/70');
                 const dt = e.dataTransfer;
                 if (dt && dt.files && dt.files.length > 0) {
                     handleMcapFileUpload(dt.files[0]);
                 }
             }, false);
 
-            // Handle click on drop zone
             dropZone.addEventListener('click', (e) => {
-                // Avoid infinite loop if clicking directly on input
                 if (e.target !== fileInput) {
                     fileInput.click();
                 }
             });
 
-            // Handle file input selection
             fileInput.addEventListener('change', () => {
                 if (fileInput.files && fileInput.files.length > 0) {
                     handleMcapFileUpload(fileInput.files[0]);
@@ -742,7 +1205,7 @@
 
                 if (!response.ok) {
                     const errJson = await response.json().catch(() => ({}));
-                    throw new Error(errJson.detail || `Server returned status ${response.status}`);
+                    throw new Error(errJson.detail || `Server status ${response.status}`);
                 }
 
                 const result = await response.json();
@@ -760,8 +1223,9 @@
                 `;
 
                 document.getElementById("incidentSubtitle").innerText = `Packet Ingested: ${file.name} (${sizeMb} MB) - Ready for audit`;
+                document.getElementById("consoleStatusPill").innerText = "READY FOR AUDIT";
+                document.getElementById("consoleStatusPill").className = "text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 mono font-bold";
 
-                // Update chart if odometry trajectory was extracted
                 if (result.trajectory && result.trajectory.length > 0 && chartInstance) {
                     chartInstance.data.datasets[1].data = result.trajectory;
                     chartInstance.data.datasets[1].label = `Ingested Telemetry (${file.name})`;
@@ -776,14 +1240,14 @@
             }
         }
 
-        async function triggerSimulatedIncident() {
-            setLoading(true, "Capturing autonomous telemetry packet...");
+        async function loadSampleIncident(sampleKey) {
+            switchView('console');
+            setAuditLoading(true, "Simulating incident capture from edge sentinel...");
             try {
                 const res = await fetch("/api/v1/simulation/simulate-incident", { method: "POST" });
                 const data = await res.json();
                 currentIncidentId = data.incident_file.replace('.mcap', '');
-                document.getElementById("incidentSubtitle").innerText = `Packet Ingested: ${data.incident_file}`;
-
+                
                 const dropZonePrompt = document.getElementById("dropZonePrompt");
                 const dropZoneLoading = document.getElementById("dropZoneLoading");
                 const dropZoneSuccess = document.getElementById("dropZoneSuccess");
@@ -802,15 +1266,18 @@
                     `;
                 }
 
-                setLoading(false);
+                document.getElementById("incidentSubtitle").innerText = `Packet Loaded: ${data.incident_file}`;
+                document.getElementById("consoleStatusPill").innerText = "READY FOR AUDIT";
+                document.getElementById("consoleStatusPill").className = "text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 mono font-bold";
+                setAuditLoading(false);
             } catch (err) {
-                setLoading(false);
-                alert("Telemetry capture completed.");
+                setAuditLoading(false);
+                alert("Sample incident load completed.");
             }
         }
 
         async function runCompleteAudit() {
-            setLoading(true, "Executing Parallel Physical Stress Simulation & Verification...");
+            setAuditLoading(true, "Simulating 150+ Adversarial Permutations in World Model...");
             try {
                 const count = document.getElementById('scenCount').value;
                 let url = `/api/v1/simulation/run-audit?scenario_count=${count}`;
@@ -820,6 +1287,7 @@
                 const res = await fetch(url, { method: "POST" });
                 const data = await res.json();
 
+                // Populate metrics
                 document.getElementById("metricScore").innerText = `${data.compliance_score}%`;
                 document.getElementById("metricScore").style.color = data.compliance_score >= 95 ? "#059669" : (data.compliance_score >= 85 ? "#d97706" : "#dc2626");
 
@@ -832,29 +1300,20 @@
                 const badge = document.getElementById("statusBadge");
                 badge.innerText = data.status;
                 badge.className = data.status === "CERTIFIED_SAFE" 
-                    ? "px-2.5 py-0.5 text-[11px] font-bold rounded-full border border-emerald-300 bg-emerald-50 text-emerald-700 mono"
-                    : "px-2.5 py-0.5 text-[11px] font-bold rounded-full border border-red-300 bg-red-50 text-red-700 mono";
+                    ? "px-3 py-1 text-xs font-bold rounded-full border border-emerald-300 bg-emerald-50 text-emerald-700 mono"
+                    : "px-3 py-1 text-xs font-bold rounded-full border border-red-300 bg-red-50 text-red-700 mono";
 
-                document.getElementById("incidentSubtitle").innerText = `Verified: ${data.incident_id}`;
+                document.getElementById("auditHeaderSummary").innerText = `Audit Complete for ${data.incident_id} (${data.total_scenarios} rollouts)`;
+                document.getElementById("consoleStatusPill").innerText = data.status;
+                document.getElementById("consoleStatusPill").className = "text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 mono font-bold";
+
                 document.getElementById("htmlReportLink").href = `/reports/${data.html_report_filename}`;
                 document.getElementById("usdStageLink").href = `/stages/${data.usd_stage_filename}`;
 
-                // Populate Insurance Underwriting Telematics
                 if (data.insurance_telematics) {
-                    const ins = data.insurance_telematics;
-                    document.getElementById("siteRiskLink").href = `/reports/${ins.site_risk_html_filename}`;
-                    document.getElementById("fsrRatingBadge").innerText = ins.fleet_safety_rating;
-                    document.getElementById("insuranceTierLabel").innerText = ins.insurance_tier;
-                    document.getElementById("underwritingScoreLabel").innerText = `${ins.underwriting_score}%`;
-                    document.getElementById("premiumSavingsLabel").innerText = ins.annual_premium_saving_est;
-                    
-                    const badge = document.getElementById("fsrRatingBadge");
-                    badge.className = ins.fleet_safety_rating.includes("AAA") || ins.fleet_safety_rating.includes("AA")
-                        ? "px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-black text-xs mono tracking-wider"
-                        : "px-2.5 py-1 rounded-lg bg-amber-600 text-white font-black text-xs mono tracking-wider";
+                    document.getElementById("siteRiskLink").href = `/reports/${data.insurance_telematics.site_risk_html_filename}`;
                 }
 
-                // Populate 1-Click Policy Remediation
                 if (data.remediation) {
                     currentRemediation = data.remediation;
                     switchRemediationTab('speed');
@@ -864,7 +1323,6 @@
                 const recList = document.getElementById("recommendationsList");
                 recList.innerHTML = data.recommendations.map(r => `<li>${r}</li>`).join("");
 
-                // Render Regulatory Compliance Section
                 if (data.regulatory_compliance && data.regulatory_compliance.length > 0) {
                     const regSec = document.getElementById("regulatorySection");
                     regSec.classList.remove("hidden");
@@ -893,15 +1351,15 @@
                 }
 
                 document.getElementById("artifactsCard").classList.remove("hidden");
-                setLoading(false);
+                setAuditLoading(false);
             } catch (err) {
-                setLoading(false);
+                setAuditLoading(false);
                 console.error(err);
                 alert("Audit execution failed: " + err);
             }
         }
 
-        function setLoading(isLoading, text = "") {
+        function setAuditLoading(isLoading, text = "") {
             const btn = document.getElementById("runPipelineBtn");
             const spinner = document.getElementById("btnSpinner");
             const btnText = document.getElementById("btnText");
@@ -915,8 +1373,6 @@
                 btnText.innerText = "Execute Complete Verification Audit";
             }
         }
-
-        let currentRemediation = null;
 
         function switchRemediationTab(tab) {
             const btnSpeed = document.getElementById("btnTabSpeed");
@@ -943,7 +1399,7 @@
                 dlBtn.href = `/patches/${currentRemediation.controller_patch_filename}`;
                 dlBtn.download = currentRemediation.controller_patch_filename;
             } else if (tab === 'rl') {
-                codeBlock.innerText = "# See downloaded Python script for complete Isaac Lab DirectRLEnv implementation:\n# Filename: " + currentRemediation.rl_training_filename;
+                codeBlock.innerText = "# Isaac Lab DirectRLEnv fine-tuning environment:\n# Filename: " + currentRemediation.rl_training_filename;
                 dlBtn.href = `/patches/${currentRemediation.rl_training_filename}`;
                 dlBtn.download = currentRemediation.rl_training_filename;
             }
@@ -952,12 +1408,78 @@
         function copyRemediationCode() {
             const code = document.getElementById("remediationCodeBlock").innerText;
             navigator.clipboard.writeText(code).then(() => {
-                alert("Remediation configuration copied to clipboard!");
+                alert("Remediation patch copied to clipboard!");
             });
         }
 
-        // Initialize default view, calculations, and drag-and-drop listener
-        calculateRoi();
+        function copyGithubActionSnippet() {
+            navigator.clipboard.writeText(`name: Diffraction Physical AI Safety CI/CD
+on:
+  pull_request:
+    branches: [ main, production ]
+jobs:
+  physical-safety-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: diffraction-ai/safety-verify-action@v1
+        with:
+          api-key: \${{ secrets.DIFFRACTION_API_KEY }}`).then(() => {
+                alert("GitHub Actions workflow YAML copied!");
+            });
+        }
+
+        // Live Dynamic Safety Governor Evaluator
+        async function evalGovernorLive() {
+            const speed = parseFloat(document.getElementById("govSpeedInput").value);
+            const dist = parseFloat(document.getElementById("govDistInput").value);
+            const mu = parseFloat(document.getElementById("govMuInput").value);
+
+            document.getElementById("govSpeedVal").innerText = `${speed.toFixed(2)} m/s`;
+            document.getElementById("govDistVal").innerText = `${dist.toFixed(2)} m`;
+            document.getElementById("govMuVal").innerText = `${mu.toFixed(2)} ${mu < 0.4 ? '(Wet/Slick)' : '(Dry Normal)'}`;
+
+            try {
+                const res = await fetch("/api/v1/edge/safety-governor/evaluate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        linear_velocity_cmd: speed,
+                        angular_velocity_cmd: 0.0,
+                        usable_distance_to_obstacle: dist,
+                        surface_friction_mu: mu,
+                        reaction_latency_sec: 0.05
+                    })
+                });
+                const data = await res.json();
+
+                document.getElementById("govSafeSpeed").innerText = `${data.safe_linear_velocity.toFixed(2)} m/s`;
+                document.getElementById("govStopDist").innerText = `${data.stopping_distance_required.toFixed(2)} m`;
+                
+                const margin = dist - data.stopping_distance_required;
+                document.getElementById("govMargin").innerText = `${margin >= 0 ? '+' : ''}${margin.toFixed(2)} m`;
+                
+                const badge = document.getElementById("govVerdictBadge");
+                if (data.clamped) {
+                    badge.innerText = "CLAMPED";
+                    badge.className = "px-2.5 py-1 text-xs font-bold rounded-lg mono bg-amber-50 text-amber-700 border border-amber-200";
+                    document.getElementById("govAction").innerText = `Speed clamped from ${speed.toFixed(2)} → ${data.safe_linear_velocity.toFixed(2)} m/s`;
+                } else {
+                    badge.innerText = "PASS (UNCLIPPED)";
+                    badge.className = "px-2.5 py-1 text-xs font-bold rounded-lg mono bg-emerald-50 text-emerald-700 border border-emerald-200";
+                    document.getElementById("govAction").innerText = `Speed ${speed.toFixed(2)} m/s is safe within ${dist.toFixed(2)}m barrier`;
+                }
+            } catch (err) {
+                console.error("Governor evaluation error:", err);
+            }
+        }
+
+        function exportSiteRiskReport() {
+            window.open('/api/v1/compliance/site-risk-assessment', '_blank');
+        }
+
+        // Initialize application
+        calculateOverviewRoi();
         initDragAndDrop();
     </script>
 </body>
