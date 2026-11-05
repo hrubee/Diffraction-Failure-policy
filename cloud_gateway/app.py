@@ -20,7 +20,10 @@ from cloud_gateway.mcap_parser import DecoupledIncident, McapParser
 from cloud_gateway.sysid_calibrator import SysIDCalibrator, SysIDProfile
 from cosmos_engine.cosmos_client import CosmosModelClient
 from cosmos_engine.domain_randomizer import DomainRandomizer
+from edge.safety_governor import DynamicSafetyGovernor
+from remediation.policy_patcher import PolicyRemediationPatcher
 from reporting.report_generator import SafetyReportGenerator
+from reporting.site_risk_assessor import SiteRiskAssessor
 from scripts.run_mock_robot import simulate_warehouse_amr_run
 from simulation_harness.certification_oracle import SafetyCertificationOracle
 from simulation_harness.isaac_runner import IsaacSimulationHarness
@@ -76,14 +79,16 @@ app.add_middleware(
 UPLOAD_DIR = "./storage/telemetry_drops"
 REPORTS_DIR = "./storage/reports"
 STAGES_DIR = "./storage/usd_stages"
+PATCHES_DIR = "./storage/remediation_patches"
 STATIC_DIR = "./cloud_gateway/static"
 
-for d in [UPLOAD_DIR, REPORTS_DIR, STAGES_DIR, STATIC_DIR]:
+for d in [UPLOAD_DIR, REPORTS_DIR, STAGES_DIR, PATCHES_DIR, STATIC_DIR]:
     os.makedirs(d, exist_ok=True)
 
-# Mount static downloads for reports and USD stages
+# Mount static downloads for reports, USD stages, and remediation patches
 app.mount("/reports", StaticFiles(directory=REPORTS_DIR), name="reports")
 app.mount("/stages", StaticFiles(directory=STAGES_DIR), name="stages")
+app.mount("/patches", StaticFiles(directory=PATCHES_DIR), name="patches")
 
 # In-memory incident registry
 INCIDENT_REGISTRY: Dict[str, Dict[str, Any]] = {}
@@ -97,6 +102,28 @@ def serve_dashboard():
     if os.path.exists(index_file):
         return FileResponse(index_file)
     return {"message": "Diffraction API operational. Static console not found."}
+
+
+class GovernorEvalRequest(BaseModel):
+    cmd_linear_vel: float = 1.0
+    cmd_angular_vel: float = 0.5
+    estimated_surface_mu: float = 0.25
+    distance_to_obstacle_m: float = 1.5
+    observed_wheel_slip_ratio: float = 0.40
+
+
+@app.post("/api/v1/edge/safety-governor/evaluate")
+def api_evaluate_governor(req: GovernorEvalRequest):
+    """Real-time Control Barrier Function evaluation endpoint for robot edge nodes."""
+    gov = DynamicSafetyGovernor()
+    intervention = gov.govern_velocity_command(
+        cmd_linear_vel=req.cmd_linear_vel,
+        cmd_angular_vel=req.cmd_angular_vel,
+        estimated_surface_mu=req.estimated_surface_mu,
+        distance_to_obstacle_m=req.distance_to_obstacle_m,
+        observed_wheel_slip_ratio=req.observed_wheel_slip_ratio,
+    )
+    return asdict(intervention)
 
 
 @app.get("/api/v1/health")
@@ -275,6 +302,23 @@ def api_run_audit(scenario_count: int = 150, incident_id: Optional[str] = None):
     json_path = reporter.generate_json_report(incident_meta, verdict)
     html_path = reporter.generate_html_report(incident_meta, verdict)
 
+    # 8. Automated 1-Click Policy Remediation Synthesis
+    inc_label = f"{incident.robot_id}_{incident.trigger_type}"
+    patcher = PolicyRemediationPatcher(output_dir=PATCHES_DIR)
+    remediation_pkg = patcher.generate_remediation_package(
+        incident_id=inc_label,
+        incident_meta=incident_meta,
+        audit_verdict=verdict,
+    )
+
+    # 9. ANSI/RIA R15.08 Part 2 Site Risk Assessment & Insurance Telematics
+    assessor = SiteRiskAssessor(output_dir=REPORTS_DIR)
+    site_risk = assessor.assess_facility(
+        facility_id=incident.facility_id,
+        audit_verdict=verdict,
+        sysid_profile=sysid_profile,
+    )
+
     return {
         "status": verdict.certification_status,
         "compliance_score": verdict.safety_compliance_score,
@@ -282,7 +326,7 @@ def api_run_audit(scenario_count: int = 150, incident_id: Optional[str] = None):
         "passed_scenarios": verdict.scenarios_passed,
         "failed_scenarios": verdict.scenarios_failed,
         "safe_friction": verdict.safe_operational_boundaries["minimum_safe_surface_friction_mu"],
-        "incident_id": f"{incident.robot_id}_{incident.trigger_type}",
+        "incident_id": inc_label,
         "html_report_filename": os.path.basename(html_path),
         "json_report_filename": os.path.basename(json_path),
         "usd_stage_filename": os.path.basename(twin_data["usd_stage_path"]),
@@ -290,4 +334,19 @@ def api_run_audit(scenario_count: int = 150, incident_id: Optional[str] = None):
         "failure_breakdown": verdict.failure_breakdown,
         "sysid_profile": asdict(sysid_profile),
         "regulatory_compliance": [asdict(r) for r in verdict.regulatory_compliance],
+        "remediation": {
+            "speed_filter_mask_filename": os.path.basename(remediation_pkg.speed_filter_mask_path),
+            "speed_filter_mask_yaml": remediation_pkg.speed_filter_mask_yaml,
+            "controller_patch_filename": os.path.basename(remediation_pkg.controller_patch_path),
+            "controller_patch_yaml": remediation_pkg.controller_patch_yaml,
+            "rl_training_filename": os.path.basename(remediation_pkg.rl_training_path),
+            "summary_instructions": remediation_pkg.summary_instructions,
+        },
+        "insurance_telematics": {
+            "fleet_safety_rating": site_risk.fleet_safety_rating,
+            "underwriting_score": site_risk.underwriting_score,
+            "insurance_tier": site_risk.insurance_tier,
+            "annual_premium_saving_est": site_risk.annual_premium_saving_est,
+            "site_risk_html_filename": os.path.basename(site_risk.html_report_path),
+        },
     }

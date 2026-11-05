@@ -339,34 +339,94 @@
             </div>
 
             <!-- Downloadable Artifacts & Remediation -->
-            <div id="artifactsCard" class="p-6 rounded-2xl bg-white border border-subtle card-shadow hidden">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center justify-between">
-                    <span>Exported Certification Artifacts</span>
+            <div id="artifactsCard" class="p-6 rounded-2xl bg-white border border-subtle card-shadow hidden space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center space-x-2">
+                        <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                        <span>Exported Certification Artifacts & Risk Underwriting</span>
+                    </h3>
                     <span class="text-[10px] text-emerald-600 font-semibold mono">AUDIT VERIFIED</span>
-                </h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <a id="htmlReportLink" href="#" target="_blank" class="p-4 rounded-xl bg-blue-50/80 hover:bg-blue-100/70 border border-blue-200 transition flex items-center space-x-3 text-blue-700 cursor-pointer">
-                        <div class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+                </div>
+
+                <!-- Primary Artifacts Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <a id="htmlReportLink" href="#" target="_blank" class="p-3.5 rounded-xl bg-blue-50/80 hover:bg-blue-100/70 border border-blue-200 transition flex items-center space-x-3 text-blue-700 cursor-pointer">
+                        <div class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white flex-shrink-0">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         </div>
-                        <div>
-                            <div class="text-xs font-bold text-slate-900">Executive Audit Report</div>
-                            <div class="text-[10px] text-blue-600 mono font-semibold">HTML / PDF Documentation</div>
+                        <div class="min-w-0">
+                            <div class="text-xs font-bold text-slate-900 truncate">Executive Audit Report</div>
+                            <div class="text-[10px] text-blue-600 mono font-semibold">ISO 3691-4 Certificate</div>
                         </div>
                     </a>
-                    <a id="usdStageLink" href="#" download class="p-4 rounded-xl bg-purple-50/80 hover:bg-purple-100/70 border border-purple-200 transition flex items-center space-x-3 text-purple-700 cursor-pointer">
-                        <div class="h-8 w-8 rounded-lg bg-purple-600 flex items-center justify-center text-white">
+
+                    <a id="siteRiskLink" href="#" target="_blank" class="p-3.5 rounded-xl bg-amber-50/80 hover:bg-amber-100/70 border border-amber-200 transition flex items-center space-x-3 text-amber-700 cursor-pointer">
+                        <div class="h-8 w-8 rounded-lg bg-amber-600 flex items-center justify-center text-white flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="text-xs font-bold text-slate-900 truncate">ANSI R15.08-2 Site Risk</div>
+                            <div class="text-[10px] text-amber-600 mono font-semibold">Insurance Telematics</div>
+                        </div>
+                    </a>
+
+                    <a id="usdStageLink" href="#" download class="p-3.5 rounded-xl bg-purple-50/80 hover:bg-purple-100/70 border border-purple-200 transition flex items-center space-x-3 text-purple-700 cursor-pointer">
+                        <div class="h-8 w-8 rounded-lg bg-purple-600 flex items-center justify-center text-white flex-shrink-0">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                         </div>
-                        <div>
-                            <div class="text-xs font-bold text-slate-900">Spatial Digital Twin Stage</div>
-                            <div class="text-[10px] text-purple-600 mono font-semibold">Physics OpenUSD Package</div>
+                        <div class="min-w-0">
+                            <div class="text-xs font-bold text-slate-900 truncate">3D OpenUSD Stage</div>
+                            <div class="text-[10px] text-purple-600 mono font-semibold">Digital Twin Package</div>
                         </div>
                     </a>
                 </div>
 
-                <div class="mt-6 border-t border-slate-200 pt-4">
-                    <h4 class="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 mono">Automated Policy Remediation Directives:</h4>
+                <!-- Insurance Underwriting Telematics Strip -->
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center space-x-3">
+                        <span id="fsrRatingBadge" class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-black text-xs mono tracking-wider">FSR-AAA</span>
+                        <div>
+                            <div class="text-xs font-bold text-slate-900" id="insuranceTierLabel">Tier 1 Qualified (Maximum 30% Premium Reduction)</div>
+                            <div class="text-[11px] text-slate-500">Commercial Carrier Underwriting Score: <span id="underwritingScoreLabel" class="mono font-semibold text-slate-700">92%</span></div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-[10px] uppercase font-bold text-emerald-600 mono">Est. Underwriting Savings</div>
+                        <div class="text-sm font-extrabold text-slate-900" id="premiumSavingsLabel">$60,000 / year</div>
+                    </div>
+                </div>
+
+                <!-- 1-Click Policy Remediation Section -->
+                <div class="border border-slate-200 rounded-xl p-4 bg-white">
+                    <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+                        <div class="flex items-center space-x-2">
+                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mono flex items-center space-x-1.5">
+                                <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                                <span>1-Click Policy & Firmware Remediation</span>
+                            </h4>
+                            <span class="text-[9px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-semibold mono">ZERO RETRAINING</span>
+                        </div>
+                        <div class="flex space-x-1.5">
+                            <button onclick="switchRemediationTab('speed')" id="btnTabSpeed" class="px-2.5 py-1 rounded text-[11px] font-semibold bg-blue-600 text-white mono cursor-pointer">Nav2 Speed Mask</button>
+                            <button onclick="switchRemediationTab('controller')" id="btnTabCtrl" class="px-2.5 py-1 rounded text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 mono cursor-pointer">Controller Patch</button>
+                            <button onclick="switchRemediationTab('rl')" id="btnTabRl" class="px-2.5 py-1 rounded text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 mono cursor-pointer">Isaac Lab Gym</button>
+                        </div>
+                    </div>
+
+                    <!-- Code Display & Action Bar -->
+                    <div class="relative bg-slate-900 rounded-lg p-3 text-slate-200 font-mono text-[11px] overflow-x-auto max-h-56">
+                        <pre id="remediationCodeBlock" class="whitespace-pre"># Loading generated remediation patch...</pre>
+                        <div class="absolute top-2 right-2 flex space-x-2">
+                            <button onclick="copyRemediationCode()" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px] mono border border-slate-700 cursor-pointer">Copy</button>
+                            <a id="downloadPatchBtn" href="#" download class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] mono cursor-pointer">Download</a>
+                        </div>
+                    </div>
+
+                    <p id="remediationInstructions" class="text-[11px] text-slate-600 mt-2.5 font-medium leading-relaxed"></p>
+                </div>
+
+                <div>
+                    <h4 class="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 mono">Root-Cause Engineering Directives:</h4>
                     <ul id="recommendationsList" class="text-xs text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed"></ul>
                 </div>
             </div>
@@ -779,6 +839,28 @@
                 document.getElementById("htmlReportLink").href = `/reports/${data.html_report_filename}`;
                 document.getElementById("usdStageLink").href = `/stages/${data.usd_stage_filename}`;
 
+                // Populate Insurance Underwriting Telematics
+                if (data.insurance_telematics) {
+                    const ins = data.insurance_telematics;
+                    document.getElementById("siteRiskLink").href = `/reports/${ins.site_risk_html_filename}`;
+                    document.getElementById("fsrRatingBadge").innerText = ins.fleet_safety_rating;
+                    document.getElementById("insuranceTierLabel").innerText = ins.insurance_tier;
+                    document.getElementById("underwritingScoreLabel").innerText = `${ins.underwriting_score}%`;
+                    document.getElementById("premiumSavingsLabel").innerText = ins.annual_premium_saving_est;
+                    
+                    const badge = document.getElementById("fsrRatingBadge");
+                    badge.className = ins.fleet_safety_rating.includes("AAA") || ins.fleet_safety_rating.includes("AA")
+                        ? "px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-black text-xs mono tracking-wider"
+                        : "px-2.5 py-1 rounded-lg bg-amber-600 text-white font-black text-xs mono tracking-wider";
+                }
+
+                // Populate 1-Click Policy Remediation
+                if (data.remediation) {
+                    currentRemediation = data.remediation;
+                    switchRemediationTab('speed');
+                    document.getElementById("remediationInstructions").innerText = data.remediation.summary_instructions || "";
+                }
+
                 const recList = document.getElementById("recommendationsList");
                 recList.innerHTML = data.recommendations.map(r => `<li>${r}</li>`).join("");
 
@@ -832,6 +914,46 @@
                 spinner.classList.add("hidden");
                 btnText.innerText = "Execute Complete Verification Audit";
             }
+        }
+
+        let currentRemediation = null;
+
+        function switchRemediationTab(tab) {
+            const btnSpeed = document.getElementById("btnTabSpeed");
+            const btnCtrl = document.getElementById("btnTabCtrl");
+            const btnRl = document.getElementById("btnTabRl");
+            const codeBlock = document.getElementById("remediationCodeBlock");
+            const dlBtn = document.getElementById("downloadPatchBtn");
+
+            const activeClass = "px-2.5 py-1 rounded text-[11px] font-semibold bg-blue-600 text-white mono cursor-pointer";
+            const inactiveClass = "px-2.5 py-1 rounded text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 mono cursor-pointer";
+
+            btnSpeed.className = tab === 'speed' ? activeClass : inactiveClass;
+            btnCtrl.className = tab === 'controller' ? activeClass : inactiveClass;
+            btnRl.className = tab === 'rl' ? activeClass : inactiveClass;
+
+            if (!currentRemediation) return;
+
+            if (tab === 'speed') {
+                codeBlock.innerText = currentRemediation.speed_filter_mask_yaml;
+                dlBtn.href = `/patches/${currentRemediation.speed_filter_mask_filename}`;
+                dlBtn.download = currentRemediation.speed_filter_mask_filename;
+            } else if (tab === 'controller') {
+                codeBlock.innerText = currentRemediation.controller_patch_yaml;
+                dlBtn.href = `/patches/${currentRemediation.controller_patch_filename}`;
+                dlBtn.download = currentRemediation.controller_patch_filename;
+            } else if (tab === 'rl') {
+                codeBlock.innerText = "# See downloaded Python script for complete Isaac Lab DirectRLEnv implementation:\n# Filename: " + currentRemediation.rl_training_filename;
+                dlBtn.href = `/patches/${currentRemediation.rl_training_filename}`;
+                dlBtn.download = currentRemediation.rl_training_filename;
+            }
+        }
+
+        function copyRemediationCode() {
+            const code = document.getElementById("remediationCodeBlock").innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                alert("Remediation configuration copied to clipboard!");
+            });
         }
 
         // Initialize default view, calculations, and drag-and-drop listener
