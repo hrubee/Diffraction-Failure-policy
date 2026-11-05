@@ -144,6 +144,16 @@ async def upload_telemetry_mcap(file: UploadFile = File(...)):
         raise HTTPException(status_code=422, detail=f"Failed to parse MCAP telemetry: {str(e)}")
 
     incident_id = os.path.splitext(clean_filename)[0]
+    
+    # Extract trajectory if odometry exists
+    trajectory_points = []
+    odom_msgs = parsed.messages_by_topic.get("/odom", [])
+    for msg in odom_msgs:
+        data = msg.get("data", {})
+        c_pose = data.get("current_pose")
+        if isinstance(c_pose, dict) and "x" in c_pose and "y" in c_pose:
+            trajectory_points.append({"x": round(float(c_pose["x"]), 3), "y": round(float(c_pose["y"]), 3)})
+
     INCIDENT_REGISTRY[incident_id] = {
         "incident_id": incident_id,
         "file_path": dest_path,
@@ -163,6 +173,7 @@ async def upload_telemetry_mcap(file: UploadFile = File(...)):
         "message": "Telemetry packet successfully ingested and verified.",
         "incident_id": incident_id,
         "details": INCIDENT_REGISTRY[incident_id],
+        "trajectory": trajectory_points,
     }
 
 
@@ -198,14 +209,21 @@ def api_simulate_incident():
 
 
 @app.post("/api/v1/simulation/run-audit")
-def api_run_audit(scenario_count: int = 150):
+def api_run_audit(scenario_count: int = 150, incident_id: Optional[str] = None):
     """Executes the complete Closed-Loop Physical AI Verification and Safety Certification Pipeline."""
-    drops = [os.path.join(UPLOAD_DIR, f) for f in os.listdir(UPLOAD_DIR) if f.endswith(".mcap")]
-    if not drops:
-        # Generate one on the fly
-        mcap_path = simulate_warehouse_amr_run(output_dir=UPLOAD_DIR)
-    else:
-        mcap_path = sorted(drops, key=os.path.getmtime)[-1]
+    mcap_path = None
+    if incident_id and incident_id in INCIDENT_REGISTRY:
+        candidate = INCIDENT_REGISTRY[incident_id].get("file_path")
+        if candidate and os.path.exists(candidate):
+            mcap_path = candidate
+
+    if not mcap_path:
+        drops = [os.path.join(UPLOAD_DIR, f) for f in os.listdir(UPLOAD_DIR) if f.endswith(".mcap")]
+        if not drops:
+            # Generate one on the fly
+            mcap_path = simulate_warehouse_amr_run(output_dir=UPLOAD_DIR)
+        else:
+            mcap_path = sorted(drops, key=os.path.getmtime)[-1]
 
     # 1. Parse MCAP Telemetry
     incident = McapParser.parse_file(mcap_path)

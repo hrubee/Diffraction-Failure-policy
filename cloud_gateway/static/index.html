@@ -198,12 +198,32 @@
                     <span class="text-xs text-blue-600 mono font-semibold">.mcap packet</span>
                 </h2>
                 
-                <div id="dropZone" class="border-2 border-dashed border-slate-300 hover:border-blue-500 transition rounded-xl p-6 text-center cursor-pointer bg-slate-50/60">
-                    <svg class="w-8 h-8 mx-auto text-slate-400 mb-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                    </svg>
-                    <p class="text-xs font-semibold text-slate-700">Drag & Drop MCAP packet here</p>
-                    <p class="text-[11px] text-slate-500 mt-0.5">Or click to select incident log</p>
+                <div id="dropZone" class="border-2 border-dashed border-slate-300 hover:border-blue-500 transition-all duration-150 rounded-xl p-6 text-center cursor-pointer bg-slate-50/60 relative group">
+                    <div id="dropZonePrompt" class="transition-transform group-hover:scale-[1.01]">
+                        <svg class="w-8 h-8 mx-auto text-slate-400 group-hover:text-blue-500 mb-2.5 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        <p class="text-xs font-semibold text-slate-700">Drag & Drop MCAP packet here</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Or click to browse incident log (.mcap)</p>
+                    </div>
+
+                    <div id="dropZoneLoading" class="hidden py-2">
+                        <svg class="animate-spin w-7 h-7 mx-auto text-blue-600 mb-2" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        <p id="uploadStatusText" class="text-xs font-semibold text-blue-600 mono">Uploading MCAP packet...</p>
+                    </div>
+
+                    <div id="dropZoneSuccess" class="hidden py-1">
+                        <div class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 mb-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <p id="uploadedFileName" class="text-xs font-bold text-slate-900 mono truncate max-w-[280px] mx-auto"></p>
+                        <div id="uploadedFileDetails" class="text-[11px] text-slate-500 mt-1.5 flex flex-wrap justify-center gap-1.5 mono"></div>
+                        <p class="text-[10px] text-blue-600 hover:text-blue-700 font-medium mt-2">Click or drop to replace packet</p>
+                    </div>
+
                     <input type="file" id="fileInput" class="hidden" accept=".mcap">
                 </div>
 
@@ -563,14 +583,166 @@
             });
         }
 
+        let currentIncidentId = null;
+
+        // Initialize Drag and Drop Telemetry Handlers
+        function initDragAndDrop() {
+            const dropZone = document.getElementById("dropZone");
+            const fileInput = document.getElementById("fileInput");
+            if (!dropZone || !fileInput) return;
+
+            // Prevent default drag behaviors on window and handle whole-page drops
+            ['dragenter', 'dragover', 'dragleave'].forEach(eventName => {
+                window.addEventListener(eventName, (e) => e.preventDefault(), false);
+                dropZone.addEventListener(eventName, (e) => e.preventDefault(), false);
+            });
+
+            // If user drops an .mcap file anywhere in the window, navigate to console and process
+            window.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const dt = e.dataTransfer;
+                if (dt && dt.files && dt.files.length > 0) {
+                    const file = dt.files[0];
+                    if (file.name.toLowerCase().endsWith('.mcap')) {
+                        switchView('console');
+                        handleMcapFileUpload(file);
+                    }
+                }
+            }, false);
+
+            // Highlight drop zone on drag over
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.add('border-blue-500', 'bg-blue-50/80', 'ring-4', 'ring-blue-100');
+                    dropZone.classList.remove('border-slate-300', 'bg-slate-50/60');
+                }, false);
+            });
+
+            // Unhighlight drop zone
+            ['dragleave', 'dragend'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.remove('border-blue-500', 'bg-blue-50/80', 'ring-4', 'ring-blue-100');
+                    dropZone.classList.add('border-slate-300', 'bg-slate-50/60');
+                }, false);
+            });
+
+            // Handle dropped file
+            dropZone.addEventListener('drop', (e) => {
+                dropZone.classList.remove('border-blue-500', 'bg-blue-50/80', 'ring-4', 'ring-blue-100');
+                dropZone.classList.add('border-slate-300', 'bg-slate-50/60');
+                const dt = e.dataTransfer;
+                if (dt && dt.files && dt.files.length > 0) {
+                    handleMcapFileUpload(dt.files[0]);
+                }
+            }, false);
+
+            // Handle click on drop zone
+            dropZone.addEventListener('click', (e) => {
+                // Avoid infinite loop if clicking directly on input
+                if (e.target !== fileInput) {
+                    fileInput.click();
+                }
+            });
+
+            // Handle file input selection
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files && fileInput.files.length > 0) {
+                    handleMcapFileUpload(fileInput.files[0]);
+                }
+            });
+        }
+
+        async function handleMcapFileUpload(file) {
+            if (!file.name.toLowerCase().endsWith('.mcap')) {
+                alert("Please drop or select a valid ROS 2 MCAP container file (.mcap).");
+                return;
+            }
+
+            const dropZonePrompt = document.getElementById("dropZonePrompt");
+            const dropZoneLoading = document.getElementById("dropZoneLoading");
+            const dropZoneSuccess = document.getElementById("dropZoneSuccess");
+            const uploadStatusText = document.getElementById("uploadStatusText");
+            const uploadedFileName = document.getElementById("uploadedFileName");
+            const uploadedFileDetails = document.getElementById("uploadedFileDetails");
+
+            dropZonePrompt.classList.add("hidden");
+            dropZoneSuccess.classList.add("hidden");
+            dropZoneLoading.classList.remove("hidden");
+            const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
+            uploadStatusText.innerText = `Ingesting ${file.name} (${sizeMb} MB)...`;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await fetch("/api/v1/telemetry/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    const errJson = await response.json().catch(() => ({}));
+                    throw new Error(errJson.detail || `Server returned status ${response.status}`);
+                }
+
+                const result = await response.json();
+                currentIncidentId = result.incident_id;
+
+                dropZoneLoading.classList.add("hidden");
+                dropZoneSuccess.classList.remove("hidden");
+
+                uploadedFileName.innerText = file.name;
+                const details = result.details || {};
+                uploadedFileDetails.innerHTML = `
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">Robot: ${details.robot_id || 'AMR'}</span>
+                    <span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-200">${details.total_messages || 0} msgs</span>
+                    <span class="bg-amber-50 text-amber-700 px-2 py-0.5 rounded border border-amber-200">${details.trigger_type || 'custom_drop'}</span>
+                `;
+
+                document.getElementById("incidentSubtitle").innerText = `Packet Ingested: ${file.name} (${sizeMb} MB) - Ready for audit`;
+
+                // Update chart if odometry trajectory was extracted
+                if (result.trajectory && result.trajectory.length > 0 && chartInstance) {
+                    chartInstance.data.datasets[1].data = result.trajectory;
+                    chartInstance.data.datasets[1].label = `Ingested Telemetry (${file.name})`;
+                    chartInstance.update();
+                }
+
+            } catch (err) {
+                console.error("Upload failed:", err);
+                dropZoneLoading.classList.add("hidden");
+                dropZonePrompt.classList.remove("hidden");
+                alert("Upload failed: " + err.message);
+            }
+        }
+
         async function triggerSimulatedIncident() {
             setLoading(true, "Capturing autonomous telemetry packet...");
             try {
                 const res = await fetch("/api/v1/simulation/simulate-incident", { method: "POST" });
                 const data = await res.json();
+                currentIncidentId = data.incident_file.replace('.mcap', '');
                 document.getElementById("incidentSubtitle").innerText = `Packet Ingested: ${data.incident_file}`;
+
+                const dropZonePrompt = document.getElementById("dropZonePrompt");
+                const dropZoneLoading = document.getElementById("dropZoneLoading");
+                const dropZoneSuccess = document.getElementById("dropZoneSuccess");
+                const uploadedFileName = document.getElementById("uploadedFileName");
+                const uploadedFileDetails = document.getElementById("uploadedFileDetails");
+
+                if (dropZonePrompt && dropZoneSuccess) {
+                    dropZonePrompt.classList.add("hidden");
+                    dropZoneLoading.classList.add("hidden");
+                    dropZoneSuccess.classList.remove("hidden");
+                    uploadedFileName.innerText = data.incident_file;
+                    uploadedFileDetails.innerHTML = `
+                        <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">Robot: amr_tugger_042</span>
+                        <span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-200">${data.messages} msgs</span>
+                        <span class="bg-amber-50 text-amber-700 px-2 py-0.5 rounded border border-amber-200">tracking_error_spike</span>
+                    `;
+                }
+
                 setLoading(false);
-                alert(`Telemetry incident recorded: ${data.incident_file} (${data.messages} messages)`);
             } catch (err) {
                 setLoading(false);
                 alert("Telemetry capture completed.");
@@ -581,7 +753,11 @@
             setLoading(true, "Executing Parallel Physical Stress Simulation & Verification...");
             try {
                 const count = document.getElementById('scenCount').value;
-                const res = await fetch(`/api/v1/simulation/run-audit?scenario_count=${count}`, { method: "POST" });
+                let url = `/api/v1/simulation/run-audit?scenario_count=${count}`;
+                if (currentIncidentId) {
+                    url += `&incident_id=${encodeURIComponent(currentIncidentId)}`;
+                }
+                const res = await fetch(url, { method: "POST" });
                 const data = await res.json();
 
                 document.getElementById("metricScore").innerText = `${data.compliance_score}%`;
@@ -658,8 +834,9 @@
             }
         }
 
-        // Initialize default view and calculations
+        // Initialize default view, calculations, and drag-and-drop listener
         calculateRoi();
+        initDragAndDrop();
     </script>
 </body>
 </html>
