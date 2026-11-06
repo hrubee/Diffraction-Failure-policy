@@ -53,6 +53,31 @@ def capture_all():
         page.screenshot(path=console_path, full_page=False)
         print(f"Captured: {console_path}")
 
+        # Capture Paywall Locked State (Scroll down to Remediation code container)
+        page.locator("#remediationCodeContainer").scroll_into_view_if_needed()
+        time.sleep(0.5)
+        locked_path = os.path.join(SCREENSHOTS_DIR, "saas_paywall_locked.png")
+        page.screenshot(path=locked_path, full_page=False)
+        print(f"Captured: {locked_path}")
+
+        # Click Unlock Pilot to open Paywall Modal
+        print("[Playwright] Opening Paywall Modal...")
+        page.click("#unlockPilotRemediationBtn")
+        time.sleep(0.8)
+        modal_path = os.path.join(SCREENSHOTS_DIR, "saas_paywall_modal.png")
+        page.screenshot(path=modal_path, full_page=False)
+        print(f"Captured: {modal_path}")
+
+        # Apply Demo Unlock in modal
+        print("[Playwright] Applying demo unlock key...")
+        page.click("button:has-text('diff_demo_access')")
+        time.sleep(1.5)
+
+        # Capture Unlocked State
+        unlocked_path = os.path.join(SCREENSHOTS_DIR, "saas_paywall_unlocked.png")
+        page.screenshot(path=unlocked_path, full_page=False)
+        print(f"Captured: {unlocked_path}")
+
         # Navigate to Telematics & Underwriting
         print("[Playwright] Navigating to Telematics & Insurance Underwriting...")
         page.click("#navTelematics")

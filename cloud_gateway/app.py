@@ -136,6 +136,77 @@ def health_check():
     }
 
 
+class LicenseVerifyRequest(BaseModel):
+    license_key: str
+
+
+class CheckoutSessionRequest(BaseModel):
+    plan_tier: str  # "pilot_30d" or "cicd_monthly"
+    customer_email: str
+    company_name: Optional[str] = "Autonomous Systems Client"
+
+
+VALID_LICENSE_KEYS = {
+    "diff_live_9f82a17bc341098de72": {"tier": "ENTERPRISE_PILOT", "company": "Acme Logistics Corp", "seats": 10},
+    "diff_pilot_enterprise_2026": {"tier": "ENTERPRISE_PILOT", "company": "Vanguard Robotics", "seats": 5},
+    "diff_demo_access": {"tier": "ENTERPRISE_PILOT", "company": "Evaluator Demo", "seats": 1},
+}
+
+
+@app.post("/api/v1/auth/verify-license")
+def verify_license(req: LicenseVerifyRequest):
+    """Validates an Enterprise API Token or Pilot License Key."""
+    key = req.license_key.strip()
+    if key in VALID_LICENSE_KEYS:
+        info = VALID_LICENSE_KEYS[key]
+        return {
+            "valid": True,
+            "tier": info["tier"],
+            "company": info["company"],
+            "features": [
+                "unlimited_nav2_remediation",
+                "openusd_stage_download",
+                "ansi_r1508_carrier_dossier",
+                "ci_cd_github_actions",
+                "dynamic_safety_governor_c_lib",
+            ],
+            "message": "Enterprise license active.",
+        }
+    return {
+        "valid": False,
+        "tier": "FREE_DIAGNOSTIC",
+        "company": "Unregistered",
+        "features": ["telemetry_ingestion", "kinematic_sysid_preview"],
+        "message": "Invalid or expired license key.",
+    }
+
+
+@app.post("/api/v1/billing/create-checkout-session")
+def create_checkout_session(req: CheckoutSessionRequest):
+    """
+    Creates an enterprise checkout or pilot SOW booking session.
+    Supports turnkey Stripe redirection or enterprise invoice generation.
+    """
+    if req.plan_tier == "pilot_30d":
+        amount_usd = 20000
+        plan_name = "Diffraction 30-Day Diagnostic Pilot Statement of Work"
+    else:
+        amount_usd = 4500
+        plan_name = "Diffraction Continuous Safety CI/CD Subscription"
+
+    session_id = f"diff_sess_{int(time.time())}_{req.plan_tier}"
+    return {
+        "session_id": session_id,
+        "plan_name": plan_name,
+        "amount_usd": amount_usd,
+        "customer_email": req.customer_email,
+        "company_name": req.company_name,
+        "status": "READY_FOR_PAYMENT",
+        "checkout_url": f"mailto:founder@diffraction.ai?subject=Purchase%20Order:%20{plan_name.replace(' ', '%20')}&body=Company:%20{req.company_name}%0AEmail:%20{req.customer_email}%0APlan:%20{plan_name}%0AAmount:%20${amount_usd:,}",
+        "instant_unlock_demo_key": "diff_demo_access"
+    }
+
+
 @app.post("/api/v1/telemetry/upload", status_code=status.HTTP_201_CREATED)
 async def upload_telemetry_mcap(file: UploadFile = File(...)):
     """Receives compressed MCAP containers from edge robot agents with strict size & path validation."""

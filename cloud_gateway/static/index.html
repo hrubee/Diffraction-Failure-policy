@@ -181,6 +181,17 @@
             <!-- Right Controls: Status Pill, Action Button & Profile -->
             <div class="flex items-center space-x-2.5 sm:space-x-3">
                 
+                <!-- License Tier & AMR Status -->
+                <div class="hidden sm:inline-flex items-center space-x-2">
+                    <div id="licensePill" class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[10px] font-bold mono">
+                        <span id="licenseDot" class="h-1.5 w-1.5 rounded-full bg-amber-500" aria-hidden="true"></span>
+                        <span id="licensePillText">FREE DIAGNOSTIC TIER</span>
+                    </div>
+                    <button type="button" onclick="openPaywallModal()" id="btnUpgradeHeader" class="text-[11px] font-bold text-blue-600 hover:text-blue-700 underline focus-ring rounded cursor-pointer">
+                        Upgrade
+                    </button>
+                </div>
+
                 <div class="hidden sm:inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-semibold mono num-tabular">
                     <span class="h-1.5 w-1.5 rounded-full bg-emerald-600" aria-hidden="true"></span>
                     <span>28&nbsp;AMRs Active</span>
@@ -613,7 +624,7 @@
                                 </div>
                             </a>
 
-                            <a id="siteRiskLink" href="#" target="_blank" class="min-h-[44px] p-3.5 rounded-xl bg-amber-50/80 hover:bg-amber-100 border border-amber-200 focus-ring transition-colors duration-150 flex items-center space-x-3 text-amber-700 cursor-pointer">
+                            <a id="siteRiskLink" href="#" onclick="handleArtifactClick(event, 'insurance')" target="_blank" class="min-h-[44px] p-3.5 rounded-xl bg-amber-50/80 hover:bg-amber-100 border border-amber-200 focus-ring transition-colors duration-150 flex items-center space-x-3 text-amber-700 cursor-pointer">
                                 <div class="h-8 w-8 rounded-lg bg-amber-600 flex items-center justify-center text-white shrink-0" aria-hidden="true">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                 </div>
@@ -623,7 +634,7 @@
                                 </div>
                             </a>
 
-                            <a id="usdStageLink" href="#" download class="min-h-[44px] p-3.5 rounded-xl bg-purple-50/80 hover:bg-purple-100 border border-purple-200 focus-ring transition-colors duration-150 flex items-center space-x-3 text-purple-700 cursor-pointer">
+                            <a id="usdStageLink" href="#" onclick="handleArtifactClick(event, 'usd')" download class="min-h-[44px] p-3.5 rounded-xl bg-purple-50/80 hover:bg-purple-100 border border-purple-200 focus-ring transition-colors duration-150 flex items-center space-x-3 text-purple-700 cursor-pointer">
                                 <div class="h-8 w-8 rounded-lg bg-purple-600 flex items-center justify-center text-white shrink-0" aria-hidden="true">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                                 </div>
@@ -634,7 +645,7 @@
                             </a>
                         </div>
 
-                        <!-- 1-Click Policy Remediation Section -->
+                        <!-- 1-Click Policy Remediation Section with Paywall -->
                         <div class="border border-slate-200 rounded-xl p-4 bg-white space-y-3">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-2">
                                 <div class="flex items-center space-x-2">
@@ -651,13 +662,31 @@
                                 </div>
                             </div>
 
-                            <div class="relative bg-slate-900 rounded-lg p-3 text-slate-200 font-mono text-[11px] overflow-x-auto max-h-56">
-                                <pre id="remediationCodeBlock" class="whitespace-pre"># Loading generated remediation patch…</pre>
-                                <div class="absolute top-2 right-2 flex space-x-2">
-                                    <button type="button" onclick="copyRemediationCode()" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px] mono border border-slate-700 focus-ring cursor-pointer">Copy</button>
-                                    <a id="downloadPatchBtn" href="#" download class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] mono focus-ring cursor-pointer">Download</a>
+                            <div class="relative">
+                                <div id="remediationCodeContainer" class="relative bg-slate-900 rounded-lg p-3 text-slate-200 font-mono text-[11px] overflow-x-auto max-h-56">
+                                    <pre id="remediationCodeBlock" class="whitespace-pre"># Loading generated remediation patch…</pre>
+                                    <div class="absolute top-2 right-2 flex space-x-2">
+                                        <button type="button" onclick="handleCopyRemediation()" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px] mono border border-slate-700 focus-ring cursor-pointer">Copy</button>
+                                        <a id="downloadPatchBtn" href="#" onclick="handleDownloadPatch(event)" download class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] mono focus-ring cursor-pointer">Download</a>
+                                    </div>
+                                </div>
+
+                                <!-- Paywall Frosted Overlay on Free Tier -->
+                                <div id="paywallRemediationOverlay" class="absolute inset-0 bg-slate-950/80 backdrop-blur-[3px] rounded-lg flex flex-col items-center justify-center p-4 text-center z-10 space-y-2.5">
+                                    <div class="h-9 w-9 rounded-full bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-blue-400">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-bold text-white tracking-tight">Turnkey ROS 2 Nav2 Patches Locked</div>
+                                        <p class="text-[11px] text-slate-300 max-w-sm mt-0.5">Free tier includes physical diagnosis &amp; SysID. Upgrade to 30-Day Diagnostic Pilot to download production yaml configs.</p>
+                                    </div>
+                                    <div class="flex flex-wrap items-center justify-center gap-2 pt-1">
+                                        <button id="unlockPilotRemediationBtn" type="button" onclick="openPaywallModal('remediation')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg shadow-sm focus-ring cursor-pointer">Unlock Turnkey Patch ($20k Pilot)</button>
+                                        <button id="demoUnlockBtn" type="button" onclick="applyDemoUnlock()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-semibold rounded-lg mono focus-ring cursor-pointer">Quick Test Drive</button>
+                                    </div>
                                 </div>
                             </div>
+
                             <p id="remediationInstructions" class="text-[11px] text-slate-600 font-medium leading-relaxed"></p>
                         </div>
 
@@ -1016,6 +1045,68 @@ jobs:
 
     </main>
 
+    <!-- Enterprise Paywall & License Activation Modal -->
+    <div id="paywallModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="bg-white rounded-2xl max-w-xl w-full border border-slate-200 card-shadow-lg p-6 sm:p-8 space-y-6 relative">
+            <button type="button" onclick="closePaywallModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-lg focus-ring min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer" aria-label="Close dialog">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+
+            <!-- Header -->
+            <div class="space-y-1.5">
+                <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-bold mono">
+                    <span>ENTERPRISE LICENSE REQUIRED</span>
+                </div>
+                <h3 id="modalTitle" class="text-xl font-extrabold text-slate-900 tracking-tight">Unlock Turnkey Firmware Remediation &amp; Underwriting Dossier</h3>
+                <p id="modalSubtitle" class="text-xs text-slate-500">Free diagnostic tier includes kinematic SysID and trajectory playback. Production patches and carrier insurance packets require an active pilot.</p>
+            </div>
+
+            <!-- Value Proposition Strip -->
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 grid grid-cols-2 gap-4 text-center">
+                <div>
+                    <div class="text-[10px] uppercase font-bold text-slate-500 mono">Downtime Prevented</div>
+                    <div class="text-lg font-black text-slate-900 mt-0.5 num-tabular">$480,000&nbsp;/&nbsp;yr</div>
+                    <div class="text-[10px] text-slate-400">Zero manual field repro</div>
+                </div>
+                <div>
+                    <div class="text-[10px] uppercase font-bold text-emerald-600 mono">Insurance Rebate</div>
+                    <div class="text-lg font-black text-emerald-600 mt-0.5 num-tabular">$60,000&nbsp;/&nbsp;yr</div>
+                    <div class="text-[10px] text-slate-400">ANSI R15.08 Part 2 verified</div>
+                </div>
+            </div>
+
+            <!-- Option 1: Enter License Key -->
+            <div class="space-y-2 border-t border-slate-100 pt-4">
+                <label for="modalLicenseInput" class="block text-xs font-bold text-slate-700">Have an Enterprise Token or Pilot License Key?</label>
+                <div class="flex gap-2">
+                    <input type="text" id="modalLicenseInput" placeholder="diff_live_..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800 focus-ring" aria-label="Enter License Key">
+                    <button type="button" onclick="submitModalLicense()" class="min-h-[44px] px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl focus-ring cursor-pointer">Activate</button>
+                </div>
+                <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+                    <span>Evaluating? Test with demo key:</span>
+                    <button type="button" onclick="applyDemoUnlock()" class="text-blue-600 hover:underline font-mono font-semibold focus-ring rounded cursor-pointer">diff_demo_access</button>
+                </div>
+            </div>
+
+            <!-- Option 2: Commercial Pilot Purchase Order / SOW -->
+            <div class="p-4 rounded-xl bg-gradient-to-r from-blue-900 to-slate-900 text-white space-y-3">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="text-xs font-bold text-white">30-Day Diagnostic Pilot Statement of Work</div>
+                        <div class="text-[11px] text-slate-300">5 field incidents • 3D USD twins • 25,000 rollouts</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-lg font-black text-white num-tabular">$20,000</div>
+                        <div class="text-[9px] text-slate-300 mono">Fixed Fee</div>
+                    </div>
+                </div>
+                <a href="mailto:founder@diffraction.ai?subject=Purchase%20Order:%2030-Day%20Diagnostic%20Pilot%20($20,000)&body=Please%20send%20the%20Statement%20of%20Work%20for%20our%20robotics%20fleet." class="min-h-[44px] w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center space-x-1.5 focus-ring cursor-pointer">
+                    <span>Initiate Pilot Statement of Work ($20,000)</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Global Enterprise SaaS Footer -->
     <footer class="border-t border-subtle bg-white px-4 sm:px-6 lg:px-8 py-5 mt-auto text-xs text-slate-500">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
@@ -1037,6 +1128,103 @@ jobs:
         let chartInstance = null;
         let currentIncidentId = null;
         let currentRemediation = null;
+        let isLicensed = false;
+        let activeLicense = null;
+
+        function openPaywallModal(feature = 'general') {
+            const modal = document.getElementById("paywallModal");
+            const sub = document.getElementById("modalSubtitle");
+            if (feature === 'remediation') {
+                sub.innerText = "ROS 2 Nav2 speed filter masks, controller patches, and Isaac Lab gym code require an active pilot license.";
+            } else if (feature === 'insurance') {
+                sub.innerText = "The ANSI/RIA R15.08 Part 2 Insurance Underwriting Dossier qualifies your site for a 20-30% premium rebate and is reserved for pilot customers.";
+            } else if (feature === 'usd') {
+                sub.innerText = "High-fidelity 3D OpenUSD digital twin stage exports require an active pilot license.";
+            } else {
+                sub.innerText = "Free diagnostic tier includes kinematic SysID and trajectory playback. Production patches and carrier insurance packets require an active pilot.";
+            }
+            modal.classList.remove("hidden");
+        }
+
+        function closePaywallModal() {
+            document.getElementById("paywallModal").classList.add("hidden");
+        }
+
+        async function verifyLicenseKey(key) {
+            if (!key) return;
+            try {
+                const res = await fetch("/api/v1/auth/verify-license", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ license_key: key })
+                });
+                const data = await res.json();
+                if (data.valid) {
+                    isLicensed = true;
+                    activeLicense = data;
+                    
+                    const pill = document.getElementById("licensePill");
+                    const pillText = document.getElementById("licensePillText");
+                    const pillDot = document.getElementById("licenseDot");
+                    const btnUpgrade = document.getElementById("btnUpgradeHeader");
+                    
+                    if (pill) pill.className = "inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold mono";
+                    if (pillDot) pillDot.className = "h-1.5 w-1.5 rounded-full bg-emerald-600";
+                    if (pillText) pillText.innerText = "PILOT LICENSE (ACTIVE)";
+                    if (btnUpgrade) {
+                        btnUpgrade.innerText = "License Active";
+                        btnUpgrade.className = "text-[11px] font-bold text-emerald-600 no-underline cursor-default";
+                        btnUpgrade.onclick = null;
+                    }
+
+                    const overlay = document.getElementById("paywallRemediationOverlay");
+                    if (overlay) overlay.classList.add("hidden");
+
+                    closePaywallModal();
+                    alert(`Enterprise license activated for ${data.company}! All firmware patches and insurance dossiers unlocked.`);
+                } else {
+                    alert("Invalid or unrecognized license key. Please check your credentials or book a pilot.");
+                }
+            } catch (err) {
+                console.error("License check error:", err);
+            }
+        }
+
+        function submitModalLicense() {
+            const key = document.getElementById("modalLicenseInput").value.trim();
+            if (!key) {
+                alert("Please enter your API token or license key.");
+                return;
+            }
+            verifyLicenseKey(key);
+        }
+
+        function applyDemoUnlock() {
+            document.getElementById("modalLicenseInput").value = "diff_demo_access";
+            verifyLicenseKey("diff_demo_access");
+        }
+
+        function handleCopyRemediation() {
+            if (!isLicensed) {
+                openPaywallModal('remediation');
+                return;
+            }
+            copyRemediationCode();
+        }
+
+        function handleDownloadPatch(e) {
+            if (!isLicensed) {
+                e.preventDefault();
+                openPaywallModal('remediation');
+            }
+        }
+
+        function handleArtifactClick(e, type) {
+            if (!isLicensed) {
+                e.preventDefault();
+                openPaywallModal(type);
+            }
+        }
 
         // Mobile drawer toggle
         function toggleMobileMenu() {
