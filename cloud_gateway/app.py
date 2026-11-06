@@ -25,6 +25,7 @@ from remediation.policy_patcher import PolicyRemediationPatcher
 from reporting.report_generator import SafetyReportGenerator
 from reporting.site_risk_assessor import SiteRiskAssessor
 from scripts.run_mock_robot import simulate_warehouse_amr_run
+from scripts.simulate_edge_case import SCENARIO_SIMULATORS
 from simulation_harness.certification_oracle import SafetyCertificationOracle
 from simulation_harness.isaac_runner import IsaacSimulationHarness
 from twin_synthesis.nurec_reconstruction import NuRecReconstructor
@@ -276,9 +277,18 @@ async def upload_telemetry_mcap(file: UploadFile = File(...)):
 
 
 @app.post("/api/v1/simulation/simulate-incident")
-def api_simulate_incident():
-    """Triggers mock robot simulation generating an authentic AMR dock failure MCAP."""
-    mcap_path = simulate_warehouse_amr_run(output_dir=UPLOAD_DIR)
+def api_simulate_incident(scenario: str = "traction_slip"):
+    """
+    Triggers mock robot simulation generating an authentic AMR failure MCAP.
+    Supported physical failure classes:
+    - 'traction_slip': Surface traction loss & low-friction skid
+    - 'optical_glare': Specular glare sensor blinding & phantom LiDAR stop
+    - 'actuator_latency': DDS/CAN-bus latency jitter causing steering oscillation
+    - 'pedestrian_pinch': ISO 3691-4 dynamic worker clearance zone breach
+    - 'payload_shift': Centrifugal asymmetric pallet mass shift and roll tilt
+    """
+    sim_func = SCENARIO_SIMULATORS.get(scenario, simulate_warehouse_amr_run)
+    mcap_path = sim_func(output_dir=UPLOAD_DIR)
     if not mcap_path:
         # Fallback to latest
         drops = [os.path.join(UPLOAD_DIR, f) for f in os.listdir(UPLOAD_DIR) if f.endswith(".mcap")]
@@ -297,11 +307,16 @@ def api_simulate_incident():
         "duration_seconds": parsed.duration_seconds,
         "channels": parsed.channels,
         "ingested_at": time.time(),
+        "scenario_class": scenario,
     }
     return {
         "status": "success",
         "incident_id": incident_id,
         "incident_file": os.path.basename(mcap_path),
+        "robot_id": parsed.robot_id,
+        "facility_id": parsed.facility_id,
+        "trigger_type": parsed.trigger_type,
+        "scenario_class": scenario,
         "messages": parsed.total_messages,
     }
 

@@ -37,13 +37,14 @@ def capture_all():
         print(f"Captured: {overview_path}")
 
         # Navigate to Audit Console & Run Complete Audit
-        print("[Playwright] Loading sample incident in Audit Console...")
+        print("[Playwright] Loading Optical Glare incident in Audit Console...")
         page.click("#navConsole")
         time.sleep(0.5)
-        page.click("button:has-text('Sample: Bay 7 Slip')")
+        # Click Glare hazard selector
+        page.click("#btnHazardGlare")
         time.sleep(1.5)
 
-        print("[Playwright] Executing complete verification audit...")
+        print("[Playwright] Executing complete verification audit on Optical Glare...")
         page.click("#runPipelineBtn")
         # Wait for audit completion
         page.wait_for_selector("#artifactsCard:not(.hidden)", timeout=15000)
@@ -123,7 +124,7 @@ def capture_all():
         # Navigate to Audit Console on Mobile via visible drawer link
         mobile_page.click("#mobileDrawer a:has-text('Audit Console')")
         time.sleep(1)
-        mobile_page.click("button:has-text('Sample: Bay 7 Slip')")
+        mobile_page.click("#btnHazardSlip")
         time.sleep(1.5)
         mobile_page.click("#runPipelineBtn")
         mobile_page.wait_for_selector("#artifactsCard:not(.hidden)", timeout=15000)
