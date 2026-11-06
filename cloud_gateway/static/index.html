@@ -26,6 +26,10 @@
         }
 
         html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+            box-sizing: border-box;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -115,112 +119,102 @@
     </a>
 
     <!-- Top B2B SaaS Enterprise Header -->
-    <header class="border-b border-subtle bg-glass sticky top-0 z-40 px-4 sm:px-6 lg:px-8 py-2.5 transition-colors duration-150">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <header class="border-b border-subtle bg-glass sticky top-0 z-40 px-3 sm:px-6 lg:px-8 py-2.5 transition-colors duration-150 w-full">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3 w-full">
             
-            <!-- Brand & Multi-Tenant Selector -->
-            <div class="flex items-center space-x-3 sm:space-x-5">
+            <!-- Brand & Fleet Indicator -->
+            <div class="flex items-center space-x-3 shrink-0">
                 <a href="#overview" onclick="switchView('overview', event)" class="flex items-center space-x-2.5 rounded-xl p-1 -m-1 focus-ring" aria-label="Diffraction home - Overview">
-                    <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 flex items-center justify-center font-black text-white text-lg shadow-sm shadow-blue-600/30">
+                    <div class="h-8 w-8 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 flex items-center justify-center font-black text-white text-base shadow-sm shadow-blue-600/30">
                         Δ
                     </div>
                     <div>
-                        <div class="flex items-center space-x-2">
-                            <span class="font-extrabold text-base tracking-tight text-slate-900">DIFFRACTION</span>
-                            <span class="hidden sm:inline-block text-[9px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-semibold tracking-wider uppercase mono" translate="no">Physical AI Oracle</span>
+                        <div class="flex items-center space-x-1.5">
+                            <span class="font-extrabold text-sm sm:text-base tracking-tight text-slate-900">DIFFRACTION</span>
+                            <span class="hidden sm:inline-block text-[9px] px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 border border-blue-200 font-semibold tracking-wider uppercase mono" translate="no">v2.4</span>
                         </div>
-                        <div class="text-[10px] text-slate-500 font-medium hidden md:block">Safety CI/CD for Autonomous Fleets</div>
                     </div>
                 </a>
 
-                <div class="hidden lg:block h-6 w-px bg-slate-200" aria-hidden="true"></div>
-
-                <!-- Organization & Fleet Selector -->
-                <div class="hidden lg:flex items-center space-x-2 bg-white px-3 py-1.5 rounded-lg border border-subtle card-shadow text-xs">
-                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                    <span class="font-bold text-slate-800">Acme Logistics Corp</span>
-                    <span class="text-slate-300" aria-hidden="true">/</span>
+                <div class="hidden 2xl:flex items-center space-x-1.5 bg-white px-2 py-1 rounded-lg border border-subtle card-shadow text-[11px]">
+                    <span class="font-bold text-slate-700">Acme Logistics</span>
+                    <span class="text-slate-300">/</span>
                     <label for="fleetSelect" class="sr-only">Select Active Fleet Location</label>
-                    <select id="fleetSelect" class="bg-transparent font-medium text-slate-700 focus-ring rounded cursor-pointer pr-1" onchange="onFleetChange(this.value)">
-                        <option value="chicago">Chicago Hub • Bay 7 (Active)</option>
-                        <option value="dallas">Dallas Hub • Bay 4 (Active)</option>
-                        <option value="rotterdam">Rotterdam EuroPort • Dock A</option>
+                    <select id="fleetSelect" class="bg-transparent font-medium text-slate-600 focus-ring rounded cursor-pointer pr-1 text-[11px]" onchange="onFleetChange(this.value)">
+                        <option value="chicago">Chicago Hub • Bay 7</option>
+                        <option value="dallas">Dallas Hub • Bay 4</option>
+                        <option value="rotterdam">Rotterdam Dock A</option>
                     </select>
-                    <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shrink-0" title="Connected to Edge Sentinel" aria-label="Edge Sentinel connected"></span>
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" title="Connected to Edge Sentinel"></span>
                 </div>
             </div>
 
-            <!-- Desktop Navigation Links -->
-            <nav class="hidden md:flex items-center space-x-1 lg:space-x-1.5 text-xs font-semibold text-slate-600" aria-label="Main Navigation">
-                <a href="#overview" onclick="switchView('overview', event)" id="navOverview" class="px-3 py-2 rounded-lg text-blue-600 bg-blue-50 font-bold focus-ring transition-colors duration-150 flex items-center space-x-1.5">
+            <!-- Desktop Navigation Links (Responsive Breakpoint: xl / 1280px+) -->
+            <nav class="hidden xl:flex items-center space-x-1 text-xs font-semibold text-slate-600" aria-label="Main Navigation">
+                <a href="#overview" onclick="switchView('overview', event)" id="navOverview" class="px-2.5 py-1.5 rounded-lg text-blue-600 bg-blue-50 font-bold focus-ring transition-colors duration-150 flex items-center space-x-1">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                     <span>Overview</span>
                 </a>
-                <a href="#console" onclick="switchView('console', event)" id="navConsole" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 focus-ring transition-colors duration-150 flex items-center space-x-1.5">
+                <a href="#console" onclick="switchView('console', event)" id="navConsole" class="px-2.5 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 focus-ring transition-colors duration-150 flex items-center space-x-1">
                     <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                     <span>Audit Console</span>
                 </a>
-                <a href="#telematics" onclick="switchView('telematics', event)" id="navTelematics" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 focus-ring transition-colors duration-150 flex items-center space-x-1.5">
+                <a href="#telematics" onclick="switchView('telematics', event)" id="navTelematics" class="px-2.5 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 focus-ring transition-colors duration-150 flex items-center space-x-1">
                     <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                     <span>Telematics &amp; Insurance</span>
                 </a>
-                <a href="#governor" onclick="switchView('governor', event)" id="navGovernor" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 focus-ring transition-colors duration-150 flex items-center space-x-1.5">
+                <a href="#governor" onclick="switchView('governor', event)" id="navGovernor" class="px-2.5 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 focus-ring transition-colors duration-150 flex items-center space-x-1">
                     <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     <span>Edge Governor</span>
                 </a>
-                <a href="#cicd" onclick="switchView('cicd', event)" id="navCicd" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 focus-ring transition-colors duration-150 flex items-center space-x-1.5">
+                <a href="#cicd" onclick="switchView('cicd', event)" id="navCicd" class="px-2.5 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 focus-ring transition-colors duration-150 flex items-center space-x-1">
                     <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                    <span>CI/CD &amp; APIs</span>
+                    <span>CI/CD</span>
                 </a>
-                <a href="#pricing" onclick="switchView('pricing', event)" id="navPricing" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 focus-ring transition-colors duration-150 flex items-center space-x-1.5">
+                <a href="#pricing" onclick="switchView('pricing', event)" id="navPricing" class="px-2.5 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 focus-ring transition-colors duration-150 flex items-center space-x-1">
                     <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     <span>Pilot SOW</span>
                 </a>
             </nav>
 
             <!-- Right Controls: Status Pill, Action Button & Profile -->
-            <div class="flex items-center space-x-2.5 sm:space-x-3">
+            <div class="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
                 
-                <!-- License Tier & AMR Status -->
-                <div class="hidden sm:inline-flex items-center space-x-2">
-                    <div id="licensePill" class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[10px] font-bold mono">
-                        <span id="licenseDot" class="h-1.5 w-1.5 rounded-full bg-amber-500" aria-hidden="true"></span>
-                        <span id="licensePillText">FREE DIAGNOSTIC TIER</span>
-                    </div>
-                    <button type="button" onclick="openPaywallModal()" id="btnUpgradeHeader" class="text-[11px] font-bold text-blue-600 hover:text-blue-700 underline focus-ring rounded cursor-pointer">
-                        Upgrade
-                    </button>
-                </div>
+                <!-- Consolidated License Badge (hidden on mobile < sm, prominent in drawer) -->
+                <button type="button" onclick="openPaywallModal()" id="licensePill" class="hidden sm:inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 text-[10px] font-bold mono transition-colors focus-ring cursor-pointer" title="Manage Enterprise License">
+                    <span id="licenseDot" class="h-1.5 w-1.5 rounded-full bg-amber-500" aria-hidden="true"></span>
+                    <span id="licensePillText">FREE TIER</span>
+                    <span id="btnUpgradeHeader" class="text-blue-600 font-bold underline ml-0.5">Upgrade</span>
+                </button>
 
-                <div class="hidden sm:inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-semibold mono num-tabular">
+                <div class="hidden 2xl:inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-semibold mono num-tabular">
                     <span class="h-1.5 w-1.5 rounded-full bg-emerald-600" aria-hidden="true"></span>
-                    <span>28&nbsp;AMRs Active</span>
+                    <span>28&nbsp;AMRs</span>
                 </div>
 
-                <a href="#console" onclick="switchView('console', event)" class="min-h-[44px] px-3.5 py-2 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold rounded-xl text-xs shadow-sm focus-ring transition-transform duration-100 flex items-center space-x-1.5 cursor-pointer">
+                <a href="#console" onclick="switchView('console', event)" class="hidden md:inline-flex min-h-[36px] px-3 py-1.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold rounded-lg text-xs shadow-sm focus-ring transition-transform duration-100 items-center space-x-1 cursor-pointer">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    <span class="hidden sm:inline">Launch Audit</span>
-                    <span class="sm:hidden">Audit</span>
+                    <span>Launch Audit</span>
                 </a>
 
                 <!-- User Profile Avatar Button -->
-                <button type="button" class="min-h-[44px] min-w-[44px] p-1 rounded-full flex items-center justify-center focus-ring cursor-pointer" aria-label="User Account: John Doe, VP of Autonomy">
-                    <span class="h-8 w-8 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center font-bold text-xs text-slate-700">
+                <button type="button" class="hidden sm:flex min-h-[36px] min-w-[36px] p-0.5 rounded-full items-center justify-center focus-ring cursor-pointer" aria-label="User Account: John Doe, VP of Autonomy">
+                    <span class="h-7 w-7 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center font-bold text-[11px] text-slate-700">
                         JD
                     </span>
                 </button>
 
-                <!-- Mobile Hamburger Toggle Button -->
-                <button type="button" id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-xl text-slate-700 hover:text-slate-900 hover:bg-slate-100 focus-ring transition-colors duration-150 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Toggle Navigation Menu" aria-expanded="false" aria-controls="mobileDrawer">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+                <!-- Mobile & Tablet Hamburger Toggle Button (Visible below xl) -->
+                <button type="button" id="mobileMenuBtn" onclick="toggleMobileMenu()" class="xl:hidden p-2 rounded-xl text-slate-700 hover:text-slate-900 hover:bg-slate-100 focus-ring transition-colors duration-150 min-w-[40px] min-h-[40px] flex items-center justify-center cursor-pointer" aria-label="Toggle Navigation Menu" aria-expanded="false" aria-controls="mobileDrawer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
                 </button>
             </div>
         </div>
 
-        <!-- Mobile Drawer Navigation -->
-        <div id="mobileDrawer" class="hidden md:hidden pt-3 pb-2 border-t border-slate-200 mt-2 space-y-1" style="overscroll-behavior: contain;">
+        <!-- Mobile & Tablet Drawer Navigation (Below xl) -->
+        <div id="mobileDrawer" class="hidden xl:hidden pt-3 pb-2 border-t border-slate-200 mt-2 space-y-1" style="overscroll-behavior: contain;">
             <div class="p-2.5 mb-2 bg-slate-100 rounded-xl flex items-center justify-between text-xs">
-                <span class="font-bold text-slate-800">Acme Logistics • Bay 7</span>
+                <span class="font-bold text-slate-800">Acme Logistics • Chicago Hub</span>
                 <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px] mono">ONLINE</span>
             </div>
             <a href="#overview" onclick="switchView('overview', event); toggleMobileMenu()" class="w-full min-h-[44px] px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 focus-ring flex items-center space-x-2">
@@ -247,6 +241,9 @@
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 <span>Pilot SOW &amp; Pricing</span>
             </a>
+            <div class="pt-2 border-t border-slate-200 px-3">
+                <button type="button" onclick="openPaywallModal(); toggleMobileMenu()" class="w-full py-2 bg-blue-600 text-white rounded-lg text-xs font-bold focus-ring">Upgrade to Enterprise Pilot</button>
+            </div>
         </div>
     </header>
 
