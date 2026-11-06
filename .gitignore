@@ -44,3 +44,7 @@ storage/telemetry_drops/
 storage/usd_stages/
 storage/remediation_patches/
 storage/screenshots/
+*.db
+*.db-wal
+*.db-shm
+scratch/
