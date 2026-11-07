@@ -1,6 +1,7 @@
 /**
  * Presentation Component: Multi-Modal Autonomous Fleet Architecture Showcase
  * Explicitly proves generalization across Humanoids, Heavy Off-Highway, Manipulators, AMRs, and Rovers.
+ * Palette: #2FA4D7 (Blue), #F5E9D8 (Beige Canvas), #3E2C23 (Espresso Brown), #E76F2E (Safety Orange)
  */
 
 'use client';
@@ -16,7 +17,6 @@ import {
   ShieldCheck,
   AlertTriangle,
   Zap,
-  Sliders,
   Sparkles,
 } from 'lucide-react';
 
@@ -48,7 +48,7 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     key: 'humanoid_zmp_slip',
     name: 'Bipedal Humanoid Logistics',
     category: 'Humanoid Bipedal',
-    icon: <Activity className="w-5 h-5 text-purple-400" />,
+    icon: <Activity className="w-5 h-5 text-[#2FA4D7]" />,
     standard: 'ISO 13482:2014 §5.3 (Personal Care & Humanoid Safety)',
     facility: 'Munich Robotics Proving Ground',
     failureHazard: 'Zero-Moment Point (ZMP) Foot Slip & Torso Tipping',
@@ -70,7 +70,7 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     key: 'heavy_hauler_skid',
     name: 'Autonomous Heavy Hauler (50T)',
     category: 'Mining & Heavy Off-Highway',
-    icon: <Truck className="w-5 h-5 text-amber-400" />,
+    icon: <Truck className="w-5 h-5 text-[#E76F2E]" />,
     standard: 'ISO 17757:2019 §4.3 (Earth-Moving & Mining Autonomy)',
     facility: 'Nevada Heavy Autonomy Range',
     failureHazard: '12% Grade Incline Mud Skid & Berm Breach Risk',
@@ -92,7 +92,7 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     key: 'manipulator_wrench_fault',
     name: '6-DOF Collaborative Robotic Arm',
     category: 'Industrial Manufacturing Cell',
-    icon: <Cpu className="w-5 h-5 text-emerald-400" />,
+    icon: <Cpu className="w-5 h-5 text-[#2FA4D7]" />,
     standard: 'ISO 10218-1 / ISO/TS 15066 (Collaborative Robotics)',
     facility: 'Stuttgart Automation Cell',
     failureHazard: 'Kinematic Singularity Dynamic Torque Limit Fault',
@@ -114,7 +114,7 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     key: 'wheeled_amr_stopping_breach',
     name: 'Wheeled Industrial AMR (800kg)',
     category: 'Warehouse & Intralogistics',
-    icon: <Bot className="w-5 h-5 text-blue-400" />,
+    icon: <Bot className="w-5 h-5 text-[#E76F2E]" />,
     standard: 'ISO 3691-4:2020 §4.1.2 (Driverless Industrial Trucks)',
     facility: 'Chicago Logistics Distribution Hub',
     failureHazard: 'Spilled Coolant Low Friction Stopping Distance Breach',
@@ -136,7 +136,7 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     key: 'urban_rover_glare',
     name: 'Urban Sidewalk Delivery Rover',
     category: 'Last-Mile Pedestrian Autonomy',
-    icon: <Compass className="w-5 h-5 text-cyan-400" />,
+    icon: <Compass className="w-5 h-5 text-[#2FA4D7]" />,
     standard: 'ISO 22737:2021 (Low-Speed Autonomous Driving)',
     facility: 'Tokyo Urban Mobility Range',
     failureHazard: '95,000 Lux Direct Solar Glare Blind Spot',
@@ -163,33 +163,33 @@ export const LandingInteractiveModalities: React.FC<LandingInteractiveModalities
   const current = MODALITY_FLEET[activeIdx];
 
   return (
-    <section id="modalities" className="py-20 relative" aria-label="Autonomous Modalities">
+    <section id="modalities" className="py-20 relative bg-[#F5E9D8]" aria-label="Autonomous Modalities">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-800 pb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[#3E2C23]/15 pb-8">
           <div className="max-w-3xl space-y-3">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-blue-950 border border-blue-500/40 text-xs text-blue-300 font-mono">
-              <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-white border border-[#2FA4D7]/40 text-xs text-[#2FA4D7] font-mono">
+              <Sparkles className="w-3.5 h-3.5 text-[#E76F2E]" />
               <span className="font-semibold uppercase tracking-wider text-[10px]">
                 Hardware Agnostic Physical AI
               </span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight font-headline">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2C23] tracking-tight leading-tight font-headline">
               One Universal Safety Engine.
               <br />
-              <span className="text-orange-400">
+              <span className="text-[#E76F2E]">
                 Five Autonomous Form Factors.
               </span>
             </h2>
 
-            <p className="text-slate-400 text-sm sm:text-base leading-relaxed font-body">
+            <p className="text-[#3E2C23]/80 text-sm sm:text-base leading-relaxed font-body">
               Whether you build bipedal humanoids, 50-ton mining haulers, or collaborative robot arms, 
               Diffraction ingests your kinematics and automates ISO safety compliance without custom test rigs.
             </p>
           </div>
 
-          <span className="text-xs text-slate-500 font-mono hidden lg:inline-block">
+          <span className="text-xs text-[#3E2C23]/60 font-mono hidden lg:inline-block">
             5 Global Proving Grounds • Standardized ROS 2 Remediation
           </span>
         </div>
@@ -205,8 +205,8 @@ export const LandingInteractiveModalities: React.FC<LandingInteractiveModalities
                 onClick={() => setActiveIdx(idx)}
                 className={`py-2.5 px-4 rounded-lg text-xs font-bold font-mono transition-all flex items-center space-x-2 shrink-0 cursor-pointer ${
                   isActive
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'bg-[#0e1320] hover:bg-slate-800 text-slate-400 border border-slate-800'
+                    ? 'bg-[#3E2C23] text-[#F5E9D8] shadow-sm'
+                    : 'bg-white hover:bg-[#FAF4EB] text-[#3E2C23] border border-[#3E2C23]/20'
                 }`}
               >
                 <span>{item.icon}</span>
@@ -217,46 +217,46 @@ export const LandingInteractiveModalities: React.FC<LandingInteractiveModalities
         </div>
 
         {/* Detailed Modality Display Container */}
-        <div className="rounded-2xl bg-[#0e1320] border border-slate-800 p-6 sm:p-10 shadow-xl space-y-8">
+        <div className="rounded-2xl bg-white border border-[#3E2C23]/15 p-6 sm:p-10 shadow-sm space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left: The Failure Breakdown */}
             <div className="lg:col-span-7 space-y-6">
               <div className="flex flex-wrap items-center gap-2 text-xs">
-                <span className="px-2.5 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-500/40 font-mono font-bold">
+                <span className="px-2.5 py-0.5 rounded bg-[#2FA4D7]/15 text-[#2FA4D7] border border-[#2FA4D7]/30 font-mono font-bold">
                   {current.category}
                 </span>
-                <span className="text-slate-600">•</span>
-                <span className="text-slate-400 font-mono">{current.facility}</span>
-                <span className="text-slate-600">•</span>
-                <span className="text-yellow-400 font-mono font-bold">{current.standard}</span>
+                <span className="text-[#3E2C23]/40">•</span>
+                <span className="text-[#3E2C23]/70 font-mono">{current.facility}</span>
+                <span className="text-[#3E2C23]/40">•</span>
+                <span className="text-[#E76F2E] font-mono font-bold">{current.standard}</span>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-headline">
+              <h3 className="text-2xl sm:text-3xl font-bold text-[#3E2C23] tracking-tight font-headline">
                 {current.failureHazard}
               </h3>
 
               {/* Real World Consequence Callout */}
-              <div className="p-4 rounded-xl bg-[#1c0a06] border border-orange-500/40 text-xs sm:text-sm text-orange-200 leading-relaxed flex items-start space-x-3">
-                <AlertTriangle className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
+              <div className="p-4 rounded-xl bg-[#FFF4ED] border border-[#E76F2E]/30 text-xs sm:text-sm text-[#3E2C23] leading-relaxed flex items-start space-x-3">
+                <AlertTriangle className="w-5 h-5 text-[#E76F2E] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="font-bold text-orange-300">The Real-World Financial Risk:</strong>{' '}
+                  <strong className="font-bold text-[#E76F2E]">The Real-World Financial Risk:</strong>{' '}
                   {current.consequence}
                 </div>
               </div>
 
               {/* Root Cause Explanation */}
-              <div className="space-y-1.5 text-xs sm:text-sm text-slate-300 leading-relaxed font-body">
-                <div className="font-bold text-white tracking-wide uppercase text-[11px] font-mono">
+              <div className="space-y-1.5 text-xs sm:text-sm text-[#3E2C23]/90 leading-relaxed font-body">
+                <div className="font-bold text-[#3E2C23] tracking-wide uppercase text-[11px] font-mono">
                   Physics Root Cause Analysis:
                 </div>
-                <p className="text-slate-400">{current.rootCause}</p>
+                <p className="text-[#3E2C23]/80">{current.rootCause}</p>
               </div>
 
               {/* Solution Description */}
-              <div className="p-4 rounded-xl bg-[#081a2e] border border-blue-500/40 text-xs sm:text-sm text-blue-200 leading-relaxed flex items-start space-x-3">
-                <ShieldCheck className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+              <div className="p-4 rounded-xl bg-[#EDF7FC] border border-[#2FA4D7]/30 text-xs sm:text-sm text-[#3E2C23] leading-relaxed flex items-start space-x-3">
+                <ShieldCheck className="w-5 h-5 text-[#2FA4D7] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="font-bold text-blue-300">Diffraction Synthesized Remedy:</strong>{' '}
+                  <strong className="font-bold text-[#2FA4D7]">Diffraction Synthesized Remedy:</strong>{' '}
                   {current.automatedPatch}
                 </div>
               </div>
@@ -266,50 +266,50 @@ export const LandingInteractiveModalities: React.FC<LandingInteractiveModalities
                 <button
                   type="button"
                   onClick={() => onSelectScenarioAndAudit(current.key)}
-                  className="w-full sm:w-auto px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer group"
+                  className="w-full sm:w-auto px-6 py-3 rounded-lg bg-[#2FA4D7] hover:bg-[#258ec0] active:bg-[#1d749e] text-white font-bold text-xs sm:text-sm shadow-sm transition-all flex items-center justify-center space-x-2 cursor-pointer group"
                 >
-                  <Zap className="w-4 h-4 fill-current text-yellow-300 group-hover:scale-110 transition-transform" />
+                  <Zap className="w-4 h-4 fill-current text-[#F5E9D8] group-hover:scale-110 transition-transform" />
                   <span>Execute Complete Verification on {current.name}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
             </div>
 
-            {/* Right: Code Patch & Impact Stats */}
+            {/* Right: Code Patch & Impact Stats (High Contrast Espresso Terminal) */}
             <div className="lg:col-span-5 space-y-5">
               {/* Turnkey Patch Preview */}
-              <div className="rounded-xl bg-[#07090e] border border-slate-800 p-5 font-mono text-xs space-y-3">
-                <div className="flex justify-between items-center text-[11px] text-slate-400 border-b border-slate-800 pb-2">
-                  <span className="text-blue-400 font-bold">ROS 2 SYNTHESIZED CONTROLLER PATCH</span>
-                  <span className="text-yellow-400 font-bold">READY TO MERGE</span>
+              <div className="rounded-xl bg-[#3E2C23] border border-[#3E2C23] p-5 font-mono text-xs space-y-3 text-[#F5E9D8] shadow-md">
+                <div className="flex justify-between items-center text-[11px] text-[#F5E9D8]/70 border-b border-[#F5E9D8]/15 pb-2">
+                  <span className="text-[#2FA4D7] font-bold">ROS 2 SYNTHESIZED CONTROLLER PATCH</span>
+                  <span className="text-[#E76F2E] font-bold">READY TO MERGE</span>
                 </div>
-                <pre className="text-slate-300 text-[11px] leading-relaxed overflow-x-auto whitespace-pre">
+                <pre className="text-[#F5E9D8] text-[11px] leading-relaxed overflow-x-auto whitespace-pre font-mono">
                   {current.patchYaml}
                 </pre>
-                <div className="pt-2 border-t border-white/[0.08] flex justify-between items-center text-[10px] text-slate-400">
+                <div className="pt-2 border-t border-[#F5E9D8]/15 flex justify-between items-center text-[10px] text-[#F5E9D8]/70">
                   <span>Target: Nav2 / Zenoh Middleware</span>
-                  <span className="text-emerald-400">✓ Signed Dossier Generated</span>
+                  <span className="text-[#2FA4D7] font-bold">✓ Signed Dossier Generated</span>
                 </div>
               </div>
 
               {/* Benchmarked Impact Grid */}
               <div className="grid grid-cols-3 gap-3">
-                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-center">
-                  <div className="text-[10px] font-semibold text-slate-400 uppercase mono">Sim-to-Real Fail</div>
-                  <div className="text-lg font-bold text-rose-400 mt-1 line-through">{current.stats.failureRateBefore}</div>
-                  <div className="text-[10px] text-emerald-400 font-bold mt-0.5">→ {current.stats.failureRateAfter}</div>
+                <div className="p-3.5 rounded-xl bg-[#FAF4EB] border border-[#3E2C23]/15 text-center">
+                  <div className="text-[10px] font-semibold text-[#3E2C23]/70 uppercase mono">Sim-to-Real Fail</div>
+                  <div className="text-lg font-bold text-[#E76F2E] mt-1 line-through">{current.stats.failureRateBefore}</div>
+                  <div className="text-[10px] text-[#2FA4D7] font-bold mt-0.5">→ {current.stats.failureRateAfter}</div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-center">
-                  <div className="text-[10px] font-semibold text-slate-400 uppercase mono">Downtime Saved</div>
-                  <div className="text-sm sm:text-base font-bold text-emerald-300 mt-1.5 mono">
+                <div className="p-3.5 rounded-xl bg-[#FAF4EB] border border-[#3E2C23]/15 text-center">
+                  <div className="text-[10px] font-semibold text-[#3E2C23]/70 uppercase mono">Downtime Saved</div>
+                  <div className="text-sm sm:text-base font-bold text-[#3E2C23] mt-1.5 mono">
                     {current.stats.downtimeSaved}
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-center">
-                  <div className="text-[10px] font-semibold text-slate-400 uppercase mono">Audit Speed</div>
-                  <div className="text-sm sm:text-base font-bold text-cyan-300 mt-1.5 mono">
+                <div className="p-3.5 rounded-xl bg-[#FAF4EB] border border-[#3E2C23]/15 text-center">
+                  <div className="text-[10px] font-semibold text-[#3E2C23]/70 uppercase mono">Audit Speed</div>
+                  <div className="text-sm sm:text-base font-bold text-[#2FA4D7] mt-1.5 mono">
                     30 Sec
                   </div>
                 </div>

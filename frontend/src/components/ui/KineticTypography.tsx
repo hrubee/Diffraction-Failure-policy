@@ -26,45 +26,45 @@ export const HAZARD_ROTATION_ITEMS: readonly HazardRotationItem[] = [
     phrase: 'slick wet epoxy floors.',
     hazardLabel: 'Surface Traction Loss',
     metric: 'μ = 0.18 • Skid +1.8m',
-    accentClass: 'text-blue-400',
-    borderClass: 'border-blue-500',
-    badgeBgClass: 'bg-[#0f172a] text-blue-300',
+    accentClass: 'text-[#2FA4D7]',
+    borderClass: 'border-[#2FA4D7]',
+    badgeBgClass: 'bg-white text-[#3E2C23]',
   },
   {
     id: 'steep_slope',
     phrase: 'steep 12% gravel slopes.',
     hazardLabel: 'Momentum Runaway',
     metric: '12% Grade • 88% Tip Risk',
-    accentClass: 'text-orange-400',
-    borderClass: 'border-orange-500',
-    badgeBgClass: 'bg-[#1c0f0a] text-orange-300',
+    accentClass: 'text-[#E76F2E]',
+    borderClass: 'border-[#E76F2E]',
+    badgeBgClass: 'bg-white text-[#3E2C23]',
   },
   {
     id: 'sunlight_glare',
     phrase: '95,000 Lux blinding glare.',
     hazardLabel: 'RGB Sensor Saturation',
     metric: '95k Lux • Phantom Obstacle',
-    accentClass: 'text-yellow-400',
-    borderClass: 'border-yellow-400',
-    badgeBgClass: 'bg-[#1c1808] text-yellow-300',
+    accentClass: 'text-[#E76F2E]',
+    borderClass: 'border-[#E76F2E]',
+    badgeBgClass: 'bg-white text-[#3E2C23]',
   },
   {
     id: 'singularity_torque',
     phrase: 'joint singularity limits.',
     hazardLabel: 'Torque Spikes',
     metric: '195 Nm Peak • Controller Trip',
-    accentClass: 'text-orange-500',
-    borderClass: 'border-orange-500',
-    badgeBgClass: 'bg-[#1c0f0a] text-orange-300',
+    accentClass: 'text-[#2FA4D7]',
+    borderClass: 'border-[#2FA4D7]',
+    badgeBgClass: 'bg-white text-[#3E2C23]',
   },
   {
     id: 'payload_shift',
     phrase: 'unmodeled payload shifts.',
     hazardLabel: 'ZMP Boundary Breach',
     metric: 'Δcg = 14cm • Dynamic Tipping',
-    accentClass: 'text-yellow-300',
-    borderClass: 'border-yellow-400',
-    badgeBgClass: 'bg-[#1c1808] text-yellow-300',
+    accentClass: 'text-[#E76F2E]',
+    borderClass: 'border-[#E76F2E]',
+    badgeBgClass: 'bg-white text-[#3E2C23]',
   },
 ];
 
@@ -117,7 +117,7 @@ export const KineticRotatingHeadline: React.FC<KineticRotatingHeadlineProps> = (
     <div className="space-y-4">
       {/* Main Kinetic Headline Display */}
       <div
-        className="font-headline text-3xl sm:text-5xl lg:text-[54px] font-bold text-white tracking-tight leading-[1.08]"
+        className="font-headline text-3xl sm:text-5xl lg:text-[54px] font-bold text-[#3E2C23] tracking-tight leading-[1.08]"
         aria-label={`Robots pass simulation in the lab. They fail on ${currentHazard.phrase}`}
       >
         <div className="overflow-hidden py-0.5">
@@ -127,7 +127,7 @@ export const KineticRotatingHeadline: React.FC<KineticRotatingHeadlineProps> = (
         </div>
 
         <div className="overflow-hidden py-1 flex flex-wrap items-center gap-x-3.5">
-          <span className="text-slate-100">
+          <span className="text-[#3E2C23]">
             They fail on
           </span>
 
@@ -148,22 +148,22 @@ export const KineticRotatingHeadline: React.FC<KineticRotatingHeadlineProps> = (
       {/* Dynamic Telemetry Pill Bar with Live Swapped Hazard Info */}
       <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-slate-400 font-medium hidden sm:inline">Simulated Hazard:</span>
+          <span className="text-xs text-[#3E2C23]/70 font-medium hidden sm:inline">Simulated Hazard:</span>
           <div
             key={`badge-${currentHazard.id}`}
-            className={`inline-flex items-center space-x-2 px-3 py-1 rounded-md text-xs font-semibold border transition-all duration-300 ${
+            className={`inline-flex items-center space-x-2 px-3 py-1 rounded-md text-xs font-semibold border transition-all duration-300 shadow-xs ${
               currentHazard.badgeBgClass
             } ${currentHazard.borderClass} ${isAnimating ? 'animate-soft-blur' : 'opacity-0'}`}
           >
             <span className="h-2 w-2 rounded-full bg-current" />
-            <span className="font-medium">{currentHazard.hazardLabel}:</span>
-            <span className="font-mono font-bold tracking-tight">{currentHazard.metric}</span>
+            <span className="font-medium text-[#3E2C23]">{currentHazard.hazardLabel}:</span>
+            <span className="font-mono font-bold tracking-tight text-[#3E2C23]">{currentHazard.metric}</span>
           </div>
         </div>
 
-        {/* Quick Hazard Interactive Pills (Orange & Yellow Accents) */}
+        {/* Quick Hazard Interactive Pills (Orange & Blue Accents) */}
         <div className="flex items-center gap-1.5 text-[11px]">
-          <span className="text-slate-400 text-[10px] hidden sm:inline">Inspect:</span>
+          <span className="text-[#3E2C23]/60 text-[10px] hidden sm:inline">Inspect:</span>
           {HAZARD_ROTATION_ITEMS.map((item, idx) => (
             <button
               key={item.id}
@@ -171,8 +171,8 @@ export const KineticRotatingHeadline: React.FC<KineticRotatingHeadlineProps> = (
               onClick={() => handleManualSelect(idx)}
               className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all cursor-pointer ${
                 idx === activeIdx
-                  ? 'bg-yellow-400 text-slate-950 shadow-sm'
-                  : 'bg-slate-800 hover:bg-slate-700 text-slate-300'
+                  ? 'bg-[#E76F2E] text-white shadow-xs'
+                  : 'bg-white hover:bg-[#FAF4EB] text-[#3E2C23] border border-[#3E2C23]/25'
               }`}
               title={`Switch to ${item.hazardLabel}`}
             >

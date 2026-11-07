@@ -2,6 +2,7 @@
  * Presentation Component: 4-Act Storyline Walkthrough for Landing Page
  * Takes prospective buyers through the journey of why lab simulations lie
  * and how Diffraction automates physical AI safety certification.
+ * Palette: #2FA4D7 (Blue), #F5E9D8 (Beige Canvas), #3E2C23 (Espresso Brown), #E76F2E (Safety Orange)
  */
 
 'use client';
@@ -43,7 +44,7 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
     {
       stepNumber: 1,
       actName: 'The Divergence',
-      icon: <AlertTriangle className="w-4 h-4 text-rose-400" />,
+      icon: <AlertTriangle className="w-4 h-4 text-[#E76F2E]" />,
       title: 'The Hidden Gap Between Idealized Sim & Real Physics',
       summary:
         'Robotics engineers test autonomous navigation in simulators where friction is constant, floors are pristine, and lighting is uniform. But the actual physical world is ruthless and non-linear.',
@@ -58,7 +59,7 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
     {
       stepNumber: 2,
       actName: 'Black Box Ingestion',
-      icon: <Inbox className="w-4 h-4 text-blue-400" />,
+      icon: <Inbox className="w-4 h-4 text-[#2FA4D7]" />,
       title: 'Drop the Black Box: 5 Seconds from Incident to Ground-Truth SysID',
       summary:
         'Instead of spending 3 weeks manually slicing gigabytes of messy ROS bags, drop the robot’s black box incident log directly into Diffraction.',
@@ -73,7 +74,7 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
     {
       stepNumber: 3,
       actName: 'Adversarial Sweep',
-      icon: <Cpu className="w-4 h-4 text-cyan-400" />,
+      icon: <Cpu className="w-4 h-4 text-[#2FA4D7]" />,
       title: '150+ Generative Physics Replays in Cloud Simulation',
       summary:
         'Diffraction does not just replay the log once. It spins up 150 parallel physics simulations to find the exact mathematical boundary where autonomy fails.',
@@ -88,7 +89,7 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
     {
       stepNumber: 4,
       actName: 'Automated Remediate',
-      icon: <ShieldCheck className="w-4 h-4 text-emerald-400" />,
+      icon: <ShieldCheck className="w-4 h-4 text-[#2FA4D7]" />,
       title: 'Not Just an Error Log: Drop-in Code Patches & ISO Certification',
       summary:
         'Diffraction delivers the complete solution directly into your engineering pipeline: the exact ROS 2 controller patch and a signed audit dossier for safety inspectors.',
@@ -105,33 +106,33 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
   const currentAct = storyActs[activeActIndex];
 
   return (
-    <section id="how-it-works" className="py-20 relative" aria-label="How Diffraction Works">
+    <section id="how-it-works" className="py-20 relative bg-[#F5E9D8]" aria-label="How Diffraction Works">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Header */}
         <div className="max-w-3xl space-y-3">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-blue-950 border border-blue-500/40 text-xs text-blue-300 font-mono">
-            <Terminal className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-white border border-[#2FA4D7]/40 text-xs text-[#2FA4D7] font-mono">
+            <Terminal className="w-3.5 h-3.5 text-[#2FA4D7]" />
             <span className="font-semibold uppercase tracking-wider text-[10px]">
               The 4-Act Verification Engine
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight font-headline">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2C23] tracking-tight leading-tight font-headline">
             How Autonomous Fleets Go From
             <br />
-            <span className="text-yellow-400">
+            <span className="text-[#E76F2E]">
               Field Hazard to Certified Safe.
             </span>
           </h2>
 
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed font-body">
+          <p className="text-[#3E2C23]/80 text-sm sm:text-base leading-relaxed font-body">
             Follow the automated lifecycle of an industrial incident: from black box telemetry ingestion 
             to cloud stress-sweeps and turnkey ROS 2 policy deployment.
           </p>
         </div>
 
         {/* 4-Act Tab Bar */}
-        <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-none border-b border-slate-800">
+        <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-none border-b border-[#3E2C23]/15">
           {storyActs.map((act, index) => {
             const isActive = index === activeActIndex;
             return (
@@ -141,8 +142,8 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
                 onClick={() => setActiveActIndex(index)}
                 className={`py-2.5 px-4 rounded-lg text-xs font-bold font-mono transition-all flex items-center space-x-2.5 shrink-0 cursor-pointer ${
                   isActive
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'bg-[#0e1320] hover:bg-slate-800 text-slate-400 border border-slate-800'
+                    ? 'bg-[#3E2C23] text-[#F5E9D8] shadow-sm'
+                    : 'bg-white hover:bg-[#FAF4EB] text-[#3E2C23] border border-[#3E2C23]/20'
                 }`}
               >
                 <span>{act.icon}</span>
@@ -155,38 +156,38 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
         </div>
 
         {/* Story Card Container */}
-        <div className="rounded-2xl bg-[#0e1320] border border-slate-800 p-6 sm:p-10 shadow-xl">
+        <div className="rounded-2xl bg-white border border-[#3E2C23]/15 p-6 sm:p-10 shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Narrative */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-[#07090e] border border-slate-800 text-[11px] font-mono text-blue-400">
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-[#FAF4EB] border border-[#3E2C23]/15 text-[11px] font-mono text-[#2FA4D7] font-bold">
                 <span>{currentAct.tag}</span>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug font-headline">
+              <h3 className="text-2xl sm:text-3xl font-bold text-[#3E2C23] tracking-tight leading-snug font-headline">
                 {currentAct.title}
               </h3>
 
-              <div className="p-4 rounded-xl bg-[#07090e] border border-slate-800 text-xs sm:text-sm text-slate-300 leading-relaxed font-body">
+              <div className="p-4 rounded-xl bg-[#FAF4EB] border border-[#3E2C23]/15 text-xs sm:text-sm text-[#3E2C23]/90 leading-relaxed font-body">
                 {currentAct.summary}
               </div>
 
-              <div className="space-y-3 text-xs sm:text-sm text-slate-300 pt-1 font-body">
+              <div className="space-y-3 text-xs sm:text-sm text-[#3E2C23]/90 pt-1 font-body">
                 {currentAct.bulletPoints.map((pt, i) => (
                   <div key={i} className="flex items-start space-x-3">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span className="leading-relaxed text-slate-300">{pt}</span>
+                    <CheckCircle2 className="w-4 h-4 text-[#2FA4D7] shrink-0 mt-0.5" />
+                    <span className="leading-relaxed text-[#3E2C23]/85">{pt}</span>
                   </div>
                 ))}
               </div>
 
               {/* Navigation Controls */}
-              <div className="pt-6 flex items-center justify-between border-t border-slate-800">
+              <div className="pt-6 flex items-center justify-between border-t border-[#3E2C23]/15">
                 <button
                   type="button"
                   disabled={activeActIndex === 0}
                   onClick={() => setActiveActIndex((prev) => Math.max(0, prev - 1))}
-                  className="px-4 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white disabled:opacity-30 cursor-pointer transition-colors"
+                  className="px-4 py-2 rounded-lg text-xs font-semibold text-[#3E2C23]/60 hover:text-[#3E2C23] disabled:opacity-30 cursor-pointer transition-colors"
                 >
                   ← Previous Act
                 </button>
@@ -195,7 +196,7 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
                   <button
                     type="button"
                     onClick={() => setActiveActIndex((prev) => prev + 1)}
-                    className="px-5 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition-colors flex items-center space-x-2 cursor-pointer border border-slate-700"
+                    className="px-5 py-2.5 rounded-lg bg-[#FAF4EB] hover:bg-[#F5E9D8] text-[#3E2C23] font-semibold text-xs transition-colors flex items-center space-x-2 cursor-pointer border border-[#3E2C23]/20"
                   >
                     <span>Next: {storyActs[activeActIndex + 1].actName}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -204,9 +205,9 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
                   <button
                     type="button"
                     onClick={onLaunchConsole}
-                    className="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold text-xs shadow-md transition-all flex items-center space-x-2 cursor-pointer"
+                    className="px-5 py-2.5 rounded-lg bg-[#2FA4D7] hover:bg-[#258ec0] active:bg-[#1d749e] text-white font-bold text-xs shadow-sm transition-all flex items-center space-x-2 cursor-pointer"
                   >
-                    <Zap className="w-3.5 h-3.5 fill-current text-yellow-300" />
+                    <Zap className="w-3.5 h-3.5 fill-current text-[#F5E9D8]" />
                     <span>Launch 3D Verification Sandbox</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
@@ -214,35 +215,35 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
               </div>
             </div>
 
-            {/* Right Visual Inspection Terminal */}
-            <div className="lg:col-span-5 bg-[#07090e] rounded-xl p-6 text-white border border-slate-800 shadow-xl space-y-4">
+            {/* Right Visual Inspection Terminal (High Contrast Espresso Terminal) */}
+            <div className="lg:col-span-5 bg-[#3E2C23] rounded-xl p-6 text-[#F5E9D8] border border-[#3E2C23] shadow-md space-y-4 font-mono text-xs">
               {activeActIndex === 0 && (
-                <div className="space-y-4 font-mono text-xs">
-                  <div className="flex justify-between items-center text-[11px] text-slate-400 border-b border-slate-800 pb-2">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center text-[11px] text-[#F5E9D8]/70 border-b border-[#F5E9D8]/15 pb-2">
                     <span className="flex items-center space-x-1.5">
-                      <Sliders className="w-3.5 h-3.5 text-blue-400" />
+                      <Sliders className="w-3.5 h-3.5 text-[#2FA4D7]" />
                       <span>PHYSICAL DIVERGENCE MATRIX</span>
                     </span>
-                    <span className="text-amber-400 font-bold">SIMULATION GAP</span>
+                    <span className="text-[#E76F2E] font-bold">SIMULATION GAP</span>
                   </div>
 
                   <div className="space-y-3">
-                    <div className="p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-800/30">
-                      <div className="text-[10px] uppercase text-emerald-400 font-semibold">
+                    <div className="p-3.5 rounded-xl bg-[#4A372E] border border-[#F5E9D8]/20">
+                      <div className="text-[10px] uppercase text-[#2FA4D7] font-semibold">
                         Lab Simulator (Idealized)
                       </div>
                       <div className="text-white font-bold mt-1">μ = 0.80 (Nominal Traction)</div>
-                      <div className="text-slate-400 text-[11px] mt-0.5">
+                      <div className="text-[#F5E9D8]/70 text-[11px] mt-0.5">
                         Constant friction, zero wheel slip, uniform lighting.
                       </div>
                     </div>
 
-                    <div className="p-3.5 rounded-xl bg-rose-950/30 border border-rose-800/40">
-                      <div className="text-[10px] uppercase text-rose-400 font-semibold">
+                    <div className="p-3.5 rounded-xl bg-[#52291F] border border-[#E76F2E]/40">
+                      <div className="text-[10px] uppercase text-[#E76F2E] font-semibold">
                         Real Industrial Floor (Reality)
                       </div>
                       <div className="text-white font-bold mt-1">μ = 0.18 (Spilled Coolant)</div>
-                      <div className="text-rose-300 text-[11px] mt-0.5">
+                      <div className="text-[#F5E9D8]/90 text-[11px] mt-0.5">
                         Momentum skids 1.8m into human crossing aisle!
                       </div>
                     </div>
@@ -251,20 +252,20 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
               )}
 
               {activeActIndex === 1 && (
-                <div className="space-y-4 font-mono text-xs">
-                  <div className="flex justify-between items-center text-[11px] text-slate-400 border-b border-white/[0.08] pb-2">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center text-[11px] text-[#F5E9D8]/70 border-b border-[#F5E9D8]/15 pb-2">
                     <span className="flex items-center space-x-1.5">
-                      <Inbox className="w-3.5 h-3.5 text-blue-400" />
+                      <Inbox className="w-3.5 h-3.5 text-[#2FA4D7]" />
                       <span>ONBOARD RING BUFFER (.MCAP)</span>
                     </span>
-                    <span className="text-emerald-400 font-bold">INGESTED</span>
+                    <span className="text-[#2FA4D7] font-bold">INGESTED</span>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] space-y-2">
-                    <div className="text-cyan-300 font-bold">incident_wheeled_amr_digit.mcap</div>
-                    <div className="text-slate-300">Duration: 5.00s pre-incident • 128 msgs</div>
-                    <div className="text-amber-300 font-bold">Ground Truth SysID: μ = 0.18</div>
-                    <div className="text-emerald-400 text-[10px]">
+                  <div className="p-4 rounded-xl bg-[#4A372E] border border-[#F5E9D8]/20 space-y-2">
+                    <div className="text-[#2FA4D7] font-bold">incident_wheeled_amr_digit.mcap</div>
+                    <div className="text-[#F5E9D8]/80">Duration: 5.00s pre-incident • 128 msgs</div>
+                    <div className="text-[#E76F2E] font-bold">Ground Truth SysID: μ = 0.18</div>
+                    <div className="text-[#F5E9D8]/90 text-[10px]">
                       ✓ IMU, wheel odometry, and motor torques synchronized.
                     </div>
                   </div>
@@ -272,52 +273,52 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
               )}
 
               {activeActIndex === 2 && (
-                <div className="space-y-4 font-mono text-xs">
-                  <div className="flex justify-between items-center text-[11px] text-slate-400 border-b border-white/[0.08] pb-2">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center text-[11px] text-[#F5E9D8]/70 border-b border-[#F5E9D8]/15 pb-2">
                     <span className="flex items-center space-x-1.5">
-                      <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+                      <Cpu className="w-3.5 h-3.5 text-[#2FA4D7]" />
                       <span>ADVERSARIAL STRESS SWEEP</span>
                     </span>
-                    <span className="text-cyan-400 font-bold">150 ROLLOUTS</span>
+                    <span className="text-[#2FA4D7] font-bold">150 ROLLOUTS</span>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] space-y-2.5">
+                  <div className="p-4 rounded-xl bg-[#4A372E] border border-[#F5E9D8]/20 space-y-2.5">
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Friction Range:</span>
+                      <span className="text-[#F5E9D8]/70">Friction Range:</span>
                       <span className="text-white font-bold">μ = 0.12 - 1.15</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Adverse Glare:</span>
+                      <span className="text-[#F5E9D8]/70">Adverse Glare:</span>
                       <span className="text-white font-bold">Up to 95,000 Lux</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Safe Traction Bound:</span>
-                      <span className="text-emerald-400 font-bold">μ ≥ 0.33</span>
+                      <span className="text-[#F5E9D8]/70">Safe Traction Bound:</span>
+                      <span className="text-[#2FA4D7] font-bold">μ ≥ 0.33</span>
                     </div>
-                    <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden flex">
-                      <div className="bg-orange-500 h-1.5 w-1/3" />
-                      <div className="bg-blue-500 h-1.5 w-2/3" />
+                    <div className="w-full bg-[#2A1D17] rounded-full h-2 overflow-hidden flex">
+                      <div className="bg-[#E76F2E] h-2 w-1/3" />
+                      <div className="bg-[#2FA4D7] h-2 w-2/3" />
                     </div>
                   </div>
                 </div>
               )}
 
               {activeActIndex === 3 && (
-                <div className="space-y-4 font-mono text-xs">
-                  <div className="flex justify-between items-center text-[11px] text-slate-400 border-b border-white/[0.08] pb-2">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center text-[11px] text-[#F5E9D8]/70 border-b border-[#F5E9D8]/15 pb-2">
                     <span className="flex items-center space-x-1.5">
-                      <FileCode className="w-3.5 h-3.5 text-emerald-400" />
+                      <FileCode className="w-3.5 h-3.5 text-[#2FA4D7]" />
                       <span>TURNKEY REMEDIATION YAML</span>
                     </span>
-                    <span className="text-emerald-400 font-bold">ISO COMPLIANT</span>
+                    <span className="text-[#2FA4D7] font-bold">ISO COMPLIANT</span>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] space-y-1.5 text-[11px]">
-                    <div className="text-cyan-400 font-bold"># speed_filter_patch.yaml</div>
-                    <div className="text-slate-400">speed_filter_mask:</div>
-                    <div className="text-slate-300 pl-3">max_forward_vel: 0.65 # m/s</div>
-                    <div className="text-slate-300 pl-3">min_decel_rate: 1.85 # m/s²</div>
-                    <div className="text-emerald-400 pt-2 text-[10px]">
+                  <div className="p-4 rounded-xl bg-[#4A372E] border border-[#F5E9D8]/20 space-y-1.5 text-[11px]">
+                    <div className="text-[#2FA4D7] font-bold"># speed_filter_patch.yaml</div>
+                    <div className="text-[#F5E9D8]/70">speed_filter_mask:</div>
+                    <div className="text-[#F5E9D8] pl-3">max_forward_vel: 0.65 # m/s</div>
+                    <div className="text-[#F5E9D8] pl-3">min_decel_rate: 1.85 # m/s²</div>
+                    <div className="text-[#2FA4D7] pt-2 text-[10px] font-bold">
                       ✓ Cryptographic Dossier: ISO_3691-4_certified.pdf
                     </div>
                   </div>

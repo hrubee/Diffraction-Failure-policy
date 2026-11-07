@@ -1,12 +1,12 @@
 /**
  * Presentation Component: Enterprise Landing Footer
- * Sleek dark-mode footer with standard compliance links, platform status, and enterprise info.
+ * Sleek espresso footer with standard compliance links, platform status, and enterprise info.
+ * Palette: #2FA4D7 (Blue), #F5E9D8 (Beige Canvas), #3E2C23 (Espresso Brown), #E76F2E (Safety Orange)
  */
 
 'use client';
 
 import React from 'react';
-import { ShieldCheck, Activity, Terminal } from 'lucide-react';
 
 interface LandingFooterProps {
   readonly onLaunchConsole: () => void;
@@ -18,13 +18,13 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
   onOpenPricing,
 }) => {
   return (
-    <footer className="w-full border-t border-slate-800 bg-[#06080d] text-slate-400 text-xs py-14">
+    <footer className="w-full border-t border-[#3E2C23] bg-[#3E2C23] text-[#F5E9D8]/80 text-xs py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center space-x-2.5">
-              <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold shadow-sm">
+              <div className="w-7 h-7 rounded-lg bg-[#2FA4D7] flex items-center justify-center text-white font-bold shadow-sm">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M4 4v16" strokeLinecap="round" />
                   <path d="M9 7v10" strokeLinecap="round" />
@@ -35,18 +35,18 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
               <span className="font-extrabold text-base tracking-tight text-white font-headline" translate="no">
                 Diffraction
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-500/40 font-mono font-semibold">
+              <span className="text-[10px] px-2 py-0.5 rounded bg-[#4A372E] text-[#2FA4D7] border border-[#2FA4D7]/40 font-mono font-semibold">
                 v2.5 Enterprise
               </span>
             </div>
 
-            <p className="text-slate-400 text-xs leading-relaxed max-w-sm font-body">
+            <p className="text-[#F5E9D8]/80 text-xs leading-relaxed max-w-sm font-body">
               The automated physical AI safety verification and policy remediation platform. 
               Eliminating sim-to-real divergence across humanoids, AMRs, heavy haulers, and robotic manipulators.
             </p>
 
-            <div className="flex items-center space-x-2 text-[11px] text-slate-400 font-mono">
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+            <div className="flex items-center space-x-2 text-[11px] text-[#F5E9D8]/70 font-mono">
+              <span className="h-2 w-2 rounded-full bg-[#2FA4D7]" />
               <span>Global Proving Grounds API: Operational</span>
             </div>
           </div>
@@ -54,7 +54,7 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
           {/* Column 1: Capabilities */}
           <div className="space-y-3">
             <h4 className="font-bold text-xs uppercase tracking-wider text-white mono">Platform</h4>
-            <ul className="space-y-2 text-slate-400">
+            <ul className="space-y-2 text-[#F5E9D8]/70">
               <li>
                 <button type="button" onClick={onLaunchConsole} className="hover:text-white transition-colors cursor-pointer">
                   3D Digital Twin Viewer
@@ -81,7 +81,7 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
           {/* Column 2: Modalities */}
           <div className="space-y-3">
             <h4 className="font-bold text-xs uppercase tracking-wider text-white mono">Modalities</h4>
-            <ul className="space-y-2 text-slate-400">
+            <ul className="space-y-2 text-[#F5E9D8]/70">
               <li>
                 <a href="#modalities" className="hover:text-white transition-colors">
                   Bipedal Humanoid
@@ -113,7 +113,7 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
           {/* Column 3: Commercial */}
           <div className="space-y-3">
             <h4 className="font-bold text-xs uppercase tracking-wider text-white mono">Commercial</h4>
-            <ul className="space-y-2 text-slate-400">
+            <ul className="space-y-2 text-[#F5E9D8]/70">
               <li>
                 <button type="button" onClick={onOpenPricing} className="hover:text-white transition-colors cursor-pointer">
                   30-Day Turnkey Pilot ($15k)
@@ -139,11 +139,11 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+        <div className="pt-8 border-t border-[#F5E9D8]/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#F5E9D8]/60">
           <div>
             &copy; 2026 Diffraction AI Inc. All rights reserved. Physical AI Safety &amp; Verification Platform.
           </div>
-          <div className="flex flex-wrap items-center gap-4 text-slate-400 mono">
+          <div className="flex flex-wrap items-center gap-4 text-[#F5E9D8]/80 mono">
             <span>ISO 3691-4</span>
             <span>•</span>
             <span>ISO 13482</span>
@@ -151,8 +151,6 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
             <span>ISO 17757</span>
             <span>•</span>
             <span>ISO 10218</span>
-            <span>•</span>
-            <span>ISO 22737</span>
           </div>
         </div>
       </div>

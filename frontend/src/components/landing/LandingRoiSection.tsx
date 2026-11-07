@@ -1,12 +1,13 @@
 /**
  * Presentation Component: Interactive Fleet Downtime & ROI Exposure Model
  * Empirically proves how automated verification eliminates the $50k/hr line stoppage tax.
+ * Palette: #2FA4D7 (Blue), #F5E9D8 (Beige Canvas), #3E2C23 (Espresso Brown), #E76F2E (Safety Orange)
  */
 
 'use client';
 
 import React, { useState } from 'react';
-import { Calculator, DollarSign, TrendingDown, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import { Calculator, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 
 interface LandingRoiSectionProps {
   readonly onOpenPricing: () => void;
@@ -23,43 +24,43 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
   const savings = Math.round(annualCost * 0.8);
 
   return (
-    <section id="roi" className="py-20 relative" aria-label="Financial ROI Exposure Model">
+    <section id="roi" className="py-20 relative bg-[#F5E9D8]" aria-label="Financial ROI Exposure Model">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Header */}
         <div className="max-w-3xl space-y-3">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-blue-950 border border-blue-500/40 text-xs text-blue-300 font-mono">
-            <Calculator className="w-3.5 h-3.5 text-blue-400" />
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-white border border-[#2FA4D7]/40 text-xs text-[#2FA4D7] font-mono">
+            <Calculator className="w-3.5 h-3.5 text-[#2FA4D7]" />
             <span className="font-semibold uppercase tracking-wider text-[10px]">
               Financial Exposure &amp; Payback Calculator
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight font-headline">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2C23] tracking-tight leading-tight font-headline">
             Stop paying the $50,000/hr
             <br />
-            <span className="text-orange-400">
+            <span className="text-[#E76F2E]">
               unhandled corner-case tax.
             </span>
           </h2>
 
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed font-body">
+          <p className="text-[#3E2C23]/80 text-sm sm:text-base leading-relaxed font-body">
             Every unexplained emergency stop or traction skid halts automated production lines. 
             Adjust your fleet metrics below to benchmark your exact financial exposure.
           </p>
         </div>
 
         {/* Interactive Calculator Container */}
-        <div className="rounded-2xl bg-[#0e1320] border border-slate-800 p-6 sm:p-10 shadow-xl">
+        <div className="rounded-2xl bg-white border border-[#3E2C23]/15 p-6 sm:p-10 shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {/* Left Controls */}
             <div className="lg:col-span-7 space-y-6">
               {/* Slider 1: Fleet Size */}
               <div className="space-y-2">
-                <div className="flex justify-between text-sm font-semibold text-slate-200 font-body">
+                <div className="flex justify-between text-sm font-semibold text-[#3E2C23] font-body">
                   <label htmlFor="landingFleetSize" className="cursor-pointer">
                     Commercial Fleet Size:
                   </label>
-                  <span className="font-mono text-blue-400 font-bold">{fleetSize} Robots</span>
+                  <span className="font-mono text-[#2FA4D7] font-bold">{fleetSize} Robots</span>
                 </div>
                 <input
                   type="range"
@@ -69,9 +70,9 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
                   step="5"
                   value={fleetSize}
                   onChange={(e) => setFleetSize(Number(e.target.value))}
-                  className="w-full accent-blue-600 cursor-pointer"
+                  className="w-full accent-[#2FA4D7] cursor-pointer"
                 />
-                <div className="flex justify-between text-[11px] text-slate-500 font-mono">
+                <div className="flex justify-between text-[11px] text-[#3E2C23]/60 font-mono">
                   <span>5 units</span>
                   <span>150 units</span>
                   <span>300 units</span>
@@ -80,11 +81,11 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
 
               {/* Slider 2: Disengagements */}
               <div className="space-y-2">
-                <div className="flex justify-between text-sm font-semibold text-slate-200 font-body">
+                <div className="flex justify-between text-sm font-semibold text-[#3E2C23] font-body">
                   <label htmlFor="landingDisengagements" className="cursor-pointer">
                     Unhandled Disengagements per Robot / Month:
                   </label>
-                  <span className="font-mono text-orange-400 font-bold">{disengagements} stops</span>
+                  <span className="font-mono text-[#E76F2E] font-bold">{disengagements} stops</span>
                 </div>
                 <input
                   type="range"
@@ -94,9 +95,9 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
                   step="1"
                   value={disengagements}
                   onChange={(e) => setDisengagements(Number(e.target.value))}
-                  className="w-full accent-orange-500 cursor-pointer"
+                  className="w-full accent-[#E76F2E] cursor-pointer"
                 />
-                <div className="flex justify-between text-[11px] text-slate-500 font-mono">
+                <div className="flex justify-between text-[11px] text-[#3E2C23]/60 font-mono">
                   <span>1 stop (Rare)</span>
                   <span>10 stops (Average)</span>
                   <span>20 stops (Severe)</span>
@@ -105,11 +106,11 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
 
               {/* Slider 3: Cost per Hour */}
               <div className="space-y-2">
-                <div className="flex justify-between text-sm font-semibold text-slate-200 font-body">
+                <div className="flex justify-between text-sm font-semibold text-[#3E2C23] font-body">
                   <label htmlFor="landingCostPerHour" className="cursor-pointer">
                     Facility Stoppage Cost per Hour:
                   </label>
-                  <span className="font-mono text-yellow-400 font-bold">
+                  <span className="font-mono text-[#3E2C23] font-bold">
                     ${costPerHour.toLocaleString()} / hr
                   </span>
                 </div>
@@ -121,45 +122,45 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
                   step="5000"
                   value={costPerHour}
                   onChange={(e) => setCostPerHour(Number(e.target.value))}
-                  className="w-full accent-yellow-400 cursor-pointer"
+                  className="w-full accent-[#3E2C23] cursor-pointer"
                 />
-                <div className="flex justify-between text-[11px] text-slate-500 font-mono">
+                <div className="flex justify-between text-[11px] text-[#3E2C23]/60 font-mono">
                   <span>$10,000/hr (Light)</span>
                   <span>$50,000/hr (Industrial Benchmark)</span>
                   <span>$200,000/hr (Automotive Assembly)</span>
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-[#07090e] border border-slate-800 text-xs text-slate-400 flex items-center space-x-2.5 font-body">
-                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+              <div className="p-4 rounded-xl bg-[#FAF4EB] border border-[#3E2C23]/15 text-xs text-[#3E2C23]/80 flex items-center space-x-2.5 font-body">
+                <ShieldCheck className="w-4 h-4 text-[#2FA4D7] shrink-0" />
                 <span>
                   Based on benchmarked 15-minute average stall time for safety clearance and telemetry triage.
                 </span>
               </div>
             </div>
 
-            {/* Right Output Card */}
-            <div className="lg:col-span-5 bg-[#07090e] rounded-xl p-6 sm:p-8 text-center border border-slate-800 shadow-xl space-y-6">
+            {/* Right Output Card (High Contrast Espresso Card) */}
+            <div className="lg:col-span-5 bg-[#3E2C23] rounded-xl p-6 sm:p-8 text-center border border-[#3E2C23] shadow-md space-y-6 text-[#F5E9D8]">
               <div className="space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#F5E9D8]/70 font-mono">
                   Annual Downtime Exposure
                 </span>
-                <div className="text-3xl sm:text-4xl font-bold text-orange-400 font-headline tracking-tight">
+                <div className="text-3xl sm:text-4xl font-bold text-[#E76F2E] font-headline tracking-tight">
                   ${annualCost.toLocaleString()}
                 </div>
-                <div className="text-xs text-slate-400 font-body">
+                <div className="text-xs text-[#F5E9D8]/70 font-body">
                   {totalHours.toLocaleString()} lost operational hours / year
                 </div>
               </div>
 
-              <div className="py-5 border-y border-slate-800 space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-yellow-400 font-mono">
+              <div className="py-5 border-y border-[#F5E9D8]/15 space-y-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#2FA4D7] font-mono">
                   Net Capital Saved With Diffraction
                 </span>
-                <div className="text-4xl sm:text-5xl font-bold text-yellow-400 font-headline tracking-tight">
+                <div className="text-4xl sm:text-5xl font-bold text-[#2FA4D7] font-headline tracking-tight">
                   ${savings.toLocaleString()}
                 </div>
-                <div className="text-xs text-yellow-300 font-medium font-body">
+                <div className="text-xs text-[#F5E9D8]/90 font-medium font-body">
                   80% elimination of corner-case regression field stops
                 </div>
               </div>
@@ -168,13 +169,13 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
                 <button
                   type="button"
                   onClick={onOpenPricing}
-                  className="w-full py-3.5 px-6 rounded-lg bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold text-xs sm:text-sm tracking-wide shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer"
+                  className="w-full py-3.5 px-6 rounded-lg bg-[#2FA4D7] hover:bg-[#258ec0] active:bg-[#1d749e] text-white font-bold text-xs sm:text-sm tracking-wide shadow-sm transition-all flex items-center justify-center space-x-2 cursor-pointer"
                 >
-                  <Zap className="w-4 h-4 fill-current text-yellow-300" />
+                  <Zap className="w-4 h-4 fill-current text-[#F5E9D8]" />
                   <span>Lock In 30-Day Turnkey Pilot ($15k SOW)</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
-                <p className="text-[11px] text-slate-400 font-mono">
+                <p className="text-[11px] text-[#F5E9D8]/70 font-mono">
                   Average customer ROI payback period: &lt; 7 Days
                 </p>
               </div>

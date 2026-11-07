@@ -69,7 +69,7 @@ export default function Home() {
   const isMarketingMode = activeView === 'overview';
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-slate-100 flex flex-col selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-[#F5E9D8] text-[#3E2C23] flex flex-col selection:bg-[#2FA4D7] selection:text-white">
       {/* 1. MARKETING LANDING PAGE MODE (DEFAULT ROOT) */}
       {isMarketingMode ? (
         <>
