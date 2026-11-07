@@ -1,6 +1,9 @@
 /**
  * Presentation Component: Audit KPI Metrics Grid
+ * Styled with exact Color Hunt palette: #2FA4D7, #F5E9D8, #3E2C23, #E76F2E
  */
+
+'use client';
 
 import React from 'react';
 import { AuditVerdict } from '@/domain/kinematics/types';
@@ -10,38 +13,50 @@ interface AuditKpiGridProps {
 }
 
 export const AuditKpiGrid: React.FC<AuditKpiGridProps> = ({ verdict }) => {
-  const score = verdict ? `${verdict.complianceScore}%` : '--';
-  const scoreColor = verdict
-    ? verdict.complianceScore >= 95
-      ? 'text-emerald-600'
-      : verdict.complianceScore >= 85
-      ? 'text-amber-600'
-      : 'text-rose-600'
-    : 'text-slate-400';
+  if (!verdict) return null; // Keep studio clean until audit results are available
 
-  const rollouts = verdict ? String(verdict.totalScenarios) : '--';
-  const friction = verdict ? `μ ≥ ${verdict.safeFriction}` : '--';
+  const score = `${verdict.complianceScore}%`;
+  const scoreColor =
+    verdict.complianceScore >= 90
+      ? 'text-emerald-700'
+      : verdict.complianceScore >= 75
+      ? 'text-[#E76F2E]'
+      : 'text-rose-700';
+
+  const rollouts = String(verdict.totalScenarios);
+  const friction = `μ ≥ ${verdict.safeFriction}`;
   const sysId = verdict?.sysIdProfile
     ? `μ = ${verdict.sysIdProfile.estimated_surface_friction_mu}`
     : '--';
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
-        <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider mono">Safety Score</div>
-        <div className={`text-2xl font-black mt-1 num-tabular ${scoreColor}`}>{score}</div>
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      <div className="p-2.5 rounded-xl bg-[#FAF4EB] border border-[#3E2C23]/15 text-center">
+        <div className="text-[10px] font-bold text-[#3E2C23]/60 uppercase tracking-wide font-mono">
+          Safety Score
+        </div>
+        <div className={`text-lg font-bold mt-0.5 font-mono ${scoreColor}`}>{score}</div>
       </div>
-      <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
-        <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider mono">Sim Rollouts</div>
-        <div className="text-2xl font-black text-slate-800 mt-1 num-tabular">{rollouts}</div>
+
+      <div className="p-2.5 rounded-xl bg-[#FAF4EB] border border-[#3E2C23]/15 text-center">
+        <div className="text-[10px] font-bold text-[#3E2C23]/60 uppercase tracking-wide font-mono">
+          Sim Rollouts
+        </div>
+        <div className="text-lg font-bold text-[#3E2C23] mt-0.5 font-mono">{rollouts}</div>
       </div>
-      <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
-        <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider mono">Safe Min Friction</div>
-        <div className="text-2xl font-black text-slate-800 mt-1 num-tabular">{friction}</div>
+
+      <div className="p-2.5 rounded-xl bg-[#FAF4EB] border border-[#3E2C23]/15 text-center">
+        <div className="text-[10px] font-bold text-[#3E2C23]/60 uppercase tracking-wide font-mono">
+          Safe Min Friction
+        </div>
+        <div className="text-lg font-bold text-[#3E2C23] mt-0.5 font-mono">{friction}</div>
       </div>
-      <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
-        <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider mono">SysID Ground-Truth μ</div>
-        <div className="text-2xl font-black text-blue-600 mt-1 num-tabular">{sysId}</div>
+
+      <div className="p-2.5 rounded-xl bg-[#FAF4EB] border border-[#3E2C23]/15 text-center">
+        <div className="text-[10px] font-bold text-[#3E2C23]/60 uppercase tracking-wide font-mono">
+          SysID Ground-Truth μ
+        </div>
+        <div className="text-lg font-bold text-[#2FA4D7] mt-0.5 font-mono">{sysId}</div>
       </div>
     </div>
   );

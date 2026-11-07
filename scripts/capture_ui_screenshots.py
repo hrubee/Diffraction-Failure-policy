@@ -87,7 +87,7 @@ def capture_all():
         print(f"Captured: {governor_replay_path}")
 
         # Switch back to Baseline
-        page.click("button:has-text('Baseline Incident')")
+        page.click("button:has-text('Unprotected Incident')")
         time.sleep(0.5)
 
         # Navigate to Telematics & Proving Grounds
