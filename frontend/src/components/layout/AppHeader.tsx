@@ -1,7 +1,6 @@
 /**
- * Presentation Component: Enterprise SaaS Header Navigation Bar
- * Modern engineering navigation with custom SVG brand icon,
- * clean pill-based view transitions, and Proving Grounds selector.
+ * Presentation Component: Enterprise Application Header Navigation Bar
+ * Dark obsidian styling matching the Super Banger platform theme.
  */
 
 'use client';
@@ -10,8 +9,9 @@ import React from 'react';
 import { PROVING_GROUNDS } from '@/domain/proving-grounds/models';
 import {
   Zap,
-  Shield,
   Menu,
+  ArrowLeft,
+  ExternalLink,
 } from 'lucide-react';
 
 interface AppHeaderProps {
@@ -28,7 +28,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   onToggleMobileDrawer,
 }) => {
   const navItems = [
-    { id: 'overview', label: 'Story & Overview' },
+    { id: 'overview', label: '← Return to Website' },
     { id: 'console', label: 'Audit Console & 3D Twin' },
     { id: 'telematics', label: 'Telematics & Insurance' },
     { id: 'governor', label: 'Edge Governor' },
@@ -37,14 +37,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-[rgba(55,53,47,0.09)] bg-white/95 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-2 sm:gap-4">
+    <header className="sticky top-0 z-40 w-full border-b border-white/[0.08] bg-[#080b11]/95 backdrop-blur-xl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-15 flex items-center justify-between gap-2 sm:gap-4">
         {/* Left: Brand Mark & Proving Ground Selector */}
         <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
           <button
             type="button"
             onClick={onToggleMobileDrawer}
-            className="md:hidden p-1.5 rounded-md text-[#787774] hover:text-[#2f3437] hover:bg-[#efefed] min-h-[40px] min-w-[40px] flex items-center justify-center cursor-pointer"
+            className="md:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.05] min-h-[40px] min-w-[40px] flex items-center justify-center cursor-pointer"
             aria-label="Toggle Navigation Menu"
           >
             <Menu className="w-5 h-5" />
@@ -58,8 +58,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             }}
             className="flex items-center space-x-2.5 group cursor-pointer"
           >
-            {/* Custom SVG Geometric Wave/Slit Diffraction Mark */}
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#1a73e8] to-[#0ea5e9] flex items-center justify-center shadow-xs text-white">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#1a73e8] to-[#0ea5e9] flex items-center justify-center shadow-xs text-white group-hover:scale-105 transition-transform">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M4 4v16" strokeLinecap="round" />
                 <path d="M9 7v10" strokeLinecap="round" />
@@ -68,42 +67,42 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
               </svg>
             </div>
 
-            <div className="flex items-center space-x-1.5">
-              <span className="font-extrabold text-sm tracking-tight text-[#2f3437]" translate="no">
+            <div className="flex items-center space-x-2">
+              <span className="font-extrabold text-sm sm:text-base tracking-tight text-white" translate="no">
                 Diffraction
               </span>
-              <span className="text-[#c4c4c2] text-xs">/</span>
-              <span className="text-xs text-[#787774] font-medium hidden sm:inline">Verification Workspace</span>
+              <span className="text-slate-600 text-xs">/</span>
+              <span className="text-xs text-slate-300 font-medium hidden sm:inline">Verification Workspace</span>
             </div>
-            <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#f1f1ef] text-[#5a5751] border border-[#e3e2e0] mono">
+            <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-white/[0.05] text-slate-400 border border-white/[0.08] mono">
               v2.5
             </span>
           </a>
 
-          <div className="hidden 2xl:flex items-center space-x-1.5 bg-[#f7f6f3] px-2.5 py-1 rounded-md border border-[rgba(55,53,47,0.09)] text-[11px]">
-            <span className="font-medium text-[#787774]">Proving Grounds:</span>
+          <div className="hidden 2xl:flex items-center space-x-1.5 bg-white/[0.03] px-2.5 py-1 rounded-lg border border-white/[0.08] text-[11px]">
+            <span className="font-medium text-slate-400">Proving Grounds:</span>
             <select
               id="fleetSelect"
-              className="bg-transparent font-medium text-[#2f3437] rounded cursor-pointer pr-1 text-[11px] focus:outline-none"
+              className="bg-transparent font-medium text-white rounded cursor-pointer pr-1 text-[11px] focus:outline-none"
               aria-label="Select Autonomous Proving Ground"
             >
               {PROVING_GROUNDS.map((pg) => (
-                <option key={pg.id} value={pg.id}>
+                <option key={pg.id} value={pg.id} className="bg-[#0f1422] text-white">
                   {pg.name}
                 </option>
               ))}
             </select>
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-radar-dot" title="Connected" />
+            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-radar-dot" title="Connected" />
           </div>
         </div>
 
         {/* Center: Desktop Navigation Tabs */}
-        <nav className="hidden md:flex items-center space-x-1 text-xs text-[#787774]">
+        <nav className="hidden md:flex items-center space-x-1 text-xs text-slate-300">
           {navItems.map((item) => {
             const isActive = activeView === item.id;
             const cls = isActive
-              ? 'px-3 py-1.5 rounded-lg text-[#2f3437] bg-[#efefed] font-semibold transition-all border border-[#dfdfde] shadow-2xs'
-              : 'px-3 py-1.5 rounded-lg hover:bg-[#f7f6f3] hover:text-[#2f3437] transition-colors font-medium cursor-pointer';
+              ? 'px-3 py-1.5 rounded-lg text-white bg-white/[0.1] font-semibold transition-all border border-white/[0.18] shadow-xs'
+              : 'px-3 py-1.5 rounded-lg hover:bg-white/[0.05] hover:text-white transition-colors font-medium cursor-pointer';
 
             return (
               <a
@@ -128,11 +127,11 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             type="button"
             id="licensePill"
             onClick={onOpenWorkspaceModal}
-            className="flex items-center space-x-2 px-2.5 py-1 rounded-md bg-[#edf3ec] hover:bg-[#e4ede3] border border-[#d3e5d7] text-xs transition-colors cursor-pointer"
+            className="flex items-center space-x-2 px-2.5 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/25 text-xs transition-colors cursor-pointer"
             title="Configure Enterprise Workspace & Cloud API"
           >
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-radar-dot" />
-            <span className="font-semibold text-[#34623f] text-[11px] mono uppercase">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-radar-dot" />
+            <span className="font-semibold text-emerald-300 text-[11px] mono uppercase">
               ENTERPRISE SENTINEL
             </span>
           </button>
@@ -140,10 +139,10 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           <button
             type="button"
             onClick={() => onViewChange('console')}
-            className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#2383e2] hover:bg-[#1a73e8] active:scale-[0.98] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+            className="hidden sm:flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 active:scale-[0.98] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
           >
             <Zap className="w-3.5 h-3.5 fill-current" />
-            <span>Try 3D Sandbox</span>
+            <span>3D Sandbox</span>
           </button>
         </div>
       </div>
