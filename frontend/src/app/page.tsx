@@ -12,7 +12,9 @@ import { AppFooter } from '@/components/layout/AppFooter';
 import { EnterpriseWorkspaceModal } from '@/components/modals/EnterpriseWorkspaceModal';
 import { useWorkspaceCredentials } from '@/hooks/useWorkspaceCredentials';
 import { useVerificationAudit } from '@/hooks/useVerificationAudit';
-import { ModalityShowcaseGrid } from '@/components/overview/ModalityShowcaseGrid';
+import { ProductStoryHero } from '@/components/story/ProductStoryHero';
+import { StoryWalkthrough } from '@/components/story/StoryWalkthrough';
+import { ModalityExplainer } from '@/components/story/ModalityExplainer';
 import { FleetKpiTiles } from '@/components/overview/FleetKpiTiles';
 import { RoiCalculator } from '@/components/overview/RoiCalculator';
 import { IncidentQueueTable } from '@/components/overview/IncidentQueueTable';
@@ -75,48 +77,32 @@ export default function Home() {
       />
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* VIEW 1: EXECUTIVE OPERATIONS OVERVIEW */}
+        {/* VIEW 1: EXECUTIVE OPERATIONS OVERVIEW & STORYLINE */}
         {activeView === 'overview' && (
-          <section id="viewOverview" className="space-y-8" aria-label="Executive Operations Overview">
-            {/* Top Fleet Banner */}
-            <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-900 via-slate-900 to-indigo-950 text-white card-shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div className="flex items-center space-x-3.5">
-                <div className="h-10 w-10 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400 shrink-0">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <div className="flex items-center space-x-2">
-                    <span className="font-bold text-sm tracking-tight">
-                      Enterprise Physical AI Sentinel: 5 Autonomous Robotic Modalities Active
-                    </span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30 mono">
-                      MULTI-MODAL VERIFIED
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-300 mt-0.5">
-                    Continuous physics verification across Humanoids, Heavy Haulers, Manipulators, Wheeled AMRs &amp; Sidewalk Rovers.
-                  </p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => handleViewChange('console')}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-sm transition-colors shrink-0 cursor-pointer"
-              >
-                Launch Verification Console
-              </button>
-            </div>
+          <section id="viewOverview" className="space-y-12" aria-label="Executive Operations Overview & Storyline">
+            {/* 1. Grand Narrative Hook Hero */}
+            <ProductStoryHero
+              onExploreStory={() => {
+                const el = document.getElementById('storyline');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              onLaunchSandbox={() => handleViewChange('console')}
+              onOpenPricing={() => handleViewChange('pricing')}
+            />
 
-            <ModalityShowcaseGrid onSelectScenario={handleSelectScenarioAndAudit} />
+            {/* 2. Interactive 4-Act Storyline Walkthrough */}
+            <StoryWalkthrough onLaunchSandbox={() => handleViewChange('console')} />
+
+            {/* 3. Plain Human Language Multi-Modal Explainer */}
+            <ModalityExplainer onSelectScenario={handleSelectScenarioAndAudit} />
+
+            {/* 4. Fleet Scale & Insured Value KPI Metrics */}
             <FleetKpiTiles />
+
+            {/* 5. Fleet Line Stoppage ROI Calculator */}
             <RoiCalculator />
+
+            {/* 6. Active Telemetry Stream & Incidents */}
             <IncidentQueueTable onOpenAudit={handleSelectScenarioAndAudit} />
           </section>
         )}

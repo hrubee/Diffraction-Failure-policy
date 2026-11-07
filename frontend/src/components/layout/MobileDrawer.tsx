@@ -24,8 +24,8 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
   if (!isOpen) return null;
 
   const navItems = [
-    { id: 'overview', label: 'Executive Overview' },
-    { id: 'console', label: 'Audit Console' },
+    { id: 'overview', label: 'Story & Overview' },
+    { id: 'console', label: 'Audit Console & 3D Twin' },
     { id: 'telematics', label: 'Telematics & Insurance' },
     { id: 'governor', label: 'Edge Safety Governor' },
     { id: 'cicd', label: 'CI/CD & API Keys' },

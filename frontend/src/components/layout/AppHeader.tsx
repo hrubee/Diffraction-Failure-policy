@@ -21,8 +21,8 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   onToggleMobileDrawer,
 }) => {
   const navItems = [
-    { id: 'overview', label: 'Overview' },
-    { id: 'console', label: 'Audit Console' },
+    { id: 'overview', label: 'Story & Overview' },
+    { id: 'console', label: 'Audit Console & 3D Twin' },
     { id: 'telematics', label: 'Telematics & Insurance' },
     { id: 'governor', label: 'Edge Governor' },
     { id: 'cicd', label: 'CI/CD & API' },
@@ -125,7 +125,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             onClick={() => onViewChange('console')}
             className="min-h-[40px] px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-bold rounded-xl shadow-sm transition-all flex items-center space-x-1.5 cursor-pointer"
           >
-            <span>Launch Verification</span>
+            <span>⚡ Try 3D Sandbox</span>
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
