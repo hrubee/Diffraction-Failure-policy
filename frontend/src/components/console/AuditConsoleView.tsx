@@ -40,25 +40,25 @@ export const AuditConsoleView: React.FC<AuditConsoleViewProps> = ({ audit }) => 
 
   const statusPillClass =
     statusText === 'STANDBY'
-      ? 'bg-slate-100 text-slate-600 border-slate-200'
+      ? 'bg-[#f1f1ef] text-[#787774] border-[#e3e2e0]'
       : statusText === 'CERTIFIED_SAFE'
-      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+      ? 'bg-[#edf3ec] text-[#34623f] border-[#d4e5d2]'
       : statusText === 'FAILED_CRITICAL_RISK'
-      ? 'bg-rose-50 text-rose-700 border-rose-200'
-      : 'bg-blue-50 text-blue-700 border-blue-200';
+      ? 'bg-[#faecec] text-[#933434] border-[#f5d7d7]'
+      : 'bg-[#e9f3f7] text-[#2e5d7d] border-[#d3e5ef]';
 
   return (
     <section id="viewConsole" className="space-y-6" aria-label="Incident Audit Console">
       {/* Top Console Bar */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white p-4 rounded-2xl border border-subtle card-shadow">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white p-4 rounded-xl border border-[rgba(55,53,47,0.09)] card-shadow">
         <div>
-          <h2 className="text-base font-bold text-slate-900 tracking-tight flex items-center space-x-2">
+          <h2 className="text-sm font-bold text-[#37352f] tracking-tight flex items-center space-x-2">
             <span>Universal Physical AI Incident Audit &amp; Verification Console</span>
-            <span id="consoleStatusPill" className={`text-[10px] px-2 py-0.5 rounded-full border mono font-bold ${statusPillClass}`}>
+            <span id="consoleStatusPill" className={`text-[10px] px-2 py-0.5 rounded border mono font-medium ${statusPillClass}`}>
               {statusText}
             </span>
           </h2>
-          <p id="incidentSubtitle" className="text-xs text-slate-500 mono mt-0.5">
+          <p id="incidentSubtitle" className="text-xs text-[#787774] mono mt-0.5">
             {activeScenario.name} • {activeScenario.facility} ({activeScenario.standard})
           </p>
         </div>
@@ -91,24 +91,24 @@ export const AuditConsoleView: React.FC<AuditConsoleViewProps> = ({ audit }) => 
 
         {/* Right Column: Active Intelligence & Artifacts */}
         <div className="col-span-12 lg:col-span-7 space-y-6">
-          <div className="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-6">
-            <div className="flex justify-between items-center">
+          <div className="p-6 rounded-2xl bg-white border border-[rgba(55,53,47,0.09)] card-shadow space-y-5">
+            <div className="flex justify-between items-center border-b border-[rgba(55,53,47,0.06)] pb-3">
               <div>
-                <h3 className="text-sm font-bold text-slate-900 tracking-tight">Active Audit Intelligence</h3>
-                <div id="auditHeaderSummary" className="text-xs text-slate-500 mono mt-0.5">
+                <h3 className="text-sm font-bold text-[#37352f] tracking-tight">Active Audit Intelligence</h3>
+                <div id="auditHeaderSummary" className="text-xs text-[#787774] mono mt-0.5">
                   {verdict
                     ? `Audit Complete for ${verdict.incidentId} (${verdict.totalScenarios} rollouts)`
                     : 'Awaiting telemetry packet…'}
                 </div>
               </div>
 
-              {/* Viewport Mode Switcher: 3D Twin vs 2D Plot */}
-              <div className="flex items-center space-x-1 bg-slate-100 p-1 rounded-lg text-[10px] mono font-bold">
+              {/* Viewport Mode Switcher: 3D Twin vs 2D Plot in Notion style */}
+              <div className="flex items-center space-x-1 bg-[#f7f6f3] p-1 rounded-lg text-[10px] mono font-medium border border-[rgba(55,53,47,0.09)]">
                 <button
                   type="button"
                   onClick={() => setViewportMode('3d')}
                   className={`px-2.5 py-1 rounded-md transition-colors ${
-                    viewportMode === '3d' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+                    viewportMode === '3d' ? 'bg-white text-[#37352f] shadow-sm font-semibold' : 'text-[#787774] hover:text-[#37352f]'
                   }`}
                 >
                   3D Digital Twin
@@ -117,7 +117,7 @@ export const AuditConsoleView: React.FC<AuditConsoleViewProps> = ({ audit }) => 
                   type="button"
                   onClick={() => setViewportMode('2d')}
                   className={`px-2.5 py-1 rounded-md transition-colors ${
-                    viewportMode === '2d' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+                    viewportMode === '2d' ? 'bg-white text-[#37352f] shadow-sm font-semibold' : 'text-[#787774] hover:text-[#37352f]'
                   }`}
                 >
                   2D Odometry Plot

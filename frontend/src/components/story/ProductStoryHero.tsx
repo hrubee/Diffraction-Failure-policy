@@ -1,11 +1,12 @@
 /**
- * Presentation Component: Narrative Product Hero
- * Bridges the gap between lab simulation and real-world robot deployment failures.
+ * Presentation Component: Notion-Style Narrative Product Hero
+ * Emulates the iconic, clean, distraction-free aesthetic of a Notion workspace document.
  */
 
 'use client';
 
 import React from 'react';
+import { AnimateText } from '@/components/ui/AnimateText';
 
 interface ProductStoryHeroProps {
   readonly onExploreStory: () => void;
@@ -19,44 +20,81 @@ export const ProductStoryHero: React.FC<ProductStoryHeroProps> = ({
   onOpenPricing,
 }) => {
   return (
-    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 text-white border border-slate-800 p-8 sm:p-12 lg:p-16 shadow-2xl mb-10">
-      {/* Background Ambient Glow */}
-      <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+    <section className="relative rounded-2xl bg-white border border-[rgba(55,53,47,0.09)] card-shadow p-6 sm:p-10 lg:p-12 mb-8">
+      {/* Top Notion Page Properties Bar */}
+      <div className="flex flex-wrap items-center gap-2 mb-6 text-xs border-b border-[rgba(55,53,47,0.06)] pb-4">
+        <div className="flex items-center space-x-1.5 text-[#787774]">
+          <span className="text-sm">🏷️</span>
+          <span className="font-medium">Category:</span>
+        </div>
+        <span className="px-2 py-0.5 rounded bg-[#e9f3f7] text-[#2e5d7d] font-medium text-[11px]">
+          Physical AI Verification
+        </span>
 
-      <div className="relative z-10 max-w-4xl space-y-6">
-        {/* Category Pill */}
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/30 text-blue-300 text-xs font-semibold mono">
-          <span className="h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
-          <span>PHYSICAL AI SAFETY &amp; CONTINUOUS VERIFICATION PLATFORM</span>
+        <span className="text-[#c4c4c2] mx-1">•</span>
+
+        <div className="flex items-center space-x-1.5 text-[#787774]">
+          <span className="text-sm">🛡️</span>
+          <span className="font-medium">Audit Compliance:</span>
+        </div>
+        <span className="px-2 py-0.5 rounded bg-[#edf3ec] text-[#34623f] font-medium text-[11px]">
+          ISO 3691-4 • ISO 13482 • ISO 17757 • ISO 10218
+        </span>
+
+        <span className="text-[#c4c4c2] mx-1">•</span>
+
+        <div className="flex items-center space-x-1.5 text-[#787774]">
+          <span className="text-sm">⚡</span>
+          <span className="font-medium">Audit Latency:</span>
+        </div>
+        <span className="px-2 py-0.5 rounded bg-[#fbf3db] text-[#835e16] font-medium text-[11px] mono">
+          30 Seconds Turnkey
+        </span>
+      </div>
+
+      <div className="max-w-4xl space-y-6">
+        {/* Notion Page Icon */}
+        <div className="text-4xl sm:text-5xl select-none" role="img" aria-label="Notion Robot Icon">
+          🤖
         </div>
 
-        {/* Primary Story Hook */}
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-slate-100">
-          Robots pass simulation in the lab. <br className="hidden sm:inline" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-indigo-300">
-            They fail on the factory floor.
+        {/* Notion Document Title with Text Animation */}
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-[#37352f] tracking-tight leading-[1.2]">
+          <AnimateText text="Robots pass simulation in the lab." effect="soft-blur-in" delayMs={100} />
+          <br className="hidden sm:inline" />
+          <span className="text-[#2383e2]">
+            <AnimateText text="They fail on the factory floor." effect="soft-blur-in" delayMs={500} />
           </span>
         </h1>
 
-        {/* Plain English Value Proposition */}
-        <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-3xl font-normal">
-          In real operations, slick wet floors, blinding sunlight, and shifting payloads cause robots to skid, 
-          mysteriously E-stop, or fail ISO safety audits—costing industrial operators over <span className="text-white font-semibold">$50,000/hour in line stoppages</span>. 
-          Diffraction ingests a single incident log (<code className="text-blue-300 font-mono text-sm">.mcap</code> or ROS bag), 
-          runs <span className="text-white font-semibold">150+ adversarial physics stress-tests</span>, and generates 
-          <span className="text-white font-semibold"> turnkey safety code patches</span> with signed ISO compliance certificates in 30 seconds.
-        </p>
+        {/* Notion Signature Callout Box */}
+        <div className="p-4 sm:p-5 rounded-xl bg-[#fbfbfa] border border-[rgba(55,53,47,0.12)] flex items-start space-x-3.5 text-[#37352f]">
+          <span className="text-2xl select-none shrink-0" role="img" aria-label="Lightbulb">
+            💡
+          </span>
+          <div className="space-y-1.5 text-xs sm:text-sm leading-relaxed">
+            <p className="font-semibold text-[#37352f]">
+              The Real-World Dilemma:
+            </p>
+            <p className="text-[#5a5751]">
+              In actual operations, slick wet floors, blinding sunlight, and shifting payloads cause autonomous robots to skid, 
+              mysteriously E-stop, or fail ISO safety audits—costing industrial operators over <span className="font-semibold text-[#37352f]">$50,000/hour in line stoppages</span>. 
+              Diffraction ingests a single incident log (<code className="bg-[#f1f1ef] px-1.5 py-0.5 rounded font-mono text-xs text-[#37352f]">.mcap</code> or ROS bag), 
+              runs <span className="font-semibold text-[#37352f]">150+ adversarial physics stress-tests</span>, and generates 
+              <span className="font-semibold text-[#37352f]"> turnkey ROS 2 safety code patches</span> with signed ISO compliance certificates in 30 seconds.
+            </p>
+          </div>
+        </div>
 
-        {/* Primary Call-to-Action Buttons */}
-        <div className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4">
+        {/* Notion Minimalist Action Buttons */}
+        <div className="pt-2 flex flex-wrap items-center gap-3">
           <button
             type="button"
             onClick={onLaunchSandbox}
-            className="min-h-[48px] px-6 py-3 bg-blue-600 hover:bg-blue-500 active:scale-[0.98] text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center space-x-2.5 cursor-pointer"
+            className="min-h-[40px] px-4 py-2 bg-[#2383e2] hover:bg-[#1a73e8] active:scale-[0.99] text-white text-xs font-semibold rounded-lg shadow-sm transition-all flex items-center space-x-2 cursor-pointer"
           >
-            <span>⚡ Launch Live 3D Sandbox</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span>⚡ Open 3D Verification Sandbox</span>
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </button>
@@ -64,37 +102,37 @@ export const ProductStoryHero: React.FC<ProductStoryHeroProps> = ({
           <button
             type="button"
             onClick={onExploreStory}
-            className="min-h-[48px] px-6 py-3 bg-slate-800/80 hover:bg-slate-700/90 text-slate-200 hover:text-white text-sm font-semibold rounded-xl border border-slate-700 transition-colors flex items-center space-x-2 cursor-pointer"
+            className="min-h-[40px] px-4 py-2 bg-white hover:bg-[#efefed] text-[#37352f] text-xs font-medium rounded-lg border border-[#dfdfde] transition-colors flex items-center space-x-1.5 cursor-pointer"
           >
-            <span>🎬 See How It Works (4 Steps)</span>
+            <span>📖 Read the 4-Act Story</span>
           </button>
 
           <button
             type="button"
             onClick={onOpenPricing}
-            className="min-h-[48px] px-5 py-3 text-slate-400 hover:text-slate-200 text-sm font-medium transition-colors cursor-pointer"
+            className="min-h-[40px] px-3.5 py-2 text-[#787774] hover:text-[#37352f] text-xs font-medium transition-colors cursor-pointer"
           >
-            Turnkey $15k Pilot SOW →
+            Enterprise $15k Pilot SOW →
           </button>
         </div>
 
-        {/* Proof Points & Standards Grid */}
-        <div className="pt-6 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-          <div>
-            <div className="text-xl sm:text-2xl font-extrabold text-white font-mono">30 Sec</div>
-            <div className="text-slate-400 text-[11px] mt-0.5">Log to signed audit dossier</div>
+        {/* Notion Key Stats Grid */}
+        <div className="pt-6 border-t border-[rgba(55,53,47,0.06)] grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+          <div className="p-3 rounded-lg bg-[#f7f6f3] border border-[rgba(55,53,47,0.06)]">
+            <div className="text-xl font-bold text-[#37352f] font-mono">30 Sec</div>
+            <div className="text-[#787774] text-[11px] mt-0.5">Log to signed audit dossier</div>
           </div>
-          <div>
-            <div className="text-xl sm:text-2xl font-extrabold text-blue-400 font-mono">150+ Sweeps</div>
-            <div className="text-slate-400 text-[11px] mt-0.5">Parallel physics edge cases</div>
+          <div className="p-3 rounded-lg bg-[#f7f6f3] border border-[rgba(55,53,47,0.06)]">
+            <div className="text-xl font-bold text-[#2e5d7d] font-mono">150+ Sweeps</div>
+            <div className="text-[#787774] text-[11px] mt-0.5">Parallel physics edge cases</div>
           </div>
-          <div>
-            <div className="text-xl sm:text-2xl font-extrabold text-emerald-400 font-mono">5 Modalities</div>
-            <div className="text-slate-400 text-[11px] mt-0.5">Humanoid, Hauler, Arm, AMR, Rover</div>
+          <div className="p-3 rounded-lg bg-[#f7f6f3] border border-[rgba(55,53,47,0.06)]">
+            <div className="text-xl font-bold text-[#34623f] font-mono">5 Modalities</div>
+            <div className="text-[#787774] text-[11px] mt-0.5">Humanoid, Hauler, Arm, AMR, Rover</div>
           </div>
-          <div>
-            <div className="text-xl sm:text-2xl font-extrabold text-slate-200 font-mono">Zero Code Lock-in</div>
-            <div className="text-slate-400 text-[11px] mt-0.5">Drop-in ROS 2 &amp; Nav2 YAMLs</div>
+          <div className="p-3 rounded-lg bg-[#f7f6f3] border border-[rgba(55,53,47,0.06)]">
+            <div className="text-xl font-bold text-[#835e16] font-mono">Zero Code Lock-in</div>
+            <div className="text-[#787774] text-[11px] mt-0.5">Drop-in ROS 2 YAML patches</div>
           </div>
         </div>
       </div>

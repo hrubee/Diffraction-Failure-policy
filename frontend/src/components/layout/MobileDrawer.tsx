@@ -33,10 +33,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
   ];
 
   return (
-    <div id="mobileDrawer" className="md:hidden border-b border-subtle bg-white px-4 pt-2 pb-4 space-y-2">
-      <div className="px-3 py-2 bg-slate-50 rounded-lg border border-slate-200 text-xs flex justify-between items-center">
-        <span className="font-bold text-slate-700">Proving Grounds • Multi-Modal</span>
-        <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 text-[10px] mono">
+    <div id="mobileDrawer" className="md:hidden border-b border-[rgba(55,53,47,0.09)] bg-white px-4 pt-2 pb-4 space-y-2">
+      <div className="px-3 py-2 bg-[#f7f6f3] rounded-lg border border-[rgba(55,53,47,0.09)] text-xs flex justify-between items-center">
+        <span className="font-medium text-[#37352f]">Proving Grounds: Active</span>
+        <span className="text-[#34623f] font-medium bg-[#edf3ec] px-2 py-0.5 rounded border border-[#d4e5d2] text-[10px] mono">
           ONLINE
         </span>
       </div>
@@ -45,8 +45,8 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         {navItems.map((item) => {
           const isActive = activeView === item.id;
           const cls = isActive
-            ? 'w-full min-h-[44px] px-3 py-2.5 rounded-xl text-xs font-bold text-blue-600 bg-blue-50 flex items-center space-x-2'
-            : 'w-full min-h-[44px] px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 flex items-center space-x-2';
+            ? 'w-full min-h-[40px] px-3 py-2 rounded-lg text-xs font-semibold text-[#37352f] bg-[#efefed] flex items-center space-x-2'
+            : 'w-full min-h-[40px] px-3 py-2 rounded-lg text-xs font-medium text-[#787774] hover:bg-[#f7f6f3] hover:text-[#37352f] flex items-center space-x-2 transition-colors';
 
           return (
             <a
@@ -65,7 +65,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         })}
       </nav>
 
-      <div className="pt-2 border-t border-slate-200 px-3">
+      <div className="pt-2 border-t border-[rgba(55,53,47,0.09)] px-3">
         <button
           type="button"
           onClick={() => {

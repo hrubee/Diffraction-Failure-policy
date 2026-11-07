@@ -1,5 +1,5 @@
 /**
- * Presentation Component: Enterprise Workspace & Multi-Tenant Credentials Modal
+ * Presentation Component: Enterprise Workspace & Multi-Tenant Credentials Modal (Notion Style)
  */
 
 'use client';
@@ -30,15 +30,15 @@ export const EnterpriseWorkspaceModal: React.FC<EnterpriseWorkspaceModalProps> =
   return (
     <div
       id="enterpriseProfileModal"
-      className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/40 backdrop-blur-xs flex items-center justify-center p-4"
       role="dialog"
       aria-modal="true"
     >
-      <div className="bg-white rounded-2xl max-w-xl w-full border border-slate-200 card-shadow-lg p-6 sm:p-8 space-y-6 relative">
+      <div className="bg-white rounded-2xl max-w-xl w-full border border-[rgba(55,53,47,0.12)] card-shadow-lg p-6 sm:p-8 space-y-5 relative">
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+          className="absolute top-4 right-4 p-1.5 text-[#787774] hover:text-[#37352f] hover:bg-[#efefed] rounded-md min-h-[36px] min-w-[36px] flex items-center justify-center cursor-pointer transition-colors"
           aria-label="Close dialog"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,59 +47,59 @@ export const EnterpriseWorkspaceModal: React.FC<EnterpriseWorkspaceModalProps> =
         </button>
 
         <div className="space-y-1.5">
-          <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold mono">
+          <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded bg-[#edf3ec] border border-[#d4e5d2] text-[#34623f] text-[11px] font-medium mono">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>ENTERPRISE SENTINEL TIER • MULTI-TENANT PROD</span>
+            <span>ENTERPRISE SENTINEL • MULTI-TENANT PROD</span>
           </div>
-          <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">
+          <h3 className="text-lg font-bold text-[#37352f] tracking-tight">
             Enterprise Autonomous Fleet Workspace
           </h3>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-[#787774]">
             Universal Physical AI Verification Engine with continuous fleet monitoring across 5 global proving grounds.
           </p>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+        <div className="p-4 rounded-xl bg-[#f7f6f3] border border-[rgba(55,53,47,0.09)] space-y-2.5">
           <div className="flex justify-between items-center text-xs">
-            <span className="text-slate-500 font-semibold">Tenant Organization:</span>
-            <span className="font-bold text-slate-900">{organization}</span>
+            <span className="text-[#787774] font-medium">Tenant Organization:</span>
+            <span className="font-semibold text-[#37352f]">{organization}</span>
           </div>
           <div className="flex justify-between items-center text-xs">
-            <span className="text-slate-500 font-semibold">Tenant ID:</span>
-            <span className="mono font-bold text-blue-700">{tenantId}</span>
+            <span className="text-[#787774] font-medium">Tenant ID:</span>
+            <span className="mono font-semibold text-[#2383e2]">{tenantId}</span>
           </div>
           <div className="flex justify-between items-center text-xs">
-            <span className="text-slate-500 font-semibold">Proving Ground Nodes:</span>
-            <span className="font-medium text-slate-700">Munich, Nevada, Stuttgart, Chicago, Tokyo (5/5 Online)</span>
+            <span className="text-[#787774] font-medium">Proving Ground Nodes:</span>
+            <span className="font-medium text-[#5a5751]">Munich, Nevada, Stuttgart, Chicago, Tokyo (5/5 Online)</span>
           </div>
           <div className="flex justify-between items-center text-xs">
-            <span className="text-slate-500 font-semibold">Verification Quota:</span>
-            <span className="font-bold text-emerald-600 mono">Unlimited Monte Carlo Rollouts</span>
+            <span className="text-[#787774] font-medium">Verification Quota:</span>
+            <span className="font-semibold text-[#34623f] mono">Unlimited Monte Carlo Rollouts</span>
           </div>
         </div>
 
-        <div className="space-y-2 border-t border-slate-100 pt-4">
-          <label htmlFor="modalApiKeyInput" className="block text-xs font-bold text-slate-700">
+        <div className="space-y-2 border-t border-[rgba(55,53,47,0.06)] pt-3">
+          <label htmlFor="modalApiKeyInput" className="block text-xs font-semibold text-[#37352f]">
             Production Fleet Live Ingestion Key
           </label>
           <div className="flex gap-2">
             <input
-              type="text"
               id="modalApiKeyInput"
+              type="text"
               readOnly
               value={apiKey}
-              className="flex-1 px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-mono text-slate-800 select-all"
+              className="flex-1 px-3 py-2 bg-[#f7f6f3] border border-[rgba(55,53,47,0.09)] rounded-lg text-xs font-mono text-[#37352f] select-all focus:outline-none"
             />
             <button
               type="button"
               onClick={onCopyKey}
-              className="min-h-[44px] px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl cursor-pointer"
+              className="min-h-[38px] px-3.5 py-1.5 bg-[#2383e2] hover:bg-[#1a73e8] text-white text-xs font-medium rounded-lg shadow-sm transition-colors cursor-pointer"
             >
               {copied ? 'Copied!' : 'Copy Key'}
             </button>
           </div>
-          <p className="text-[11px] text-slate-500">
-            Pass as <code className="mono text-slate-700 font-semibold">X-API-Key</code> in your CI/CD pipelines or ROS 2 daemons.
+          <p className="text-[11px] text-[#787774]">
+            Pass as <code className="mono text-[#37352f] bg-[#f1f1ef] px-1 py-0.5 rounded">X-API-Key</code> in your CI/CD pipelines or ROS 2 daemons.
           </p>
         </div>
 
@@ -107,7 +107,7 @@ export const EnterpriseWorkspaceModal: React.FC<EnterpriseWorkspaceModalProps> =
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl cursor-pointer"
+            className="px-4 py-2 bg-[#2f3437] hover:bg-[#37352f] text-white text-xs font-medium rounded-lg cursor-pointer transition-colors shadow-sm"
           >
             Done
           </button>
