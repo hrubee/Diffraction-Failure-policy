@@ -67,7 +67,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-white border border-[#3E2C23]/20 text-xs text-[#3E2C23] shadow-2xs">
             <span className="h-2 w-2 rounded-full bg-[#2FA4D7] animate-pulse" />
             <span className="font-semibold tracking-wide uppercase text-[10px] font-mono">
-              PHYSICAL AI AUTONOMY SHIELD
+              DIFFRACT™ AUTONOMY SHIELD
             </span>
           </div>
 
@@ -100,9 +100,9 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             </p>
 
             <p className="text-sm text-[#3E2C23]/80 leading-relaxed font-body max-w-2xl">
-              Diffraction ingests raw black-box telemetry (<code className="text-[#2FA4D7] bg-white px-1.5 py-0.5 rounded border border-[#2FA4D7]/40 font-mono text-xs">.mcap</code> / ROS 2 bags), runs{' '}
+              <strong>Diffract™</strong> ingests raw black-box telemetry (<code className="text-[#2FA4D7] bg-white px-1.5 py-0.5 rounded border border-[#2FA4D7]/40 font-mono text-xs">.mcap</code> / ROS 2 bags), runs{' '}
               <strong className="text-[#3E2C23]">150+ parallel generative physics stress-sweeps</strong> in the cloud, and synthesizes{' '}
-              <strong className="text-[#3E2C23]">turnkey ROS 2 & PX4 safety controller patches</strong> with cryptographically signed ISO compliance dossiers in 30 seconds.
+              <strong className="text-[#3E2C23]">turnkey ROS 2 & PX4 safety controller patches</strong> with cryptographically signed ISO compliance dossiers in 45 seconds.
             </p>
 
             {/* CTA Group */}
@@ -113,7 +113,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 className="min-h-[48px] px-6 py-3 rounded-lg bg-[#2FA4D7] hover:bg-[#248ab8] active:bg-[#1d7ca8] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center space-x-2.5 cursor-pointer group"
               >
                 <Zap className="w-4 h-4 fill-current text-white group-hover:scale-110 transition-transform" />
-                <span>Launch Interactive Verification App</span>
+                <span>Launch Diffract Studio</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
@@ -124,7 +124,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 className="min-h-[48px] px-5 py-3 rounded-lg bg-white hover:bg-[#FAF4EB] text-[#3E2C23] text-sm font-semibold border border-[#3E2C23]/25 transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-2xs"
               >
                 <FileText className="w-4 h-4 text-[#2FA4D7]" />
-                <span>Sample ISO Dossier (PDF)</span>
+                <span>Sample Diffract Dossier (PDF)</span>
               </a>
 
               <button
@@ -158,7 +158,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                   </div>
                   <div>
                     <h3 className="text-xs font-bold text-[#F5E9D8] tracking-wide uppercase font-headline">
-                      Live Physics Stress Simulator
+                      Diffract™ Physics Stress Simulator
                     </h3>
                     <p className="text-[10px] text-[#F5E9D8]/70 font-body">Real-time stopping barrier function</p>
                   </div>
@@ -290,7 +290,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 onClick={() => onLaunchConsole(scenarioKeyMap[selectedRobot])}
                 className="w-full py-2.5 px-4 rounded-lg bg-[#F5E9D8] hover:bg-white text-[#3E2C23] font-bold text-xs transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-sm group"
               >
-                <span>Audit This Scenario in 3D Twin Viewport</span>
+                <span>Audit Scenario in Diffract Studio</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>

@@ -155,7 +155,7 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
 
               <div className="py-5 border-y border-[#F5E9D8]/15 space-y-1">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-[#2FA4D7] font-mono">
-                  Net Capital Saved With Diffraction
+                  Net Capital Saved With Diffract™
                 </span>
                 <div className="text-4xl sm:text-5xl font-bold text-[#2FA4D7] font-headline tracking-tight">
                   ${savings.toLocaleString()}

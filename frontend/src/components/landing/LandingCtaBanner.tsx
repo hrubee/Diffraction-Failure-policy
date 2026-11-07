@@ -51,7 +51,7 @@ export const LandingCtaBanner: React.FC<LandingCtaBannerProps> = ({
               className="w-full sm:w-auto min-h-[48px] px-8 py-3 rounded-lg bg-[#2FA4D7] hover:bg-[#258ec0] active:bg-[#1d749e] text-white text-sm font-bold shadow-sm transition-all flex items-center justify-center space-x-2.5 cursor-pointer group"
             >
               <Zap className="w-4 h-4 fill-current text-[#F5E9D8] group-hover:scale-110 transition-transform" />
-              <span>Launch 3D Verification App Now</span>
+              <span>Launch Diffract Studio Now</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
 

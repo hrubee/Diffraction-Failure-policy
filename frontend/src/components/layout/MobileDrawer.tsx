@@ -26,7 +26,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
   const navItems = [
     { id: 'overview', label: 'Story & Overview' },
-    { id: 'console', label: 'Audit Console & 3D Twin' },
+    { id: 'console', label: 'Diffract Studio & 3D Twin' },
     { id: 'telematics', label: 'Telematics & Insurance' },
     { id: 'governor', label: 'Edge Safety Governor' },
     { id: 'cicd', label: 'CI/CD & API Keys' },
@@ -78,7 +78,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
           }}
           className="w-full py-2.5 bg-[#2FA4D7] hover:bg-[#258ec0] text-white rounded-lg text-xs font-bold font-headline flex items-center justify-center space-x-1.5 cursor-pointer shadow-sm"
         >
-          <span>Open Verification App</span>
+          <span>Launch Diffract Studio</span>
         </button>
 
         <button

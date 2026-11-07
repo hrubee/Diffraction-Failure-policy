@@ -36,12 +36,12 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
                 Diffraction
               </span>
               <span className="text-[10px] px-2 py-0.5 rounded bg-[#4A372E] text-[#2FA4D7] border border-[#2FA4D7]/40 font-mono font-semibold">
-                v2.5 Enterprise
+                Diffract™ v2.5
               </span>
             </div>
 
             <p className="text-[#F5E9D8]/80 text-xs leading-relaxed max-w-sm font-body">
-              The automated physical AI safety verification and policy remediation platform. 
+              <strong>Diffract™</strong>: The automated physical AI safety verification and policy remediation engine by Diffraction. 
               Eliminating sim-to-real divergence across humanoids, AMRs, heavy haulers, and robotic manipulators.
             </p>
 

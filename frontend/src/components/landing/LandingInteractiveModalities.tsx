@@ -185,7 +185,7 @@ export const LandingInteractiveModalities: React.FC<LandingInteractiveModalities
 
             <p className="text-[#3E2C23]/80 text-sm sm:text-base leading-relaxed font-body">
               Whether you build bipedal humanoids, 50-ton mining haulers, or collaborative robot arms, 
-              Diffraction ingests your kinematics and automates ISO safety compliance without custom test rigs.
+              <strong>Diffract™</strong> ingests your kinematics and automates ISO safety compliance without custom test rigs.
             </p>
           </div>
 
@@ -256,7 +256,7 @@ export const LandingInteractiveModalities: React.FC<LandingInteractiveModalities
               <div className="p-4 rounded-xl bg-[#EDF7FC] border border-[#2FA4D7]/30 text-xs sm:text-sm text-[#3E2C23] leading-relaxed flex items-start space-x-3">
                 <ShieldCheck className="w-5 h-5 text-[#2FA4D7] shrink-0 mt-0.5" />
                 <div>
-                  <strong className="font-bold text-[#2FA4D7]">Diffraction Synthesized Remedy:</strong>{' '}
+                  <strong className="font-bold text-[#2FA4D7]">Diffract™ Synthesized Remedy:</strong>{' '}
                   {current.automatedPatch}
                 </div>
               </div>
@@ -269,7 +269,7 @@ export const LandingInteractiveModalities: React.FC<LandingInteractiveModalities
                   className="w-full sm:w-auto px-6 py-3 rounded-lg bg-[#2FA4D7] hover:bg-[#258ec0] active:bg-[#1d749e] text-white font-bold text-xs sm:text-sm shadow-sm transition-all flex items-center justify-center space-x-2 cursor-pointer group"
                 >
                   <Zap className="w-4 h-4 fill-current text-[#F5E9D8] group-hover:scale-110 transition-transform" />
-                  <span>Execute Complete Verification on {current.name}</span>
+                  <span>Execute Verification in Diffract Studio</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>

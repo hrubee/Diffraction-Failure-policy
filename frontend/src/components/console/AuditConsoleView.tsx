@@ -58,7 +58,7 @@ export const AuditConsoleView: React.FC<AuditConsoleViewProps> = ({ audit }) => 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white p-4 rounded-xl border border-[rgba(55,53,47,0.09)] card-shadow">
         <div>
           <h2 className="text-sm font-bold text-[#37352f] tracking-tight flex items-center space-x-2">
-            <span>Universal Physical AI Incident Audit &amp; Verification Console</span>
+            <span>Diffract Studio™ // Physical AI Incident Audit &amp; Verification Console</span>
             <span id="consoleStatusPill" className={`text-[10px] px-2 py-0.5 rounded border mono font-medium ${statusPillClass}`}>
               {statusText}
             </span>

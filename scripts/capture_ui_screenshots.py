@@ -121,8 +121,8 @@ def capture_all():
         mobile_page.screenshot(path=mobile_drawer_path, full_page=False)
         print(f"Captured: {mobile_drawer_path}")
 
-        # Navigate to Audit Console on Mobile via visible drawer link
-        mobile_page.click("#mobileDrawer a:has-text('Audit Console')")
+        # Navigate to Diffract Studio on Mobile via visible drawer link
+        mobile_page.click("#mobileDrawer a:has-text('Diffract Studio')")
         time.sleep(1)
         mobile_page.click("#btnHazardHauler")
         time.sleep(1.5)

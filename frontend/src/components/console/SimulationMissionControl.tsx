@@ -167,7 +167,7 @@ export const SimulationMissionControl: React.FC<SimulationMissionControlProps> =
           <div>
             <div className="flex items-center space-x-2">
               <span className="font-extrabold text-sm sm:text-base tracking-tight font-headline text-white">
-                Parallel Isaac Sim Cloud Cluster
+                Diffract™ Parallel GPU Cloud Cluster
               </span>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#E76F2E] text-white font-mono font-bold animate-pulse">
                 CLUSTER ACTIVE (8 GPUs)

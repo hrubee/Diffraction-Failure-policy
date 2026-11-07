@@ -14,6 +14,7 @@ interface EcosystemItem {
 }
 
 const ECOSYSTEM_ITEMS: readonly EcosystemItem[] = [
+  { name: 'Diffract™ Engine', category: 'Physical AI Verifier' },
   { name: 'ROS 2 Humble & Jazzy', category: 'Robotics Middleware' },
   { name: 'NVIDIA Isaac Sim', category: 'Omniverse Digital Twins' },
   { name: 'Foxglove MCAP', category: 'Telemetry Container' },

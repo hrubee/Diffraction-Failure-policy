@@ -51,7 +51,7 @@ export const LandingBentoGrid: React.FC<LandingBentoGridProps> = ({
           </h2>
 
           <p className="text-[#3E2C23]/80 text-sm sm:text-base leading-relaxed font-body">
-            Every layer of Diffraction is designed to close the simulation-to-reality gap in minutes, 
+            Every layer of <strong>Diffract™</strong> is designed to close the simulation-to-reality gap in minutes, 
             turning unexpected robot crashes into hardened ROS 2 safety policies.
           </p>
         </div>
@@ -94,7 +94,7 @@ export const LandingBentoGrid: React.FC<LandingBentoGridProps> = ({
                   150+ Generative Physics Sweeps
                 </h3>
                 <p className="text-xs text-[#3E2C23]/75 leading-relaxed font-body">
-                  Diffraction spins up 150 parallel cloud simulations sweeping friction (μ = 0.12 - 1.15), incline slope (0 - 15%), solar glare (up to 95k Lux), and latency jitter to pinpoint the exact failure envelope.
+                  <strong>Diffract™</strong> spins up 150 parallel cloud simulations sweeping friction (μ = 0.12 - 1.15), incline slope (0 - 15%), solar glare (up to 95k Lux), and latency jitter to pinpoint the exact failure envelope.
                 </p>
               </div>
             </div>
@@ -124,7 +124,7 @@ export const LandingBentoGrid: React.FC<LandingBentoGridProps> = ({
                   Turnkey ROS 2 &amp; PX4 Code Patches
                 </h3>
                 <p className="text-xs text-[#3E2C23]/75 leading-relaxed font-body">
-                  Zero proprietary lock-in. Diffraction generates drop-in Nav2 velocity filter YAMLs, impedance damping profiles, and safety zone masks that drop directly into your git repository.
+                  Zero proprietary lock-in. <strong>Diffract™</strong> generates drop-in Nav2 velocity filter YAMLs, impedance damping profiles, and safety zone masks that drop directly into your git repository.
                 </p>
               </div>
             </div>

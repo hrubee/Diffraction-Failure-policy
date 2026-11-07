@@ -62,9 +62,9 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
       icon: <Inbox className="w-4 h-4 text-[#2FA4D7]" />,
       title: 'Drop the Black Box: 5 Seconds from Incident to Ground-Truth SysID',
       summary:
-        'Instead of spending 3 weeks manually slicing gigabytes of messy ROS bags, drop the robot’s black box incident log directly into Diffraction.',
+        'Instead of spending 3 weeks manually slicing gigabytes of messy ROS bags, drop the robot’s black box incident log directly into Diffract™.',
       bulletPoints: [
-        'Diffraction’s onboard ring buffer preserves the exact 5-second window prior to any E-stop or skid.',
+        'Diffract’s onboard ring buffer preserves the exact 5-second window prior to any E-stop or skid.',
         'Automated System Identification (SysID) reverse-engineers the ground truth physical parameters.',
         'Calculates exact surface friction (μ), wheel slip ratios, and joint wrench in milliseconds.',
         'Zero manual annotation required: native support for ROS 2 Humble/Jazzy, MCAP, and PX4 logs.',
@@ -77,7 +77,7 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
       icon: <Cpu className="w-4 h-4 text-[#2FA4D7]" />,
       title: '150+ Generative Physics Replays in Cloud Simulation',
       summary:
-        'Diffraction does not just replay the log once. It spins up 150 parallel physics simulations to find the exact mathematical boundary where autonomy fails.',
+        'Diffract™ does not just replay the log once. It spins up 150 parallel physics simulations to find the exact mathematical boundary where autonomy fails.',
       bulletPoints: [
         'Sweeps surface friction across μ = 0.12 to 1.15 to identify the critical traction threshold.',
         'Injects adversarial glare, slope grades (up to 15%), and actuator latency jitter (±45 ms).',
@@ -92,7 +92,7 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
       icon: <ShieldCheck className="w-4 h-4 text-[#2FA4D7]" />,
       title: 'Not Just an Error Log: Drop-in Code Patches & ISO Certification',
       summary:
-        'Diffraction delivers the complete solution directly into your engineering pipeline: the exact ROS 2 controller patch and a signed audit dossier for safety inspectors.',
+        'Diffract™ delivers the complete solution directly into your engineering pipeline: the exact ROS 2 controller patch and a signed audit dossier for safety inspectors.',
       bulletPoints: [
         'Turnkey Nav2 Speed Filter YAML masks and impedance damping controller patches.',
         'Signed ISO compliance verification dossier (ISO 3691-4, ISO 13482, ISO 17757, ISO 10218).',
@@ -208,7 +208,7 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
                     className="px-5 py-2.5 rounded-lg bg-[#2FA4D7] hover:bg-[#258ec0] active:bg-[#1d749e] text-white font-bold text-xs shadow-sm transition-all flex items-center space-x-2 cursor-pointer"
                   >
                     <Zap className="w-3.5 h-3.5 fill-current text-[#F5E9D8]" />
-                    <span>Launch 3D Verification Sandbox</span>
+                    <span>Launch Diffract Studio</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 )}
