@@ -36,6 +36,11 @@ def capture_all():
         page.screenshot(path=overview_path, full_page=False)
         print(f"Captured: {overview_path}")
 
+        # Overview Full Page Screenshot for Deep Visual Audit
+        overview_full_path = os.path.join(SCREENSHOTS_DIR, "saas_overview_fullpage.png")
+        page.screenshot(path=overview_full_path, full_page=True)
+        print(f"Captured: {overview_full_path}")
+
         # Open Enterprise Profile Modal
         print("[Playwright] Opening Enterprise Profile & Credentials modal...")
         page.click("#licensePill")

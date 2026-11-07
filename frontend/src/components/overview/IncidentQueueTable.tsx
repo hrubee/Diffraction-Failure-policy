@@ -5,6 +5,7 @@
 'use client';
 
 import React from 'react';
+import { Database, ArrowRight } from 'lucide-react';
 
 interface IncidentQueueTableProps {
   readonly onOpenAudit: (key: string) => void;
@@ -58,8 +59,8 @@ export const IncidentQueueTable: React.FC<IncidentQueueTableProps> = ({ onOpenAu
     <div className="p-6 rounded-2xl bg-white border border-[rgba(55,53,47,0.09)] card-shadow space-y-3">
       <div className="flex justify-between items-center pb-2 border-b border-[rgba(55,53,47,0.06)]">
         <div className="flex items-center space-x-2">
-          <span className="text-base">📋</span>
-          <h3 className="text-sm font-bold text-[#37352f] tracking-tight">
+          <Database className="w-4 h-4 text-blue-600" />
+          <h3 className="text-sm font-bold text-[#2f3437] tracking-tight">
             Fleet Black Box Ingestion Log Database
           </h3>
         </div>

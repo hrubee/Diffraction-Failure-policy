@@ -1,12 +1,27 @@
 /**
- * Presentation Component: Notion-Style Narrative Product Hero
- * Emulates the iconic, clean, distraction-free aesthetic of a Notion workspace document.
+ * Presentation Component: Narrative Product Hero with Kinetic Typography
+ * Combines Notion-level structural clarity with high-craft engineering motion.
  */
 
 'use client';
 
 import React from 'react';
-import { AnimateText } from '@/components/ui/AnimateText';
+import {
+  Zap,
+  BookOpen,
+  ArrowRight,
+  Clock,
+  Activity,
+  Layers,
+  FileCode,
+  ShieldAlert,
+  Sparkles,
+} from 'lucide-react';
+import {
+  KineticRotatingHeadline,
+  ShimmerBadge,
+  KineticSplitReveal,
+} from '@/components/ui/KineticTypography';
 
 interface ProductStoryHeroProps {
   readonly onExploreStory: () => void;
@@ -20,119 +35,147 @@ export const ProductStoryHero: React.FC<ProductStoryHeroProps> = ({
   onOpenPricing,
 }) => {
   return (
-    <section className="relative rounded-2xl bg-white border border-[rgba(55,53,47,0.09)] card-shadow p-6 sm:p-10 lg:p-12 mb-8">
+    <section className="relative rounded-2xl bg-white border border-[rgba(55,53,47,0.1)] card-shadow-md p-6 sm:p-10 lg:p-12 mb-8 overflow-hidden">
+      {/* Background Subtle Gradient Glow */}
+      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-gradient-to-br from-blue-50/60 to-emerald-50/40 blur-3xl pointer-events-none" />
+
       {/* Top Notion Page Properties Bar */}
-      <div className="flex flex-wrap items-center gap-2 mb-6 text-xs border-b border-[rgba(55,53,47,0.06)] pb-4">
+      <div className="relative z-10 flex flex-wrap items-center gap-2.5 mb-8 text-xs border-b border-[rgba(55,53,47,0.06)] pb-4.5">
         <div className="flex items-center space-x-1.5 text-[#787774]">
-          <span className="text-sm">🏷️</span>
-          <span className="font-medium">Category:</span>
+          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-radar-dot" />
+          <span className="font-semibold tracking-wider uppercase text-[10px] text-[#37352f]">
+            Physical AI Engine
+          </span>
         </div>
-        <span className="px-2 py-0.5 rounded bg-[#e9f3f7] text-[#2e5d7d] font-medium text-[11px]">
-          Physical AI Verification
+
+        <span className="text-[#c4c4c2] mx-0.5">•</span>
+
+        <span className="px-2.5 py-0.5 rounded-full bg-[#e9f3f7] text-[#2e5d7d] font-medium text-[11px] border border-[#d3e5ef]">
+          Autonomous Fleet Verification
         </span>
 
-        <span className="text-[#c4c4c2] mx-1">•</span>
+        <span className="text-[#c4c4c2] mx-0.5 hidden sm:inline">•</span>
 
-        <div className="flex items-center space-x-1.5 text-[#787774]">
-          <span className="text-sm">🛡️</span>
-          <span className="font-medium">Audit Compliance:</span>
-        </div>
-        <span className="px-2 py-0.5 rounded bg-[#edf3ec] text-[#34623f] font-medium text-[11px]">
+        <ShimmerBadge className="hidden sm:inline-flex text-[11px] bg-[#edf3ec] text-[#34623f] border-[#d8e6d9]">
           ISO 3691-4 • ISO 13482 • ISO 17757 • ISO 10218
-        </span>
+        </ShimmerBadge>
 
-        <span className="text-[#c4c4c2] mx-1">•</span>
+        <span className="text-[#c4c4c2] mx-0.5 hidden lg:inline">•</span>
 
-        <div className="flex items-center space-x-1.5 text-[#787774]">
-          <span className="text-sm">⚡</span>
-          <span className="font-medium">Audit Latency:</span>
-        </div>
-        <span className="px-2 py-0.5 rounded bg-[#fbf3db] text-[#835e16] font-medium text-[11px] mono">
-          30 Seconds Turnkey
+        <span className="hidden lg:inline-flex px-2.5 py-0.5 rounded-full bg-[#fbf3db] text-[#835e16] font-medium text-[11px] mono border border-[#f3e7c4]">
+          ⚡ 30s Turnkey Dossier
         </span>
       </div>
 
-      <div className="max-w-4xl space-y-6">
-        {/* Notion Page Icon */}
-        <div className="text-4xl sm:text-5xl select-none" role="img" aria-label="Notion Robot Icon">
-          🤖
-        </div>
+      <div className="relative z-10 max-w-5xl space-y-7">
+        {/* Kinetic Rotating Headline */}
+        <KineticRotatingHeadline />
 
-        {/* Notion Document Title with Text Animation */}
-        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-[#37352f] tracking-tight leading-[1.2]">
-          <AnimateText text="Robots pass simulation in the lab." effect="soft-blur-in" delayMs={100} />
-          <br className="hidden sm:inline" />
-          <span className="text-[#2383e2]">
-            <AnimateText text="They fail on the factory floor." effect="soft-blur-in" delayMs={500} />
-          </span>
-        </h1>
-
-        {/* Notion Signature Callout Box */}
-        <div className="p-4 sm:p-5 rounded-xl bg-[#fbfbfa] border border-[rgba(55,53,47,0.12)] flex items-start space-x-3.5 text-[#37352f]">
-          <span className="text-2xl select-none shrink-0" role="img" aria-label="Lightbulb">
-            💡
-          </span>
+        {/* Narrative Callout Box */}
+        <div className="p-4.5 sm:p-5.5 rounded-xl bg-[#fafaf9] border border-[rgba(55,53,47,0.12)] flex items-start space-x-4 text-[#37352f] transition-all hover:border-[rgba(55,53,47,0.2)]">
+          <div className="p-2 rounded-lg bg-amber-100/70 text-amber-800 shrink-0 mt-0.5">
+            <ShieldAlert className="w-5 h-5" />
+          </div>
           <div className="space-y-1.5 text-xs sm:text-sm leading-relaxed">
-            <p className="font-semibold text-[#37352f]">
-              The Real-World Dilemma:
-            </p>
+            <div className="flex items-center space-x-2">
+              <span className="font-bold text-[#2f3437] tracking-tight text-sm">
+                The Real-World Divergence Problem:
+              </span>
+              <span className="px-2 py-0.2 rounded text-[10px] font-bold uppercase bg-rose-100 text-rose-800 mono">
+                $50,000/hr Line Stoppage Risk
+              </span>
+            </div>
             <p className="text-[#5a5751]">
-              In actual operations, slick wet floors, blinding sunlight, and shifting payloads cause autonomous robots to skid, 
-              mysteriously E-stop, or fail ISO safety audits—costing industrial operators over <span className="font-semibold text-[#37352f]">$50,000/hour in line stoppages</span>. 
-              Diffraction ingests a single incident log (<code className="bg-[#f1f1ef] px-1.5 py-0.5 rounded font-mono text-xs text-[#37352f]">.mcap</code> or ROS bag), 
-              runs <span className="font-semibold text-[#37352f]">150+ adversarial physics stress-tests</span>, and generates 
-              <span className="font-semibold text-[#37352f]"> turnkey ROS 2 safety code patches</span> with signed ISO compliance certificates in 30 seconds.
+              In production facilities, wet epoxy floors, blinding solar glare, and unmodeled payload shifts cause autonomous robots to skid, trigger phantom E-stops, or fail ISO safety audits.
+              Diffraction ingests raw black-box telemetry (<code className="bg-[#efefed] px-1.5 py-0.5 rounded font-mono text-xs text-[#2f3437]">.mcap</code> / ROS 2 bags), runs <span className="font-semibold text-[#2f3437]">150+ adversarial physics stress sweeps</span>, and synthesizes <span className="font-semibold text-[#2f3437]">turnkey ROS 2 safety controller patches</span> with signed ISO compliance certificates in 30 seconds.
             </p>
           </div>
         </div>
 
-        {/* Notion Minimalist Action Buttons */}
-        <div className="pt-2 flex flex-wrap items-center gap-3">
+        {/* Action Buttons */}
+        <div className="pt-1 flex flex-wrap items-center gap-3">
           <button
             type="button"
             onClick={onLaunchSandbox}
-            className="min-h-[40px] px-4 py-2 bg-[#2383e2] hover:bg-[#1a73e8] active:scale-[0.99] text-white text-xs font-semibold rounded-lg shadow-sm transition-all flex items-center space-x-2 cursor-pointer"
+            className="min-h-[42px] px-5 py-2.5 bg-[#2383e2] hover:bg-[#1a73e8] active:scale-[0.99] text-white text-xs sm:text-sm font-semibold rounded-lg shadow-sm transition-all flex items-center space-x-2 cursor-pointer group"
           >
-            <span>⚡ Open 3D Verification Sandbox</span>
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
+            <Zap className="w-4 h-4 fill-current group-hover:scale-110 transition-transform" />
+            <span>Open 3D Verification Sandbox</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
 
           <button
             type="button"
             onClick={onExploreStory}
-            className="min-h-[40px] px-4 py-2 bg-white hover:bg-[#efefed] text-[#37352f] text-xs font-medium rounded-lg border border-[#dfdfde] transition-colors flex items-center space-x-1.5 cursor-pointer"
+            className="min-h-[42px] px-4.5 py-2.5 bg-white hover:bg-[#f1f1ef] text-[#37352f] text-xs sm:text-sm font-medium rounded-lg border border-[#dfdfde] transition-colors flex items-center space-x-2 cursor-pointer"
           >
-            <span>📖 Read the 4-Act Story</span>
+            <BookOpen className="w-4 h-4 text-[#787774]" />
+            <span>Read 4-Act Storyline</span>
           </button>
 
           <button
             type="button"
             onClick={onOpenPricing}
-            className="min-h-[40px] px-3.5 py-2 text-[#787774] hover:text-[#37352f] text-xs font-medium transition-colors cursor-pointer"
+            className="min-h-[42px] px-4 py-2.5 text-[#787774] hover:text-[#2f3437] text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1 cursor-pointer"
           >
-            Enterprise $15k Pilot SOW →
+            <Sparkles className="w-3.5 h-3.5 text-amber-500 mr-1" />
+            <span>Commercial $15k Pilot SOW</span>
+            <span className="text-[#a4a4a1]">→</span>
           </button>
         </div>
 
-        {/* Notion Key Stats Grid */}
-        <div className="pt-6 border-t border-[rgba(55,53,47,0.06)] grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-          <div className="p-3 rounded-lg bg-[#f7f6f3] border border-[rgba(55,53,47,0.06)]">
-            <div className="text-xl font-bold text-[#37352f] font-mono">30 Sec</div>
-            <div className="text-[#787774] text-[11px] mt-0.5">Log to signed audit dossier</div>
+        {/* High-Craft Key Stats Grid (Prevents Word Wrapping Glitches) */}
+        <div className="pt-6 border-t border-[rgba(55,53,47,0.06)] grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+          <div className="p-3.5 sm:p-4 rounded-xl bg-[#fafaf9] border border-[rgba(55,53,47,0.08)] transition-all hover:bg-white hover:card-shadow">
+            <div className="flex items-center space-x-2 text-[#787774] mb-1">
+              <Clock className="w-3.5 h-3.5 text-blue-600" />
+              <span className="text-[11px] font-medium mono uppercase tracking-wider">Turnkey SLA</span>
+            </div>
+            <div className="text-xl sm:text-2xl font-black text-[#2f3437] font-mono tracking-tight">
+              30 Sec
+            </div>
+            <div className="text-[#787774] text-[11px] mt-0.5 whitespace-nowrap">
+              Log to signed dossier
+            </div>
           </div>
-          <div className="p-3 rounded-lg bg-[#f7f6f3] border border-[rgba(55,53,47,0.06)]">
-            <div className="text-xl font-bold text-[#2e5d7d] font-mono">150+ Sweeps</div>
-            <div className="text-[#787774] text-[11px] mt-0.5">Parallel physics edge cases</div>
+
+          <div className="p-3.5 sm:p-4 rounded-xl bg-[#fafaf9] border border-[rgba(55,53,47,0.08)] transition-all hover:bg-white hover:card-shadow">
+            <div className="flex items-center space-x-2 text-[#787774] mb-1">
+              <Activity className="w-3.5 h-3.5 text-cyan-600" />
+              <span className="text-[11px] font-medium mono uppercase tracking-wider">Physics Sweep</span>
+            </div>
+            <div className="text-xl sm:text-2xl font-black text-[#2e5d7d] font-mono tracking-tight">
+              150+ Runs
+            </div>
+            <div className="text-[#787774] text-[11px] mt-0.5 whitespace-nowrap">
+              Parallel edge cases
+            </div>
           </div>
-          <div className="p-3 rounded-lg bg-[#f7f6f3] border border-[rgba(55,53,47,0.06)]">
-            <div className="text-xl font-bold text-[#34623f] font-mono">5 Modalities</div>
-            <div className="text-[#787774] text-[11px] mt-0.5">Humanoid, Hauler, Arm, AMR, Rover</div>
+
+          <div className="p-3.5 sm:p-4 rounded-xl bg-[#fafaf9] border border-[rgba(55,53,47,0.08)] transition-all hover:bg-white hover:card-shadow">
+            <div className="flex items-center space-x-2 text-[#787774] mb-1">
+              <Layers className="w-3.5 h-3.5 text-emerald-600" />
+              <span className="text-[11px] font-medium mono uppercase tracking-wider">Architectures</span>
+            </div>
+            <div className="text-xl sm:text-2xl font-black text-[#34623f] font-mono tracking-tight">
+              5 Modalities
+            </div>
+            <div className="text-[#787774] text-[11px] mt-0.5 whitespace-nowrap">
+              Humanoid, AMR, Arm, Hauler
+            </div>
           </div>
-          <div className="p-3 rounded-lg bg-[#f7f6f3] border border-[rgba(55,53,47,0.06)]">
-            <div className="text-xl font-bold text-[#835e16] font-mono">Zero Code Lock-in</div>
-            <div className="text-[#787774] text-[11px] mt-0.5">Drop-in ROS 2 YAML patches</div>
+
+          <div className="p-3.5 sm:p-4 rounded-xl bg-[#fafaf9] border border-[rgba(55,53,47,0.08)] transition-all hover:bg-white hover:card-shadow">
+            <div className="flex items-center space-x-2 text-[#787774] mb-1">
+              <FileCode className="w-3.5 h-3.5 text-amber-600" />
+              <span className="text-[11px] font-medium mono uppercase tracking-wider">Remediation</span>
+            </div>
+            <div className="text-xl sm:text-2xl font-black text-[#835e16] font-mono tracking-tight whitespace-nowrap">
+              Zero Lock-in
+            </div>
+            <div className="text-[#787774] text-[11px] mt-0.5 whitespace-nowrap">
+              ROS 2 & PX4 YAML patches
+            </div>
           </div>
         </div>
       </div>
