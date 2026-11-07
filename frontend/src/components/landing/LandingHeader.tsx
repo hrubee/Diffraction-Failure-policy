@@ -50,7 +50,7 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({
                 Diffraction
               </span>
               <span className="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-[#2FA4D7]/15 text-[#2FA4D7] border border-[#2FA4D7]/30 font-mono">
-                Diffract™ v2.5
+                Isaac Sim v3.0
               </span>
             </div>
           </a>
@@ -108,8 +108,8 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({
             className="flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 rounded-lg bg-[#2FA4D7] hover:bg-[#248ab8] active:bg-[#1d7ca8] text-white text-xs font-bold transition-all cursor-pointer group shadow-sm"
           >
             <Zap className="w-3.5 h-3.5 fill-current text-white group-hover:scale-110 transition-transform" />
-            <span className="hidden sm:inline">Launch Diffract Studio</span>
-            <span className="sm:hidden">Diffract</span>
+            <span className="hidden sm:inline">Launch Data Factory</span>
+            <span className="sm:hidden">Studio</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>

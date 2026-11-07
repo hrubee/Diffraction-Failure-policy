@@ -36,18 +36,17 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
                 Diffraction
               </span>
               <span className="text-[10px] px-2 py-0.5 rounded bg-[#4A372E] text-[#2FA4D7] border border-[#2FA4D7]/40 font-mono font-semibold">
-                Diffract™ v2.5
+                Isaac Sim v3.0
               </span>
             </div>
 
             <p className="text-[#F5E9D8]/80 text-xs leading-relaxed max-w-sm font-body">
-              <strong>Diffract™</strong>: The automated physical AI safety verification and policy remediation engine by Diffraction. 
-              Eliminating sim-to-real divergence across humanoids, AMRs, heavy haulers, and robotic manipulators.
+              <strong>Diffraction</strong>: The synthetic data factory for Physical AI and robotics foundation models. Powered by NVIDIA Isaac Sim, Isaac Lab, and OpenUSD.
             </p>
 
             <div className="flex items-center space-x-2 text-[11px] text-[#F5E9D8]/70 font-mono">
               <span className="h-2 w-2 rounded-full bg-[#2FA4D7]" />
-              <span>Global Proving Grounds API: Operational</span>
+              <span>NVIDIA Isaac Lab Worker Cluster: Operational</span>
             </div>
           </div>
 
@@ -57,22 +56,22 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
             <ul className="space-y-2 text-[#F5E9D8]/70">
               <li>
                 <button type="button" onClick={onLaunchConsole} className="hover:text-white transition-colors cursor-pointer">
-                  3D Digital Twin Viewer
+                  Data Factory Studio
                 </button>
               </li>
               <li>
-                <a href="#capabilities" className="hover:text-white transition-colors">
-                  150+ Physics Sweeps
+                <a href="#catalog" onClick={() => { window.location.hash = '#catalog'; }} className="hover:text-white transition-colors">
+                  Dataset Hub (575K)
                 </a>
               </li>
               <li>
-                <a href="#capabilities" className="hover:text-white transition-colors">
-                  ROS 2 Policy Patcher
+                <a href="#sim2real" onClick={() => { window.location.hash = '#sim2real'; }} className="hover:text-white transition-colors">
+                  Sim-to-Real Benchmark
                 </a>
               </li>
               <li>
-                <a href="#capabilities" className="hover:text-white transition-colors">
-                  Dynamic Edge Governor
+                <a href="#sdk" onClick={() => { window.location.hash = '#sdk'; }} className="hover:text-white transition-colors">
+                  Python SDK &amp; API
                 </a>
               </li>
             </ul>

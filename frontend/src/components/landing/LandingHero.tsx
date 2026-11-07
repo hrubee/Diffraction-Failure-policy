@@ -1,7 +1,10 @@
 /**
- * Presentation Component: Super Banger Physical AI Landing Hero
- * Combines jaw-dropping dark-mode aesthetics, kinetic typography,
- * and an interactive live physics stress-test playground directly in the hero.
+ * Presentation Component: Physical AI Synthetic Data Factory Landing Hero
+ * Powered by NVIDIA Isaac Sim & OpenUSD.
+ * Features interactive multimodal sensor stream switcher (RGB, Depth, Semantic Seg, LiDAR)
+ * and direct ROI metrics comparing physical teleoperation with synthetic generation.
+ *
+ * Strict Color Hunt 4-Color Palette: #2FA4D7, #F5E9D8, #3E2C23, #E76F2E (Zero Gradients).
  */
 
 'use client';
@@ -13,21 +16,16 @@ import {
   ShieldCheck,
   Activity,
   Cpu,
-  Clock,
   Layers,
-  FileCode,
-  Sliders,
   Sparkles,
-  Bot,
-  Truck,
+  Camera,
+  Radio,
+  Eye,
+  Database,
   CheckCircle2,
-  AlertTriangle,
-  FileText,
+  Server,
+  TrendingDown,
 } from 'lucide-react';
-import {
-  KineticRotatingHeadline,
-  ShimmerBadge,
-} from '@/components/ui/KineticTypography';
 
 interface LandingHeroProps {
   readonly onLaunchConsole: (scenarioKey?: string) => void;
@@ -40,100 +38,94 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
   onExploreStory,
   onOpenPricing,
 }) => {
-  // Interactive Simulator State
-  const [selectedRobot, setSelectedRobot] = useState<'amr' | 'humanoid' | 'hauler'>('amr');
-  const [friction, setFriction] = useState<number>(0.22);
-  const [slope, setSlope] = useState<number>(4);
-
-  // Real-time Physics Calculation
-  // v = 1.8 m/s (AMR), 1.2 m/s (Humanoid), 6.5 m/s (Hauler)
-  const nominalSpeed = selectedRobot === 'amr' ? 1.8 : selectedRobot === 'humanoid' ? 1.2 : 6.5;
-  const gravity = 9.81;
-  const stoppingDist = (Math.pow(nominalSpeed, 2) / (2 * Math.max(0.08, friction) * gravity * Math.cos((slope * Math.PI) / 180))).toFixed(2);
-  const skidRiskPercent = Math.min(99, Math.round((1 - friction / 0.8) * 100 + slope * 2));
-  const isViolatingIso = Number(stoppingDist) > (selectedRobot === 'hauler' ? 12.0 : 1.5);
-
-  const scenarioKeyMap: Record<string, string> = {
-    amr: 'wheeled_amr_stopping_breach',
-    humanoid: 'humanoid_zmp_slip',
-    hauler: 'heavy_hauler_skid',
-  };
+  const [activeChannel, setActiveChannel] = useState<'rgb' | 'depth' | 'seg' | 'lidar'>('rgb');
 
   return (
     <section className="relative pt-8 pb-16 overflow-hidden" aria-label="Diffraction Physical AI Hero">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Top Badges & Live Status */}
         <div className="flex flex-wrap items-center gap-2.5">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-white border border-[#3E2C23]/20 text-xs text-[#3E2C23] shadow-2xs">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-white border border-[#3E2C23]/20 text-xs text-[#3E2C23] shadow-xs">
             <span className="h-2 w-2 rounded-full bg-[#2FA4D7] animate-pulse" />
             <span className="font-semibold tracking-wide uppercase text-[10px] font-mono">
-              DIFFRACT™ AUTONOMY SHIELD
+              NVIDIA ISAAC LAB & OPENUSD COMPATIBLE
             </span>
           </div>
 
           <span className="text-[#3E2C23]/40 hidden sm:inline">•</span>
 
-          <span className="inline-flex items-center px-3 py-1 rounded bg-white border border-[#3E2C23]/20 text-[#3E2C23] text-xs font-mono shadow-2xs">
-            ISO 3691-4 • ISO 13482 • ISO 17757 • ISO 10218
+          <span className="inline-flex items-center px-3 py-1 rounded bg-white border border-[#3E2C23]/20 text-[#3E2C23] text-xs font-mono shadow-xs">
+            Hugging Face LeRobot • Open-X Embodiment • PyTorch HDF5
           </span>
 
           <span className="text-[#3E2C23]/40 hidden md:inline">•</span>
 
-          <span className="hidden md:inline-flex px-3 py-1 rounded bg-[#E76F2E] text-white text-xs font-mono font-bold shadow-2xs">
-            30s Turnkey Dossier SLA
+          <span className="hidden md:inline-flex px-3 py-1 rounded bg-[#E76F2E] text-white text-xs font-mono font-bold shadow-xs">
+            94.2% Zero-Shot Transfer Rate
           </span>
         </div>
 
         {/* Grand Headline & Narrative Split */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-          {/* Left Column: Kinetic Typography Headline & Value Prop */}
+          {/* Left Column: Headline & Value Prop */}
           <div className="lg:col-span-7 space-y-5">
-            <div className="space-y-4">
-              <KineticRotatingHeadline />
+            <div className="space-y-2">
+              <span className="text-xs font-mono font-bold tracking-wider uppercase text-[#2FA4D7] block">
+                The Scale AI for Physical Robotics & VLAs
+              </span>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#3E2C23] font-headline tracking-tight leading-[1.12]">
+                The Synthetic Data Factory for{' '}
+                <span className="text-[#2FA4D7] underline decoration-[#2FA4D7]/40 decoration-4 underline-offset-4">
+                  Physical AI
+                </span>
+              </h1>
             </div>
 
             <p className="text-base sm:text-lg text-[#3E2C23]/85 leading-relaxed font-body max-w-2xl">
-              Autonomous robots pass simulation in idealized conditions, but fail catastrophically in dirty factories, slick mines, and blinding glare—costing industrial operators{' '}
+              Physical data collection via human VR teleoperation costs{' '}
               <strong className="text-[#E76F2E] font-bold underline decoration-[#E76F2E]/80 decoration-2 underline-offset-4">
-                $50,000/hour in unplanned line stoppages
-              </strong>.
+                $150/hour
+              </strong>{' '}
+              and cannot scale to the millions of trajectories needed for frontier Vision-Language-Action (VLA) foundation models.
             </p>
 
             <p className="text-sm text-[#3E2C23]/80 leading-relaxed font-body max-w-2xl">
-              <strong>Diffract™</strong> ingests raw black-box telemetry (<code className="text-[#2FA4D7] bg-white px-1.5 py-0.5 rounded border border-[#2FA4D7]/40 font-mono text-xs">.mcap</code> / ROS 2 bags), runs{' '}
-              <strong className="text-[#3E2C23]">150+ parallel generative physics stress-sweeps</strong> in the cloud, and synthesizes{' '}
-              <strong className="text-[#3E2C23]">turnkey ROS 2 & PX4 safety controller patches</strong> with cryptographically signed ISO compliance dossiers in 45 seconds.
+              <strong>Diffraction</strong> orchestrates headless <strong>NVIDIA Isaac Sim & Isaac Lab</strong> worker clusters in procedural OpenUSD environments. Synthesize millions of photorealistic, physics-calibrated demonstration trajectories with synchronized 1080p RGB-D, 32-beam 3D LiDAR, semantic masks, and 500Hz joint torques in minutes.
             </p>
+
+            {/* Micro ROI Stat Callout */}
+            <div className="grid grid-cols-2 gap-3 max-w-lg p-3 rounded-xl bg-white border border-[#3E2C23]/20 font-mono text-xs">
+              <div>
+                <span className="text-[#3E2C23]/50 block text-[10px]">HUMAN TELEOP</span>
+                <span className="text-rose-700 font-bold">$150/hr ($15M / 100k hrs)</span>
+              </div>
+              <div>
+                <span className="text-[#3E2C23]/50 block text-[10px]">DIFFRACTION FACTORY</span>
+                <span className="text-emerald-700 font-bold">$0.08 / trajectory (99% Cheaper)</span>
+              </div>
+            </div>
 
             {/* CTA Group */}
             <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-3">
               <button
                 type="button"
                 onClick={() => onLaunchConsole()}
-                className="min-h-[48px] px-6 py-3 rounded-lg bg-[#2FA4D7] hover:bg-[#248ab8] active:bg-[#1d7ca8] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center space-x-2.5 cursor-pointer group"
+                className="min-h-[48px] px-6 py-3 rounded-lg bg-[#2FA4D7] hover:bg-[#248ab8] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center space-x-2.5 cursor-pointer group"
               >
                 <Zap className="w-4 h-4 fill-current text-white group-hover:scale-110 transition-transform" />
-                <span>Launch Diffract Studio</span>
+                <span>Launch Data Factory Studio</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
-              <a
-                href="/reports/Diffraction-ISO-3691-4-Certified-Dossier-Sample.html"
-                target="_blank"
-                rel="noreferrer"
-                className="min-h-[48px] px-5 py-3 rounded-lg bg-white hover:bg-[#FAF4EB] text-[#3E2C23] text-sm font-semibold border border-[#3E2C23]/25 transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-2xs"
-              >
-                <FileText className="w-4 h-4 text-[#2FA4D7]" />
-                <span>Sample Diffract Dossier (PDF)</span>
-              </a>
-
               <button
                 type="button"
-                onClick={onExploreStory}
-                className="min-h-[48px] px-4 py-3 rounded-lg bg-white hover:bg-[#FAF4EB] text-[#3E2C23] text-sm font-semibold border border-[#3E2C23]/25 transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-2xs"
+                onClick={() => {
+                  window.location.hash = '#catalog';
+                }}
+                className="min-h-[48px] px-5 py-3 rounded-lg bg-white hover:bg-[#FAF4EB] text-[#3E2C23] text-sm font-semibold border border-[#3E2C23]/25 transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-xs"
               >
-                <span>Read 4-Act Storyline</span>
-                <span className="text-[#3E2C23]/60">↓</span>
+                <Database className="w-4 h-4 text-[#2FA4D7]" />
+                <span>Explore Dataset Hub (575K)</span>
               </button>
 
               <button
@@ -142,212 +134,151 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 className="min-h-[44px] px-3 py-2 text-[#E76F2E] hover:text-[#d35b1d] text-xs sm:text-sm font-bold transition-colors flex items-center justify-center space-x-1.5 cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-[#E76F2E]" />
-                <span>$15k Pilot SOW →</span>
+                <span>Cluster GPU Tiers →</span>
               </button>
             </div>
           </div>
 
-          {/* Right Column: Live Interactive Physics Hazard Simulator Card */}
+          {/* Right Column: Interactive Multimodal Stream Preview Card */}
           <div className="lg:col-span-5">
-            <div className="relative rounded-2xl bg-[#3E2C23] text-[#F5E9D8] border border-[#3E2C23] p-5 sm:p-6 shadow-2xl space-y-4">
+            <div className="relative rounded-2xl bg-[#3E2C23] text-[#F5E9D8] border-2 border-[#3E2C23] p-5 sm:p-6 shadow-2xl space-y-4">
               {/* Card Header */}
               <div className="flex items-center justify-between border-b border-[#F5E9D8]/15 pb-3">
                 <div className="flex items-center space-x-2">
                   <div className="p-1.5 rounded-md bg-[#2FA4D7] text-white">
-                    <Sliders className="w-4 h-4" />
+                    <Server className="w-4 h-4" />
                   </div>
                   <div>
                     <h3 className="text-xs font-bold text-[#F5E9D8] tracking-wide uppercase font-headline">
-                      Diffract™ Physics Stress Simulator
+                      Live Isaac Sim Multimodal Stream
                     </h3>
-                    <p className="text-[10px] text-[#F5E9D8]/70 font-body">Real-time stopping barrier function</p>
+                    <p className="text-[10px] text-[#F5E9D8]/70 font-mono">AgileX Hunter SE in OpenUSD Stage</p>
                   </div>
                 </div>
 
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-[#2FA4D7] text-white">
-                  LIVE SIMULATOR
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-[#E76F2E] text-white">
+                  48,200 FPS
                 </span>
               </div>
 
-              {/* Robot Architecture Selector */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-semibold text-[#F5E9D8]/80">Select Architecture:</label>
-                <div className="grid grid-cols-3 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRobot('amr')}
-                    className={`py-2 px-2 rounded-lg text-xs font-bold font-mono flex items-center justify-center space-x-1.5 transition-all cursor-pointer ${
-                      selectedRobot === 'amr'
-                        ? 'bg-[#2FA4D7] text-white shadow-sm'
-                        : 'bg-[#2A1D17] hover:bg-[#34241d] text-[#F5E9D8]/60'
-                    }`}
-                  >
-                    <Bot className="w-3.5 h-3.5" />
-                    <span>AMR</span>
-                  </button>
+              {/* Channel Selector Pills */}
+              <div className="grid grid-cols-4 gap-1 bg-[#2A1D17] p-1 rounded-lg border border-[#F5E9D8]/10 text-[11px] font-mono">
+                <button
+                  type="button"
+                  onClick={() => setActiveChannel('rgb')}
+                  className={`py-1.5 rounded font-bold transition-colors cursor-pointer text-center ${
+                    activeChannel === 'rgb' ? 'bg-[#2FA4D7] text-white' : 'text-[#F5E9D8]/60 hover:text-white'
+                  }`}
+                >
+                  RGB 1080p
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveChannel('depth')}
+                  className={`py-1.5 rounded font-bold transition-colors cursor-pointer text-center ${
+                    activeChannel === 'depth' ? 'bg-[#2FA4D7] text-white' : 'text-[#F5E9D8]/60 hover:text-white'
+                  }`}
+                >
+                  16-Bit Depth
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveChannel('seg')}
+                  className={`py-1.5 rounded font-bold transition-colors cursor-pointer text-center ${
+                    activeChannel === 'seg' ? 'bg-[#2FA4D7] text-white' : 'text-[#F5E9D8]/60 hover:text-white'
+                  }`}
+                >
+                  Semantic Seg
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveChannel('lidar')}
+                  className={`py-1.5 rounded font-bold transition-colors cursor-pointer text-center ${
+                    activeChannel === 'lidar' ? 'bg-[#2FA4D7] text-white' : 'text-[#F5E9D8]/60 hover:text-white'
+                  }`}
+                >
+                  3D LiDAR
+                </button>
+              </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRobot('humanoid')}
-                    className={`py-2 px-2 rounded-lg text-xs font-bold font-mono flex items-center justify-center space-x-1.5 transition-all cursor-pointer ${
-                      selectedRobot === 'humanoid'
-                        ? 'bg-[#E76F2E] text-white shadow-sm'
-                        : 'bg-[#2A1D17] hover:bg-[#34241d] text-[#F5E9D8]/60'
-                    }`}
-                  >
-                    <Activity className="w-3.5 h-3.5" />
-                    <span>Humanoid</span>
-                  </button>
+              {/* Viewport Frame */}
+              <div className="relative aspect-4/3 bg-[#1A120E] rounded-xl overflow-hidden border border-white/10 flex items-center justify-center">
+                {activeChannel === 'rgb' && (
+                  <svg className="w-full h-full" viewBox="0 0 400 300">
+                    <rect width="400" height="300" fill="#2A1E18" />
+                    <polygon points="0,170 400,170 400,300 0,300" fill="#3E2C23" />
+                    <line x1="80" y1="170" x2="0" y2="300" stroke="#F5E9D8" strokeWidth="1" strokeOpacity="0.15" />
+                    <line x1="320" y1="170" x2="400" y2="300" stroke="#F5E9D8" strokeWidth="1" strokeOpacity="0.15" />
+                    {/* Warehouse Rack */}
+                    <rect x="40" y="50" width="90" height="120" fill="#2FA4D7" fillOpacity="0.15" stroke="#2FA4D7" strokeWidth="2" />
+                    {/* AMR Robot with 3D Bounding Box */}
+                    <rect x="160" y="195" width="85" height="55" rx="6" fill="#2FA4D7" stroke="#F5E9D8" strokeWidth="2" />
+                    <rect x="155" y="190" width="95" height="65" fill="none" stroke="#E76F2E" strokeWidth="1.5" strokeDasharray="4 2" />
+                    <text x="158" y="185" fill="#E76F2E" fontSize="9" fontFamily="monospace" fontWeight="bold">
+                      Robot [99.2%]
+                    </text>
+                  </svg>
+                )}
 
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRobot('hauler')}
-                    className={`py-2 px-2 rounded-lg text-xs font-bold font-mono flex items-center justify-center space-x-1.5 transition-all cursor-pointer ${
-                      selectedRobot === 'hauler'
-                        ? 'bg-[#F5E9D8] text-[#3E2C23] shadow-sm'
-                        : 'bg-[#2A1D17] hover:bg-[#34241d] text-[#F5E9D8]/60'
-                    }`}
-                  >
-                    <Truck className="w-3.5 h-3.5" />
-                    <span>Hauler</span>
-                  </button>
+                {activeChannel === 'depth' && (
+                  <svg className="w-full h-full" viewBox="0 0 400 300">
+                    <rect width="400" height="300" fill="#111111" />
+                    <polygon points="0,170 400,170 400,300 0,300" fill="#333333" />
+                    <rect x="40" y="50" width="90" height="120" fill="#666666" />
+                    <rect x="160" y="195" width="85" height="55" rx="6" fill="#E5E5E5" />
+                  </svg>
+                )}
+
+                {activeChannel === 'seg' && (
+                  <svg className="w-full h-full" viewBox="0 0 400 300">
+                    <rect width="400" height="170" fill="#3E2C23" />
+                    <rect x="0" y="170" width="400" height="130" fill="#2FA4D7" fillOpacity="0.4" />
+                    <rect x="40" y="50" width="90" height="120" fill="#E76F2E" fillOpacity="0.8" />
+                    <rect x="160" y="195" width="85" height="55" rx="6" fill="#2FA4D7" />
+                  </svg>
+                )}
+
+                {activeChannel === 'lidar' && (
+                  <svg className="w-full h-full" viewBox="0 0 400 300">
+                    <circle cx="200" cy="150" r="110" fill="none" stroke="#F5E9D8" strokeWidth="0.5" strokeOpacity="0.15" />
+                    <circle cx="200" cy="150" r="70" fill="none" stroke="#F5E9D8" strokeWidth="0.5" strokeOpacity="0.15" />
+                    <circle cx="200" cy="150" r="3" fill="#E76F2E" />
+                    {Array.from({ length: 36 }).map((_, i) => {
+                      const angle = (i / 36) * Math.PI * 2;
+                      const dist = 50 + ((i * 19) % 55);
+                      return (
+                        <circle
+                          key={i}
+                          cx={200 + Math.cos(angle) * dist}
+                          cy={150 + Math.sin(angle) * dist}
+                          r="1.5"
+                          fill={i % 2 === 0 ? '#2FA4D7' : '#E76F2E'}
+                        />
+                      );
+                    })}
+                  </svg>
+                )}
+
+                <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-[#F5E9D8]">
+                  Sim2Real Match: 98.6%
                 </div>
               </div>
 
-              {/* Slider 1: Surface Friction */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs">
-                  <span className="text-[#F5E9D8]/80 font-medium font-body">Surface Friction (μ):</span>
-                  <span className="font-mono font-bold text-[#2FA4D7]">
-                    μ = {friction.toFixed(2)}{' '}
-                    <span className="text-[10px] text-[#F5E9D8]/60 font-normal">
-                      {friction < 0.25 ? '(Spilled Coolant)' : friction < 0.5 ? '(Wet Epoxy)' : '(Dry Concrete)'}
-                    </span>
-                  </span>
+              {/* Live Sensor Metrics Grid */}
+              <div className="grid grid-cols-3 gap-2 text-center text-xs font-mono bg-white/5 p-2.5 rounded-lg border border-white/10">
+                <div>
+                  <span className="text-[#F5E9D8]/50 text-[10px] block">CLUSTERS</span>
+                  <span className="font-bold text-white">64x H100</span>
                 </div>
-                <input
-                  type="range"
-                  min="0.10"
-                  max="0.85"
-                  step="0.01"
-                  value={friction}
-                  onChange={(e) => setFriction(Number(e.target.value))}
-                  className="w-full accent-[#2FA4D7] cursor-pointer"
-                />
-                <div className="flex justify-between text-[10px] text-[#F5E9D8]/50 font-mono">
-                  <span>0.10 (Ice/Oil)</span>
-                  <span>0.40 (Wet)</span>
-                  <span>0.85 (Dry)</span>
+                <div>
+                  <span className="text-[#F5E9D8]/50 text-[10px] block">THROUGHPUT</span>
+                  <span className="font-bold text-[#2FA4D7]">48,200 FPS</span>
+                </div>
+                <div>
+                  <span className="text-[#F5E9D8]/50 text-[10px] block">FORMAT</span>
+                  <span className="font-bold text-[#E76F2E]">LeRobot v2</span>
                 </div>
               </div>
-
-              {/* Slider 2: Incline Grade */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs">
-                  <span className="text-[#F5E9D8]/80 font-medium font-body">Incline Slope Grade:</span>
-                  <span className="font-mono font-bold text-[#E76F2E]">{slope}% Incline</span>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="15"
-                  step="1"
-                  value={slope}
-                  onChange={(e) => setSlope(Number(e.target.value))}
-                  className="w-full accent-[#E76F2E] cursor-pointer"
-                />
-              </div>
-
-              {/* Reactive Computed Telemetry Box */}
-              <div className="p-3.5 rounded-lg bg-[#2A1D17] border border-[#F5E9D8]/15 space-y-2">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-[#F5E9D8]/70">Calculated Stopping Distance:</span>
-                  <span className={`font-mono font-bold ${isViolatingIso ? 'text-[#E76F2E]' : 'text-[#2FA4D7]'}`}>
-                    {stoppingDist} m
-                  </span>
-                </div>
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-[#F5E9D8]/70">Skid / Tipping Risk:</span>
-                  <span className="font-mono font-bold text-[#E76F2E]">{skidRiskPercent}%</span>
-                </div>
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-[#F5E9D8]/70">ISO Regulatory Status:</span>
-                  <span
-                    className={`font-mono text-[10px] px-2 py-0.5 rounded font-bold uppercase ${
-                      isViolatingIso
-                        ? 'bg-[#E76F2E] text-white'
-                        : 'bg-[#2FA4D7] text-white'
-                    }`}
-                  >
-                    {isViolatingIso ? 'NON-COMPLIANT (BREACH)' : 'COMPLIANT'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Instant Action CTA */}
-              <button
-                type="button"
-                onClick={() => onLaunchConsole(scenarioKeyMap[selectedRobot])}
-                className="w-full py-2.5 px-4 rounded-lg bg-[#F5E9D8] hover:bg-white text-[#3E2C23] font-bold text-xs transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-sm group"
-              >
-                <span>Audit Scenario in Diffract Studio</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* 4 Key Pillar Metric Badges */}
-        <div className="pt-6 border-t border-[#3E2C23]/15 grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-4 sm:p-5 rounded-xl bg-white border border-[#3E2C23]/15 hover:border-[#3E2C23]/35 transition-colors shadow-2xs">
-            <div className="flex items-center space-x-2 text-[#2FA4D7] mb-1.5">
-              <Clock className="w-4 h-4" />
-              <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-[#3E2C23]/70">Turnkey SLA</span>
-            </div>
-            <div className="text-2xl sm:text-3xl font-bold text-[#3E2C23] font-headline tracking-tight">
-              30 Sec
-            </div>
-            <div className="text-[#3E2C23]/70 text-xs mt-1 font-body">
-              Incident log to signed ISO dossier
-            </div>
-          </div>
-
-          <div className="p-4 sm:p-5 rounded-xl bg-white border border-[#3E2C23]/15 hover:border-[#3E2C23]/35 transition-colors shadow-2xs">
-            <div className="flex items-center space-x-2 text-[#E76F2E] mb-1.5">
-              <Activity className="w-4 h-4" />
-              <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-[#3E2C23]/70">Adversarial Sweep</span>
-            </div>
-            <div className="text-2xl sm:text-3xl font-bold text-[#E76F2E] font-headline tracking-tight">
-              150+ Runs
-            </div>
-            <div className="text-[#3E2C23]/70 text-xs mt-1 font-body">
-              Parallel cloud physics edge cases
-            </div>
-          </div>
-
-          <div className="p-4 sm:p-5 rounded-xl bg-white border border-[#3E2C23]/15 hover:border-[#3E2C23]/35 transition-colors shadow-2xs">
-            <div className="flex items-center space-x-2 text-[#2FA4D7] mb-1.5">
-              <Layers className="w-4 h-4" />
-              <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-[#3E2C23]/70">Architectures</span>
-            </div>
-            <div className="text-2xl sm:text-3xl font-bold text-[#3E2C23] font-headline tracking-tight">
-              5 Modalities
-            </div>
-            <div className="text-[#3E2C23]/70 text-xs mt-1 font-body">
-              Humanoid, AMR, Arm, Hauler, Rover
-            </div>
-          </div>
-
-          <div className="p-4 sm:p-5 rounded-xl bg-white border border-[#3E2C23]/15 hover:border-[#3E2C23]/35 transition-colors shadow-2xs">
-            <div className="flex items-center space-x-2 text-[#E76F2E] mb-1.5">
-              <FileCode className="w-4 h-4" />
-              <span className="text-[11px] font-bold font-mono uppercase tracking-wider text-[#3E2C23]/70">Zero Lock-In</span>
-            </div>
-            <div className="text-2xl sm:text-3xl font-bold text-[#3E2C23] font-headline tracking-tight whitespace-nowrap">
-              ROS 2 &amp; PX4
-            </div>
-            <div className="text-[#3E2C23]/70 text-xs mt-1 font-body">
-              Drop-in YAML safety patches
             </div>
           </div>
         </div>

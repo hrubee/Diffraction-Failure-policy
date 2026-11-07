@@ -25,12 +25,10 @@ import { AppFooter } from '@/components/layout/AppFooter';
 import { EnterpriseWorkspaceModal } from '@/components/modals/EnterpriseWorkspaceModal';
 import { useWorkspaceCredentials } from '@/hooks/useWorkspaceCredentials';
 import { useVerificationAudit } from '@/hooks/useVerificationAudit';
-import { AuditConsoleView } from '@/components/console/AuditConsoleView';
-import { UnderwritingBanner } from '@/components/telematics/UnderwritingBanner';
-import { ProvingGroundsTable } from '@/components/telematics/ProvingGroundsTable';
-import { GovernorPlayground } from '@/components/governor/GovernorPlayground';
-import { GithubActionTurnkeyYaml } from '@/components/cicd/GithubActionTurnkeyYaml';
-import { ApiKeyManager } from '@/components/cicd/ApiKeyManager';
+import { SyntheticFactoryStudio } from '@/components/studio/SyntheticFactoryStudio';
+import { DatasetCatalogView } from '@/components/catalog/DatasetCatalogView';
+import { Sim2RealBenchmarkView } from '@/components/sim2real/Sim2RealBenchmarkView';
+import { PythonSdkView } from '@/components/sdk/PythonSdkView';
 import { EnterprisePricingView } from '@/components/pricing/EnterprisePricingView';
 
 export default function Home() {
@@ -44,8 +42,18 @@ export default function Home() {
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.replace('#', '');
-      if (['overview', 'landing', 'console', 'telematics', 'governor', 'cicd', 'pricing'].includes(hash)) {
-        setActiveView(hash === 'landing' ? 'overview' : hash);
+      const validViews = [
+        'overview', 'landing', 'studio', 'console',
+        'catalog', 'telematics', 'sim2real', 'governor',
+        'sdk', 'cicd', 'pricing'
+      ];
+      if (validViews.includes(hash)) {
+        if (hash === 'landing') setActiveView('overview');
+        else if (hash === 'console') setActiveView('studio');
+        else if (hash === 'telematics') setActiveView('catalog');
+        else if (hash === 'governor') setActiveView('sim2real');
+        else if (hash === 'cicd') setActiveView('sdk');
+        else setActiveView(hash);
       }
     };
     handleHash();
@@ -164,35 +172,21 @@ export default function Home() {
           />
 
           <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            {/* VIEW 2: INCIDENT AUDIT CONSOLE */}
-            {activeView === 'console' && <AuditConsoleView audit={audit} />}
+            {/* VIEW 2: ISAAC SIM SYNTHETIC FACTORY STUDIO */}
+            {(activeView === 'studio' || activeView === 'console') && <SyntheticFactoryStudio />}
 
-            {/* VIEW 3: TELEMATICS & PROVING GROUNDS */}
-            {activeView === 'telematics' && (
-              <section id="viewTelematics" className="space-y-6" aria-label="Fleet Telematics and Proving Grounds">
-                <UnderwritingBanner />
-                <ProvingGroundsTable />
-              </section>
-            )}
+            {/* VIEW 3: SYNTHETIC DATASET CATALOG */}
+            {(activeView === 'catalog' || activeView === 'telematics') && <DatasetCatalogView />}
 
-            {/* VIEW 4: DYNAMIC SAFETY GOVERNOR */}
-            {activeView === 'governor' && (
-              <section id="viewGovernor" className="space-y-6" aria-label="Dynamic Safety Governor Simulator">
-                <GovernorPlayground />
-              </section>
-            )}
+            {/* VIEW 4: SIM-TO-REAL ALIGNMENT LAB */}
+            {(activeView === 'sim2real' || activeView === 'governor') && <Sim2RealBenchmarkView />}
 
-            {/* VIEW 5: CI/CD & API KEYS */}
-            {activeView === 'cicd' && (
-              <section id="viewCicd" className="space-y-6" aria-label="CI/CD Integration and APIs">
-                <GithubActionTurnkeyYaml />
-                <ApiKeyManager />
-              </section>
-            )}
+            {/* VIEW 5: PYTHON SDK & CLUSTER API */}
+            {(activeView === 'sdk' || activeView === 'cicd') && <PythonSdkView />}
 
-            {/* VIEW 6: COMMERCIAL PRICING & SOW */}
+            {/* VIEW 6: COMMERCIAL PRICING & GPU CLUSTERS */}
             {activeView === 'pricing' && (
-              <section id="viewPricing" className="space-y-8" aria-label="Commercial Pricing and Pilot Statement of Work">
+              <section id="viewPricing" className="space-y-8" aria-label="Commercial Pricing and Dedicated GPU Clusters">
                 <EnterprisePricingView />
               </section>
             )}

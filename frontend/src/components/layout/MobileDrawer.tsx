@@ -26,11 +26,11 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
   const navItems = [
     { id: 'overview', label: 'Story & Overview' },
-    { id: 'console', label: 'Diffract Studio & 3D Twin' },
-    { id: 'telematics', label: 'Telematics & Insurance' },
-    { id: 'governor', label: 'Edge Safety Governor' },
-    { id: 'cicd', label: 'CI/CD & API Keys' },
-    { id: 'pricing', label: 'Pilot SOW & Pricing' },
+    { id: 'studio', label: 'Isaac Sim Factory Studio' },
+    { id: 'catalog', label: 'Synthetic Dataset Hub' },
+    { id: 'sim2real', label: 'Sim-to-Real Lab' },
+    { id: 'sdk', label: 'Python SDK & APIs' },
+    { id: 'pricing', label: 'Cloud GPU Pricing' },
   ];
 
   return (

@@ -33,6 +33,7 @@ from cloud_gateway.db import (
 from cloud_gateway.job_runner import dispatch_async_audit, run_audit_pipeline
 from cloud_gateway.mcap_parser import DecoupledIncident, McapParser
 from cloud_gateway.storage_backend import storage
+from cloud_gateway.synth_factory import router as synth_router
 from edge.safety_governor import DynamicSafetyGovernor
 from scripts.run_mock_robot import simulate_warehouse_amr_run
 from scripts.simulate_edge_case import SCENARIO_SIMULATORS
@@ -117,6 +118,9 @@ app.mount("/patches", StaticFiles(directory=PATCHES_DIR), name="patches")
 next_assets_dir = os.path.join(FRONTEND_OUT_DIR, "_next")
 if os.path.exists(next_assets_dir):
     app.mount("/_next", StaticFiles(directory=next_assets_dir), name="next_assets")
+
+# Include Synthetic Data Factory router for Physical AI & Isaac Sim
+app.include_router(synth_router)
 
 
 # ---------------------------------------------------------------------------

@@ -14,19 +14,18 @@ interface EcosystemItem {
 }
 
 const ECOSYSTEM_ITEMS: readonly EcosystemItem[] = [
-  { name: 'Diffract™ Engine', category: 'Physical AI Verifier' },
+  { name: 'NVIDIA Omniverse', category: 'RTX Photorealism' },
+  { name: 'NVIDIA Isaac Sim', category: 'GPU Physics Engine' },
+  { name: 'NVIDIA Isaac Lab', category: 'VLA & RL Framework' },
+  { name: 'OpenUSD', category: 'Universal 3D Asset Standard' },
+  { name: 'Hugging Face LeRobot', category: 'Physical AI Dataset Format' },
+  { name: 'Google Open-X Embodiment', category: 'RLDS Benchmark Standard' },
+  { name: 'PhysX 5', category: 'GPU Rigid Body & Contact' },
+  { name: 'PyTorch 2.4+', category: 'Policy Training Backbone' },
   { name: 'ROS 2 Humble & Jazzy', category: 'Robotics Middleware' },
-  { name: 'NVIDIA Isaac Sim', category: 'Omniverse Digital Twins' },
-  { name: 'Foxglove MCAP', category: 'Telemetry Container' },
-  { name: 'PX4 Autopilot', category: 'Off-Road & Aerial' },
-  { name: 'Zenoh Protocol', category: 'Zero-Copy Pub/Sub' },
-  { name: 'OpenUSD', category: '3D Physics Assets' },
-  { name: 'ISO 3691-4', category: 'Industrial AMR Standard' },
-  { name: 'ISO 13482', category: 'Bipedal Humanoid Safety' },
-  { name: 'ISO 17757', category: 'Mining & Heavy Hauler' },
-  { name: 'ISO 10218', category: 'Industrial Manipulators' },
-  { name: 'ANSI/RIA R15.08', category: 'Part 2 Fleet Safety' },
-  { name: 'C++20 / WebAssembly', category: 'Edge Governor' },
+  { name: 'NVIDIA DGX Cloud', category: 'H100 Cluster Execution' },
+  { name: 'Foxglove MCAP', category: 'Zero-Copy Log Container' },
+  { name: 'Diffusion Policy & ACT', category: 'Frontier Action Models' },
 ];
 
 export const LandingEcosystemMarquee: React.FC = () => {
