@@ -110,28 +110,53 @@ class SysIDCalibrator:
         else:
             estimated_lux = 650.0
 
-        # 6. Robot Kinematics Auto-Identification (Wheel radius & track width)
+        # 6. Multi-Modal Robot Kinematics Auto-Identification
         joint_msgs = incident.messages_by_topic.get("/joint_states", [])
-        track_width = 0.68
-        wheel_radius = 0.10
-        chassis_type = "industrial_differential_drive"
         rid_lower = incident.robot_id.lower()
-        if "tugger" in rid_lower or "heavy" in rid_lower:
-            chassis_type = "heavy_payload_tugger"
-            track_width = 0.76
-            wheel_radius = 0.125
+
+        if "humanoid" in rid_lower or "digit" in rid_lower or "biped" in rid_lower or "figure" in rid_lower:
+            chassis_type = "bipedal_humanoid"
+            track_width = 0.38
+            wheel_radius = 0.08  # Ankle pivot height
+            est_mass = 72.0
+        elif "hauler" in rid_lower or "titan" in rid_lower or "tractor" in rid_lower or "mining" in rid_lower:
+            chassis_type = "heavy_ackermann_hauler"
+            track_width = 2.40
+            wheel_radius = 0.65
+            est_mass = 12500.0
+        elif "arm" in rid_lower or "ur16" in rid_lower or "manipulator" in rid_lower or "kuka" in rid_lower or "cobot" in rid_lower:
+            chassis_type = "articulated_manipulator_arm"
+            track_width = 0.45
+            wheel_radius = 0.05
+            est_mass = 38.0
+        elif "rover" in rid_lower or "scout" in rid_lower or "sidewalk" in rid_lower:
+            chassis_type = "urban_delivery_rover"
+            track_width = 0.52
+            wheel_radius = 0.08
+            est_mass = 42.0
         elif "forklift" in rid_lower or "reach" in rid_lower:
             chassis_type = "counterbalanced_forklift"
             track_width = 0.88
             wheel_radius = 0.15
+            est_mass = 850.0
+        elif "tugger" in rid_lower or "heavy" in rid_lower:
+            chassis_type = "heavy_payload_tugger"
+            track_width = 0.76
+            wheel_radius = 0.125
+            est_mass = 350.0
+        else:
+            chassis_type = "industrial_differential_drive"
+            track_width = 0.68
+            wheel_radius = 0.10
+            est_mass = 85.0
 
-        if joint_msgs:
+        if joint_msgs and chassis_type in ["industrial_differential_drive", "heavy_payload_tugger", "counterbalanced_forklift", "urban_delivery_rover"]:
             try:
                 sample_joint = joint_msgs[0].get("data", {})
                 w_vel = sample_joint.get("left_wheel", 0.0)
                 if abs(w_vel) > 0.1 and max_vel > 0.05:
                     calc_radius = round(max_vel / abs(w_vel), 3)
-                    if 0.05 <= calc_radius <= 0.35:
+                    if 0.05 <= calc_radius <= 0.75:
                         wheel_radius = calc_radius
             except Exception:
                 pass
@@ -140,7 +165,7 @@ class SysIDCalibrator:
             "chassis_type": chassis_type,
             "track_width_m": track_width,
             "wheel_radius_m": wheel_radius,
-            "estimated_mass_kg": 85.0 if chassis_type == "industrial_differential_drive" else (180.0 if "tugger" in chassis_type else 350.0),
+            "estimated_mass_kg": est_mass,
             "urdf_hash": incident.urdf_hash,
             "has_embedded_urdf": bool(incident.embedded_urdf),
         }

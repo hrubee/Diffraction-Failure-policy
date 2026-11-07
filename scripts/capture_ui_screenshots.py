@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Diffraction UI Screenshot Automation via Playwright.
-Captures high-resolution desktop and mobile responsive views of the B2B SaaS platform.
+Captures high-resolution desktop and mobile responsive views of the Universal Physical AI Platform.
 """
 
 import os
@@ -36,51 +36,38 @@ def capture_all():
         page.screenshot(path=overview_path, full_page=False)
         print(f"Captured: {overview_path}")
 
-        # Navigate to Audit Console & Run Complete Audit
-        print("[Playwright] Loading Optical Glare incident in Audit Console...")
+        # Open Enterprise Profile Modal
+        print("[Playwright] Opening Enterprise Profile & Credentials modal...")
+        page.click("#licensePill")
+        time.sleep(0.8)
+        profile_path = os.path.join(SCREENSHOTS_DIR, "saas_enterprise_profile_modal.png")
+        page.screenshot(path=profile_path, full_page=False)
+        print(f"Captured: {profile_path}")
+
+        # Close Modal
+        page.click("#enterpriseProfileModal button:has-text('Done')")
+        time.sleep(0.5)
+
+        # Navigate to Audit Console & Run Complete Verification on Humanoid
+        print("[Playwright] Loading Bipedal Humanoid incident in Audit Console...")
         page.click("#navConsole")
         time.sleep(0.5)
-        # Click Glare hazard selector
-        page.click("#btnHazardGlare")
+        # Click Humanoid modality selector
+        page.click("#btnHazardHumanoid")
         time.sleep(1.5)
 
-        print("[Playwright] Executing complete verification audit on Optical Glare...")
+        print("[Playwright] Executing complete verification audit on Humanoid ZMP Slip...")
         page.click("#runPipelineBtn")
         # Wait for audit completion
-        page.wait_for_selector("#artifactsCard:not(.hidden)", timeout=15000)
+        page.wait_for_selector("#artifactsCard:not(.hidden)", timeout=20000)
         time.sleep(1)
 
         console_path = os.path.join(SCREENSHOTS_DIR, "saas_console_desktop.png")
         page.screenshot(path=console_path, full_page=False)
         print(f"Captured: {console_path}")
 
-        # Capture Paywall Locked State (Scroll down to Remediation code container)
-        page.locator("#remediationCodeContainer").scroll_into_view_if_needed()
-        time.sleep(0.5)
-        locked_path = os.path.join(SCREENSHOTS_DIR, "saas_paywall_locked.png")
-        page.screenshot(path=locked_path, full_page=False)
-        print(f"Captured: {locked_path}")
-
-        # Click Unlock Pilot to open Paywall Modal
-        print("[Playwright] Opening Paywall Modal...")
-        page.click("#unlockPilotRemediationBtn")
-        time.sleep(0.8)
-        modal_path = os.path.join(SCREENSHOTS_DIR, "saas_paywall_modal.png")
-        page.screenshot(path=modal_path, full_page=False)
-        print(f"Captured: {modal_path}")
-
-        # Apply Demo Unlock in modal
-        print("[Playwright] Applying demo unlock key...")
-        page.click("button:has-text('diff_demo_access')")
-        time.sleep(1.5)
-
-        # Capture Unlocked State
-        unlocked_path = os.path.join(SCREENSHOTS_DIR, "saas_paywall_unlocked.png")
-        page.screenshot(path=unlocked_path, full_page=False)
-        print(f"Captured: {unlocked_path}")
-
-        # Navigate to Telematics & Underwriting
-        print("[Playwright] Navigating to Telematics & Insurance Underwriting...")
+        # Navigate to Telematics & Proving Grounds
+        print("[Playwright] Navigating to Telematics & Proving Grounds...")
         page.click("#navTelematics")
         time.sleep(0.8)
         telematics_path = os.path.join(SCREENSHOTS_DIR, "saas_telematics_desktop.png")
@@ -124,10 +111,10 @@ def capture_all():
         # Navigate to Audit Console on Mobile via visible drawer link
         mobile_page.click("#mobileDrawer a:has-text('Audit Console')")
         time.sleep(1)
-        mobile_page.click("#btnHazardSlip")
+        mobile_page.click("#btnHazardHauler")
         time.sleep(1.5)
         mobile_page.click("#runPipelineBtn")
-        mobile_page.wait_for_selector("#artifactsCard:not(.hidden)", timeout=15000)
+        mobile_page.wait_for_selector("#artifactsCard:not(.hidden)", timeout=20000)
         time.sleep(1)
 
         mobile_console_path = os.path.join(SCREENSHOTS_DIR, "saas_mobile_console.png")

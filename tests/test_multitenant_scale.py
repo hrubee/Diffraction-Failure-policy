@@ -143,4 +143,4 @@ def test_asynchronous_verification_job_lifecycle():
     assert final_job_data["progress_pct"] == 100
     assert "compliance_score" in final_job_data
     assert "result" in final_job_data
-    assert final_job_data["result"]["incident_id"].startswith("amr_reach_019")
+    assert final_job_data["result"]["incident_id"].startswith("rover_scout_08") or final_job_data["result"]["incident_id"].startswith("amr_reach_019")

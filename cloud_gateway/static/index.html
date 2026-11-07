@@ -137,13 +137,15 @@
                 </a>
 
                 <div class="hidden 2xl:flex items-center space-x-1.5 bg-white px-2 py-1 rounded-lg border border-subtle card-shadow text-[11px]">
-                    <span class="font-bold text-slate-700">Acme Logistics</span>
+                    <span class="font-bold text-slate-700">Global Proving Grounds</span>
                     <span class="text-slate-300">/</span>
-                    <label for="fleetSelect" class="sr-only">Select Active Fleet Location</label>
+                    <label for="fleetSelect" class="sr-only">Select Autonomous Proving Ground</label>
                     <select id="fleetSelect" class="bg-transparent font-medium text-slate-600 focus-ring rounded cursor-pointer pr-1 text-[11px]" onchange="onFleetChange(this.value)">
-                        <option value="chicago">Chicago Hub • Bay 7</option>
-                        <option value="dallas">Dallas Hub • Bay 4</option>
-                        <option value="rotterdam">Rotterdam Dock A</option>
+                        <option value="munich">Munich Proving Ground (Humanoid &amp; Legged)</option>
+                        <option value="nevada">Nevada Heavy Autonomy (12T Haulers)</option>
+                        <option value="stuttgart">Stuttgart Automation Cell (Robotic Arms)</option>
+                        <option value="chicago">Chicago Logistics Hub (Wheeled AMRs)</option>
+                        <option value="tokyo">Tokyo Urban Mobility (Sidewalk Rovers)</option>
                     </select>
                     <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" title="Connected to Edge Sentinel"></span>
                 </div>
@@ -169,38 +171,36 @@
                 </a>
                 <a href="#cicd" onclick="switchView('cicd', event)" id="navCicd" class="px-2.5 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 focus-ring transition-colors duration-150 flex items-center space-x-1">
                     <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                    <span>CI/CD</span>
+                    <span>CI/CD &amp; API</span>
                 </a>
                 <a href="#pricing" onclick="switchView('pricing', event)" id="navPricing" class="px-2.5 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 focus-ring transition-colors duration-150 flex items-center space-x-1">
                     <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <span>Pilot SOW</span>
+                    <span>Enterprise SOW</span>
                 </a>
             </nav>
 
             <!-- Right Controls: Status Pill, Action Button & Profile -->
             <div class="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
                 
-                <!-- Consolidated License Badge (hidden on mobile < sm, prominent in drawer) -->
-                <button type="button" onclick="openPaywallModal()" id="licensePill" class="hidden sm:inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 text-[10px] font-bold mono transition-colors focus-ring cursor-pointer" title="Manage Enterprise License">
-                    <span id="licenseDot" class="h-1.5 w-1.5 rounded-full bg-amber-500" aria-hidden="true"></span>
-                    <span id="licensePillText">FREE TIER</span>
-                    <span id="btnUpgradeHeader" class="text-blue-600 font-bold underline ml-0.5">Upgrade</span>
+                <!-- Enterprise Tier Badge -->
+                <button type="button" onclick="openEnterpriseProfileModal()" id="licensePill" class="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 text-[10px] font-bold mono transition-colors focus-ring cursor-pointer" title="Enterprise Workspace & API Key Status">
+                    <span id="licenseDot" class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></span>
+                    <span id="licensePillText">ENTERPRISE SENTINEL</span>
                 </button>
 
-                <div class="hidden 2xl:inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-semibold mono num-tabular">
-                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-600" aria-hidden="true"></span>
-                    <span>28&nbsp;AMRs</span>
+                <div class="hidden 2xl:inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 text-[10px] font-semibold mono num-tabular">
+                    <span>5 Modalities Active</span>
                 </div>
 
-                <a href="#console" onclick="switchView('console', event)" class="hidden md:inline-flex min-h-[36px] px-3 py-1.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold rounded-lg text-xs shadow-sm focus-ring transition-transform duration-100 items-center space-x-1 cursor-pointer">
+                <a href="#console" onclick="switchView('console', event)" class="hidden md:inline-flex min-h-[36px] px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold rounded-lg text-xs shadow-sm focus-ring transition-transform duration-100 items-center space-x-1 cursor-pointer">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    <span>Launch Audit</span>
+                    <span>Launch Verification</span>
                 </a>
 
                 <!-- User Profile Avatar Button -->
-                <button type="button" class="hidden sm:flex min-h-[36px] min-w-[36px] p-0.5 rounded-full items-center justify-center focus-ring cursor-pointer" aria-label="User Account: John Doe, VP of Autonomy">
-                    <span class="h-7 w-7 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center font-bold text-[11px] text-slate-700">
-                        JD
+                <button type="button" onclick="openEnterpriseProfileModal()" class="hidden sm:flex min-h-[36px] min-w-[36px] p-0.5 rounded-full items-center justify-center focus-ring cursor-pointer" aria-label="Enterprise Account Settings">
+                    <span class="h-7 w-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-[11px] text-white">
+                        AI
                     </span>
                 </button>
 
@@ -214,7 +214,7 @@
         <!-- Mobile & Tablet Drawer Navigation (Below xl) -->
         <div id="mobileDrawer" class="hidden xl:hidden pt-3 pb-2 border-t border-slate-200 mt-2 space-y-1" style="overscroll-behavior: contain;">
             <div class="p-2.5 mb-2 bg-slate-100 rounded-xl flex items-center justify-between text-xs">
-                <span class="font-bold text-slate-800">Acme Logistics • Chicago Hub</span>
+                <span class="font-bold text-slate-800">Global Proving Grounds • Multi-Modal</span>
                 <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px] mono">ONLINE</span>
             </div>
             <a href="#overview" onclick="switchView('overview', event); toggleMobileMenu()" class="w-full min-h-[44px] px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 focus-ring flex items-center space-x-2">
@@ -242,7 +242,7 @@
                 <span>Pilot SOW &amp; Pricing</span>
             </a>
             <div class="pt-2 border-t border-slate-200 px-3">
-                <button type="button" onclick="openPaywallModal(); toggleMobileMenu()" class="w-full py-2 bg-blue-600 text-white rounded-lg text-xs font-bold focus-ring">Upgrade to Enterprise Pilot</button>
+                <button type="button" onclick="openEnterpriseProfileModal(); toggleMobileMenu()" class="w-full py-2 bg-slate-900 text-white rounded-lg text-xs font-bold focus-ring">Enterprise Workspace Profile</button>
             </div>
         </div>
     </header>
@@ -263,83 +263,83 @@
                     </div>
                     <div>
                         <div class="flex items-center space-x-2">
-                            <h2 class="text-sm font-bold tracking-tight">Enterprise Safety Sentinel: 4 Commercial Facilities Online</h2>
-                            <span class="px-2 py-0.5 rounded bg-blue-500/30 text-blue-300 text-[10px] font-bold mono">MULTI-SITE ACTIVE</span>
+                            <h2 class="text-sm font-bold tracking-tight">Enterprise Physical AI Sentinel: 5 Autonomous Robotic Modalities Active</h2>
+                            <span class="px-2 py-0.5 rounded bg-blue-500/30 text-blue-300 text-[10px] font-bold mono">MULTI-MODAL VERIFIED</span>
                         </div>
-                        <p class="text-xs text-slate-300 mt-0.5">Continuous verification across Chicago, Dallas, Rotterdam &amp; Atlanta fleets covering 5 core Physical AI hazard domains.</p>
+                        <p class="text-xs text-slate-300 mt-0.5">Continuous physics verification across Humanoids, Heavy Haulers, Manipulators, Wheeled AMRs &amp; Sidewalk Rovers.</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-3 w-full md:w-auto justify-end">
                     <a href="#console" onclick="switchView('console', event)" class="min-h-[44px] w-full md:w-auto px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl focus-ring transition-colors duration-150 shadow-sm text-center flex items-center justify-center">
-                        Open Forensic Audit Console
+                        Launch Verification Console
                     </a>
                 </div>
             </div>
 
-            <!-- 5 Physical AI Failure Domains Showcase Card Grid -->
+            <!-- 5 Universal Multi-Modal Robotics Classes Showcase Card Grid -->
             <div class="space-y-3">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                     <div>
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mono">Universal Physical AI Hazard Coverage</h3>
-                        <p class="text-xs text-slate-600 mt-0.5">Diffraction isolates, reconstructs, and patches failures across the 5 primary edge-case physics regimes:</p>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mono">Universal Multi-Modal Physical AI Coverage</h3>
+                        <p class="text-xs text-slate-600 mt-0.5">Automated physics verification, ZMP stability, dynamic contact force ceilings, and regulatory certification:</p>
                     </div>
-                    <span class="text-[10px] mono text-blue-600 font-semibold bg-blue-50 px-2 py-0.5 rounded border border-blue-200 self-start sm:self-auto">ISO 3691-4 &amp; ANSI R15.08</span>
+                    <span class="text-[10px] mono text-blue-600 font-semibold bg-blue-50 px-2 py-0.5 rounded border border-blue-200 self-start sm:self-auto">ISO 13482 &bull; ISO 17757 &bull; ISO 10218 &bull; ISO 3691-4</span>
                 </div>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                    <!-- Hazard 1: Traction -->
-                    <div class="p-3.5 rounded-xl bg-white border border-slate-200 card-shadow hover:border-blue-300 transition-colors cursor-pointer" onclick="loadSampleIncident('traction_slip')">
+                    <!-- Class 1: Bipedal Humanoid -->
+                    <div class="p-3.5 rounded-xl bg-white border border-slate-200 card-shadow hover:border-blue-300 transition-colors cursor-pointer" onclick="loadSampleIncident('humanoid_zmp_slip')">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="h-6 w-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs font-bold">💧</span>
-                            <span class="text-[9px] font-bold mono px-1.5 py-0.5 rounded bg-blue-50 text-blue-700">CLASS 1</span>
+                            <span class="h-6 w-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs font-bold">🦿</span>
+                            <span class="text-[9px] font-bold mono px-1.5 py-0.5 rounded bg-blue-50 text-blue-700">HUMANOID</span>
                         </div>
-                        <div class="text-xs font-bold text-slate-900">Surface Traction Loss</div>
-                        <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Wet ramps, condensation, epoxy dust &amp; ice causing non-linear wheel slip.</p>
-                        <div class="mt-2 text-[10px] text-blue-600 font-semibold mono flex items-center space-x-1"><span>Test Bay 7 Slip</span><span aria-hidden="true">&rarr;</span></div>
+                        <div class="text-xs font-bold text-slate-900">Bipedal Dynamic Balance</div>
+                        <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Foot-ground friction slip, ZMP stability margin drift, and balance recovery.</p>
+                        <div class="mt-2 text-[10px] text-blue-600 font-semibold mono flex items-center space-x-1"><span>Verify ISO 13482</span><span aria-hidden="true">&rarr;</span></div>
                     </div>
 
-                    <!-- Hazard 2: Optical Glare -->
-                    <div class="p-3.5 rounded-xl bg-white border border-slate-200 card-shadow hover:border-amber-300 transition-colors cursor-pointer" onclick="loadSampleIncident('optical_glare')">
+                    <!-- Class 2: Heavy Hauler -->
+                    <div class="p-3.5 rounded-xl bg-white border border-slate-200 card-shadow hover:border-amber-300 transition-colors cursor-pointer" onclick="loadSampleIncident('heavy_hauler_skid')">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="h-6 w-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xs font-bold">☀️</span>
-                            <span class="text-[9px] font-bold mono px-1.5 py-0.5 rounded bg-amber-50 text-amber-700">CLASS 2</span>
+                            <span class="h-6 w-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xs font-bold">🚜</span>
+                            <span class="text-[9px] font-bold mono px-1.5 py-0.5 rounded bg-amber-50 text-amber-700">HAULER 12T</span>
                         </div>
-                        <div class="text-xs font-bold text-slate-900">Optical Glare Saturation</div>
-                        <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Direct sunlight (85k+ Lux) blinding cameras &amp; false LiDAR phantom stops.</p>
-                        <div class="mt-2 text-amber-600 font-semibold mono text-[10px] flex items-center space-x-1"><span>Test Bay 4 Glare</span><span aria-hidden="true">&rarr;</span></div>
+                        <div class="text-xs font-bold text-slate-900">Heavy Off-Highway Incline</div>
+                        <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">12-ton payload grade slide on loose aggregate and dynamic runaway stopping.</p>
+                        <div class="mt-2 text-amber-600 font-semibold mono text-[10px] flex items-center space-x-1"><span>Verify ISO 17757</span><span aria-hidden="true">&rarr;</span></div>
                     </div>
 
-                    <!-- Hazard 3: Actuator Latency -->
-                    <div class="p-3.5 rounded-xl bg-white border border-slate-200 card-shadow hover:border-indigo-300 transition-colors cursor-pointer" onclick="loadSampleIncident('actuator_latency')">
+                    <!-- Class 3: Manipulator Arm -->
+                    <div class="p-3.5 rounded-xl bg-white border border-slate-200 card-shadow hover:border-indigo-300 transition-colors cursor-pointer" onclick="loadSampleIncident('manipulator_wrench_fault')">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="h-6 w-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold">⏱️</span>
-                            <span class="text-[9px] font-bold mono px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700">CLASS 3</span>
+                            <span class="h-6 w-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold">🦾</span>
+                            <span class="text-[9px] font-bold mono px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700">MANIPULATOR</span>
                         </div>
-                        <div class="text-xs font-bold text-slate-900">Middleware &amp; CAN Latency</div>
-                        <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">DDS queue delays (185ms) triggering high-speed steering oscillation.</p>
-                        <div class="mt-2 text-indigo-600 font-semibold mono text-[10px] flex items-center space-x-1"><span>Test Dock A Latency</span><span aria-hidden="true">&rarr;</span></div>
+                        <div class="text-xs font-bold text-slate-900">6-DOF Tool Wrench Limits</div>
+                        <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Dynamic contact force spikes (&gt;140N) &amp; end-effector high-speed slip.</p>
+                        <div class="mt-2 text-indigo-600 font-semibold mono text-[10px] flex items-center space-x-1"><span>Verify ISO 10218</span><span aria-hidden="true">&rarr;</span></div>
                     </div>
 
-                    <!-- Hazard 4: Worker Pinch -->
-                    <div class="p-3.5 rounded-xl bg-white border border-slate-200 card-shadow hover:border-rose-300 transition-colors cursor-pointer" onclick="loadSampleIncident('pedestrian_pinch')">
+                    <!-- Class 4: Wheeled AMR -->
+                    <div class="p-3.5 rounded-xl bg-white border border-slate-200 card-shadow hover:border-rose-300 transition-colors cursor-pointer" onclick="loadSampleIncident('wheeled_amr_stopping_breach')">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="h-6 w-6 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-xs font-bold">🚶</span>
-                            <span class="text-[9px] font-bold mono px-1.5 py-0.5 rounded bg-rose-50 text-rose-700">CLASS 4</span>
+                            <span class="h-6 w-6 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-xs font-bold">🤖</span>
+                            <span class="text-[9px] font-bold mono px-1.5 py-0.5 rounded bg-rose-50 text-rose-700">WHEELED AMR</span>
                         </div>
-                        <div class="text-xs font-bold text-slate-900">Worker Pinch-Point</div>
-                        <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Blind intersection pedestrian incursions breaching ISO 3691-4 clearance.</p>
-                        <div class="mt-2 text-rose-600 font-semibold mono text-[10px] flex items-center space-x-1"><span>Test Zone C Pinch</span><span aria-hidden="true">&rarr;</span></div>
+                        <div class="text-xs font-bold text-slate-900">Mobile Stopping Envelope</div>
+                        <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Degraded friction stopping distance &amp; 0.50m safety envelope breaches.</p>
+                        <div class="mt-2 text-rose-600 font-semibold mono text-[10px] flex items-center space-x-1"><span>Verify ISO 3691-4</span><span aria-hidden="true">&rarr;</span></div>
                     </div>
 
-                    <!-- Hazard 5: Payload Shift -->
-                    <div class="p-3.5 rounded-xl bg-white border border-slate-200 card-shadow hover:border-purple-300 transition-colors cursor-pointer" onclick="loadSampleIncident('payload_shift')">
+                    <!-- Class 5: Urban Rover -->
+                    <div class="p-3.5 rounded-xl bg-white border border-slate-200 card-shadow hover:border-purple-300 transition-colors cursor-pointer" onclick="loadSampleIncident('urban_rover_glare')">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="h-6 w-6 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-xs font-bold">📦</span>
-                            <span class="text-[9px] font-bold mono px-1.5 py-0.5 rounded bg-purple-50 text-purple-700">CLASS 5</span>
+                            <span class="h-6 w-6 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-xs font-bold">🛴</span>
+                            <span class="text-[9px] font-bold mono px-1.5 py-0.5 rounded bg-purple-50 text-purple-700">URBAN ROVER</span>
                         </div>
-                        <div class="text-xs font-bold text-slate-900">Payload Mass Shift</div>
-                        <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Asymmetric heavy pallet loads causing centrifugal roll and tip-over risks.</p>
-                        <div class="mt-2 text-purple-600 font-semibold mono text-[10px] flex items-center space-x-1"><span>Test Rack 9 Shift</span><span aria-hidden="true">&rarr;</span></div>
+                        <div class="text-xs font-bold text-slate-900">Pedestrian Crosswalk Glare</div>
+                        <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Direct sunset (92k Lux) optical camera washout &amp; false phantom E-stops.</p>
+                        <div class="mt-2 text-purple-600 font-semibold mono text-[10px] flex items-center space-x-1"><span>Verify ISO 22737</span><span aria-hidden="true">&rarr;</span></div>
                     </div>
                 </div>
             </div>
@@ -458,7 +458,7 @@
                         <span class="h-2 w-2 rounded-full bg-blue-600" aria-hidden="true"></span>
                         <span>Enterprise Fleet Sentinel Live Incident Queue</span>
                     </h3>
-                    <span class="text-[11px] text-slate-400 mono">Auto-Captured Across 4 Enterprise Hubs</span>
+                    <span class="text-[11px] text-slate-400 mono">Auto-Captured Across 5 Global Proving Grounds</span>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -466,67 +466,67 @@
                         <thead>
                             <tr class="border-b border-slate-200 text-[10px] text-slate-500 uppercase tracking-wider mono bg-slate-50/70">
                                 <th scope="col" class="py-2.5 px-3">Robot ID</th>
-                                <th scope="col" class="py-2.5 px-3">Facility Hub &amp; Zone</th>
-                                <th scope="col" class="py-2.5 px-3">Physical Hazard Class</th>
-                                <th scope="col" class="py-2.5 px-3">Extracted Telemetry Signature</th>
+                                <th scope="col" class="py-2.5 px-3">Autonomous Proving Ground</th>
+                                <th scope="col" class="py-2.5 px-3">Kinematic Robot Class</th>
+                                <th scope="col" class="py-2.5 px-3">Physical Failure Signature &amp; Standard</th>
                                 <th scope="col" class="py-2.5 px-3 text-center">Safety Status</th>
                                 <th scope="col" class="py-2.5 px-3 text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
-                            <!-- 1. Traction -->
+                            <!-- 1. Humanoid -->
                             <tr class="hover:bg-slate-50/50">
-                                <td class="py-3 px-3 font-bold text-slate-900 mono">amr_tugger_042</td>
-                                <td class="py-3 px-3 text-slate-600">Chicago Hub • Bay 7 Ingress</td>
-                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 mono text-[11px]">Traction Slip</span></td>
-                                <td class="py-3 px-3 mono text-slate-700 num-tabular">&mu; = 0.35 &bull; Slip S = 28.4%</td>
+                                <td class="py-3 px-3 font-bold text-slate-900 mono">humanoid_digit_03</td>
+                                <td class="py-3 px-3 text-slate-600">Munich Proving Ground</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 mono text-[11px]">Bipedal Humanoid</span></td>
+                                <td class="py-3 px-3 mono text-slate-700 num-tabular">ZMP Foot Slip &bull; ISO 13482:2014 Clause 5.3</td>
                                 <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">VERIFIED</span></td>
                                 <td class="py-3 px-3 text-right">
-                                    <button type="button" onclick="loadSampleIncident('traction_slip')" class="min-h-[36px] px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs mono focus-ring cursor-pointer">Open Audit</button>
+                                    <button type="button" onclick="loadSampleIncident('humanoid_zmp_slip')" class="min-h-[36px] px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs mono focus-ring cursor-pointer">Open Audit</button>
                                 </td>
                             </tr>
-                            <!-- 2. Optical Glare -->
+                            <!-- 2. Heavy Hauler -->
                             <tr class="hover:bg-slate-50/50">
-                                <td class="py-3 px-3 font-bold text-slate-900 mono">amr_reach_019</td>
-                                <td class="py-3 px-3 text-slate-600">Dallas Hub • Bay 4 Door</td>
-                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 mono text-[11px]">Optical Glare Blind</span></td>
-                                <td class="py-3 px-3 mono text-slate-700 num-tabular">88,500&nbsp;Lux &bull; Specular E-Stop</td>
+                                <td class="py-3 px-3 font-bold text-slate-900 mono">hauler_titan_09</td>
+                                <td class="py-3 px-3 text-slate-600">Nevada Heavy Autonomy</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 mono text-[11px]">Heavy Hauler (12T)</span></td>
+                                <td class="py-3 px-3 mono text-slate-700 num-tabular">12% Grade Slide &bull; ISO 17757:2019 Clause 4.3</td>
                                 <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">VERIFIED</span></td>
                                 <td class="py-3 px-3 text-right">
-                                    <button type="button" onclick="loadSampleIncident('optical_glare')" class="min-h-[36px] px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs mono focus-ring cursor-pointer">Open Audit</button>
+                                    <button type="button" onclick="loadSampleIncident('heavy_hauler_skid')" class="min-h-[36px] px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs mono focus-ring cursor-pointer">Open Audit</button>
                                 </td>
                             </tr>
-                            <!-- 3. Actuator Latency -->
+                            <!-- 3. Robotic Arm -->
                             <tr class="hover:bg-slate-50/50">
-                                <td class="py-3 px-3 font-bold text-slate-900 mono">amr_carrier_008</td>
-                                <td class="py-3 px-3 text-slate-600">Rotterdam Port • Dock A</td>
-                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200 mono text-[11px]">DDS Latency Jitter</span></td>
-                                <td class="py-3 px-3 mono text-slate-700 num-tabular">&tau; = 185ms &bull; Sinusoidal Hunting</td>
+                                <td class="py-3 px-3 font-bold text-slate-900 mono">arm_ur16e_cell2</td>
+                                <td class="py-3 px-3 text-slate-600">Stuttgart Automation Cell</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200 mono text-[11px]">6-DOF Manipulator</span></td>
+                                <td class="py-3 px-3 mono text-slate-700 num-tabular">Force = 195N &gt; 140N &bull; ISO/TS 15066</td>
                                 <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">VERIFIED</span></td>
                                 <td class="py-3 px-3 text-right">
-                                    <button type="button" onclick="loadSampleIncident('actuator_latency')" class="min-h-[36px] px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs mono focus-ring cursor-pointer">Open Audit</button>
+                                    <button type="button" onclick="loadSampleIncident('manipulator_wrench_fault')" class="min-h-[36px] px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs mono focus-ring cursor-pointer">Open Audit</button>
                                 </td>
                             </tr>
-                            <!-- 4. Worker Pinch -->
+                            <!-- 4. Wheeled AMR -->
                             <tr class="hover:bg-slate-50/50">
-                                <td class="py-3 px-3 font-bold text-slate-900 mono">amr_lifter_104</td>
-                                <td class="py-3 px-3 text-slate-600">Chicago Hub • Zone C</td>
-                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 mono text-[11px]">Worker Pinch-Point</span></td>
-                                <td class="py-3 px-3 mono text-slate-700 num-tabular">d = 0.42m &bull; ISO 3691-4 Breach</td>
+                                <td class="py-3 px-3 font-bold text-slate-900 mono">carrier_amr_500</td>
+                                <td class="py-3 px-3 text-slate-600">Chicago Logistics Hub</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 mono text-[11px]">Wheeled Mobile AMR</span></td>
+                                <td class="py-3 px-3 mono text-slate-700 num-tabular">&mu; = 0.35 Slip &bull; ISO 3691-4 Clause 5.2.3</td>
                                 <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">VERIFIED</span></td>
                                 <td class="py-3 px-3 text-right">
-                                    <button type="button" onclick="loadSampleIncident('pedestrian_pinch')" class="min-h-[36px] px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs mono focus-ring cursor-pointer">Open Audit</button>
+                                    <button type="button" onclick="loadSampleIncident('wheeled_amr_stopping_breach')" class="min-h-[36px] px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs mono focus-ring cursor-pointer">Open Audit</button>
                                 </td>
                             </tr>
-                            <!-- 5. Payload Shift -->
+                            <!-- 5. Urban Rover -->
                             <tr class="hover:bg-slate-50/50">
-                                <td class="py-3 px-3 font-bold text-slate-900 mono">amr_heavy_012</td>
-                                <td class="py-3 px-3 text-slate-600">Atlanta Hub • Rack 9</td>
-                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200 mono text-[11px]">Payload Mass Shift</span></td>
-                                <td class="py-3 px-3 mono text-slate-700 num-tabular">850kg &bull; 640Nm Centrifugal Roll</td>
+                                <td class="py-3 px-3 font-bold text-slate-900 mono">rover_scout_08</td>
+                                <td class="py-3 px-3 text-slate-600">Tokyo Urban Mobility</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200 mono text-[11px]">Urban Sidewalk Rover</span></td>
+                                <td class="py-3 px-3 mono text-slate-700 num-tabular">92,000 Lux Glare &bull; ISO 22737:2021</td>
                                 <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">VERIFIED</span></td>
                                 <td class="py-3 px-3 text-right">
-                                    <button type="button" onclick="loadSampleIncident('payload_shift')" class="min-h-[36px] px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs mono focus-ring cursor-pointer">Open Audit</button>
+                                    <button type="button" onclick="loadSampleIncident('urban_rover_glare')" class="min-h-[36px] px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-lg text-xs mono focus-ring cursor-pointer">Open Audit</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -544,18 +544,18 @@
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white p-4 rounded-2xl border border-subtle card-shadow">
                 <div>
                     <h2 class="text-base font-bold text-slate-900 tracking-tight flex items-center space-x-2">
-                        <span>Physical Incident Audit &amp; Verification Console</span>
+                        <span>Universal Physical AI Incident Audit &amp; Verification Console</span>
                         <span id="consoleStatusPill" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 mono">STANDBY</span>
                     </h2>
-                    <p id="incidentSubtitle" class="text-xs text-slate-500 mono mt-0.5" aria-live="polite">Drop an incident .mcap container or load any of the 5 Physical AI hazard classes below.</p>
+                    <p id="incidentSubtitle" class="text-xs text-slate-500 mono mt-0.5" aria-live="polite">Select any of the 5 Universal Physical AI Modalities or ingest telemetry (.mcap / ROS 2 / Zenoh / Protobuf).</p>
                 </div>
-                <!-- 5 Hazard Classes Segmented Selector -->
-                <div class="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Hazard Domain Selector">
-                    <button type="button" id="btnHazardSlip" onclick="loadSampleIncident('traction_slip')" class="px-2.5 py-1.5 bg-blue-600 text-white text-[11px] font-semibold rounded-lg mono focus-ring cursor-pointer">💧 1. Slip</button>
-                    <button type="button" id="btnHazardGlare" onclick="loadSampleIncident('optical_glare')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold rounded-lg mono focus-ring cursor-pointer">☀️ 2. Glare</button>
-                    <button type="button" id="btnHazardLatency" onclick="loadSampleIncident('actuator_latency')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold rounded-lg mono focus-ring cursor-pointer">⏱️ 3. Latency</button>
-                    <button type="button" id="btnHazardPinch" onclick="loadSampleIncident('pedestrian_pinch')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold rounded-lg mono focus-ring cursor-pointer">🚶 4. Pinch</button>
-                    <button type="button" id="btnHazardPayload" onclick="loadSampleIncident('payload_shift')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold rounded-lg mono focus-ring cursor-pointer">📦 5. Shift</button>
+                <!-- 5 Universal Physical AI Modalities Segmented Selector -->
+                <div class="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Robot Modality Selector">
+                    <button type="button" id="btnHazardHumanoid" onclick="loadSampleIncident('humanoid_zmp_slip')" class="px-2.5 py-1.5 bg-blue-600 text-white text-[11px] font-semibold rounded-lg mono focus-ring cursor-pointer">🦿 1. Humanoid</button>
+                    <button type="button" id="btnHazardHauler" onclick="loadSampleIncident('heavy_hauler_skid')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold rounded-lg mono focus-ring cursor-pointer">🚜 2. Heavy Hauler</button>
+                    <button type="button" id="btnHazardManipulator" onclick="loadSampleIncident('manipulator_wrench_fault')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold rounded-lg mono focus-ring cursor-pointer">🦾 3. Manipulator</button>
+                    <button type="button" id="btnHazardAMR" onclick="loadSampleIncident('wheeled_amr_stopping_breach')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold rounded-lg mono focus-ring cursor-pointer">🤖 4. Wheeled AMR</button>
+                    <button type="button" id="btnHazardRover" onclick="loadSampleIncident('urban_rover_glare')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold rounded-lg mono focus-ring cursor-pointer">🛴 5. Urban Rover</button>
                 </div>
             </div>
 
@@ -568,19 +568,19 @@
                     <!-- MCAP Dropzone Card -->
                     <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-4">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mono">1. Telemetry Ingestion (.mcap)</h3>
-                            <span class="text-[10px] text-blue-600 font-semibold mono">ROS 2 Humble / Iron</span>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mono">1. Universal Telemetry Ingestion (.mcap)</h3>
+                            <span class="text-[10px] text-blue-600 font-semibold mono">ROS 2 &bull; Zenoh &bull; Protobuf</span>
                         </div>
 
                         <!-- Accessible Dropzone with Keyboard Handling -->
-                        <div id="dropZone" role="button" tabindex="0" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-6 text-center cursor-pointer bg-slate-50/70 relative group focus-ring transition-colors duration-150" aria-label="Upload ROS 2 MCAP telemetry packet">
+                        <div id="dropZone" role="button" tabindex="0" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-6 text-center cursor-pointer bg-slate-50/70 relative group focus-ring transition-colors duration-150" aria-label="Upload Robot MCAP telemetry packet">
                             
                             <div id="dropZonePrompt" class="transition-transform group-hover:scale-[1.01]">
                                 <svg class="w-8 h-8 mx-auto text-slate-400 group-hover:text-blue-500 mb-2 transition-colors duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                                 </svg>
-                                <p class="text-xs font-bold text-slate-800">Drag &amp; Drop MCAP packet here</p>
-                                <p class="text-[11px] text-slate-500 mt-1">Or click to select from local storage</p>
+                                <p class="text-xs font-bold text-slate-800">Drag &amp; Drop Robot Telemetry (.mcap / ROS 2 / Zenoh)</p>
+                                <p class="text-[11px] text-slate-500 mt-1">Multi-modal kinematics, joint states, IMU, and odometry auto-extracted</p>
                             </div>
 
                             <div id="dropZoneLoading" class="hidden py-3" aria-live="polite">
@@ -607,7 +607,7 @@
                     <!-- Adversarial Simulation Matrix Card -->
                     <div class="p-6 rounded-2xl bg-white border border-subtle card-shadow space-y-5">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mono">2. Adversarial Stress Matrix</h3>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mono">2. Multi-Modal Adversarial Matrix</h3>
                             <span class="text-[10px] text-blue-600 font-semibold mono">Parametric Space</span>
                         </div>
 
@@ -622,15 +622,19 @@
 
                         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
                             <div class="flex justify-between text-slate-700 font-medium">
-                                <span>Surface Friction Swept:</span>
-                                <span class="mono font-bold text-blue-700 num-tabular">&mu; = 0.12 to 1.15</span>
+                                <span>Kinematic Envelope:</span>
+                                <span class="mono font-bold text-blue-700">ZMP, Grade (12%), Wrench</span>
                             </div>
                             <div class="flex justify-between text-slate-700 font-medium">
-                                <span>Specular Dock Glare:</span>
+                                <span>Surface Friction Swept:</span>
+                                <span class="mono font-bold text-slate-800 num-tabular">&mu; = 0.12 to 1.15</span>
+                            </div>
+                            <div class="flex justify-between text-slate-700 font-medium">
+                                <span>Adverse Illumination &amp; Solar Glare:</span>
                                 <span class="mono font-bold text-amber-700 num-tabular">Up to 95,000&nbsp;Lux</span>
                             </div>
                             <div class="flex justify-between text-slate-700 font-medium">
-                                <span>Sensor Latency Jitter:</span>
+                                <span>Actuator &amp; DDS Latency Jitter:</span>
                                 <span class="mono font-bold text-slate-700 num-tabular">&plusmn;&nbsp;45&nbsp;ms</span>
                             </div>
                         </div>
@@ -686,7 +690,7 @@
                             <div class="flex items-center justify-between border-b border-slate-100 pb-2">
                                 <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mono flex items-center space-x-2">
                                     <span class="h-2 w-2 rounded-full bg-blue-600" aria-hidden="true"></span>
-                                    <span>Regulatory Standards Compliance (ISO 3691-4 &amp; ANSI/RIA R15.08)</span>
+                                    <span id="regulatoryHeaderTitle">Regulatory Standards Compliance (ISO 13482 &bull; ISO 17757 &bull; ISO 10218 &bull; ISO 3691-4 &bull; ISO 22737)</span>
                                 </h4>
                                 <span class="text-[10px] text-slate-400 mono">DUE DILIGENCE AUDIT</span>
                             </div>
@@ -760,9 +764,9 @@
                                     <span class="text-[9px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-bold mono">ZERO RETRAINING</span>
                                 </div>
                                 <div class="flex flex-wrap gap-1.5" role="tablist">
-                                    <button type="button" role="tab" aria-selected="true" onclick="switchRemediationTab('speed')" id="btnTabSpeed" class="min-h-[36px] px-2.5 py-1 rounded text-[11px] font-semibold bg-blue-600 text-white mono focus-ring cursor-pointer">Nav2 Speed Mask</button>
-                                    <button type="button" role="tab" aria-selected="false" onclick="switchRemediationTab('controller')" id="btnTabCtrl" class="min-h-[36px] px-2.5 py-1 rounded text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 mono focus-ring cursor-pointer">Controller Patch</button>
-                                    <button type="button" role="tab" aria-selected="false" onclick="switchRemediationTab('rl')" id="btnTabRl" class="min-h-[36px] px-2.5 py-1 rounded text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 mono focus-ring cursor-pointer">Isaac Lab Gym</button>
+                                    <button type="button" role="tab" aria-selected="true" onclick="switchRemediationTab('speed')" id="btnTabSpeed" class="min-h-[36px] px-2.5 py-1 rounded text-[11px] font-semibold bg-blue-600 text-white mono focus-ring cursor-pointer">Kinematic Mask</button>
+                                    <button type="button" role="tab" aria-selected="false" onclick="switchRemediationTab('controller')" id="btnTabCtrl" class="min-h-[36px] px-2.5 py-1 rounded text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 mono focus-ring cursor-pointer">Firmware Governor</button>
+                                    <button type="button" role="tab" aria-selected="false" onclick="switchRemediationTab('rl')" id="btnTabRl" class="min-h-[36px] px-2.5 py-1 rounded text-[11px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 mono focus-ring cursor-pointer">Digital Twin Env</button>
                                 </div>
                             </div>
 
@@ -772,21 +776,6 @@
                                     <div class="absolute top-2 right-2 flex space-x-2">
                                         <button type="button" onclick="handleCopyRemediation()" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px] mono border border-slate-700 focus-ring cursor-pointer">Copy</button>
                                         <a id="downloadPatchBtn" href="#" onclick="handleDownloadPatch(event)" download class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] mono focus-ring cursor-pointer">Download</a>
-                                    </div>
-                                </div>
-
-                                <!-- Paywall Frosted Overlay on Free Tier -->
-                                <div id="paywallRemediationOverlay" class="absolute inset-0 bg-slate-950/80 backdrop-blur-[3px] rounded-lg flex flex-col items-center justify-center p-4 text-center z-10 space-y-2.5">
-                                    <div class="h-9 w-9 rounded-full bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-blue-400">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                                    </div>
-                                    <div>
-                                        <div class="text-xs font-bold text-white tracking-tight">Turnkey ROS 2 Nav2 Patches Locked</div>
-                                        <p class="text-[11px] text-slate-300 max-w-sm mt-0.5">Free tier includes physical diagnosis &amp; SysID. Upgrade to 30-Day Diagnostic Pilot to download production yaml configs.</p>
-                                    </div>
-                                    <div class="flex flex-wrap items-center justify-center gap-2 pt-1">
-                                        <button id="unlockPilotRemediationBtn" type="button" onclick="openPaywallModal('remediation')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg shadow-sm focus-ring cursor-pointer">Unlock Turnkey Patch ($20k Pilot)</button>
-                                        <button id="demoUnlockBtn" type="button" onclick="applyDemoUnlock()" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-semibold rounded-lg mono focus-ring cursor-pointer">Quick Test Drive</button>
                                     </div>
                                 </div>
                             </div>
@@ -847,45 +836,66 @@
             <!-- Facility Zone Risk Matrix -->
             <div class="bg-white p-6 rounded-2xl border border-subtle card-shadow space-y-4">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-sm font-bold text-slate-900 tracking-tight">Facility Zone Operational Design Domain (ODD) Compliance</h3>
-                    <span class="text-xs text-slate-500 mono">Chicago Fulfillment Hub</span>
+                    <h3 class="text-sm font-bold text-slate-900 tracking-tight">Autonomous Operational Design Domain (ODD) Compliance &amp; Proving Grounds</h3>
+                    <span class="text-xs text-slate-500 mono">5 Global Proving Grounds Live Telematics</span>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs">
                         <thead>
                             <tr class="border-b border-slate-200 text-[10px] text-slate-500 uppercase tracking-wider mono bg-slate-50/70">
-                                <th scope="col" class="py-2.5 px-3">Facility Zone</th>
-                                <th scope="col" class="py-2.5 px-3">Surface Baseline</th>
-                                <th scope="col" class="py-2.5 px-3">Optical Glare Exposure</th>
-                                <th scope="col" class="py-2.5 px-3">Enforced Speed Cap</th>
+                                <th scope="col" class="py-2.5 px-3">Proving Ground &amp; Site</th>
+                                <th scope="col" class="py-2.5 px-3">Robot Modality &amp; Model</th>
+                                <th scope="col" class="py-2.5 px-3">Physical Hazard Envelope</th>
+                                <th scope="col" class="py-2.5 px-3">Enforced Safety Governor</th>
                                 <th scope="col" class="py-2.5 px-3">Stopping Margin</th>
                                 <th scope="col" class="py-2.5 px-3 text-center">Risk Tier</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
+                            <!-- 1. Humanoid -->
                             <tr class="hover:bg-slate-50/50">
-                                <td class="py-3 px-3 font-bold text-slate-900">Dock Bay 7 Ingress</td>
-                                <td class="py-3 px-3 text-slate-600 mono num-tabular">&mu; = 0.35 (Wet Steel Ramp)</td>
-                                <td class="py-3 px-3 text-slate-600 mono num-tabular">92,000&nbsp;Lux (High Sun)</td>
-                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold mono num-tabular">0.65&nbsp;m/s</span></td>
-                                <td class="py-3 px-3 text-emerald-600 font-bold mono num-tabular">+0.48&nbsp;m</td>
+                                <td class="py-3 px-3 font-bold text-slate-900">Munich Proving Ground</td>
+                                <td class="py-3 px-3 text-slate-600"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 mono text-[11px]">Bipedal Humanoid (Digit v3)</span></td>
+                                <td class="py-3 px-3 text-slate-600 mono num-tabular">&mu; = 0.28 (Treadway Slip)</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold mono">ZMP Margin &ge; 0.048m</span></td>
+                                <td class="py-3 px-3 text-emerald-600 font-bold mono num-tabular">+0.42&nbsp;m</td>
                                 <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">MANAGED</span></td>
                             </tr>
+                            <!-- 2. Heavy Hauler -->
                             <tr class="hover:bg-slate-50/50">
-                                <td class="py-3 px-3 font-bold text-slate-900">Main Conveyor Aisle 3</td>
-                                <td class="py-3 px-3 text-slate-600 mono num-tabular">&mu; = 0.85 (Dry Concrete)</td>
-                                <td class="py-3 px-3 text-slate-600 mono num-tabular">1,200&nbsp;Lux (LED Ambient)</td>
-                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold mono num-tabular">1.50&nbsp;m/s</span></td>
-                                <td class="py-3 px-3 text-emerald-600 font-bold mono num-tabular">+1.12&nbsp;m</td>
+                                <td class="py-3 px-3 font-bold text-slate-900">Nevada Heavy Autonomy</td>
+                                <td class="py-3 px-3 text-slate-600"><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 mono text-[11px]">Heavy Hauler (Titan 12T)</span></td>
+                                <td class="py-3 px-3 text-slate-600 mono num-tabular">12% Grade Unpaved Slurry</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-bold mono num-tabular">Grade Braking 0.65 m/s</span></td>
+                                <td class="py-3 px-3 text-emerald-600 font-bold mono num-tabular">+1.24&nbsp;m</td>
+                                <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">MANAGED</span></td>
+                            </tr>
+                            <!-- 3. Manipulator -->
+                            <tr class="hover:bg-slate-50/50">
+                                <td class="py-3 px-3 font-bold text-slate-900">Stuttgart Automation Cell</td>
+                                <td class="py-3 px-3 text-slate-600"><span class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200 mono text-[11px]">6-DOF Arm (UR16e)</span></td>
+                                <td class="py-3 px-3 text-slate-600 mono num-tabular">195N Dynamic Contact Wrench</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-bold mono">PFL Force Cap &le; 140N</span></td>
+                                <td class="py-3 px-3 text-emerald-600 font-bold mono num-tabular">+0.08&nbsp;m</td>
                                 <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">LOW RISK</span></td>
                             </tr>
+                            <!-- 4. Wheeled AMR -->
                             <tr class="hover:bg-slate-50/50">
-                                <td class="py-3 px-3 font-bold text-slate-900">High-Density Pallet Buffer</td>
-                                <td class="py-3 px-3 text-slate-600 mono num-tabular">&mu; = 0.55 (Polished Epoxy)</td>
-                                <td class="py-3 px-3 text-slate-600 mono num-tabular">2,400&nbsp;Lux (Sky Light)</td>
-                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold mono num-tabular">1.00&nbsp;m/s</span></td>
-                                <td class="py-3 px-3 text-emerald-600 font-bold mono num-tabular">+0.85&nbsp;m</td>
+                                <td class="py-3 px-3 font-bold text-slate-900">Chicago Logistics Hub</td>
+                                <td class="py-3 px-3 text-slate-600"><span class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 mono text-[11px]">Wheeled AMR (Carrier 500)</span></td>
+                                <td class="py-3 px-3 text-slate-600 mono num-tabular">&mu; = 0.35 (Polished Wet Epoxy)</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold mono num-tabular">Nav2 Speed Cap 0.75 m/s</span></td>
+                                <td class="py-3 px-3 text-emerald-600 font-bold mono num-tabular">+0.48&nbsp;m</td>
+                                <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">LOW RISK</span></td>
+                            </tr>
+                            <!-- 5. Urban Rover -->
+                            <tr class="hover:bg-slate-50/50">
+                                <td class="py-3 px-3 font-bold text-slate-900">Tokyo Urban Mobility</td>
+                                <td class="py-3 px-3 text-slate-600"><span class="px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-200 mono text-[11px]">Sidewalk Rover (Scout 08)</span></td>
+                                <td class="py-3 px-3 text-slate-600 mono num-tabular">92,000 Lux Crosswalk Glare</td>
+                                <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-purple-50 text-purple-700 font-bold mono num-tabular">Exposure Mask 0.80 m/s</span></td>
+                                <td class="py-3 px-3 text-emerald-600 font-bold mono num-tabular">+0.65&nbsp;m</td>
                                 <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[10px] mono">LOW RISK</span></td>
                             </tr>
                         </tbody>
@@ -1149,64 +1159,56 @@ jobs:
 
     </main>
 
-    <!-- Enterprise Paywall & License Activation Modal -->
-    <div id="paywallModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <!-- Enterprise Profile & Workspace Credentials Modal -->
+    <div id="enterpriseProfileModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modalProfileTitle">
         <div class="bg-white rounded-2xl max-w-xl w-full border border-slate-200 card-shadow-lg p-6 sm:p-8 space-y-6 relative">
-            <button type="button" onclick="closePaywallModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-lg focus-ring min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer" aria-label="Close dialog">
+            <button type="button" onclick="closeEnterpriseProfileModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-lg focus-ring min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer" aria-label="Close dialog">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
 
             <!-- Header -->
             <div class="space-y-1.5">
-                <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-bold mono">
-                    <span>ENTERPRISE LICENSE REQUIRED</span>
+                <div class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold mono">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>ENTERPRISE SENTINEL TIER &bull; MULTI-TENANT PROD</span>
                 </div>
-                <h3 id="modalTitle" class="text-xl font-extrabold text-slate-900 tracking-tight">Unlock Turnkey Firmware Remediation &amp; Underwriting Dossier</h3>
-                <p id="modalSubtitle" class="text-xs text-slate-500">Free diagnostic tier includes kinematic SysID and trajectory playback. Production patches and carrier insurance packets require an active pilot.</p>
+                <h3 id="modalProfileTitle" class="text-xl font-extrabold text-slate-900 tracking-tight">Enterprise Autonomous Fleet Workspace</h3>
+                <p class="text-xs text-slate-500">Universal Physical AI Verification Engine with continuous fleet monitoring across 5 global proving grounds.</p>
             </div>
 
-            <!-- Value Proposition Strip -->
-            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 grid grid-cols-2 gap-4 text-center">
-                <div>
-                    <div class="text-[10px] uppercase font-bold text-slate-500 mono">Downtime Prevented</div>
-                    <div class="text-lg font-black text-slate-900 mt-0.5 num-tabular">$480,000&nbsp;/&nbsp;yr</div>
-                    <div class="text-[10px] text-slate-400">Zero manual field repro</div>
+            <!-- Workspace Details Strip -->
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-500 font-semibold">Tenant Organization:</span>
+                    <span class="font-bold text-slate-900">Autonomous Systems Global OEM</span>
                 </div>
-                <div>
-                    <div class="text-[10px] uppercase font-bold text-emerald-600 mono">Insurance Rebate</div>
-                    <div class="text-lg font-black text-emerald-600 mt-0.5 num-tabular">$60,000&nbsp;/&nbsp;yr</div>
-                    <div class="text-[10px] text-slate-400">ANSI R15.08 Part 2 verified</div>
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-500 font-semibold">Tenant ID:</span>
+                    <span class="mono font-bold text-blue-700">tenant_enterprise_fleet_prod</span>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-500 font-semibold">Proving Ground Nodes:</span>
+                    <span class="font-medium text-slate-700">Munich, Nevada, Stuttgart, Chicago, Tokyo (5/5 Online)</span>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-500 font-semibold">Verification Quota:</span>
+                    <span class="font-bold text-emerald-600 mono">Unlimited Monte Carlo Rollouts</span>
                 </div>
             </div>
 
-            <!-- Option 1: Enter License Key -->
+            <!-- Active Production API Key -->
             <div class="space-y-2 border-t border-slate-100 pt-4">
-                <label for="modalLicenseInput" class="block text-xs font-bold text-slate-700">Have an Enterprise Token or Pilot License Key?</label>
+                <label for="profileApiKeyInput" class="block text-xs font-bold text-slate-700">Production Fleet Live Ingestion Key</label>
                 <div class="flex gap-2">
-                    <input type="text" id="modalLicenseInput" placeholder="diff_live_..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800 focus-ring" aria-label="Enter License Key">
-                    <button type="button" onclick="submitModalLicense()" class="min-h-[44px] px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl focus-ring cursor-pointer">Activate</button>
+                    <input type="text" id="profileApiKeyInput" readonly value="diff_live_demo_key_778899" class="flex-1 px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-mono text-slate-800 select-all focus-ring" aria-label="API Key">
+                    <button type="button" onclick="navigator.clipboard.writeText('diff_live_demo_key_778899'); alert('API Key copied to clipboard!')" class="min-h-[44px] px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl focus-ring cursor-pointer">Copy Key</button>
                 </div>
-                <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
-                    <span>Evaluating? Test with demo key:</span>
-                    <button type="button" onclick="applyDemoUnlock()" class="text-blue-600 hover:underline font-mono font-semibold focus-ring rounded cursor-pointer">diff_demo_access</button>
-                </div>
+                <p class="text-[11px] text-slate-500">Use this token in your ROS 2 edge daemons or pass as <code class="mono text-slate-700 font-semibold">X-API-Key</code> in your CI/CD pipelines.</p>
             </div>
 
-            <!-- Option 2: Commercial Pilot Purchase Order / SOW -->
-            <div class="p-4 rounded-xl bg-gradient-to-r from-blue-900 to-slate-900 text-white space-y-3">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <div class="text-xs font-bold text-white">30-Day Diagnostic Pilot Statement of Work</div>
-                        <div class="text-[11px] text-slate-300">5 field incidents • 3D USD twins • 25,000 rollouts</div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-lg font-black text-white num-tabular">$20,000</div>
-                        <div class="text-[9px] text-slate-300 mono">Fixed Fee</div>
-                    </div>
-                </div>
-                <a href="mailto:founder@diffraction.ai?subject=Purchase%20Order:%2030-Day%20Diagnostic%20Pilot%20($20,000)&body=Please%20send%20the%20Statement%20of%20Work%20for%20our%20robotics%20fleet." class="min-h-[44px] w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center space-x-1.5 focus-ring cursor-pointer">
-                    <span>Initiate Pilot Statement of Work ($20,000)</span>
-                </a>
+            <!-- Footer Action -->
+            <div class="pt-2 flex justify-end">
+                <button type="button" onclick="closeEnterpriseProfileModal()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl focus-ring cursor-pointer">Done</button>
             </div>
         </div>
     </div>
@@ -1232,102 +1234,38 @@ jobs:
         let chartInstance = null;
         let currentIncidentId = null;
         let currentRemediation = null;
-        let isLicensed = false;
-        let activeLicense = null;
+        let isLicensed = true;
+        let activeLicense = { company: "Autonomous Systems Global OEM", tier: "ENTERPRISE_SENTINEL", valid: true };
 
-        function openPaywallModal(feature = 'general') {
-            const modal = document.getElementById("paywallModal");
-            const sub = document.getElementById("modalSubtitle");
-            if (feature === 'remediation') {
-                sub.innerText = "ROS 2 Nav2 speed filter masks, controller patches, and Isaac Lab gym code require an active pilot license.";
-            } else if (feature === 'insurance') {
-                sub.innerText = "The ANSI/RIA R15.08 Part 2 Insurance Underwriting Dossier qualifies your site for a 20-30% premium rebate and is reserved for pilot customers.";
-            } else if (feature === 'usd') {
-                sub.innerText = "High-fidelity 3D OpenUSD digital twin stage exports require an active pilot license.";
-            } else {
-                sub.innerText = "Free diagnostic tier includes kinematic SysID and trajectory playback. Production patches and carrier insurance packets require an active pilot.";
-            }
-            modal.classList.remove("hidden");
+        function openEnterpriseProfileModal() {
+            const modal = document.getElementById("enterpriseProfileModal");
+            if (modal) modal.classList.remove("hidden");
+        }
+
+        function closeEnterpriseProfileModal() {
+            const modal = document.getElementById("enterpriseProfileModal");
+            if (modal) modal.classList.add("hidden");
+        }
+
+        // Backward compatibility
+        function openPaywallModal() {
+            openEnterpriseProfileModal();
         }
 
         function closePaywallModal() {
-            document.getElementById("paywallModal").classList.add("hidden");
-        }
-
-        async function verifyLicenseKey(key) {
-            if (!key) return;
-            try {
-                const res = await fetch("/api/v1/auth/verify-license", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ license_key: key })
-                });
-                const data = await res.json();
-                if (data.valid) {
-                    isLicensed = true;
-                    activeLicense = data;
-                    
-                    const pill = document.getElementById("licensePill");
-                    const pillText = document.getElementById("licensePillText");
-                    const pillDot = document.getElementById("licenseDot");
-                    const btnUpgrade = document.getElementById("btnUpgradeHeader");
-                    
-                    if (pill) pill.className = "inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold mono";
-                    if (pillDot) pillDot.className = "h-1.5 w-1.5 rounded-full bg-emerald-600";
-                    if (pillText) pillText.innerText = "PILOT LICENSE (ACTIVE)";
-                    if (btnUpgrade) {
-                        btnUpgrade.innerText = "License Active";
-                        btnUpgrade.className = "text-[11px] font-bold text-emerald-600 no-underline cursor-default";
-                        btnUpgrade.onclick = null;
-                    }
-
-                    const overlay = document.getElementById("paywallRemediationOverlay");
-                    if (overlay) overlay.classList.add("hidden");
-
-                    closePaywallModal();
-                    alert(`Enterprise license activated for ${data.company}! All firmware patches and insurance dossiers unlocked.`);
-                } else {
-                    alert("Invalid or unrecognized license key. Please check your credentials or book a pilot.");
-                }
-            } catch (err) {
-                console.error("License check error:", err);
-            }
-        }
-
-        function submitModalLicense() {
-            const key = document.getElementById("modalLicenseInput").value.trim();
-            if (!key) {
-                alert("Please enter your API token or license key.");
-                return;
-            }
-            verifyLicenseKey(key);
-        }
-
-        function applyDemoUnlock() {
-            document.getElementById("modalLicenseInput").value = "diff_demo_access";
-            verifyLicenseKey("diff_demo_access");
+            closeEnterpriseProfileModal();
         }
 
         function handleCopyRemediation() {
-            if (!isLicensed) {
-                openPaywallModal('remediation');
-                return;
-            }
             copyRemediationCode();
         }
 
         function handleDownloadPatch(e) {
-            if (!isLicensed) {
-                e.preventDefault();
-                openPaywallModal('remediation');
-            }
+            // Unrestricted download of generated firmware patch
         }
 
         function handleArtifactClick(e, type) {
-            if (!isLicensed) {
-                e.preventDefault();
-                openPaywallModal(type);
-            }
+            // Unrestricted access to reports, dossiers, and USD digital twins
         }
 
         // Mobile drawer toggle
@@ -1603,74 +1541,86 @@ jobs:
         }
 
         const SCENARIO_CONFIGS = {
-            'traction_slip': {
-                name: 'Class 1: Surface Traction Loss & Skid',
-                robot: 'amr_tugger_042',
-                facility: 'Chicago Hub • Bay 7 Ingress',
-                trigger: 'tracking_error_spike',
-                btnId: 'btnHazardSlip',
+            'humanoid_zmp_slip': {
+                name: 'Modality 1: Bipedal Humanoid Foot Slip & ZMP Loss',
+                robot: 'humanoid_digit_03',
+                facility: 'Munich Proving Ground',
+                standard: 'ISO 13482:2014 Clause 5.3',
+                trigger: 'zmp_boundary_breach',
+                btnId: 'btnHazardHumanoid',
+                planned: [{x:0, y:0}, {x:0.6, y:0}, {x:1.2, y:0}, {x:1.8, y:0}],
+                actual: [{x:0, y:0}, {x:0.6, y:0.02}, {x:1.15, y:0.14}, {x:1.75, y:0.38}],
+                hazard: [{x:1.8, y:0.35}],
+                hazardLabel: 'Support Polygon ZMP Boundary'
+            },
+            'heavy_hauler_skid': {
+                name: 'Modality 2: Heavy Hauler (12T) Grade Braking Skid',
+                robot: 'hauler_titan_09',
+                facility: 'Nevada Heavy Autonomy Testbed',
+                standard: 'ISO 17757:2019 Clause 4.3',
+                trigger: 'grade_braking_saturation',
+                btnId: 'btnHazardHauler',
+                planned: [{x:0, y:0}, {x:2.0, y:0}, {x:4.0, y:0}, {x:6.0, y:0}],
+                actual: [{x:0, y:0}, {x:2.0, y:0.05}, {x:4.2, y:0.32}, {x:6.8, y:1.15}],
+                hazard: [{x:6.5, y:0.95}],
+                hazardLabel: 'Haul Road 12% Incline Berm'
+            },
+            'manipulator_wrench_fault': {
+                name: 'Modality 3: 6-DOF Manipulator Dynamic Contact Wrench',
+                robot: 'arm_ur16e_cell2',
+                facility: 'Stuttgart Automation Cell',
+                standard: 'ISO/TS 15066:2016 / ISO 10218-1',
+                trigger: 'tcp_force_threshold_spike',
+                btnId: 'btnHazardManipulator',
+                planned: [{x:0, y:0}, {x:0.3, y:0.1}, {x:0.6, y:0.2}, {x:0.8, y:0.25}],
+                actual: [{x:0, y:0}, {x:0.3, y:0.1}, {x:0.62, y:0.24}, {x:0.85, y:0.42}],
+                hazard: [{x:0.82, y:0.35}],
+                hazardLabel: 'Assembly Jig Hard Stop (195N)'
+            },
+            'wheeled_amr_stopping_breach': {
+                name: 'Modality 4: Wheeled Mobile AMR Wet Skid & Stopping Corridor',
+                robot: 'carrier_amr_500',
+                facility: 'Chicago Logistics Hub',
+                standard: 'ISO 3691-4:2023 Clause 5.2.3',
+                trigger: 'stopping_distance_breach',
+                btnId: 'btnHazardAMR',
                 planned: [{x:0, y:0}, {x:0.8, y:0}, {x:1.6, y:0}, {x:2.4, y:0}],
                 actual: [{x:0, y:0}, {x:0.8, y:0.02}, {x:1.6, y:0.18}, {x:2.45, y:0.62}],
                 hazard: [{x:2.5, y:0.55}],
-                hazardLabel: 'Bay 7 Ramp Boundary'
+                hazardLabel: 'Conveyor Safety Corridor Barrier'
             },
-            'optical_glare': {
-                name: 'Class 2: Optical Glare Saturation & False E-Stop',
-                robot: 'amr_reach_019',
-                facility: 'Dallas Hub • Bay 4 Door',
-                trigger: 'emergency_stop_command',
-                btnId: 'btnHazardGlare',
+            'urban_rover_glare': {
+                name: 'Modality 5: Sidewalk Rover Sunlight Glare & Crosswalk E-Stop',
+                robot: 'rover_scout_08',
+                facility: 'Tokyo Urban Mobility',
+                standard: 'ISO 22737:2021 / UL 4600',
+                trigger: 'optical_saturation_estop',
+                btnId: 'btnHazardRover',
                 planned: [{x:0, y:0}, {x:1.0, y:0}, {x:2.0, y:0}, {x:3.0, y:0}],
                 actual: [{x:0, y:0}, {x:1.0, y:0.01}, {x:2.0, y:0.02}, {x:2.7, y:0.02}],
                 hazard: [{x:3.2, y:0.0}],
-                hazardLabel: 'Specular Glare Gate (88.5k Lux)'
-            },
-            'actuator_latency': {
-                name: 'Class 3: DDS / CAN Actuator Latency Jitter',
-                robot: 'amr_carrier_008',
-                facility: 'Rotterdam Port • Dock A',
-                trigger: 'tracking_error_spike',
-                btnId: 'btnHazardLatency',
-                planned: [{x:0, y:0}, {x:1.0, y:0}, {x:2.0, y:0}, {x:3.0, y:0}],
-                actual: [{x:0, y:0}, {x:0.8, y:0.25}, {x:1.5, y:-0.35}, {x:2.2, y:0.42}, {x:2.8, y:-0.48}],
-                hazard: [{x:2.2, y:0.55}, {x:2.8, y:-0.55}],
-                hazardLabel: 'Aisle Guide Barrier'
-            },
-            'pedestrian_pinch': {
-                name: 'Class 4: ISO 3691-4 Blind-Corner Worker Clearance Breach',
-                robot: 'amr_lifter_104',
-                facility: 'Chicago Hub • Zone C',
-                trigger: 'clearance_violation',
-                btnId: 'btnHazardPinch',
-                planned: [{x:0, y:0}, {x:0.8, y:0}, {x:1.6, y:0}, {x:2.4, y:0}],
-                actual: [{x:0, y:0}, {x:0.8, y:0}, {x:1.6, y:0}, {x:2.35, y:0.02}],
-                hazard: [{x:2.45, y:0.35}],
-                hazardLabel: 'Pedestrian Crosswalk Corridor'
-            },
-            'payload_shift': {
-                name: 'Class 5: Centrifugal Pallet Mass Shift & Tip-Over Risk',
-                robot: 'amr_heavy_012',
-                facility: 'Atlanta Hub • Rack 9',
-                trigger: 'roll_torque_spike',
-                btnId: 'btnHazardPayload',
-                planned: [{x:0, y:0}, {x:1.2, y:0}, {x:1.8, y:0.6}, {x:1.8, y:1.5}],
-                actual: [{x:0, y:0}, {x:1.2, y:0.05}, {x:2.1, y:0.48}, {x:2.2, y:1.1}],
-                hazard: [{x:1.9, y:0.3}],
-                hazardLabel: 'High-Bay Rack Upright'
+                hazardLabel: 'Shibuya Crosswalk Solar Glare (92k Lux)'
             }
         };
 
+        // Backward compatibility mappings
+        SCENARIO_CONFIGS['traction_slip'] = SCENARIO_CONFIGS['wheeled_amr_stopping_breach'];
+        SCENARIO_CONFIGS['optical_glare'] = SCENARIO_CONFIGS['urban_rover_glare'];
+        SCENARIO_CONFIGS['actuator_latency'] = SCENARIO_CONFIGS['manipulator_wrench_fault'];
+        SCENARIO_CONFIGS['pedestrian_pinch'] = SCENARIO_CONFIGS['humanoid_zmp_slip'];
+        SCENARIO_CONFIGS['payload_shift'] = SCENARIO_CONFIGS['heavy_hauler_skid'];
+
         async function loadSampleIncident(scenarioKey) {
             // Backward compatibility
-            if (scenarioKey === 'sample1') scenarioKey = 'traction_slip';
-            if (scenarioKey === 'sample2') scenarioKey = 'optical_glare';
-            if (!SCENARIO_CONFIGS[scenarioKey]) scenarioKey = 'traction_slip';
+            if (scenarioKey === 'sample1') scenarioKey = 'humanoid_zmp_slip';
+            if (scenarioKey === 'sample2') scenarioKey = 'heavy_hauler_skid';
+            if (!SCENARIO_CONFIGS[scenarioKey]) scenarioKey = 'humanoid_zmp_slip';
 
             const cfg = SCENARIO_CONFIGS[scenarioKey];
             switchView('console');
             
             // Highlight active button in segmented bar
-            ['btnHazardSlip', 'btnHazardGlare', 'btnHazardLatency', 'btnHazardPinch', 'btnHazardPayload'].forEach(id => {
+            ['btnHazardHumanoid', 'btnHazardHauler', 'btnHazardManipulator', 'btnHazardAMR', 'btnHazardRover'].forEach(id => {
                 const b = document.getElementById(id);
                 if (b) {
                     if (id === cfg.btnId) {
@@ -1681,7 +1631,7 @@ jobs:
                 }
             });
 
-            setAuditLoading(true, `Capturing ${cfg.name} from edge daemon…`);
+            setAuditLoading(true, `Capturing ${cfg.name} from autonomous proving ground…`);
             try {
                 const res = await fetch(`/api/v1/simulation/simulate-incident?scenario=${scenarioKey}`, { method: "POST" });
                 const data = await res.json();
@@ -1702,7 +1652,7 @@ jobs:
                         <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">Robot: ${cfg.robot}</span>
                         <span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-200 num-tabular">${data.messages}&nbsp;msgs</span>
                         <span class="bg-purple-50 text-purple-700 px-2 py-0.5 rounded border border-purple-200">${cfg.facility}</span>
-                        <span class="bg-amber-50 text-amber-700 px-2 py-0.5 rounded border border-amber-200">${cfg.trigger}</span>
+                        <span class="bg-amber-50 text-amber-700 px-2 py-0.5 rounded border border-amber-200">${cfg.standard}</span>
                     `;
                 }
 
@@ -1715,7 +1665,7 @@ jobs:
                     chartInstance.update();
                 }
 
-                document.getElementById("incidentSubtitle").innerText = `${cfg.name} (${cfg.facility})`;
+                document.getElementById("incidentSubtitle").innerText = `${cfg.name} • ${cfg.facility} (${cfg.standard})`;
                 document.getElementById("consoleStatusPill").innerText = "READY FOR AUDIT";
                 document.getElementById("consoleStatusPill").className = "text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 mono font-bold";
                 setAuditLoading(false);

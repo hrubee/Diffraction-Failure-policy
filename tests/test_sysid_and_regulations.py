@@ -93,3 +93,47 @@ def test_regulatory_compliance_mapping():
             assert r.status == "COMPLIANT"
         if r.clause == "Clause 5.3.2":
             assert r.status == "COMPLIANT"
+
+
+def test_multimodal_regulatory_clauses():
+    """Verifies that the certification oracle outputs modality-specific standards across robot types."""
+    oracle = SafetyCertificationOracle(min_passing_score=95.0)
+    outcomes = [
+        SimulationRunOutcome(
+            scenario_id=f"scen_{i}",
+            passed=True,
+            collision_occurred=False,
+            minimum_obstacle_clearance_m=0.85,
+            max_tracking_error_m=0.08,
+            wheel_slip_ratio=0.02,
+            stopping_distance_m=0.70,
+            failure_cause=None,
+            perturbation_summary={"friction_coefficient": 0.60, "glare_severity": 0.1},
+        )
+        for i in range(5)
+    ]
+
+    # 1. Humanoid -> ISO 13482:2014
+    humanoid_profile = {"robot_kinematics": {"chassis_type": "bipedal_humanoid"}}
+    verdict_h = oracle.evaluate_audit(outcomes, sysid_profile=humanoid_profile)
+    h_standards = [r.standard for r in verdict_h.regulatory_compliance]
+    assert "ISO 13482:2014" in h_standards
+
+    # 2. Heavy Hauler -> ISO 17757:2019
+    hauler_profile = {"robot_kinematics": {"chassis_type": "heavy_ackermann_hauler"}}
+    verdict_hh = oracle.evaluate_audit(outcomes, sysid_profile=hauler_profile)
+    hh_standards = [r.standard for r in verdict_hh.regulatory_compliance]
+    assert "ISO 17757:2019" in hh_standards
+
+    # 3. Manipulator Arm -> ISO/TS 15066:2016
+    arm_profile = {"robot_kinematics": {"chassis_type": "articulated_manipulator_arm"}}
+    verdict_arm = oracle.evaluate_audit(outcomes, sysid_profile=arm_profile)
+    arm_standards = [r.standard for r in verdict_arm.regulatory_compliance]
+    assert "ISO/TS 15066:2016" in arm_standards
+
+    # 4. Urban Rover -> ISO 22737:2021 & UL 4600:2022
+    rover_profile = {"robot_kinematics": {"chassis_type": "urban_delivery_rover"}}
+    verdict_rov = oracle.evaluate_audit(outcomes, sysid_profile=rover_profile)
+    rov_standards = [r.standard for r in verdict_rov.regulatory_compliance]
+    assert "ISO 22737:2021" in rov_standards
+    assert "UL 4600:2022" in rov_standards

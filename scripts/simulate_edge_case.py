@@ -255,10 +255,198 @@ def simulate_payload_mass_shift(output_dir: str = "./storage/telemetry_drops") -
     return exported_file_path
 
 
+def simulate_humanoid_zmp_slip(output_dir: str = "./storage/telemetry_drops") -> str:
+    """Modality 1: Bipedal Humanoid - Dynamic Zero-Moment Point (ZMP) Foot Slip & Balance Fault."""
+    exported_file_path = None
+
+    def on_incident_exported(file_path: str, trigger):
+        nonlocal exported_file_path
+        exported_file_path = file_path
+
+    agent = EdgeTelemetryAgent(
+        robot_id="humanoid_digit_03",
+        urdf_hash="sha256_biped_digit_v3",
+        facility_id="munich_robotics_proving_ground",
+        buffer_duration_seconds=10.0,
+        post_incident_seconds=1.5,
+        output_directory=output_dir,
+        on_incident_callback=on_incident_exported,
+    )
+
+    start_time = time.time()
+    hz = 20
+    dt = 1.0 / hz
+
+    for i in range(40):
+        t = i * dt
+        now_ns = int((start_time + t) * 1e9)
+        target_pose = {"x": round(t * 0.6, 3), "y": 0.0, "z": 0.95, "yaw": 0.0}
+        current_pose = {"x": round(t * 0.6, 3), "y": 0.01 * math.sin(i * 0.5), "z": 0.95, "yaw": 0.0}
+        agent.ingest_sensor_message("/humanoid/zmp", {"zmp_x": 0.02, "zmp_y": 0.01, "support_foot": "left"}, timestamp_ns=now_ns)
+        agent.ingest_sensor_message("/joint_states", {"hip_pitch": 0.12, "knee": 0.35, "ankle": -0.22}, timestamp_ns=now_ns)
+        agent.process_odometry(current_pose, target_pose, linear_velocity=0.6, timestamp_ns=now_ns)
+        time.sleep(0.005)
+
+    # Foot slips on slick grating: ZMP exits support polygon, triggering balance recovery E-stop
+    t = 41 * dt
+    now_ns = int((start_time + t) * 1e9)
+    agent.ingest_sensor_message("/humanoid/zmp", {"zmp_x": 0.18, "zmp_y": -0.24, "margin_violated": True}, timestamp_ns=now_ns)
+    current_pose = {"x": 1.25, "y": -0.32, "z": 0.82, "yaw": -0.28}
+    target_pose = {"x": 1.30, "y": 0.0, "z": 0.95, "yaw": 0.0}
+    agent.process_safety_estop({"estop_engaged": True, "source": "iso_13482_zmp_instability", "roll_deg": 14.2}, timestamp_ns=now_ns)
+    agent.process_odometry(current_pose, target_pose, linear_velocity=0.1, timestamp_ns=now_ns)
+
+    time.sleep(1.8)
+    return exported_file_path
+
+
+def simulate_heavy_hauler_grade_skid(output_dir: str = "./storage/telemetry_drops") -> str:
+    """Modality 2: Heavy Off-Highway Autonomous Hauler - 12-Ton Incline Grade Braking Slide."""
+    exported_file_path = None
+
+    def on_incident_exported(file_path: str, trigger):
+        nonlocal exported_file_path
+        exported_file_path = file_path
+
+    agent = EdgeTelemetryAgent(
+        robot_id="hauler_titan_09",
+        urdf_hash="sha256_titan_hauler_12t",
+        facility_id="nevada_heavy_proving_ground",
+        buffer_duration_seconds=10.0,
+        post_incident_seconds=1.5,
+        output_directory=output_dir,
+        on_incident_callback=on_incident_exported,
+    )
+
+    start_time = time.time()
+    hz = 20
+    dt = 1.0 / hz
+
+    for i in range(40):
+        t = i * dt
+        now_ns = int((start_time + t) * 1e9)
+        target_pose = {"x": round(t * 1.8, 3), "y": 0.0, "z": 0.0, "yaw": 0.0}
+        current_pose = {"x": round(t * 1.8, 3), "y": 0.0, "z": 0.0, "yaw": 0.0}
+        agent.ingest_sensor_message("/hauler/payload", {"gross_weight_kg": 12500.0, "grade_incline_pct": 12.0}, timestamp_ns=now_ns)
+        agent.process_odometry(current_pose, target_pose, linear_velocity=1.8, timestamp_ns=now_ns)
+        time.sleep(0.005)
+
+    # Emergency braking on loose unpaved aggregate causes brake slide beyond ISO 17757 margin
+    t = 41 * dt
+    now_ns = int((start_time + t) * 1e9)
+    current_pose = {"x": 3.85, "y": 0.45, "z": 0.0, "yaw": 0.12}
+    target_pose = {"x": 3.20, "y": 0.0, "z": 0.0, "yaw": 0.0}
+    agent.process_safety_estop({"estop_engaged": True, "source": "iso_17757_braking_exceeded", "slide_dist_m": 1.85}, timestamp_ns=now_ns)
+    agent.process_odometry(current_pose, target_pose, linear_velocity=0.0, timestamp_ns=now_ns)
+
+    time.sleep(1.8)
+    return exported_file_path
+
+
+def simulate_manipulator_wrench_fault(output_dir: str = "./storage/telemetry_drops") -> str:
+    """Modality 3: 6-DOF Industrial Robotic Manipulator - Contact Force & Joint Torque Spike."""
+    exported_file_path = None
+
+    def on_incident_exported(file_path: str, trigger):
+        nonlocal exported_file_path
+        exported_file_path = file_path
+
+    agent = EdgeTelemetryAgent(
+        robot_id="arm_ur16e_cell2",
+        urdf_hash="sha256_ur16e_manipulator",
+        facility_id="stuttgart_automation_lab",
+        buffer_duration_seconds=10.0,
+        post_incident_seconds=1.5,
+        output_directory=output_dir,
+        on_incident_callback=on_incident_exported,
+    )
+
+    start_time = time.time()
+    hz = 20
+    dt = 1.0 / hz
+
+    for i in range(40):
+        t = i * dt
+        now_ns = int((start_time + t) * 1e9)
+        target_pose = {"x": round(0.4 + t * 0.01, 3), "y": 0.2, "z": 0.5, "yaw": 0.0}
+        current_pose = {"x": round(0.4 + t * 0.01, 3), "y": 0.2, "z": 0.5, "yaw": 0.0}
+        agent.ingest_sensor_message("/arm/tcp_wrench", {"force_n": 35.0, "torque_nm": 12.0}, timestamp_ns=now_ns)
+        agent.process_odometry(current_pose, target_pose, linear_velocity=0.4, timestamp_ns=now_ns)
+        time.sleep(0.005)
+
+    # Tool center point wrench spikes beyond ISO/TS 15066 140N collaborative limit
+    t = 41 * dt
+    now_ns = int((start_time + t) * 1e9)
+    agent.ingest_sensor_message("/arm/tcp_wrench", {"force_n": 195.0, "torque_nm": 88.0, "iso_15066_breach": True}, timestamp_ns=now_ns)
+    current_pose = {"x": 0.42, "y": 0.28, "z": 0.48, "yaw": 0.15}
+    target_pose = {"x": 0.42, "y": 0.20, "z": 0.50, "yaw": 0.0}
+    agent.process_safety_estop({"estop_engaged": True, "source": "iso_10218_force_threshold_exceeded"}, timestamp_ns=now_ns)
+    agent.process_odometry(current_pose, target_pose, linear_velocity=0.0, timestamp_ns=now_ns)
+
+    time.sleep(1.8)
+    return exported_file_path
+
+
+def simulate_wheeled_amr_stopping_breach(output_dir: str = "./storage/telemetry_drops") -> str:
+    """Modality 4: Wheeled Industrial Mobile Platform - Degraded Surface Dynamic Stopping Breach."""
+    return simulate_traction_slip(output_dir=output_dir)
+
+
+def simulate_urban_rover_pedestrian_glare(output_dir: str = "./storage/telemetry_drops") -> str:
+    """Modality 5: Last-Mile Sidewalk Delivery Rover - Crosswalk Sunlight Washout & False E-Stop."""
+    exported_file_path = None
+
+    def on_incident_exported(file_path: str, trigger):
+        nonlocal exported_file_path
+        exported_file_path = file_path
+
+    agent = EdgeTelemetryAgent(
+        robot_id="rover_scout_08",
+        urdf_hash="sha256_scout_delivery_rover",
+        facility_id="tokyo_urban_mobility_hub",
+        buffer_duration_seconds=10.0,
+        post_incident_seconds=1.5,
+        output_directory=output_dir,
+        on_incident_callback=on_incident_exported,
+    )
+
+    start_time = time.time()
+    hz = 20
+    dt = 1.0 / hz
+
+    for i in range(35):
+        t = i * dt
+        now_ns = int((start_time + t) * 1e9)
+        target_pose = {"x": round(t * 1.2, 3), "y": 0.0, "z": 0.0, "yaw": 0.0}
+        current_pose = {"x": round(t * 1.2, 3), "y": 0.0, "z": 0.0, "yaw": 0.0}
+        agent.ingest_sensor_message("/camera/ambient_lux", {"lux": 12000.0}, timestamp_ns=now_ns)
+        agent.process_odometry(current_pose, target_pose, linear_velocity=1.2, timestamp_ns=now_ns)
+        time.sleep(0.005)
+
+    # Rover enters open intersection: sunset glare at 92,000 Lux washes out camera, triggering phantom stop
+    t = 36 * dt
+    now_ns = int((start_time + t) * 1e9)
+    agent.ingest_sensor_message("/camera/ambient_lux", {"lux": 92000.0, "camera_saturated": True}, timestamp_ns=now_ns)
+    current_pose = {"x": 2.20, "y": 0.0, "z": 0.0, "yaw": 0.0}
+    target_pose = {"x": 3.0, "y": 0.0, "z": 0.0, "yaw": 0.0}
+    agent.process_safety_estop({"estop_engaged": True, "source": "optical_saturation_phantom_obstacle"}, timestamp_ns=now_ns)
+    agent.process_odometry(current_pose, target_pose, linear_velocity=0.0, timestamp_ns=now_ns)
+
+    time.sleep(1.8)
+    return exported_file_path
+
+
 SCENARIO_SIMULATORS = {
-    "traction_slip": simulate_traction_slip,
-    "optical_glare": simulate_optical_glare_estop,
-    "actuator_latency": simulate_actuator_latency_hunting,
-    "pedestrian_pinch": simulate_dynamic_pedestrian_pinch,
-    "payload_shift": simulate_payload_mass_shift,
+    # Universal Multi-Modal Robotics Classes
+    "humanoid_zmp_slip": simulate_humanoid_zmp_slip,
+    "heavy_hauler_skid": simulate_heavy_hauler_grade_skid,
+    "manipulator_wrench_fault": simulate_manipulator_wrench_fault,
+    "wheeled_amr_stopping_breach": simulate_wheeled_amr_stopping_breach,
+    "urban_rover_glare": simulate_urban_rover_pedestrian_glare,
+    # Backward compatibility aliases
+    "traction_slip": simulate_wheeled_amr_stopping_breach,
+    "optical_glare": simulate_urban_rover_pedestrian_glare,
+    "actuator_latency": simulate_manipulator_wrench_fault,
+    "pedestrian_pinch": simulate_humanoid_zmp_slip,
+    "payload_shift": simulate_heavy_hauler_grade_skid,
 }
