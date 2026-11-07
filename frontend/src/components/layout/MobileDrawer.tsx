@@ -33,10 +33,13 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
   ];
 
   return (
-    <div id="mobileDrawer" className="md:hidden border-b border-[rgba(55,53,47,0.09)] bg-white px-4 pt-2 pb-4 space-y-2">
-      <div className="px-3 py-2 bg-[#f7f6f3] rounded-lg border border-[rgba(55,53,47,0.09)] text-xs flex justify-between items-center">
-        <span className="font-medium text-[#37352f]">Proving Grounds: Active</span>
-        <span className="text-[#34623f] font-medium bg-[#edf3ec] px-2 py-0.5 rounded border border-[#d4e5d2] text-[10px] mono">
+    <div
+      id="mobileDrawer"
+      className="fixed inset-x-0 top-16 z-50 md:hidden border-b border-slate-800 bg-[#090d16]/95 backdrop-blur-xl px-4 pt-3 pb-5 space-y-3 shadow-2xl animate-soft-blur"
+    >
+      <div className="px-3 py-2 bg-[#0e1320] rounded-lg border border-slate-800 text-xs flex justify-between items-center">
+        <span className="font-medium text-slate-300 font-headline">Proving Grounds: Active</span>
+        <span className="text-emerald-400 font-bold bg-[#091a10] px-2 py-0.5 rounded border border-emerald-500/40 text-[10px] font-mono">
           ONLINE
         </span>
       </div>
@@ -45,8 +48,8 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         {navItems.map((item) => {
           const isActive = activeView === item.id;
           const cls = isActive
-            ? 'w-full min-h-[40px] px-3 py-2 rounded-lg text-xs font-semibold text-[#37352f] bg-[#efefed] flex items-center space-x-2'
-            : 'w-full min-h-[40px] px-3 py-2 rounded-lg text-xs font-medium text-[#787774] hover:bg-[#f7f6f3] hover:text-[#37352f] flex items-center space-x-2 transition-colors';
+            ? 'w-full min-h-[42px] px-3 py-2 rounded-lg text-xs font-bold text-white bg-blue-600 flex items-center space-x-2'
+            : 'w-full min-h-[42px] px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 hover:text-white flex items-center space-x-2 transition-colors';
 
           return (
             <a
@@ -65,14 +68,25 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         })}
       </nav>
 
-      <div className="pt-2 border-t border-[rgba(55,53,47,0.09)] px-3">
+      <div className="pt-2 border-t border-slate-800 space-y-2">
+        <button
+          type="button"
+          onClick={() => {
+            onViewChange('console');
+            onClose();
+          }}
+          className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold font-headline flex items-center justify-center space-x-1.5 cursor-pointer shadow-sm"
+        >
+          <span>Open Verification App</span>
+        </button>
+
         <button
           type="button"
           onClick={() => {
             onOpenWorkspaceModal();
             onClose();
           }}
-          className="w-full py-2 bg-slate-900 text-white rounded-lg text-xs font-bold"
+          className="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold border border-slate-700 cursor-pointer"
         >
           Enterprise Workspace Profile
         </button>

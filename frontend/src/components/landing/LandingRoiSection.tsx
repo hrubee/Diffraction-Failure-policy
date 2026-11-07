@@ -27,39 +27,39 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Header */}
         <div className="max-w-3xl space-y-3">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-xs text-emerald-400 mono">
-            <Calculator className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-blue-950 border border-blue-500/40 text-xs text-blue-300 font-mono">
+            <Calculator className="w-3.5 h-3.5 text-blue-400" />
             <span className="font-semibold uppercase tracking-wider text-[10px]">
               Financial Exposure &amp; Payback Calculator
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight font-headline">
             Stop paying the $50,000/hr
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400">
+            <span className="text-orange-400">
               unhandled corner-case tax.
             </span>
           </h2>
 
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+          <p className="text-slate-400 text-sm sm:text-base leading-relaxed font-body">
             Every unexplained emergency stop or traction skid halts automated production lines. 
             Adjust your fleet metrics below to benchmark your exact financial exposure.
           </p>
         </div>
 
         {/* Interactive Calculator Container */}
-        <div className="rounded-3xl bg-gradient-to-b from-[#111726] to-[#0c101a] border border-white/[0.12] p-6 sm:p-10 shadow-2xl">
+        <div className="rounded-2xl bg-[#0e1320] border border-slate-800 p-6 sm:p-10 shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {/* Left Controls */}
             <div className="lg:col-span-7 space-y-6">
               {/* Slider 1: Fleet Size */}
               <div className="space-y-2">
-                <div className="flex justify-between text-sm font-semibold text-slate-200">
+                <div className="flex justify-between text-sm font-semibold text-slate-200 font-body">
                   <label htmlFor="landingFleetSize" className="cursor-pointer">
                     Commercial Fleet Size:
                   </label>
-                  <span className="font-mono text-cyan-400 font-bold">{fleetSize} Robots</span>
+                  <span className="font-mono text-blue-400 font-bold">{fleetSize} Robots</span>
                 </div>
                 <input
                   type="range"
@@ -69,9 +69,9 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
                   step="5"
                   value={fleetSize}
                   onChange={(e) => setFleetSize(Number(e.target.value))}
-                  className="w-full accent-cyan-500 cursor-pointer"
+                  className="w-full accent-blue-600 cursor-pointer"
                 />
-                <div className="flex justify-between text-[11px] text-slate-500 mono">
+                <div className="flex justify-between text-[11px] text-slate-500 font-mono">
                   <span>5 units</span>
                   <span>150 units</span>
                   <span>300 units</span>
@@ -80,11 +80,11 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
 
               {/* Slider 2: Disengagements */}
               <div className="space-y-2">
-                <div className="flex justify-between text-sm font-semibold text-slate-200">
+                <div className="flex justify-between text-sm font-semibold text-slate-200 font-body">
                   <label htmlFor="landingDisengagements" className="cursor-pointer">
                     Unhandled Disengagements per Robot / Month:
                   </label>
-                  <span className="font-mono text-amber-400 font-bold">{disengagements} stops</span>
+                  <span className="font-mono text-orange-400 font-bold">{disengagements} stops</span>
                 </div>
                 <input
                   type="range"
@@ -94,9 +94,9 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
                   step="1"
                   value={disengagements}
                   onChange={(e) => setDisengagements(Number(e.target.value))}
-                  className="w-full accent-amber-500 cursor-pointer"
+                  className="w-full accent-orange-500 cursor-pointer"
                 />
-                <div className="flex justify-between text-[11px] text-slate-500 mono">
+                <div className="flex justify-between text-[11px] text-slate-500 font-mono">
                   <span>1 stop (Rare)</span>
                   <span>10 stops (Average)</span>
                   <span>20 stops (Severe)</span>
@@ -105,11 +105,11 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
 
               {/* Slider 3: Cost per Hour */}
               <div className="space-y-2">
-                <div className="flex justify-between text-sm font-semibold text-slate-200">
+                <div className="flex justify-between text-sm font-semibold text-slate-200 font-body">
                   <label htmlFor="landingCostPerHour" className="cursor-pointer">
                     Facility Stoppage Cost per Hour:
                   </label>
-                  <span className="font-mono text-emerald-400 font-bold">
+                  <span className="font-mono text-yellow-400 font-bold">
                     ${costPerHour.toLocaleString()} / hr
                   </span>
                 </div>
@@ -121,16 +121,16 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
                   step="5000"
                   value={costPerHour}
                   onChange={(e) => setCostPerHour(Number(e.target.value))}
-                  className="w-full accent-emerald-500 cursor-pointer"
+                  className="w-full accent-yellow-400 cursor-pointer"
                 />
-                <div className="flex justify-between text-[11px] text-slate-500 mono">
+                <div className="flex justify-between text-[11px] text-slate-500 font-mono">
                   <span>$10,000/hr (Light)</span>
                   <span>$50,000/hr (Industrial Benchmark)</span>
                   <span>$200,000/hr (Automotive Assembly)</span>
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs text-slate-400 flex items-center space-x-2.5">
+              <div className="p-4 rounded-xl bg-[#07090e] border border-slate-800 text-xs text-slate-400 flex items-center space-x-2.5 font-body">
                 <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>
                   Based on benchmarked 15-minute average stall time for safety clearance and telemetry triage.
@@ -139,27 +139,27 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
             </div>
 
             {/* Right Output Card */}
-            <div className="lg:col-span-5 bg-[#080b11] rounded-2xl p-6 sm:p-8 text-center border border-white/[0.1] shadow-2xl space-y-6">
+            <div className="lg:col-span-5 bg-[#07090e] rounded-xl p-6 sm:p-8 text-center border border-slate-800 shadow-xl space-y-6">
               <div className="space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mono">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-mono">
                   Annual Downtime Exposure
                 </span>
-                <div className="text-3xl sm:text-4xl font-black text-rose-400 font-mono tracking-tight">
+                <div className="text-3xl sm:text-4xl font-bold text-orange-400 font-headline tracking-tight">
                   ${annualCost.toLocaleString()}
                 </div>
-                <div className="text-xs text-slate-500">
+                <div className="text-xs text-slate-400 font-body">
                   {totalHours.toLocaleString()} lost operational hours / year
                 </div>
               </div>
 
-              <div className="py-5 border-y border-white/[0.08] space-y-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400 mono">
+              <div className="py-5 border-y border-slate-800 space-y-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-yellow-400 font-mono">
                   Net Capital Saved With Diffraction
                 </span>
-                <div className="text-4xl sm:text-5xl font-black text-emerald-300 font-mono tracking-tight">
+                <div className="text-4xl sm:text-5xl font-bold text-yellow-400 font-headline tracking-tight">
                   ${savings.toLocaleString()}
                 </div>
-                <div className="text-xs text-emerald-400/80 font-medium">
+                <div className="text-xs text-yellow-300 font-medium font-body">
                   80% elimination of corner-case regression field stops
                 </div>
               </div>
@@ -168,13 +168,13 @@ export const LandingRoiSection: React.FC<LandingRoiSectionProps> = ({ onOpenPric
                 <button
                   type="button"
                   onClick={onOpenPricing}
-                  className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-xs sm:text-sm tracking-wide shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center space-x-2 cursor-pointer"
+                  className="w-full py-3.5 px-6 rounded-lg bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold text-xs sm:text-sm tracking-wide shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer"
                 >
-                  <Zap className="w-4 h-4 fill-current" />
+                  <Zap className="w-4 h-4 fill-current text-yellow-300" />
                   <span>Lock In 30-Day Turnkey Pilot ($15k SOW)</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
-                <p className="text-[11px] text-slate-500 mono">
+                <p className="text-[11px] text-slate-400 font-mono">
                   Average customer ROI payback period: &lt; 7 Days
                 </p>
               </div>

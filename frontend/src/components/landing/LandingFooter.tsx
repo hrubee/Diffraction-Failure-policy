@@ -18,13 +18,13 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
   onOpenPricing,
 }) => {
   return (
-    <footer className="w-full border-t border-white/[0.08] bg-[#06080d] text-slate-400 text-xs py-14">
+    <footer className="w-full border-t border-slate-800 bg-[#06080d] text-slate-400 text-xs py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center space-x-2.5">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#1a73e8] to-[#0ea5e9] flex items-center justify-center text-white shadow-xs">
+              <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold shadow-sm">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M4 4v16" strokeLinecap="round" />
                   <path d="M9 7v10" strokeLinecap="round" />
@@ -32,21 +32,21 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
                   <path d="M19 11v2" strokeLinecap="round" />
                 </svg>
               </div>
-              <span className="font-extrabold text-base tracking-tight text-white" translate="no">
+              <span className="font-extrabold text-base tracking-tight text-white font-headline" translate="no">
                 Diffraction
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 mono font-semibold">
+              <span className="text-[10px] px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-500/40 font-mono font-semibold">
                 v2.5 Enterprise
               </span>
             </div>
 
-            <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
+            <p className="text-slate-400 text-xs leading-relaxed max-w-sm font-body">
               The automated physical AI safety verification and policy remediation platform. 
               Eliminating sim-to-real divergence across humanoids, AMRs, heavy haulers, and robotic manipulators.
             </p>
 
-            <div className="flex items-center space-x-2 text-[11px] text-slate-500">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-radar-dot" />
+            <div className="flex items-center space-x-2 text-[11px] text-slate-400 font-mono">
+              <span className="h-2 w-2 rounded-full bg-emerald-400" />
               <span>Global Proving Grounds API: Operational</span>
             </div>
           </div>

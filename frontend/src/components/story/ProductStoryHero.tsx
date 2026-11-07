@@ -36,8 +36,6 @@ export const ProductStoryHero: React.FC<ProductStoryHeroProps> = ({
 }) => {
   return (
     <section className="relative rounded-2xl bg-white border border-[rgba(55,53,47,0.1)] card-shadow-md p-6 sm:p-10 lg:p-12 mb-8 overflow-hidden">
-      {/* Background Subtle Gradient Glow */}
-      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-gradient-to-br from-blue-50/60 to-emerald-50/40 blur-3xl pointer-events-none" />
 
       {/* Top Notion Page Properties Bar */}
       <div className="relative z-10 flex flex-wrap items-center gap-2.5 mb-8 text-xs border-b border-[rgba(55,53,47,0.06)] pb-4.5">

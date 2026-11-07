@@ -6,7 +6,7 @@ import React from 'react';
 
 export const UnderwritingBanner: React.FC = () => {
   return (
-    <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-900 via-slate-900 to-blue-950 text-white card-shadow-md grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+    <div className="p-6 rounded-2xl bg-[#0e1320] border border-blue-500/40 text-white card-shadow-md grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
       <div className="md:col-span-8 flex items-center space-x-5">
         <div className="h-16 w-16 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 shrink-0">
           <span className="text-2xl font-black mono">AAA</span>

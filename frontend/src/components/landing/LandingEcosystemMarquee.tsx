@@ -30,34 +30,30 @@ const ECOSYSTEM_ITEMS: readonly EcosystemItem[] = [
 
 export const LandingEcosystemMarquee: React.FC = () => {
   return (
-    <div className="w-full py-6 border-y border-white/[0.08] bg-[#0c101a]/80 backdrop-blur-md overflow-hidden">
+    <div className="w-full py-5 border-y border-slate-800 bg-[#0a0e17] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 mb-3 flex items-center justify-between text-xs text-slate-400">
         <div className="flex items-center space-x-2">
           <Terminal className="w-3.5 h-3.5 text-blue-400" />
-          <span className="font-semibold uppercase tracking-wider text-[11px] text-slate-300 mono">
+          <span className="font-bold uppercase tracking-wider text-[11px] text-slate-300 font-mono">
             Autonomous Ecosystem Compatibility
           </span>
         </div>
-        <span className="hidden sm:inline-block text-[11px] text-slate-500 mono">
+        <span className="hidden sm:inline-block text-[11px] text-slate-400 font-mono">
           Hardware Agnostic • Native ROS 2 / Zenoh Ingestion
         </span>
       </div>
 
       <div className="relative w-full overflow-hidden">
-        {/* Left & Right Gradient Mask */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#080b11] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#080b11] to-transparent z-10 pointer-events-none" />
-
-        <div className="animate-marquee flex items-center gap-6">
+        <div className="animate-marquee flex items-center gap-4">
           {/* Double array for seamless loop */}
           {[...ECOSYSTEM_ITEMS, ...ECOSYSTEM_ITEMS].map((item, index) => (
             <div
               key={`${item.name}-${index}`}
-              className="flex items-center space-x-2.5 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.07] hover:border-blue-500/30 transition-colors whitespace-nowrap"
+              className="flex items-center space-x-2.5 px-3.5 py-1.5 rounded-lg bg-[#0e1320] border border-slate-800 hover:border-slate-700 transition-colors whitespace-nowrap"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" />
-              <span className="text-xs font-bold text-slate-200 tracking-tight">{item.name}</span>
-              <span className="text-[10px] text-slate-400 mono px-1.5 py-0.5 rounded bg-white/[0.05]">
+              <span className={`h-1.5 w-1.5 rounded-full ${index % 3 === 0 ? 'bg-blue-500' : index % 3 === 1 ? 'bg-orange-500' : 'bg-yellow-400'}`} />
+              <span className="text-xs font-bold text-slate-200 tracking-tight font-headline">{item.name}</span>
+              <span className="text-[10px] text-slate-400 font-mono px-1.5 py-0.5 rounded bg-slate-800">
                 {item.category}
               </span>
             </div>

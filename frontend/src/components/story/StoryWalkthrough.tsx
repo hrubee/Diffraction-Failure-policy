@@ -300,8 +300,9 @@ export const StoryWalkthrough: React.FC<StoryWalkthroughProps> = ({ onLaunchSand
                     <span className="text-[#9ca3af]">Safe Threshold:</span>
                     <span className="text-emerald-400 font-bold">μ ≥ 0.33</span>
                   </div>
-                  <div className="w-full bg-[#1e2226] rounded-full h-1.5 mt-2 overflow-hidden">
-                    <div className="bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 h-1.5 rounded-full w-full" />
+                  <div className="w-full bg-[#1e2226] rounded-full h-1.5 mt-2 overflow-hidden flex">
+                    <div className="bg-orange-500 h-1.5 w-1/3" />
+                    <div className="bg-blue-500 h-1.5 w-2/3" />
                   </div>
                 </div>
               </div>

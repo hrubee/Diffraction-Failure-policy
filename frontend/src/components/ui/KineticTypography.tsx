@@ -1,9 +1,8 @@
 /**
  * Presentation Component: Kinetic Typography Suite
  * Backed by animate-text and kinetic-typography skills:
+ * - High-craft palette: Electric Blue, Safety Orange, and Bright Yellow accents
  * - KineticRotatingHeadline: Dynamic rotating keyword swap with masked upward wipe and soft blur
- * - KineticSplitReveal: Word/character split reveal with Apple-style focus-pull blur
- * - ShimmerBadge: Moving specular gradient sweep for high-impact labels and badges
  * - Full accessibility compliance: aria-label container, aria-hidden fragments, prefers-reduced-motion
  */
 
@@ -19,7 +18,6 @@ export interface HazardRotationItem {
   readonly accentClass: string;
   readonly borderClass: string;
   readonly badgeBgClass: string;
-  readonly iconName: string;
 }
 
 export const HAZARD_ROTATION_ITEMS: readonly HazardRotationItem[] = [
@@ -28,20 +26,18 @@ export const HAZARD_ROTATION_ITEMS: readonly HazardRotationItem[] = [
     phrase: 'slick wet epoxy floors.',
     hazardLabel: 'Surface Traction Loss',
     metric: 'μ = 0.18 • Skid +1.8m',
-    accentClass: 'text-cyan-400',
-    borderClass: 'border-cyan-500/30',
-    badgeBgClass: 'bg-cyan-950/50 text-cyan-300',
-    iconName: 'Droplets',
+    accentClass: 'text-blue-400',
+    borderClass: 'border-blue-500',
+    badgeBgClass: 'bg-[#0f172a] text-blue-300',
   },
   {
     id: 'steep_slope',
     phrase: 'steep 12% gravel slopes.',
     hazardLabel: 'Momentum Runaway',
     metric: '12% Grade • 88% Tip Risk',
-    accentClass: 'text-amber-400',
-    borderClass: 'border-amber-500/30',
-    badgeBgClass: 'bg-amber-950/50 text-amber-300',
-    iconName: 'TrendingUp',
+    accentClass: 'text-orange-400',
+    borderClass: 'border-orange-500',
+    badgeBgClass: 'bg-[#1c0f0a] text-orange-300',
   },
   {
     id: 'sunlight_glare',
@@ -49,29 +45,26 @@ export const HAZARD_ROTATION_ITEMS: readonly HazardRotationItem[] = [
     hazardLabel: 'RGB Sensor Saturation',
     metric: '95k Lux • Phantom Obstacle',
     accentClass: 'text-yellow-400',
-    borderClass: 'border-yellow-500/30',
-    badgeBgClass: 'bg-yellow-950/50 text-yellow-300',
-    iconName: 'Sun',
+    borderClass: 'border-yellow-400',
+    badgeBgClass: 'bg-[#1c1808] text-yellow-300',
   },
   {
     id: 'singularity_torque',
     phrase: 'joint singularity limits.',
     hazardLabel: 'Torque Spikes',
     metric: '195 Nm Peak • Controller Trip',
-    accentClass: 'text-purple-400',
-    borderClass: 'border-purple-500/30',
-    badgeBgClass: 'bg-purple-950/50 text-purple-300',
-    iconName: 'Activity',
+    accentClass: 'text-orange-500',
+    borderClass: 'border-orange-500',
+    badgeBgClass: 'bg-[#1c0f0a] text-orange-300',
   },
   {
     id: 'payload_shift',
     phrase: 'unmodeled payload shifts.',
     hazardLabel: 'ZMP Boundary Breach',
     metric: 'Δcg = 14cm • Dynamic Tipping',
-    accentClass: 'text-rose-400',
-    borderClass: 'border-rose-500/30',
-    badgeBgClass: 'bg-rose-950/50 text-rose-300',
-    iconName: 'AlertOctagon',
+    accentClass: 'text-yellow-300',
+    borderClass: 'border-yellow-400',
+    badgeBgClass: 'bg-[#1c1808] text-yellow-300',
   },
 ];
 
@@ -124,7 +117,7 @@ export const KineticRotatingHeadline: React.FC<KineticRotatingHeadlineProps> = (
     <div className="space-y-4">
       {/* Main Kinetic Headline Display */}
       <div
-        className="font-display text-3xl sm:text-5xl lg:text-[52px] font-black text-white tracking-[-0.035em] leading-[1.08]"
+        className="font-headline text-3xl sm:text-5xl lg:text-[54px] font-bold text-white tracking-tight leading-[1.08]"
         aria-label={`Robots pass simulation in the lab. They fail on ${currentHazard.phrase}`}
       >
         <div className="overflow-hidden py-0.5">
@@ -138,11 +131,11 @@ export const KineticRotatingHeadline: React.FC<KineticRotatingHeadlineProps> = (
             They fail on
           </span>
 
-          {/* Masked Rotating Dynamic Phrase with Soft Blur & Wipe */}
+          {/* Masked Rotating Dynamic Phrase */}
           <span className="relative inline-block overflow-hidden align-middle">
             <span
               key={currentHazard.id}
-              className={`inline-block font-black transition-all transform-gpu drop-shadow-[0_0_20px_rgba(6,182,212,0.3)] ${
+              className={`inline-block font-bold transition-all transform-gpu ${
                 currentHazard.accentClass
               } ${isAnimating ? 'animate-mask-up' : 'opacity-0 translate-y-3'}`}
             >
@@ -153,31 +146,33 @@ export const KineticRotatingHeadline: React.FC<KineticRotatingHeadlineProps> = (
       </div>
 
       {/* Dynamic Telemetry Pill Bar with Live Swapped Hazard Info */}
-      <div className="flex flex-wrap items-center gap-2 pt-1">
-        <span className="text-xs text-slate-400 font-medium hidden sm:inline">Simulated Failure:</span>
-        <div
-          key={`badge-${currentHazard.id}`}
-          className={`inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-semibold border transition-all duration-300 shadow-xs ${
-            currentHazard.badgeBgClass
-          } ${currentHazard.borderClass} ${isAnimating ? 'animate-soft-blur' : 'opacity-0'}`}
-        >
-          <span className="h-2 w-2 rounded-full bg-current animate-pulse" />
-          <span>{currentHazard.hazardLabel}:</span>
-          <span className="font-mono font-bold tracking-tight">{currentHazard.metric}</span>
+      <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs text-slate-400 font-medium hidden sm:inline">Simulated Hazard:</span>
+          <div
+            key={`badge-${currentHazard.id}`}
+            className={`inline-flex items-center space-x-2 px-3 py-1 rounded-md text-xs font-semibold border transition-all duration-300 ${
+              currentHazard.badgeBgClass
+            } ${currentHazard.borderClass} ${isAnimating ? 'animate-soft-blur' : 'opacity-0'}`}
+          >
+            <span className="h-2 w-2 rounded-full bg-current" />
+            <span className="font-medium">{currentHazard.hazardLabel}:</span>
+            <span className="font-mono font-bold tracking-tight">{currentHazard.metric}</span>
+          </div>
         </div>
 
-        {/* Quick Hazard Interactive Pills */}
-        <div className="flex items-center gap-1.5 ml-auto text-[11px]">
-          <span className="text-slate-500 text-[10px] hidden md:inline">Inspect:</span>
+        {/* Quick Hazard Interactive Pills (Orange & Yellow Accents) */}
+        <div className="flex items-center gap-1.5 text-[11px]">
+          <span className="text-slate-400 text-[10px] hidden sm:inline">Inspect:</span>
           {HAZARD_ROTATION_ITEMS.map((item, idx) => (
             <button
               key={item.id}
               type="button"
               onClick={() => handleManualSelect(idx)}
-              className={`px-2 py-0.5 rounded-md text-[11px] font-medium transition-all cursor-pointer ${
+              className={`px-2.5 py-1 rounded text-[11px] font-bold transition-all cursor-pointer ${
                 idx === activeIdx
-                  ? 'bg-cyan-500 text-slate-950 font-bold shadow-xs'
-                  : 'bg-white/[0.06] hover:bg-white/[0.12] text-slate-300'
+                  ? 'bg-yellow-400 text-slate-950 shadow-sm'
+                  : 'bg-slate-800 hover:bg-slate-700 text-slate-300'
               }`}
               title={`Switch to ${item.hazardLabel}`}
             >
@@ -232,13 +227,9 @@ interface ShimmerBadgeProps {
 export const ShimmerBadge: React.FC<ShimmerBadgeProps> = ({ children, className = '' }) => {
   return (
     <span
-      className={`relative inline-flex items-center overflow-hidden px-2.5 py-1 rounded-md text-xs font-medium border border-[rgba(55,53,47,0.12)] bg-[#fbfbfa] text-[#37352f] ${className}`}
+      className={`relative inline-flex items-center px-3 py-1 rounded-md text-xs font-semibold border ${className}`}
     >
       <span className="relative z-10">{children}</span>
-      <span
-        className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/70 to-transparent animate-shimmer-sweep pointer-events-none"
-        style={{ backgroundSize: '200% 100%' }}
-      />
     </span>
   );
 };

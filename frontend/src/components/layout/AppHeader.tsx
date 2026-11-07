@@ -58,7 +58,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             }}
             className="flex items-center space-x-2.5 group cursor-pointer"
           >
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#1a73e8] to-[#0ea5e9] flex items-center justify-center shadow-xs text-white group-hover:scale-105 transition-transform">
+            <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center shadow-xs text-white group-hover:scale-105 transition-transform">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M4 4v16" strokeLinecap="round" />
                 <path d="M9 7v10" strokeLinecap="round" />
@@ -139,7 +139,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           <button
             type="button"
             onClick={() => onViewChange('console')}
-            className="hidden sm:flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 active:scale-[0.98] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
+            className="hidden sm:flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs font-bold transition-all cursor-pointer shadow-xs"
           >
             <Zap className="w-3.5 h-3.5 fill-current" />
             <span>3D Sandbox</span>

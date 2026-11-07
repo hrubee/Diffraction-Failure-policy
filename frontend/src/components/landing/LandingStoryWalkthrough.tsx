@@ -109,29 +109,29 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Header */}
         <div className="max-w-3xl space-y-3">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/25 text-xs text-blue-400 mono">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-blue-950 border border-blue-500/40 text-xs text-blue-300 font-mono">
             <Terminal className="w-3.5 h-3.5" />
             <span className="font-semibold uppercase tracking-wider text-[10px]">
               The 4-Act Verification Engine
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight font-headline">
             How Autonomous Fleets Go From
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-amber-400 to-emerald-400">
+            <span className="text-yellow-400">
               Field Hazard to Certified Safe.
             </span>
           </h2>
 
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+          <p className="text-slate-400 text-sm sm:text-base leading-relaxed font-body">
             Follow the automated lifecycle of an industrial incident: from black box telemetry ingestion 
             to cloud stress-sweeps and turnkey ROS 2 policy deployment.
           </p>
         </div>
 
         {/* 4-Act Tab Bar */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-white/[0.08] pb-3">
+        <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-none border-b border-slate-800">
           {storyActs.map((act, index) => {
             const isActive = index === activeActIndex;
             return (
@@ -139,10 +139,10 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
                 key={act.stepNumber}
                 type="button"
                 onClick={() => setActiveActIndex(index)}
-                className={`py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center space-x-2.5 cursor-pointer ${
+                className={`py-2.5 px-4 rounded-lg text-xs font-bold font-mono transition-all flex items-center space-x-2.5 shrink-0 cursor-pointer ${
                   isActive
-                    ? 'bg-white/[0.1] text-white border border-white/[0.2] shadow-md'
-                    : 'bg-white/[0.03] hover:bg-white/[0.06] text-slate-400 border border-white/[0.06]'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'bg-[#0e1320] hover:bg-slate-800 text-slate-400 border border-slate-800'
                 }`}
               >
                 <span>{act.icon}</span>
@@ -155,23 +155,23 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
         </div>
 
         {/* Story Card Container */}
-        <div className="rounded-3xl bg-gradient-to-b from-[#111726] to-[#0c101a] border border-white/[0.12] p-6 sm:p-10 shadow-2xl">
+        <div className="rounded-2xl bg-[#0e1320] border border-slate-800 p-6 sm:p-10 shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Narrative */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-white/[0.05] border border-white/[0.1] text-[11px] font-mono text-cyan-400">
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-[#07090e] border border-slate-800 text-[11px] font-mono text-blue-400">
                 <span>{currentAct.tag}</span>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug">
+              <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug font-headline">
                 {currentAct.title}
               </h3>
 
-              <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs sm:text-sm text-slate-300 leading-relaxed">
+              <div className="p-4 rounded-xl bg-[#07090e] border border-slate-800 text-xs sm:text-sm text-slate-300 leading-relaxed font-body">
                 {currentAct.summary}
               </div>
 
-              <div className="space-y-3 text-xs sm:text-sm text-slate-300 pt-1">
+              <div className="space-y-3 text-xs sm:text-sm text-slate-300 pt-1 font-body">
                 {currentAct.bulletPoints.map((pt, i) => (
                   <div key={i} className="flex items-start space-x-3">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
@@ -181,7 +181,7 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
               </div>
 
               {/* Navigation Controls */}
-              <div className="pt-6 flex items-center justify-between border-t border-white/[0.08]">
+              <div className="pt-6 flex items-center justify-between border-t border-slate-800">
                 <button
                   type="button"
                   disabled={activeActIndex === 0}
@@ -195,7 +195,7 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
                   <button
                     type="button"
                     onClick={() => setActiveActIndex((prev) => prev + 1)}
-                    className="px-5 py-2.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white font-semibold text-xs transition-colors flex items-center space-x-2 cursor-pointer border border-white/[0.1]"
+                    className="px-5 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition-colors flex items-center space-x-2 cursor-pointer border border-slate-700"
                   >
                     <span>Next: {storyActs[activeActIndex + 1].actName}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -204,9 +204,9 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
                   <button
                     type="button"
                     onClick={onLaunchConsole}
-                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-xs shadow-md transition-all flex items-center space-x-2 cursor-pointer"
+                    className="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold text-xs shadow-md transition-all flex items-center space-x-2 cursor-pointer"
                   >
-                    <Zap className="w-3.5 h-3.5 fill-current" />
+                    <Zap className="w-3.5 h-3.5 fill-current text-yellow-300" />
                     <span>Launch 3D Verification Sandbox</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
@@ -215,10 +215,10 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
             </div>
 
             {/* Right Visual Inspection Terminal */}
-            <div className="lg:col-span-5 bg-[#080b11] rounded-2xl p-6 text-white border border-white/[0.1] shadow-2xl space-y-4">
+            <div className="lg:col-span-5 bg-[#07090e] rounded-xl p-6 text-white border border-slate-800 shadow-xl space-y-4">
               {activeActIndex === 0 && (
                 <div className="space-y-4 font-mono text-xs">
-                  <div className="flex justify-between items-center text-[11px] text-slate-400 border-b border-white/[0.08] pb-2">
+                  <div className="flex justify-between items-center text-[11px] text-slate-400 border-b border-slate-800 pb-2">
                     <span className="flex items-center space-x-1.5">
                       <Sliders className="w-3.5 h-3.5 text-blue-400" />
                       <span>PHYSICAL DIVERGENCE MATRIX</span>
@@ -294,8 +294,9 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
                       <span className="text-slate-400">Safe Traction Bound:</span>
                       <span className="text-emerald-400 font-bold">μ ≥ 0.33</span>
                     </div>
-                    <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                      <div className="bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 h-1.5 w-full" />
+                    <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden flex">
+                      <div className="bg-orange-500 h-1.5 w-1/3" />
+                      <div className="bg-blue-500 h-1.5 w-2/3" />
                     </div>
                   </div>
                 </div>
