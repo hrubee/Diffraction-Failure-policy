@@ -1,0 +1,73 @@
+/**
+ * Domain Entities: Multi-Modal Incident Scenario Definitions
+ */
+
+import { ScenarioKinematicsConfig } from './types';
+
+export const SCENARIO_PRESETS: Record<string, ScenarioKinematicsConfig> = {
+  humanoid_zmp_slip: {
+    key: 'humanoid_zmp_slip',
+    modality: 'bipedal_humanoid',
+    name: 'Modality 1: Bipedal Humanoid Foot Slip & ZMP Loss',
+    robotId: 'humanoid_digit_03',
+    facility: 'Munich Proving Ground',
+    standard: 'ISO 13482:2014 Clause 5.3',
+    trigger: 'zmp_boundary_breach',
+    planned: [{ x: 0, y: 0 }, { x: 0.6, y: 0 }, { x: 1.2, y: 0 }, { x: 1.8, y: 0 }],
+    actual: [{ x: 0, y: 0 }, { x: 0.6, y: 0.02 }, { x: 1.15, y: 0.14 }, { x: 1.75, y: 0.38 }],
+    hazard: [{ x: 1.8, y: 0.35 }],
+    hazardLabel: 'Support Polygon ZMP Boundary',
+  },
+  heavy_hauler_skid: {
+    key: 'heavy_hauler_skid',
+    modality: 'heavy_ackermann_hauler',
+    name: 'Modality 2: Heavy Hauler (12T) Grade Braking Skid',
+    robotId: 'hauler_titan_09',
+    facility: 'Nevada Heavy Autonomy Testbed',
+    standard: 'ISO 17757:2019 Clause 4.3',
+    trigger: 'grade_braking_saturation',
+    planned: [{ x: 0, y: 0 }, { x: 2.0, y: 0 }, { x: 4.0, y: 0 }, { x: 6.0, y: 0 }],
+    actual: [{ x: 0, y: 0 }, { x: 2.0, y: 0.05 }, { x: 4.2, y: 0.32 }, { x: 6.8, y: 1.15 }],
+    hazard: [{ x: 6.5, y: 0.95 }],
+    hazardLabel: 'Haul Road 12% Incline Berm',
+  },
+  manipulator_wrench_fault: {
+    key: 'manipulator_wrench_fault',
+    modality: 'articulated_manipulator_arm',
+    name: 'Modality 3: 6-DOF Manipulator Dynamic Contact Wrench',
+    robotId: 'arm_ur16e_cell2',
+    facility: 'Stuttgart Automation Cell',
+    standard: 'ISO/TS 15066:2016 / ISO 10218-1',
+    trigger: 'tcp_force_threshold_spike',
+    planned: [{ x: 0, y: 0 }, { x: 0.3, y: 0.1 }, { x: 0.6, y: 0.2 }, { x: 0.8, y: 0.25 }],
+    actual: [{ x: 0, y: 0 }, { x: 0.3, y: 0.1 }, { x: 0.62, y: 0.24 }, { x: 0.85, y: 0.42 }],
+    hazard: [{ x: 0.82, y: 0.35 }],
+    hazardLabel: 'Assembly Jig Hard Stop (195N)',
+  },
+  wheeled_amr_stopping_breach: {
+    key: 'wheeled_amr_stopping_breach',
+    modality: 'industrial_differential_drive',
+    name: 'Modality 4: Wheeled Mobile AMR Wet Skid & Stopping Corridor',
+    robotId: 'carrier_amr_500',
+    facility: 'Chicago Logistics Hub',
+    standard: 'ISO 3691-4:2023 Clause 5.2.3',
+    trigger: 'stopping_distance_breach',
+    planned: [{ x: 0, y: 0 }, { x: 0.8, y: 0 }, { x: 1.6, y: 0 }, { x: 2.4, y: 0 }],
+    actual: [{ x: 0, y: 0 }, { x: 0.8, y: 0.02 }, { x: 1.6, y: 0.18 }, { x: 2.45, y: 0.62 }],
+    hazard: [{ x: 2.5, y: 0.55 }],
+    hazardLabel: 'Conveyor Safety Corridor Barrier',
+  },
+  urban_rover_glare: {
+    key: 'urban_rover_glare',
+    modality: 'urban_delivery_rover',
+    name: 'Modality 5: Sidewalk Rover Sunlight Glare & Crosswalk E-Stop',
+    robotId: 'rover_scout_08',
+    facility: 'Tokyo Urban Mobility',
+    standard: 'ISO 22737:2021 / UL 4600',
+    trigger: 'optical_saturation_estop',
+    planned: [{ x: 0, y: 0 }, { x: 1.0, y: 0 }, { x: 2.0, y: 0 }, { x: 3.0, y: 0 }],
+    actual: [{ x: 0, y: 0 }, { x: 1.0, y: 0.01 }, { x: 2.0, y: 0.02 }, { x: 2.7, y: 0.02 }],
+    hazard: [{ x: 3.2, y: 0.0 }],
+    hazardLabel: 'Shibuya Crosswalk Solar Glare (92k Lux)',
+  },
+};

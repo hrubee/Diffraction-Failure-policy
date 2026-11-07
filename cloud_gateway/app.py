@@ -42,6 +42,10 @@ REPORTS_DIR = "./storage/reports"
 STAGES_DIR = "./storage/usd_stages"
 PATCHES_DIR = "./storage/remediation_patches"
 STATIC_DIR = "./cloud_gateway/static"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FRONTEND_OUT_DIR = os.path.join(BASE_DIR, "frontend", "out")
+if not os.path.exists(FRONTEND_OUT_DIR):
+    FRONTEND_OUT_DIR = "./frontend/out"
 
 for d in [UPLOAD_DIR, REPORTS_DIR, STAGES_DIR, PATCHES_DIR, STATIC_DIR]:
     os.makedirs(d, exist_ok=True)
@@ -109,6 +113,11 @@ app.mount("/reports", StaticFiles(directory=REPORTS_DIR), name="reports")
 app.mount("/stages", StaticFiles(directory=STAGES_DIR), name="stages")
 app.mount("/patches", StaticFiles(directory=PATCHES_DIR), name="patches")
 
+# Mount compiled Next.js enterprise frontend assets if present
+next_assets_dir = os.path.join(FRONTEND_OUT_DIR, "_next")
+if os.path.exists(next_assets_dir):
+    app.mount("/_next", StaticFiles(directory=next_assets_dir), name="next_assets")
+
 
 # ---------------------------------------------------------------------------
 # Multi-Tenant Authentication & Scoping Dependency
@@ -142,7 +151,10 @@ def get_current_tenant(
 
 @app.get("/")
 def serve_dashboard():
-    """Serves the interactive web control console."""
+    """Serves the interactive web control console (Next.js 15 production build or static fallback)."""
+    next_index = os.path.join(FRONTEND_OUT_DIR, "index.html")
+    if os.path.exists(next_index):
+        return FileResponse(next_index)
     index_file = os.path.join(STATIC_DIR, "index.html")
     if os.path.exists(index_file):
         return FileResponse(index_file)

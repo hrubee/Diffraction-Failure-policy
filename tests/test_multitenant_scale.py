@@ -144,3 +144,15 @@ def test_asynchronous_verification_job_lifecycle():
     assert "compliance_score" in final_job_data
     assert "result" in final_job_data
     assert final_job_data["result"]["incident_id"].startswith("rover_scout_08") or final_job_data["result"]["incident_id"].startswith("amr_reach_019")
+
+
+def test_compiled_nextjs_frontend_serving():
+    """Verifies that the root endpoint serves the compiled Next.js enterprise SPA."""
+    res = client.get("/")
+    assert res.status_code == 200
+    assert "text/html" in res.headers.get("content-type", "")
+    content = res.text
+    assert "Diffraction" in content
+    assert "<!DOCTYPE html>" in content
+    assert "/_next/static/" in content
+
