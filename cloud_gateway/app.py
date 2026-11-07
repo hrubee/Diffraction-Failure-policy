@@ -536,10 +536,6 @@ def get_sample_dossier():
     if os.path.exists(sample_path):
         return FileResponse(sample_path, media_type="text/html")
     raise HTTPException(status_code=404, detail="Sample dossier not found.")
-        "trigger_type": parsed.trigger_type,
-        "scenario_class": scenario,
-        "messages": parsed.total_messages,
-    }
 
 
 # ---------------------------------------------------------------------------
