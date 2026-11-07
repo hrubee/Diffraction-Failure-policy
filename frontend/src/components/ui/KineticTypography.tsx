@@ -124,17 +124,17 @@ export const KineticRotatingHeadline: React.FC<KineticRotatingHeadlineProps> = (
     <div className="space-y-4">
       {/* Main Kinetic Headline Display */}
       <div
-        className="text-2xl sm:text-4xl lg:text-[46px] font-black text-white tracking-tight leading-[1.18]"
+        className="font-display text-3xl sm:text-5xl lg:text-[52px] font-black text-white tracking-[-0.035em] leading-[1.08]"
         aria-label={`Robots pass simulation in the lab. They fail on ${currentHazard.phrase}`}
       >
         <div className="overflow-hidden py-0.5">
-          <span className="inline-block animate-soft-blur transform-gpu" style={{ letterSpacing: '-0.028em' }}>
+          <span className="inline-block animate-soft-blur transform-gpu">
             Robots pass simulation in the lab.
           </span>
         </div>
 
-        <div className="overflow-hidden py-1 flex flex-wrap items-center gap-x-3">
-          <span className="text-slate-200" style={{ letterSpacing: '-0.028em' }}>
+        <div className="overflow-hidden py-1 flex flex-wrap items-center gap-x-3.5">
+          <span className="text-slate-100">
             They fail on
           </span>
 
@@ -142,10 +142,9 @@ export const KineticRotatingHeadline: React.FC<KineticRotatingHeadlineProps> = (
           <span className="relative inline-block overflow-hidden align-middle">
             <span
               key={currentHazard.id}
-              className={`inline-block font-extrabold transition-all transform-gpu ${
+              className={`inline-block font-black transition-all transform-gpu drop-shadow-[0_0_20px_rgba(6,182,212,0.3)] ${
                 currentHazard.accentClass
               } ${isAnimating ? 'animate-mask-up' : 'opacity-0 translate-y-3'}`}
-              style={{ letterSpacing: '-0.025em' }}
             >
               {currentHazard.phrase}
             </span>
