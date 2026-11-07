@@ -149,6 +149,10 @@ export const AuditConsoleView: React.FC<AuditConsoleViewProps> = ({ audit }) => 
                     modality={activeScenario.modality}
                     robotId={activeScenario.robotId}
                     status={verdict ? verdict.status : statusText}
+                    plannedPoints={trajectoryPoints.planned}
+                    actualPoints={trajectoryPoints.actual}
+                    hazardPoints={trajectoryPoints.hazard}
+                    hazardLabel={trajectoryPoints.hazardLabel}
                   />
                 ) : (
                   <TrajectoryScatterPlot

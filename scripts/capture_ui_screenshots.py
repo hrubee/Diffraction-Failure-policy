@@ -79,6 +79,17 @@ def capture_all():
         page.screenshot(path=console_path, full_page=False)
         print(f"Captured: {console_path}")
 
+        # Capture Diffract Governor Active Mode in Flight Recorder
+        page.click("button:has-text('Diffract Governor')")
+        time.sleep(0.8)
+        governor_replay_path = os.path.join(SCREENSHOTS_DIR, "saas_flight_recorder_diffract_safe.png")
+        page.screenshot(path=governor_replay_path, full_page=False)
+        print(f"Captured: {governor_replay_path}")
+
+        # Switch back to Baseline
+        page.click("button:has-text('Baseline Incident')")
+        time.sleep(0.5)
+
         # Navigate to Telematics & Proving Grounds
         print("[Playwright] Navigating to Telematics & Proving Grounds...")
         page.click("#navTelematics")
