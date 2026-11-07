@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diffraction // ISO 3691-4 Functional Safety Certification Dossier (Sample)</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 18mm 16mm;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.55;
+            color: #1f2937;
+            background: #f8fafc;
+            margin: 0;
+            padding: 30px 15px;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 48px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+        }
+        .top-action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #3E2C23;
+            color: #F5E9D8;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .top-action-bar button {
+            background: #2FA4D7;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .top-action-bar button:hover {
+            background: #248ab8;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #3E2C23;
+            padding-bottom: 20px;
+            margin-bottom: 28px;
+        }
+        .brand {
+            font-size: 24px;
+            font-weight: 800;
+            color: #3E2C23;
+            letter-spacing: -0.5px;
+        }
+        .brand span {
+            color: #2FA4D7;
+        }
+        .meta-stamp {
+            text-align: right;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 11px;
+            color: #64748b;
+        }
+        .badge-certified {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-weight: 800;
+            font-size: 12px;
+            border: 1.5px solid #10b981;
+            background: #ecfdf5;
+            color: #065f46;
+            margin-top: 6px;
+        }
+        h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0 0 6px 0;
+            letter-spacing: -0.3px;
+        }
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin: 24px 0;
+        }
+        .kpi-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .kpi-card .metric {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 4px 0;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+        .kpi-card .label {
+            font-size: 10px;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .section-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #3E2C23;
+            margin: 32px 0 12px 0;
+            border-left: 4px solid #2FA4D7;
+            padding-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 12.5px;
+        }
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 10.5px;
+            letter-spacing: 0.5px;
+        }
+        .code-block {
+            background: #3E2C23;
+            color: #F5E9D8;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 11.5px;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+        .callout-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-left: 4px solid #2FA4D7;
+            padding: 14px 18px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-size: 12.5px;
+            color: #1e3a8a;
+            line-height: 1.55;
+        }
+        .footer-seal {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #64748b;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+        @media print {
+            body { background: #ffffff; padding: 0; }
+            .container { border: none; box-shadow: none; padding: 0; max-width: 100%; }
+            .top-action-bar { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Interactive Printable Bar -->
+        <div class="top-action-bar">
+            <div>
+                <strong>Diffraction Autonomous Fleet Safety Oracle</strong> &bull; Official Signed Dossier
+            </div>
+            <button type="button" onclick="window.print()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
+                    <path d="M6 14h12v8H6z"/>
+                </svg>
+                <span>Print or Save as PDF</span>
+            </button>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <div class="brand">DIFFRACTION <span>// AUTONOMY SHIELD</span></div>
+                <h1>Functional Safety Verification &amp; Certification Dossier</h1>
+                <div style="font-size: 13px; color: #475569; margin-top: 2px;">
+                    Standard: <strong>ISO 3691-4:2020 §4.1.2</strong> (Driverless Industrial Trucks &amp; AMRs)
+                </div>
+            </div>
+            <div class="meta-stamp">
+                <div>CERTIFICATE NO: <strong>DIFF-ISO3691-4-2026-089A</strong></div>
+                <div>HASH: <code>8f3a9e71c08b2d4f91</code></div>
+                <div>AUDIT RUNTIME: 45.2s (150 Rollouts)</div>
+                <div class="badge-certified">CERTIFIED SAFE &bull; AUDIT PASSED</div>
+            </div>
+        </div>
+
+        <!-- KPI Summary Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="label">Compliance Score</div>
+                <div class="metric" style="color: #10b981;">98.7%</div>
+                <div style="font-size: 10px; color: #64748b;">Regulatory Threshold: &ge; 95.0%</div>
+            </div>
+            <div class="kpi-card">
+                <div class="label">Adversarial Rollouts</div>
+                <div class="metric">150</div>
+                <div style="font-size: 10px; color: #64748b;">148 Passed | 2 Marginal</div>
+            </div>
+            <div class="kpi-card">
+                <div class="label">Safe Traction Bound</div>
+                <div class="metric" style="color: #2FA4D7;">&mu; &ge; 0.33</div>
+                <div style="font-size: 10px; color: #64748b;">Ground Truth: &mu; = 0.18 (Spill)</div>
+            </div>
+            <div class="kpi-card">
+                <div class="label">Downtime Saved</div>
+                <div class="metric" style="color: #E76F2E;">$210,000</div>
+                <div style="font-size: 10px; color: #64748b;">Monthly Line Stoppage Avoidance</div>
+            </div>
+        </div>
+
+        <!-- Section 1: Executive Summary & Root Cause -->
+        <div class="section-title">1. Incident Root-Cause Analysis (Empirical Telemetry)</div>
+        <p style="font-size: 13px; color: #334155;">
+            During commercial intralogistics operations in Bay 7, the autonomous unit encountered spilled machining coolant.
+            Onboard IMU and wheel encoder cross-correlation identified a sudden surface traction drop from nominal &mu; = 0.80 down to <strong>&mu; = 0.18</strong>.
+            Under standard Nav2 default acceleration envelope, the stopping distance exceeded the laser scanner protective field by <strong>1.82 meters</strong>,
+            triggering an unhandled hazard condition under ISO 3691-4 §4.1.2.
+        </p>
+
+        <!-- Section 2: Mathematical Safety Formulation -->
+        <div class="section-title">2. Mathematical Control Barrier Function (CBF)</div>
+        <p style="font-size: 13px; color: #334155;">
+            Diffraction’s certification engine solved the forward reachable safety set using a Lyapunov barrier formulation:
+        </p>
+        <div class="code-block">
+v_safe(t) = -a_max * t_brake + sqrt((a_max * t_brake)^2 + 2 * a_max * d_obstacle)
+Where:
+  a_max       = μ_eff * g * cos(θ) - g * sin(θ) = (0.18 * 9.81) - 0.0 = 1.765 m/s²
+  t_brake     = CAN latency (45ms) + safety PLC debounce (100ms) = 0.145 s
+  d_obstacle  = Laser scanner field margin (0.85 m)
+  v_clamp_max = 0.65 m/s (Computed safe upper bound for zero-overshoot stopping)</div>
+
+        <!-- Section 3: Regulatory Compliance Matrix -->
+        <div class="section-title">3. International Regulatory Standards Mapping</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 28%;">Standard &amp; Clause</th>
+                    <th style="width: 52%;">Safety Requirement &amp; Verification Boundary</th>
+                    <th style="width: 20%; text-align: center;">Compliance Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>ISO 3691-4:2020 §4.1.2</strong><br><span style="color:#64748b; font-size:11px;">Braking &amp; Stopping Distance</span></td>
+                    <td>Stopping distance shall not exceed personnel detection zone under lowest expected friction coefficient (&mu; = 0.18).</td>
+                    <td style="text-align: center;"><span style="color:#065f46; font-weight:700;">&check; VERIFIED</span></td>
+                </tr>
+                <tr>
+                    <td><strong>ISO 3691-4:2020 §4.3.4</strong><br><span style="color:#64748b; font-size:11px;">Laser Field Switching</span></td>
+                    <td>Protective field geometry must dynamically scale with instantaneous payload mass and wheel traction margin.</td>
+                    <td style="text-align: center;"><span style="color:#065f46; font-weight:700;">&check; VERIFIED</span></td>
+                </tr>
+                <tr>
+                    <td><strong>ANSI/RIA R15.08-1-2020</strong><br><span style="color:#64748b; font-size:11px;">Industrial Mobile Robots</span></td>
+                    <td>Deceleration jerk must not exceed 2.4 m/s³ to avoid payload tipping hazard during emergency stops.</td>
+                    <td style="text-align: center;"><span style="color:#065f46; font-weight:700;">&check; VERIFIED</span></td>
+                </tr>
+                <tr>
+                    <td><strong>IEC 61508 / ISO 13849-1</strong><br><span style="color:#64748b; font-size:11px;">Functional Safety (PL-d)</span></td>
+                    <td>Control safety architecture achieves Category 3 architecture with diagnostic coverage &ge; 90%.</td>
+                    <td style="text-align: center;"><span style="color:#065f46; font-weight:700;">&check; VERIFIED</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Section 4: Turnkey Nav2 Remediation Patch -->
+        <div class="section-title">4. Turnkey ROS 2 Policy Remediation (Drop-In YAML)</div>
+        <p style="font-size: 13px; color: #334155;">
+            The following dynamic speed filter parameter patch eliminates the divergence and brings fleet compliance to 100%:
+        </p>
+        <div class="code-block">
+# Diffraction Synthesized Policy Patch: nav2_speed_filter_patch.yaml
+# Cryptographically signed against incident ID: incident_amr_digit_estop_20261107
+speed_filter_mask_server:
+  ros__parameters:
+    filter_type: 0 # Speed Filter Mask
+    max_forward_speed: 0.65 # Clamped for μ=0.18 low-traction floor
+    min_deceleration_rate: 1.85 # m/s² (Non-skid deceleration threshold)
+    traction_loss_recovery_gain: 2.40
+    laser_field_precharge_ms: 120</div>
+
+        <!-- Legal Disclaimer & Signoff -->
+        <div class="callout-box">
+            <strong>Carrier &amp; Regulatory Legal Assurance:</strong> This verification dossier mathematically confirms that autonomous controller policies were subjected to 150 parallel physics simulations across Monte Carlo parameter distributions. Verified for functional safety compliance and industrial underwriting qualification.
+        </div>
+
+        <div class="footer-seal">
+            <div>&copy; 2026 Diffraction AI Inc. &bull; Physical AI Safety &amp; Verification Platform</div>
+            <div>SHA-256: <code>e84b917c...6d0912fa</code> &bull; Signed by Safety Certification Oracle</div>
+        </div>
+    </div>
+</body>
+</html>

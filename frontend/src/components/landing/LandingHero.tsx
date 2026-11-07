@@ -22,6 +22,7 @@ import {
   Truck,
   CheckCircle2,
   AlertTriangle,
+  FileText,
 } from 'lucide-react';
 import {
   KineticRotatingHeadline,
@@ -116,10 +117,20 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
+              <a
+                href="/reports/Diffraction-ISO-3691-4-Certified-Dossier-Sample.html"
+                target="_blank"
+                rel="noreferrer"
+                className="min-h-[48px] px-5 py-3 rounded-lg bg-white hover:bg-[#FAF4EB] text-[#3E2C23] text-sm font-semibold border border-[#3E2C23]/25 transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-2xs"
+              >
+                <FileText className="w-4 h-4 text-[#2FA4D7]" />
+                <span>Sample ISO Dossier (PDF)</span>
+              </a>
+
               <button
                 type="button"
                 onClick={onExploreStory}
-                className="min-h-[48px] px-5 py-3 rounded-lg bg-white hover:bg-[#FAF4EB] text-[#3E2C23] text-sm font-semibold border border-[#3E2C23]/25 transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-2xs"
+                className="min-h-[48px] px-4 py-3 rounded-lg bg-white hover:bg-[#FAF4EB] text-[#3E2C23] text-sm font-semibold border border-[#3E2C23]/25 transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-2xs"
               >
                 <span>Read 4-Act Storyline</span>
                 <span className="text-[#3E2C23]/60">↓</span>
@@ -131,7 +142,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 className="min-h-[44px] px-3 py-2 text-[#E76F2E] hover:text-[#d35b1d] text-xs sm:text-sm font-bold transition-colors flex items-center justify-center space-x-1.5 cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-[#E76F2E]" />
-                <span>$15k Production Pilot SOW →</span>
+                <span>$15k Pilot SOW →</span>
               </button>
             </div>
           </div>

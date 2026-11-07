@@ -524,6 +524,19 @@ def api_simulate_incident(
         "robot_id": parsed.robot_id,
         "facility_id": parsed.facility_id,
         "trigger_type": parsed.trigger_type,
+        "trigger_severity": parsed.trigger_severity,
+        "messages": parsed.total_messages,
+    }
+
+
+@app.get("/api/v1/compliance/sample-dossier")
+def get_sample_dossier():
+    """Serves the canonical, printable ISO 3691-4 Functional Safety Certification Dossier."""
+    sample_path = os.path.join(REPORTS_DIR, "Diffraction-ISO-3691-4-Certified-Dossier-Sample.html")
+    if os.path.exists(sample_path):
+        return FileResponse(sample_path, media_type="text/html")
+    raise HTTPException(status_code=404, detail="Sample dossier not found.")
+        "trigger_type": parsed.trigger_type,
         "scenario_class": scenario,
         "messages": parsed.total_messages,
     }

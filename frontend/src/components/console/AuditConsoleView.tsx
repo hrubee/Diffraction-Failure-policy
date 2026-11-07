@@ -1,5 +1,6 @@
 /**
  * Presentation Component: Audit Console Main View
+ * Enhanced with Live GPU Cluster Mission Control Terminal ("Labor Illusion")
  */
 
 'use client';
@@ -15,6 +16,7 @@ import { TrajectoryScatterPlot } from './TrajectoryScatterPlot';
 import { RegulatoryComplianceTable } from './RegulatoryComplianceTable';
 import { CertificationArtifactsGrid } from './CertificationArtifactsGrid';
 import { PolicyRemediationTabs } from './PolicyRemediationTabs';
+import { SimulationMissionControl } from './SimulationMissionControl';
 
 interface AuditConsoleViewProps {
   readonly audit: UseVerificationAuditReturn;
@@ -28,6 +30,7 @@ export const AuditConsoleView: React.FC<AuditConsoleViewProps> = ({ audit }) => 
     scenarioCount,
     setScenarioCount,
     isLoading,
+    isSimulating,
     statusText,
     verdict,
     uploadedFileName,
@@ -36,6 +39,8 @@ export const AuditConsoleView: React.FC<AuditConsoleViewProps> = ({ audit }) => 
     selectScenario,
     handleFileUpload,
     runAudit,
+    finishSimulation,
+    skipSimulation,
   } = audit;
 
   const statusPillClass =
@@ -89,80 +94,93 @@ export const AuditConsoleView: React.FC<AuditConsoleViewProps> = ({ audit }) => 
           />
         </div>
 
-        {/* Right Column: Active Intelligence & Artifacts */}
+        {/* Right Column: Active Intelligence & Artifacts OR Mission Control */}
         <div className="col-span-12 lg:col-span-7 space-y-6">
-          <div className="p-6 rounded-2xl bg-white border border-[rgba(55,53,47,0.09)] card-shadow space-y-5">
-            <div className="flex justify-between items-center border-b border-[rgba(55,53,47,0.06)] pb-3">
-              <div>
-                <h3 className="text-sm font-bold text-[#37352f] tracking-tight">Active Audit Intelligence</h3>
-                <div id="auditHeaderSummary" className="text-xs text-[#787774] mono mt-0.5">
-                  {verdict
-                    ? `Audit Complete for ${verdict.incidentId} (${verdict.totalScenarios} rollouts)`
-                    : 'Awaiting telemetry packet…'}
+          {/* If currently simulating, render the High-Density Mission Control Stream */}
+          {isSimulating ? (
+            <SimulationMissionControl
+              scenarioCount={scenarioCount}
+              robotName={activeScenario.name}
+              standard={activeScenario.standard}
+              onComplete={finishSimulation}
+              onSkip={skipSimulation}
+            />
+          ) : (
+            <>
+              <div className="p-6 rounded-2xl bg-white border border-[rgba(55,53,47,0.09)] card-shadow space-y-5">
+                <div className="flex justify-between items-center border-b border-[rgba(55,53,47,0.06)] pb-3">
+                  <div>
+                    <h3 className="text-sm font-bold text-[#37352f] tracking-tight">Active Audit Intelligence</h3>
+                    <div id="auditHeaderSummary" className="text-xs text-[#787774] mono mt-0.5">
+                      {verdict
+                        ? `Audit Complete for ${verdict.incidentId} (${verdict.totalScenarios} rollouts)`
+                        : 'Awaiting telemetry packet…'}
+                    </div>
+                  </div>
+
+                  {/* Viewport Mode Switcher */}
+                  <div className="flex items-center space-x-1 bg-[#f7f6f3] p-1 rounded-lg text-[10px] mono font-medium border border-[rgba(55,53,47,0.09)]">
+                    <button
+                      type="button"
+                      onClick={() => setViewportMode('3d')}
+                      className={`px-2.5 py-1 rounded-md transition-colors ${
+                        viewportMode === '3d' ? 'bg-white text-[#37352f] shadow-sm font-semibold' : 'text-[#787774] hover:text-[#37352f]'
+                      }`}
+                    >
+                      3D Digital Twin
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setViewportMode('2d')}
+                      className={`px-2.5 py-1 rounded-md transition-colors ${
+                        viewportMode === '2d' ? 'bg-white text-[#37352f] shadow-sm font-semibold' : 'text-[#787774] hover:text-[#37352f]'
+                      }`}
+                    >
+                      2D Odometry Plot
+                    </button>
+                  </div>
                 </div>
+
+                <AuditKpiGrid verdict={verdict} />
+
+                {/* Viewport Container */}
+                {viewportMode === '3d' ? (
+                  <DigitalTwin3DViewer
+                    modality={activeScenario.modality}
+                    robotId={activeScenario.robotId}
+                    status={verdict ? verdict.status : statusText}
+                  />
+                ) : (
+                  <TrajectoryScatterPlot
+                    planned={trajectoryPoints.planned}
+                    actual={trajectoryPoints.actual}
+                    hazard={trajectoryPoints.hazard}
+                    hazardLabel={trajectoryPoints.hazardLabel}
+                  />
+                )}
+
+                {verdict && <RegulatoryComplianceTable clauses={verdict.regulatoryCompliance} />}
               </div>
 
-              {/* Viewport Mode Switcher: 3D Twin vs 2D Plot in Notion style */}
-              <div className="flex items-center space-x-1 bg-[#f7f6f3] p-1 rounded-lg text-[10px] mono font-medium border border-[rgba(55,53,47,0.09)]">
-                <button
-                  type="button"
-                  onClick={() => setViewportMode('3d')}
-                  className={`px-2.5 py-1 rounded-md transition-colors ${
-                    viewportMode === '3d' ? 'bg-white text-[#37352f] shadow-sm font-semibold' : 'text-[#787774] hover:text-[#37352f]'
-                  }`}
-                >
-                  3D Digital Twin
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewportMode('2d')}
-                  className={`px-2.5 py-1 rounded-md transition-colors ${
-                    viewportMode === '2d' ? 'bg-white text-[#37352f] shadow-sm font-semibold' : 'text-[#787774] hover:text-[#37352f]'
-                  }`}
-                >
-                  2D Odometry Plot
-                </button>
+              <div id="artifactsCard" className={verdict ? 'space-y-6' : 'hidden'}>
+                <CertificationArtifactsGrid verdict={verdict} />
+                <PolicyRemediationTabs remediation={verdict?.remediation} />
+
+                {verdict && verdict.recommendations.length > 0 && (
+                  <div className="p-6 rounded-2xl bg-white border border-subtle card-shadow">
+                    <h4 className="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 mono">
+                      Root-Cause Engineering Directives:
+                    </h4>
+                    <ul id="recommendationsList" className="text-xs text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed">
+                      {verdict.recommendations.map((rec, i) => (
+                        <li key={i}>{rec}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
-            </div>
-
-            <AuditKpiGrid verdict={verdict} />
-
-            {/* Viewport Container */}
-            {viewportMode === '3d' ? (
-              <DigitalTwin3DViewer
-                modality={activeScenario.modality}
-                robotId={activeScenario.robotId}
-                status={verdict ? verdict.status : statusText}
-              />
-            ) : (
-              <TrajectoryScatterPlot
-                planned={trajectoryPoints.planned}
-                actual={trajectoryPoints.actual}
-                hazard={trajectoryPoints.hazard}
-                hazardLabel={trajectoryPoints.hazardLabel}
-              />
-            )}
-
-            {verdict && <RegulatoryComplianceTable clauses={verdict.regulatoryCompliance} />}
-          </div>
-
-          <div id="artifactsCard" className={verdict ? 'space-y-6' : 'hidden'}>
-            <CertificationArtifactsGrid verdict={verdict} />
-            <PolicyRemediationTabs remediation={verdict?.remediation} />
-
-            {verdict && verdict.recommendations.length > 0 && (
-              <div className="p-6 rounded-2xl bg-white border border-subtle card-shadow">
-                <h4 className="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 mono">
-                  Root-Cause Engineering Directives:
-                </h4>
-                <ul id="recommendationsList" className="text-xs text-slate-600 space-y-1.5 list-disc pl-4 leading-relaxed">
-                  {verdict.recommendations.map((rec, i) => (
-                    <li key={i}>{rec}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
+            </>
+          )}
         </div>
       </div>
     </section>

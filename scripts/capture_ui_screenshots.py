@@ -63,6 +63,14 @@ def capture_all():
 
         print("[Playwright] Executing complete verification audit on Humanoid ZMP Slip...")
         page.click("#runPipelineBtn")
+        time.sleep(2.5) # Allow mission control to stream live GPU cluster rollouts
+        
+        mission_control_path = os.path.join(SCREENSHOTS_DIR, "saas_simulation_mission_control.png")
+        page.screenshot(path=mission_control_path, full_page=False)
+        print(f"Captured: {mission_control_path}")
+
+        # Click Fast-Forward (Dev Skip) to finalize audit
+        page.click("button:has-text('Fast-Forward')")
         # Wait for audit completion
         page.wait_for_selector("#artifactsCard:not(.hidden)", timeout=20000)
         time.sleep(1)
@@ -119,6 +127,8 @@ def capture_all():
         mobile_page.click("#btnHazardHauler")
         time.sleep(1.5)
         mobile_page.click("#runPipelineBtn")
+        time.sleep(1.5)
+        mobile_page.click("button:has-text('Fast-Forward')")
         mobile_page.wait_for_selector("#artifactsCard:not(.hidden)", timeout=20000)
         time.sleep(1)
 

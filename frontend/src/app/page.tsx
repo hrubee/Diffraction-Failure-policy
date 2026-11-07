@@ -14,6 +14,7 @@ import { LandingBentoGrid } from '@/components/landing/LandingBentoGrid';
 import { LandingInteractiveModalities } from '@/components/landing/LandingInteractiveModalities';
 import { LandingStoryWalkthrough } from '@/components/landing/LandingStoryWalkthrough';
 import { LandingRoiSection } from '@/components/landing/LandingRoiSection';
+import { LandingEnterpriseSecurity } from '@/components/landing/LandingEnterpriseSecurity';
 import { LandingPricingSection } from '@/components/landing/LandingPricingSection';
 import { LandingCtaBanner } from '@/components/landing/LandingCtaBanner';
 import { LandingFooter } from '@/components/landing/LandingFooter';
@@ -125,6 +126,9 @@ export default function Home() {
                 el?.scrollIntoView({ behavior: 'smooth' });
               }}
             />
+
+            {/* Enterprise Security & Air-Gapped Data Sovereignty */}
+            <LandingEnterpriseSecurity />
 
             {/* Commercial SOW & Licensing Tiers */}
             <LandingPricingSection

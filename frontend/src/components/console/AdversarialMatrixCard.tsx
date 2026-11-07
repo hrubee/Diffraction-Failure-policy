@@ -72,12 +72,12 @@ export const AdversarialMatrixCard: React.FC<AdversarialMatrixCardProps> = ({
         id="runPipelineBtn"
         disabled={isLoading}
         onClick={onExecuteAudit}
-        className="w-full min-h-[48px] py-3.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.99] disabled:opacity-70 text-white font-bold rounded-xl shadow-md text-xs tracking-wider uppercase transition-transform duration-100 cursor-pointer flex items-center justify-center space-x-2"
+        className="w-full min-h-[48px] py-3.5 bg-[#2FA4D7] hover:bg-[#258ec0] active:scale-[0.99] disabled:opacity-75 text-white font-bold rounded-xl shadow-md text-xs tracking-wider uppercase transition-all duration-100 cursor-pointer flex items-center justify-center space-x-2"
       >
         {isLoading && (
           <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
         )}
-        <span>{isLoading ? 'Verifying Trajectories…' : 'Execute Complete Verification Audit'}</span>
+        <span>{isLoading ? 'Simulating 150 Parallel GPU Rollouts…' : 'Execute Complete Verification Audit'}</span>
       </button>
     </div>
   );

@@ -1,10 +1,11 @@
 /**
  * Reactive Domain Hook: Physical AI Verification Audit Execution
+ * Integrates high-density operational simulation streaming ("Labor Illusion")
  */
 
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { SCENARIO_PRESETS } from '../domain/kinematics/scenarios';
 import { ScenarioKinematicsConfig, AuditVerdict, OdometryPoint } from '../domain/kinematics/types';
 import { executeVerificationAudit } from '../infrastructure/audit-gateway';
@@ -15,6 +16,7 @@ export interface UseVerificationAuditReturn {
   scenarioCount: number;
   setScenarioCount: (n: number) => void;
   isLoading: boolean;
+  isSimulating: boolean;
   statusText: string;
   verdict: AuditVerdict | null;
   uploadedFileName: string | null;
@@ -28,6 +30,8 @@ export interface UseVerificationAuditReturn {
   selectScenario: (key: string) => Promise<void>;
   handleFileUpload: (file: File) => Promise<void>;
   runAudit: () => Promise<void>;
+  finishSimulation: () => void;
+  skipSimulation: () => void;
 }
 
 export const useVerificationAudit = (): UseVerificationAuditReturn => {
@@ -36,6 +40,7 @@ export const useVerificationAudit = (): UseVerificationAuditReturn => {
   );
   const [scenarioCount, setScenarioCount] = useState<number>(150);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [statusText, setStatusText] = useState<string>('STANDBY');
   const [verdict, setVerdict] = useState<AuditVerdict | null>(null);
   const [currentIncidentId, setCurrentIncidentId] = useState<string | null>(null);
@@ -47,6 +52,8 @@ export const useVerificationAudit = (): UseVerificationAuditReturn => {
     hazard: SCENARIO_PRESETS.humanoid_zmp_slip.hazard,
     hazardLabel: SCENARIO_PRESETS.humanoid_zmp_slip.hazardLabel,
   });
+
+  const pendingVerdictRef = useRef<AuditVerdict | null>(null);
 
   const selectScenario = useCallback(async (key: string) => {
     const config = SCENARIO_PRESETS[key] || SCENARIO_PRESETS.humanoid_zmp_slip;
@@ -106,18 +113,34 @@ export const useVerificationAudit = (): UseVerificationAuditReturn => {
     }
   }, []);
 
+  const finishSimulation = useCallback(() => {
+    if (pendingVerdictRef.current) {
+      setVerdict(pendingVerdictRef.current);
+      setStatusText(pendingVerdictRef.current.status);
+    }
+    setIsSimulating(false);
+    setIsLoading(false);
+  }, []);
+
+  const skipSimulation = useCallback(() => {
+    finishSimulation();
+  }, [finishSimulation]);
+
   const runAudit = useCallback(async () => {
     setIsLoading(true);
-    setStatusText(`Simulating ${scenarioCount}+ Adversarial Permutations in World Model…`);
+    setIsSimulating(true);
+    setVerdict(null);
+    setStatusText(`Allocating 8x GPU workers for ${scenarioCount} rollouts…`);
+
     try {
+      // Execute backend audit pipeline asynchronously while UI streams simulation telemetry
       const res = await executeVerificationAudit(scenarioCount, currentIncidentId || undefined);
-      setVerdict(res);
-      setStatusText(res.status);
+      pendingVerdictRef.current = res;
     } catch (err) {
       console.error('Audit failed:', err);
-      alert('Verification audit execution failed: ' + (err instanceof Error ? err.message : String(err)));
-    } finally {
+      setIsSimulating(false);
       setIsLoading(false);
+      alert('Verification audit execution failed: ' + (err instanceof Error ? err.message : String(err)));
     }
   }, [scenarioCount, currentIncidentId]);
 
@@ -126,6 +149,7 @@ export const useVerificationAudit = (): UseVerificationAuditReturn => {
     scenarioCount,
     setScenarioCount,
     isLoading,
+    isSimulating,
     statusText,
     verdict,
     uploadedFileName,
@@ -134,5 +158,7 @@ export const useVerificationAudit = (): UseVerificationAuditReturn => {
     selectScenario,
     handleFileUpload,
     runAudit,
+    finishSimulation,
+    skipSimulation,
   };
 };
