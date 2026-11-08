@@ -21,6 +21,7 @@ import {
   DatasetExportFormat,
 } from '@/domain/synthetic/types';
 import { MultimodalStreamInspector } from './MultimodalStreamInspector';
+import { ClientSowConfigurator } from './ClientSowConfigurator';
 import {
   Cpu,
   Layers,
@@ -37,6 +38,8 @@ import {
 } from 'lucide-react';
 
 export const SyntheticFactoryStudio: React.FC = () => {
+  const [studioMode, setStudioMode] = useState<'tooling' | 'sow'>('tooling');
+
   // Config state
   const [selectedEmbodiment, setSelectedEmbodiment] = useState<RobotEmbodiment>(SEED_EMBODIMENTS[1]); // AgileX Hunter
   const [selectedEnvironment, setSelectedEnvironment] = useState<ProceduralEnvironment>(SEED_ENVIRONMENTS[0]); // Warehouse
@@ -162,49 +165,71 @@ export const SyntheticFactoryStudio: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      {/* Studio Banner */}
-      <div className="bg-[#3E2C23] text-[#F5E9D8] p-6 sm:p-8 rounded-2xl border-2 border-[#3E2C23] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div className="space-y-2 max-w-2xl">
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-[#2FA4D7] text-white">
-              NVIDIA Isaac Sim & Isaac Lab 2026
-            </span>
-            <span className="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-[#E76F2E] text-white">
-              OpenUSD Powered
-            </span>
+      {/* Studio Banner & Mode Selector */}
+      <div className="bg-[#3E2C23] text-[#F5E9D8] p-6 sm:p-8 rounded-2xl border-2 border-[#3E2C23] shadow-xs space-y-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="space-y-2 max-w-2xl">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-[#2FA4D7] text-white">
+                Diffraction Productized Studio
+              </span>
+              <span className="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-[#E76F2E] text-white">
+                Powered by NVIDIA Isaac Sim &amp; Cosmos 2.5
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold font-headline tracking-tight text-[#F5E9D8]">
+              {studioMode === 'sow'
+                ? 'Configure Your Client Sprint Statement of Work'
+                : 'Proprietary Procedural Tools & Cosmos Replicator Engine'}
+            </h1>
+            <p className="text-sm sm:text-base text-[#F5E9D8]/80 leading-relaxed font-body">
+              {studioMode === 'sow'
+                ? 'Fixed-scope, fixed-fee engineering sprints for robotics startups and Physical AI foundation model labs. Delivered in 3 to 14 days with full source USD assets and 100% Sim-to-Real policy transfer guarantee.'
+                : 'Robotics teams hire Diffraction because we build environments and assets 5x faster than an in-house team. This interactive demo showcases the proprietary procedural OpenUSD scripts and Cosmos Transfer recipes our engineers use internally to deliver client sprints.'}
+            </p>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold font-headline tracking-tight text-[#F5E9D8]">
-            Physical AI Synthetic Data Factory
-          </h1>
-          <p className="text-sm sm:text-base text-[#F5E9D8]/80 leading-relaxed">
-            Configure procedural OpenUSD environments, apply multi-physics domain randomization, and synthesize millions of photorealistic demonstrations across headless NVIDIA H100 GPU clusters.
-          </p>
-        </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-          <div className="bg-white/10 px-4 py-3 rounded-xl border border-white/10 font-mono text-xs">
-            <span className="text-[#F5E9D8]/60 block uppercase">Active Cluster</span>
-            <span className="text-[#2FA4D7] font-bold text-sm">64x H100 SXM5</span>
-          </div>
-          <div className="bg-white/10 px-4 py-3 rounded-xl border border-white/10 font-mono text-xs">
-            <span className="text-[#F5E9D8]/60 block uppercase">Global Throughput</span>
-            <span className="text-[#E76F2E] font-bold text-sm">48,200 FPS</span>
+          <div className="flex bg-[#2A1D17] p-1 rounded-xl border border-white/10 shrink-0 font-mono text-xs">
+            <button
+              type="button"
+              onClick={() => setStudioMode('tooling')}
+              className={`px-4 py-2.5 rounded-lg font-bold transition-all cursor-pointer flex items-center space-x-2 ${
+                studioMode === 'tooling' ? 'bg-[#2FA4D7] text-white shadow-xs' : 'text-[#F5E9D8]/70 hover:text-white'
+              }`}
+            >
+              <Cpu className="w-4 h-4" />
+              <span>Procedural Tooling Demo</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setStudioMode('sow')}
+              className={`px-4 py-2.5 rounded-lg font-bold transition-all cursor-pointer flex items-center space-x-2 ${
+                studioMode === 'sow' ? 'bg-[#2FA4D7] text-white shadow-xs' : 'text-[#F5E9D8]/70 hover:text-white'
+              }`}
+            >
+              <Sparkles className="w-4 h-4 text-[#E76F2E]" />
+              <span>Scope Sprint SOW ($7.5k+)</span>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* 5-Channel Multimodal Stream Inspector Live Viewport */}
-      <section aria-label="Multimodal Stream Inspector">
-        <MultimodalStreamInspector
-          selectedEmbodimentId={selectedEmbodiment.name}
-          selectedEnvironmentId={selectedEnvironment.name}
-          lightingLux={lightingLux}
-          frictionMu={frictionMu}
-        />
-      </section>
+      {studioMode === 'sow' ? (
+        <ClientSowConfigurator />
+      ) : (
+        <>
+          {/* 5-Channel Multimodal Stream Inspector Live Viewport */}
+          <section aria-label="Multimodal Stream Inspector">
+            <MultimodalStreamInspector
+              selectedEmbodimentId={selectedEmbodiment.name}
+              selectedEnvironmentId={selectedEnvironment.name}
+              lightingLux={lightingLux}
+              frictionMu={frictionMu}
+            />
+          </section>
 
-      {/* 5-Stage Job Configurator */}
-      <div className="bg-white border-2 border-[#3E2C23] rounded-2xl p-6 sm:p-8 shadow-xs space-y-8">
+          {/* 5-Stage Job Configurator */}
+          <div className="bg-white border-2 border-[#3E2C23] rounded-2xl p-6 sm:p-8 shadow-xs space-y-8">
         <div className="border-b-2 border-[#3E2C23] pb-4 flex items-center justify-between">
           <div>
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#3E2C23] font-headline">
@@ -616,6 +641,8 @@ export const SyntheticFactoryStudio: React.FC = () => {
           })}
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 };

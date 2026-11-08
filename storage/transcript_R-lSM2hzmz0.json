@@ -1,0 +1,812 @@
+[
+  {
+    "text": "Welcome to this video on how to use",
+    "start": 0.56,
+    "duration": 3.359
+  },
+  {
+    "text": "NVIDIA Cosmos Transfer for data",
+    "start": 2.159,
+    "duration": 3.761
+  },
+  {
+    "text": "augmentation. We'll see how to set up",
+    "start": 3.919,
+    "duration": 4.0
+  },
+  {
+    "text": "the Cosmos Transfer environment, how to",
+    "start": 5.92,
+    "duration": 3.92
+  },
+  {
+    "text": "download models, and specify inference",
+    "start": 7.919,
+    "duration": 4.961
+  },
+  {
+    "text": "configurations. Let's get started.",
+    "start": 9.84,
+    "duration": 5.04
+  },
+  {
+    "text": "Here on the left, I have the Cosmos",
+    "start": 12.88,
+    "duration": 4.399
+  },
+  {
+    "text": "transfer GitHub repo open and on the",
+    "start": 14.88,
+    "duration": 3.92
+  },
+  {
+    "text": "right a couple of files that I've",
+    "start": 17.279,
+    "duration": 3.521
+  },
+  {
+    "text": "already cloned from the project over",
+    "start": 18.8,
+    "duration": 3.84
+  },
+  {
+    "text": "here. So on the left in the",
+    "start": 20.8,
+    "duration": 3.76
+  },
+  {
+    "text": "documentation, um you see how we have",
+    "start": 22.64,
+    "duration": 4.799
+  },
+  {
+    "text": "ported over to Cosmos Transfer 2.5. Um",
+    "start": 24.56,
+    "duration": 4.559
+  },
+  {
+    "text": "however while recording this video we",
+    "start": 27.439,
+    "duration": 3.521
+  },
+  {
+    "text": "used transfer one. So let's go through",
+    "start": 29.119,
+    "duration": 4.721
+  },
+  {
+    "text": "the repo for that. This shows a highle",
+    "start": 30.96,
+    "duration": 4.64
+  },
+  {
+    "text": "diagram couple of points about how it",
+    "start": 33.84,
+    "duration": 4.399
+  },
+  {
+    "text": "works what it includes some release",
+    "start": 35.6,
+    "duration": 5.2
+  },
+  {
+    "text": "notes and news and some examples of the",
+    "start": 38.239,
+    "duration": 4.081
+  },
+  {
+    "text": "kind of output you can expect after",
+    "start": 40.8,
+    "duration": 3.84
+  },
+  {
+    "text": "running Cosmos transfer.",
+    "start": 42.32,
+    "duration": 3.84
+  },
+  {
+    "text": "Here there's a bunch of installation",
+    "start": 44.64,
+    "duration": 3.919
+  },
+  {
+    "text": "guides. Let's go ahead and see the",
+    "start": 46.16,
+    "duration": 5.36
+  },
+  {
+    "text": "environment setup script. If you want to",
+    "start": 48.559,
+    "duration": 4.401
+  },
+  {
+    "text": "set this up on your machines you can",
+    "start": 51.52,
+    "duration": 3.679
+  },
+  {
+    "text": "just follow this. So one option is to do",
+    "start": 52.96,
+    "duration": 4.88
+  },
+  {
+    "text": "it using a cond environment and here are",
+    "start": 55.199,
+    "duration": 4.641
+  },
+  {
+    "text": "the steps for doing that. Another way is",
+    "start": 57.84,
+    "duration": 4.879
+  },
+  {
+    "text": "using docker. Um so you can just follow",
+    "start": 59.84,
+    "duration": 6.72
+  },
+  {
+    "text": "the steps for doing that as well.",
+    "start": 62.719,
+    "duration": 5.601
+  },
+  {
+    "text": "And then there's some scripts on how to",
+    "start": 66.56,
+    "duration": 3.28
+  },
+  {
+    "text": "train and set up your environment for",
+    "start": 68.32,
+    "duration": 5.52
+  },
+  {
+    "text": "that. Today we'll be using a docker",
+    "start": 69.84,
+    "duration": 6.24
+  },
+  {
+    "text": "and in the documentation you also have",
+    "start": 73.84,
+    "duration": 4.16
+  },
+  {
+    "text": "some steps for inference. So these are",
+    "start": 76.08,
+    "duration": 4.24
+  },
+  {
+    "text": "just different Cosmos transfer scripts",
+    "start": 78.0,
+    "duration": 6.799
+  },
+  {
+    "text": "for running transfer 1 7B.",
+    "start": 80.32,
+    "duration": 6.32
+  },
+  {
+    "text": "The environment setup you see here we've",
+    "start": 84.799,
+    "duration": 4.241
+  },
+  {
+    "text": "already done. But after doing that you",
+    "start": 86.64,
+    "duration": 4.4
+  },
+  {
+    "text": "have to download the checkpoints. So you",
+    "start": 89.04,
+    "duration": 4.32
+  },
+  {
+    "text": "have to generate a hugging face token.",
+    "start": 91.04,
+    "duration": 4.16
+  },
+  {
+    "text": "All the steps for doing that are given",
+    "start": 93.36,
+    "duration": 5.119
+  },
+  {
+    "text": "um are linked in the documentation.",
+    "start": 95.2,
+    "duration": 5.599
+  },
+  {
+    "text": "You have to accept the llama terms for",
+    "start": 98.479,
+    "duration": 5.041
+  },
+  {
+    "text": "the llama model. Um let's see what that",
+    "start": 100.799,
+    "duration": 4.161
+  },
+  {
+    "text": "looks like.",
+    "start": 103.52,
+    "duration": 3.12
+  },
+  {
+    "text": "So you just create your hugging face",
+    "start": 104.96,
+    "duration": 3.36
+  },
+  {
+    "text": "account and you can login through there",
+    "start": 106.64,
+    "duration": 4.799
+  },
+  {
+    "text": "and then accept the agreement.",
+    "start": 108.32,
+    "duration": 4.799
+  },
+  {
+    "text": "Then you go ahead and download the model",
+    "start": 111.439,
+    "duration": 4.881
+  },
+  {
+    "text": "weights. This takes some time uh just",
+    "start": 113.119,
+    "duration": 4.481
+  },
+  {
+    "text": "because there's a lot of models and",
+    "start": 116.32,
+    "duration": 3.759
+  },
+  {
+    "text": "they're all uh pretty big. So you need",
+    "start": 117.6,
+    "duration": 4.08
+  },
+  {
+    "text": "some storage and some time to do that",
+    "start": 120.079,
+    "duration": 5.441
+  },
+  {
+    "text": "step around 300 GB.",
+    "start": 121.68,
+    "duration": 5.6
+  },
+  {
+    "text": "And once that's done you have a bunch of",
+    "start": 125.52,
+    "duration": 5.32
+  },
+  {
+    "text": "downloaded checkpoints.",
+    "start": 127.28,
+    "duration": 3.56
+  },
+  {
+    "text": "Now in the documentation here we have",
+    "start": 131.28,
+    "duration": 4.72
+  },
+  {
+    "text": "some sample commands as well",
+    "start": 132.959,
+    "duration": 5.601
+  },
+  {
+    "text": "just showing you how to run inference",
+    "start": 136.0,
+    "duration": 4.8
+  },
+  {
+    "text": "and we'll be in fact doing one of these",
+    "start": 138.56,
+    "duration": 5.52
+  },
+  {
+    "text": "commands in our in this video today. So",
+    "start": 140.8,
+    "duration": 5.12
+  },
+  {
+    "text": "we'll be running the inference script",
+    "start": 144.08,
+    "duration": 4.08
+  },
+  {
+    "text": "for transfer. It has a bunch of",
+    "start": 145.92,
+    "duration": 3.76
+  },
+  {
+    "text": "arguments. So you give the checkpoint",
+    "start": 148.16,
+    "duration": 3.04
+  },
+  {
+    "text": "directory. This is where all the models",
+    "start": 149.68,
+    "duration": 4.16
+  },
+  {
+    "text": "are downloaded. You give the input video",
+    "start": 151.2,
+    "duration": 4.48
+  },
+  {
+    "text": "path. This is what we'll see in a",
+    "start": 153.84,
+    "duration": 3.36
+  },
+  {
+    "text": "minute.",
+    "start": 155.68,
+    "duration": 2.96
+  },
+  {
+    "text": "You give the name where you'd like to",
+    "start": 157.2,
+    "duration": 4.0
+  },
+  {
+    "text": "save the output. the control net spec",
+    "start": 158.64,
+    "duration": 4.56
+  },
+  {
+    "text": "file. So this is a specification file",
+    "start": 161.2,
+    "duration": 4.72
+  },
+  {
+    "text": "for all different modalities. Offloading",
+    "start": 163.2,
+    "duration": 4.48
+  },
+  {
+    "text": "models, so how many you want to offload",
+    "start": 165.92,
+    "duration": 4.72
+  },
+  {
+    "text": "to the CPU and then the number of GPUs",
+    "start": 167.68,
+    "duration": 4.88
+  },
+  {
+    "text": "that you're using cuz this can also run",
+    "start": 170.64,
+    "duration": 5.679
+  },
+  {
+    "text": "in a multiGPU setup.",
+    "start": 172.56,
+    "duration": 5.36
+  },
+  {
+    "text": "We'll also see in a minute how you can",
+    "start": 176.319,
+    "duration": 3.92
+  },
+  {
+    "text": "pass all your configurations through the",
+    "start": 177.92,
+    "duration": 4.88
+  },
+  {
+    "text": "um specification file.",
+    "start": 180.239,
+    "duration": 4.0
+  },
+  {
+    "text": "So let's take a look at some of the",
+    "start": 182.8,
+    "duration": 4.799
+  },
+  {
+    "text": "input videos. First, we have this open",
+    "start": 184.239,
+    "duration": 5.28
+  },
+  {
+    "text": "after cloning the repo on the right side",
+    "start": 187.599,
+    "duration": 4.961
+  },
+  {
+    "text": "of the screen here. And the input videos",
+    "start": 189.519,
+    "duration": 6.72
+  },
+  {
+    "text": "are what we got from Mobility Gen.",
+    "start": 192.56,
+    "duration": 5.28
+  },
+  {
+    "text": "Now, we're inside the input videos",
+    "start": 196.239,
+    "duration": 3.441
+  },
+  {
+    "text": "folder. These are all the videos we got",
+    "start": 197.84,
+    "duration": 5.36
+  },
+  {
+    "text": "from Mobility Gen. And they're labeled",
+    "start": 199.68,
+    "duration": 5.12
+  },
+  {
+    "text": "like the input video name and then the",
+    "start": 203.2,
+    "duration": 4.0
+  },
+  {
+    "text": "segmentation video. So, this is what one",
+    "start": 204.8,
+    "duration": 4.96
+  },
+  {
+    "text": "of the input video looks like. It's the",
+    "start": 207.2,
+    "duration": 4.16
+  },
+  {
+    "text": "entire scene from the robot's point of",
+    "start": 209.76,
+    "duration": 3.759
+  },
+  {
+    "text": "view. So you see the staircase, some",
+    "start": 211.36,
+    "duration": 4.48
+  },
+  {
+    "text": "boxes in the warehouse and then the",
+    "start": 213.519,
+    "duration": 3.761
+  },
+  {
+    "text": "segmentation the corresponding",
+    "start": 215.84,
+    "duration": 3.2
+  },
+  {
+    "text": "segmentation video looks like this. So",
+    "start": 217.28,
+    "duration": 3.92
+  },
+  {
+    "text": "you have pixels labeled for each class.",
+    "start": 219.04,
+    "duration": 3.68
+  },
+  {
+    "text": "So the floor is a different color, the",
+    "start": 221.2,
+    "duration": 3.36
+  },
+  {
+    "text": "wall is a different color. Um each",
+    "start": 222.72,
+    "duration": 3.2
+  },
+  {
+    "text": "object in the scene is a different",
+    "start": 224.56,
+    "duration": 3.12
+  },
+  {
+    "text": "color. These are just your segmentation",
+    "start": 225.92,
+    "duration": 3.84
+  },
+  {
+    "text": "labels. And then we have a couple of",
+    "start": 227.68,
+    "duration": 5.119
+  },
+  {
+    "text": "more input videos of this type.",
+    "start": 229.76,
+    "duration": 5.199
+  },
+  {
+    "text": "So this is another input video and then",
+    "start": 232.799,
+    "duration": 3.681
+  },
+  {
+    "text": "let's also see its corresponding",
+    "start": 234.959,
+    "duration": 4.961
+  },
+  {
+    "text": "segmentation video.",
+    "start": 236.48,
+    "duration": 5.839
+  },
+  {
+    "text": "So now these we will use as input to our",
+    "start": 239.92,
+    "duration": 6.2
+  },
+  {
+    "text": "Cosmos transfer model.",
+    "start": 242.319,
+    "duration": 3.801
+  },
+  {
+    "text": "The other argument you can specify is",
+    "start": 246.159,
+    "duration": 3.121
+  },
+  {
+    "text": "where you'd like to save it. So that's",
+    "start": 248.0,
+    "duration": 3.519
+  },
+  {
+    "text": "the video save name. And now let's take",
+    "start": 249.28,
+    "duration": 4.08
+  },
+  {
+    "text": "a look at the specification file, the",
+    "start": 251.519,
+    "duration": 5.72
+  },
+  {
+    "text": "control net spec file.",
+    "start": 253.36,
+    "duration": 3.879
+  },
+  {
+    "text": "So you can find that here in the assets",
+    "start": 257.68,
+    "duration": 4.72
+  },
+  {
+    "text": "folder in your repo. And there's a whole",
+    "start": 259.519,
+    "duration": 4.96
+  },
+  {
+    "text": "bunch of different specification files.",
+    "start": 262.4,
+    "duration": 4.239
+  },
+  {
+    "text": "Uh we can use any of these or write our",
+    "start": 264.479,
+    "duration": 4.481
+  },
+  {
+    "text": "own. Here we've written our own and",
+    "start": 266.639,
+    "duration": 3.921
+  },
+  {
+    "text": "we've called it inference cosmos",
+    "start": 268.96,
+    "duration": 3.84
+  },
+  {
+    "text": "transfer one custom weights. So it's in",
+    "start": 270.56,
+    "duration": 5.44
+  },
+  {
+    "text": "the JSON format and it has the prompt.",
+    "start": 272.8,
+    "duration": 5.36
+  },
+  {
+    "text": "Um here you can specify what what you",
+    "start": 276.0,
+    "duration": 4.4
+  },
+  {
+    "text": "expect to see in the output. So we've",
+    "start": 278.16,
+    "duration": 3.52
+  },
+  {
+    "text": "mentioned a realistic warehouse",
+    "start": 280.4,
+    "duration": 3.6
+  },
+  {
+    "text": "environment with consistent lighting and",
+    "start": 281.68,
+    "duration": 4.64
+  },
+  {
+    "text": "so on. You mentioned the input video",
+    "start": 284.0,
+    "duration": 4.8
+  },
+  {
+    "text": "path. So this is any of the videos we",
+    "start": 286.32,
+    "duration": 5.64
+  },
+  {
+    "text": "just saw.",
+    "start": 288.8,
+    "duration": 3.16
+  },
+  {
+    "text": "And then here you specify",
+    "start": 295.12,
+    "duration": 4.56
+  },
+  {
+    "text": "we can always correct the name here. So",
+    "start": 297.6,
+    "duration": 4.96
+  },
+  {
+    "text": "let's fix that to the right name. And",
+    "start": 299.68,
+    "duration": 4.239
+  },
+  {
+    "text": "it's as easy as that. You can make",
+    "start": 302.56,
+    "duration": 3.6
+  },
+  {
+    "text": "changes directly in your uh in this JSON",
+    "start": 303.919,
+    "duration": 5.84
+  },
+  {
+    "text": "file and um run the inference on it. Now",
+    "start": 306.16,
+    "duration": 6.0
+  },
+  {
+    "text": "some of these other controls here um",
+    "start": 309.759,
+    "duration": 4.241
+  },
+  {
+    "text": "let's look at the edge control. We've",
+    "start": 312.16,
+    "duration": 3.759
+  },
+  {
+    "text": "given it a certain weight and then the",
+    "start": 314.0,
+    "duration": 4.24
+  },
+  {
+    "text": "depth and segmentation here because we",
+    "start": 315.919,
+    "duration": 3.84
+  },
+  {
+    "text": "have a segmentation video. Let's pass",
+    "start": 318.24,
+    "duration": 3.84
+  },
+  {
+    "text": "that as input and specify the control",
+    "start": 319.759,
+    "duration": 4.241
+  },
+  {
+    "text": "weight of one. So this means it'll very",
+    "start": 322.08,
+    "duration": 4.08
+  },
+  {
+    "text": "closely follow the segmentation masks",
+    "start": 324.0,
+    "duration": 4.72
+  },
+  {
+    "text": "and keep the objects um categorized in",
+    "start": 326.16,
+    "duration": 5.12
+  },
+  {
+    "text": "that way.",
+    "start": 328.72,
+    "duration": 4.24
+  },
+  {
+    "text": "So this is how you can quickly write and",
+    "start": 331.28,
+    "duration": 5.68
+  },
+  {
+    "text": "modify your cutlet spec. Uh be sure to",
+    "start": 332.96,
+    "duration": 8.12
+  },
+  {
+    "text": "save it before you run inference.",
+    "start": 336.96,
+    "duration": 4.12
+  },
+  {
+    "text": "And with that now we can actually run",
+    "start": 341.84,
+    "duration": 5.76
+  },
+  {
+    "text": "this command and test inference on our",
+    "start": 345.039,
+    "duration": 5.561
+  },
+  {
+    "text": "machines.",
+    "start": 347.6,
+    "duration": 3.0
+  },
+  {
+    "text": "So before doing that let's take a look",
+    "start": 352.479,
+    "duration": 4.801
+  },
+  {
+    "text": "at some of the other examples we have.",
+    "start": 354.96,
+    "duration": 4.32
+  },
+  {
+    "text": "So there is a way to specify a single",
+    "start": 357.28,
+    "duration": 3.919
+  },
+  {
+    "text": "control. So if you want to do only edge",
+    "start": 359.28,
+    "duration": 4.08
+  },
+  {
+    "text": "control with the distilled model um this",
+    "start": 361.199,
+    "duration": 3.84
+  },
+  {
+    "text": "is how you can specify that. This is",
+    "start": 363.36,
+    "duration": 4.24
+  },
+  {
+    "text": "what an edge control looks like. So it's",
+    "start": 365.039,
+    "duration": 6.16
+  },
+  {
+    "text": "just edges of the object.",
+    "start": 367.6,
+    "duration": 5.28
+  },
+  {
+    "text": "And throughout the rest of this tutorial",
+    "start": 371.199,
+    "duration": 4.241
+  },
+  {
+    "text": "there are more examples on prompts and",
+    "start": 372.88,
+    "duration": 4.159
+  },
+  {
+    "text": "different outputs that are generated",
+    "start": 375.44,
+    "duration": 5.8
+  },
+  {
+    "text": "based on different configurations.",
+    "start": 377.039,
+    "duration": 4.201
+  }
+]

@@ -48,20 +48,20 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-white border border-[#3E2C23]/20 text-xs text-[#3E2C23] shadow-xs">
             <span className="h-2 w-2 rounded-full bg-[#2FA4D7] animate-pulse" />
             <span className="font-semibold tracking-wide uppercase text-[10px] font-mono">
-              NVIDIA ISAAC LAB & OPENUSD COMPATIBLE
+              PRODUCTIZED STUDIO • NVIDIA ISAAC SIM &amp; COSMOS 2.5
             </span>
           </div>
 
           <span className="text-[#3E2C23]/40 hidden sm:inline">•</span>
 
           <span className="inline-flex items-center px-3 py-1 rounded bg-white border border-[#3E2C23]/20 text-[#3E2C23] text-xs font-mono shadow-xs">
-            Hugging Face LeRobot • Open-X Embodiment • PyTorch HDF5
+            OpenUSD • Isaac Lab • Hugging Face LeRobot • PhysX 5
           </span>
 
           <span className="text-[#3E2C23]/40 hidden md:inline">•</span>
 
           <span className="hidden md:inline-flex px-3 py-1 rounded bg-[#E76F2E] text-white text-xs font-mono font-bold shadow-xs">
-            94.2% Zero-Shot Transfer Rate
+            3 to 14 Day Delivery SLA
           </span>
         </div>
 
@@ -71,37 +71,37 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           <div className="lg:col-span-7 space-y-5">
             <div className="space-y-2">
               <span className="text-xs font-mono font-bold tracking-wider uppercase text-[#2FA4D7] block">
-                The Scale AI for Physical Robotics & VLAs
+                The Tech-Enabled Synthetic Asset Studio
               </span>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#3E2C23] font-headline tracking-tight leading-[1.12]">
-                The Synthetic Data Factory for{' '}
+                Photorealistic NVIDIA Isaac Sim, Cosmos &amp; OpenUSD Environments —{' '}
                 <span className="text-[#2FA4D7] underline decoration-[#2FA4D7]/40 decoration-4 underline-offset-4">
-                  Physical AI
+                  Delivered in Days.
                 </span>
               </h1>
             </div>
 
             <p className="text-base sm:text-lg text-[#3E2C23]/85 leading-relaxed font-body max-w-2xl">
-              Physical data collection via human VR teleoperation costs{' '}
+              Robotics startups spend{' '}
               <strong className="text-[#E76F2E] font-bold underline decoration-[#E76F2E]/80 decoration-2 underline-offset-4">
-                $150/hour
+                6 months
               </strong>{' '}
-              and cannot scale to the millions of trajectories needed for frontier Vision-Language-Action (VLA) foundation models.
+              recruiting simulation engineers and $150/hr on manual teleoperation. We build photorealistic, physics-calibrated environments and Cosmos datasets 5x faster using our proprietary procedural tooling.
             </p>
 
             <p className="text-sm text-[#3E2C23]/80 leading-relaxed font-body max-w-2xl">
-              <strong>Diffraction</strong> orchestrates headless <strong>NVIDIA Isaac Sim & Isaac Lab</strong> worker clusters in procedural OpenUSD environments. Synthesize millions of photorealistic, physics-calibrated demonstration trajectories with synchronized 1080p RGB-D, 32-beam 3D LiDAR, semantic masks, and 500Hz joint torques in minutes.
+              From converting your URDF/CAD into a tuned PhysX 5 rigid-body asset, to procedural high-bay warehouses with dynamic friction, to 500,000 Cosmos-augmented demonstrations formatted for Hugging Face LeRobot—delivered on fixed-fee sprint contracts.
             </p>
 
             {/* Micro ROI Stat Callout */}
             <div className="grid grid-cols-2 gap-3 max-w-lg p-3 rounded-xl bg-white border border-[#3E2C23]/20 font-mono text-xs">
               <div>
-                <span className="text-[#3E2C23]/50 block text-[10px]">HUMAN TELEOP</span>
-                <span className="text-rose-700 font-bold">$150/hr ($15M / 100k hrs)</span>
+                <span className="text-[#3E2C23]/50 block text-[10px]">IN-HOUSE SIM ENGINEER</span>
+                <span className="text-rose-700 font-bold">$220,000/yr + 6mo hiring delay</span>
               </div>
               <div>
-                <span className="text-[#3E2C23]/50 block text-[10px]">DIFFRACTION FACTORY</span>
-                <span className="text-emerald-700 font-bold">$0.08 / trajectory (99% Cheaper)</span>
+                <span className="text-[#3E2C23]/50 block text-[10px]">DIFFRACTION SPRINT</span>
+                <span className="text-emerald-700 font-bold">$7,500 - $35,000 (3-14 days)</span>
               </div>
             </div>
 
@@ -113,7 +113,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 className="min-h-[48px] px-6 py-3 rounded-lg bg-[#2FA4D7] hover:bg-[#248ab8] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center space-x-2.5 cursor-pointer group"
               >
                 <Zap className="w-4 h-4 fill-current text-white group-hover:scale-110 transition-transform" />
-                <span>Launch Data Factory Studio</span>
+                <span>Configure Sprint SOW ($7.5k+)</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
@@ -125,7 +125,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 className="min-h-[48px] px-5 py-3 rounded-lg bg-white hover:bg-[#FAF4EB] text-[#3E2C23] text-sm font-semibold border border-[#3E2C23]/25 transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-xs"
               >
                 <Database className="w-4 h-4 text-[#2FA4D7]" />
-                <span>Explore Dataset Hub (575K)</span>
+                <span>Inspect Sample Deliverables</span>
               </button>
 
               <button
@@ -134,7 +134,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 className="min-h-[44px] px-3 py-2 text-[#E76F2E] hover:text-[#d35b1d] text-xs sm:text-sm font-bold transition-colors flex items-center justify-center space-x-1.5 cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 text-[#E76F2E]" />
-                <span>Cluster GPU Tiers →</span>
+                <span>Sprint Pricing →</span>
               </button>
             </div>
           </div>
@@ -150,14 +150,14 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                   </div>
                   <div>
                     <h3 className="text-xs font-bold text-[#F5E9D8] tracking-wide uppercase font-headline">
-                      Live Isaac Sim Multimodal Stream
+                      Diffraction Procedural Engine
                     </h3>
-                    <p className="text-[10px] text-[#F5E9D8]/70 font-mono">AgileX Hunter SE in OpenUSD Stage</p>
+                    <p className="text-[10px] text-[#F5E9D8]/70 font-mono">Isaac Sim + Cosmos 2.5 Pipeline</p>
                   </div>
                 </div>
 
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-[#E76F2E] text-white">
-                  48,200 FPS
+                  3-14 Day Turnaround
                 </span>
               </div>
 

@@ -94,3 +94,59 @@ def test_sim2real_benchmark_endpoint():
     assert data["overall_sim2real_fidelity_pct"] >= 95.0
     assert "friction_slip_wasserstein_distance" in data["distributions"]
     assert len(data["benchmarked_platforms"]) >= 3
+
+def test_list_studio_packages():
+    response = client.get("/api/v1/studio/packages")
+    assert response.status_code == 200
+    data = response.json()
+    assert "packages" in data
+    assert len(data["packages"]) == 3
+    ids = [p["id"] for p in data["packages"]]
+    assert "robot_usd_rig" in ids
+    assert "procedural_stage" in ids
+    assert "cosmos_dataset" in ids
+
+def test_list_sample_assets():
+    response = client.get("/api/v1/studio/sample-assets")
+    assert response.status_code == 200
+    data = response.json()
+    assert "sample_assets" in data
+    assert len(data["sample_assets"]) >= 4
+
+def test_calculate_studio_quote():
+    payload = {
+        "package_id": "robot_usd_rig",
+        "robot_category": "Humanoid",
+        "robot_dof": 19,
+        "target_environment": "Warehouse",
+        "trajectory_count": 50000,
+        "cosmos_augmentation": True,
+        "urgency": "standard",
+        "company_name": "Test Robotics Inc",
+        "contact_email": "cto@testrobotics.com",
+        "urdf_repo_url": "https://github.com/test/robot",
+    }
+    response = client.post("/api/v1/studio/quote", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["calculated_price_usd"] >= 7500
+    assert data["estimated_turnaround_days"] >= 3
+    assert "quote_id" in data
+    assert "sim2real_guarantee" in data
+
+def test_submit_studio_inquiry():
+    payload = {
+        "name": "Sarah Connor",
+        "email": "sarah@cyberdyne-ai.com",
+        "company": "Cyberdyne Systems",
+        "robot_type": "Bipedal Humanoid",
+        "package_interest": "cosmos_dataset",
+        "notes": "Testing Isaac Lab + Cosmos dataset generation pipeline.",
+        "urdf_link": "https://github.com/cyberdyne/t800-urdf",
+    }
+    response = client.post("/api/v1/studio/inquiry", json=payload)
+    assert response.status_code == 201
+    data = response.json()
+    assert data["inquiry"]["company"] == "Cyberdyne Systems"
+    assert "id" in data["inquiry"]
+

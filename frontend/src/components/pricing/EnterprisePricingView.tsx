@@ -1,176 +1,138 @@
 /**
- * Presentation Component: Commercial Pricing & GPU Cluster Tiers
+ * Presentation Component: Commercial Productized Studio Pricing & Sprints
+ * Features the 3 fixed-scope productized sprint tiers:
+ * - Package 1: Robot USD Physics Rig ($7,500 • 3 Days)
+ * - Package 2: Procedural Training Stage ($18,500 • 7 Days)
+ * - Package 3: Cosmos Synthetic Dataset ($35,000 • 14 Days)
+ *
  * Strict Color Hunt 4-Color Palette: #2FA4D7, #F5E9D8, #3E2C23, #E76F2E (Zero Gradients).
  */
 
 'use client';
 
 import React from 'react';
-import { Server, Zap, Check, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { SPRINT_PACKAGES } from '@/domain/synthetic/catalog';
+import { Server, Zap, Check, ArrowRight, ShieldCheck, Sparkles, Clock } from 'lucide-react';
 
 export const EnterprisePricingView: React.FC = () => {
   return (
-    <div className="space-y-8">
-      <div className="text-center max-w-2xl mx-auto space-y-2 pt-4">
+    <div className="space-y-10">
+      {/* Header */}
+      <div className="text-center max-w-3xl mx-auto space-y-3 pt-4">
         <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#2FA4D7]">
-          NVIDIA Isaac Sim Cloud Compute
+          Productized Studio Commercials
         </span>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#3E2C23] font-headline tracking-tight">
-          Synthetic Data Factory &amp; Cluster Licensing
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-[#3E2C23] font-headline tracking-tight">
+          Fixed-Fee Sprints. Turnkey Deliverables.
         </h2>
-        <p className="text-xs sm:text-sm text-[#3E2C23]/75 font-body">
-          Generate millions of photorealistic demonstrations in hours. Stop hiring armies of human teleoperators.
+        <p className="text-xs sm:text-sm text-[#3E2C23]/75 font-body leading-relaxed">
+          Robotics startups don&apos;t have 6 months to hire a $220,000/yr simulation engineer. 
+          Diffraction delivers calibrated PhysX 5 OpenUSD assets and Cosmos synthetic datasets in 3 to 14 days, backed by a 100% Sim-to-Real policy transfer guarantee.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Tier 1 */}
-        <div className="p-6 rounded-2xl bg-white border-2 border-[#3E2C23] shadow-xs flex flex-col justify-between space-y-6">
-          <div className="space-y-4">
-            <div className="text-xs font-mono font-bold text-[#3E2C23]/70 uppercase tracking-wider">
-              Robotics Lab Tier
-            </div>
-            <h3 className="text-lg font-bold text-[#3E2C23] font-headline">Research &amp; Prototyping</h3>
-            <div className="text-3xl font-black text-[#3E2C23] font-headline">
-              $2,500 <span className="text-xs font-normal text-[#3E2C23]/60 font-mono">/ month</span>
-            </div>
-            <p className="text-xs text-[#3E2C23]/80 leading-relaxed font-body">
-              Ideal for research teams and early-stage Physical AI startups training their first VLA policies.
-            </p>
+      {/* 3 Sprint Cards Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+        {SPRINT_PACKAGES.map((pkg) => {
+          const isFeatured = pkg.isPopular;
+          return (
+            <div
+              key={pkg.id}
+              className={`p-6 sm:p-8 rounded-2xl bg-white border-2 flex flex-col justify-between space-y-6 relative transition-all ${
+                isFeatured
+                  ? 'border-[#2FA4D7] shadow-md ring-2 ring-[#2FA4D7]/20'
+                  : 'border-[#3E2C23] shadow-xs'
+              }`}
+            >
+              {isFeatured && (
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#2FA4D7] rounded-full text-[10px] font-extrabold uppercase tracking-widest text-white font-mono shadow-xs">
+                  MOST POPULAR SPRINT
+                </div>
+              )}
 
-            <ul className="text-xs text-[#3E2C23] space-y-2.5 border-t border-[#3E2C23]/15 pt-4 font-mono font-bold">
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#2FA4D7] shrink-0" />
-                <span>50,000 Synthetic Episodes / month</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#2FA4D7] shrink-0" />
-                <span>16x Headless GPU Workers (12,000 FPS)</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#2FA4D7] shrink-0" />
-                <span>4 Standard OpenUSD Procedural Worlds</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#2FA4D7] shrink-0" />
-                <span>Hugging Face LeRobot &amp; Open-X Export</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#2FA4D7] shrink-0" />
-                <span>Standard Community Support</span>
-              </li>
-            </ul>
-          </div>
+              <div className="space-y-5">
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono font-bold text-[#3E2C23]/70 uppercase tracking-wider">
+                      {pkg.turnaroundDays}-Day Turnaround SLA
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#F5E9D8] text-[#3E2C23] font-bold border border-[#3E2C23]/15">
+                      Fixed Scope
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-[#3E2C23] font-headline">{pkg.name}</h3>
+                  <div className="text-3xl sm:text-4xl font-black text-[#3E2C23] font-headline pt-1">
+                    ${pkg.priceUsd.toLocaleString()}{' '}
+                    <span className="text-xs font-normal text-[#3E2C23]/60 font-mono">/ sprint</span>
+                  </div>
+                </div>
 
-          <button
-            type="button"
-            onClick={() => alert('Developer pilot requested. Our engineering team will contact you within 2 hours.')}
-            className="w-full py-2.5 rounded-lg border-2 border-[#3E2C23] text-[#3E2C23] hover:bg-[#F5E9D8] text-xs font-bold font-mono transition-colors cursor-pointer"
-          >
-            Start Lab Pilot
-          </button>
+                <p className="text-xs text-[#3E2C23]/80 leading-relaxed font-body">
+                  {pkg.targetClient}
+                </p>
+
+                {/* Deliverables Checklist */}
+                <div className="space-y-2 border-t border-[#3E2C23]/15 pt-5">
+                  <span className="text-[11px] font-mono font-bold uppercase text-[#3E2C23]/70 block">
+                    Turnkey Deliverables:
+                  </span>
+                  <ul className="text-xs text-[#3E2C23] space-y-2.5 font-body">
+                    {pkg.deliverables.map((d, i) => (
+                      <li key={i} className="flex items-start space-x-2">
+                        <Check className="w-4 h-4 text-[#2FA4D7] shrink-0 mt-0.5" />
+                        <span>{d}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Card Footer / CTA */}
+              <div className="space-y-3 pt-4 border-t border-[#3E2C23]/10">
+                <a
+                  href="#sow-builder"
+                  onClick={() => {
+                    window.location.hash = '#studio';
+                  }}
+                  className={`w-full py-3 rounded-xl text-center text-xs font-bold font-mono transition-all block cursor-pointer ${
+                    isFeatured
+                      ? 'bg-[#2FA4D7] hover:bg-[#258ec0] text-white shadow-xs'
+                      : 'border-2 border-[#3E2C23] text-[#3E2C23] hover:bg-[#F5E9D8]'
+                  }`}
+                >
+                  Configure {pkg.name} SOW →
+                </a>
+                <span className="text-[10px] font-mono text-[#3E2C23]/60 text-center block">
+                  {pkg.sla}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Enterprise Retainer Banner */}
+      <div className="p-6 sm:p-8 rounded-2xl bg-[#3E2C23] text-[#F5E9D8] border-2 border-[#3E2C23] shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="space-y-2 max-w-2xl">
+          <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#E76F2E] text-white uppercase">
+            Dedicated Robotics Lab Retainer
+          </span>
+          <h3 className="text-xl sm:text-2xl font-bold font-headline text-white">
+            Need an Embedded NVIDIA Simulation Squad?
+          </h3>
+          <p className="text-xs sm:text-sm text-[#F5E9D8]/80 leading-relaxed font-body">
+            For robotics foundation model labs with multiple embodiments and weekly simulation runs. Dedicated simulation lead, custom procedural generators, and guaranteed cluster GPU quota.
+          </p>
         </div>
 
-        {/* Tier 2: Recommended */}
-        <div className="p-6 rounded-2xl bg-white border-2 border-[#2FA4D7] shadow-md relative flex flex-col justify-between space-y-6">
-          <div className="absolute -top-3 right-6 px-3 py-0.5 bg-[#2FA4D7] rounded-full text-[9px] font-extrabold uppercase tracking-widest text-white font-mono">
-            Most Popular
-          </div>
-          <div className="space-y-4">
-            <div className="text-xs font-mono font-bold text-[#2FA4D7] uppercase tracking-wider">
-              Commercial Fleet Scale
-            </div>
-            <h3 className="text-lg font-bold text-[#3E2C23] font-headline">Foundation Model Factory</h3>
-            <div className="text-3xl font-black text-[#3E2C23] font-headline">
-              $9,500 <span className="text-xs font-normal text-[#3E2C23]/60 font-mono">/ month</span>
-            </div>
-            <p className="text-xs text-[#3E2C23]/80 leading-relaxed font-body">
-              For commercial AMR, humanoid, and manipulator fleets training high-throughput production foundation models.
-            </p>
-
-            <ul className="text-xs text-[#3E2C23] space-y-2.5 border-t border-[#3E2C23]/15 pt-4 font-mono font-bold">
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#2FA4D7] shrink-0" />
-                <span>250,000 Synthetic Episodes / month</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#2FA4D7] shrink-0" />
-                <span>64x NVIDIA H100 SXM5 Workers (48,200 FPS)</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#2FA4D7] shrink-0" />
-                <span>Custom OpenUSD Stage Authoring</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#2FA4D7] shrink-0" />
-                <span>Empirical Sim-to-Real Calibration Engine</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#2FA4D7] shrink-0" />
-                <span>Python SDK &amp; GitHub Actions CI/CD Integration</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#2FA4D7] shrink-0" />
-                <span>Dedicated Sim2Real Solutions Architect</span>
-              </li>
-            </ul>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => alert('Foundation Factory plan selected. Setup call scheduled.')}
-            className="w-full py-2.5 rounded-lg bg-[#2FA4D7] hover:bg-[#2FA4D7]/90 text-white text-xs font-bold font-mono transition-colors cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
+        <div className="shrink-0 text-center sm:text-right space-y-2">
+          <div className="text-2xl font-black text-[#2FA4D7] font-headline">From $28,000 / mo</div>
+          <a
+            href="mailto:contact@diffraction.in?subject=Dedicated%20Robotics%20Lab%20Retainer"
+            className="px-5 py-2.5 rounded-lg bg-white text-[#3E2C23] hover:bg-[#F5E9D8] text-xs font-mono font-bold inline-block shadow-xs transition-colors cursor-pointer"
           >
-            <span>Deploy Factory Cluster</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* Tier 3: Enterprise Dedicated */}
-        <div className="p-6 rounded-2xl bg-white border-2 border-[#3E2C23] shadow-xs flex flex-col justify-between space-y-6">
-          <div className="space-y-4">
-            <div className="text-xs font-mono font-bold text-[#E76F2E] uppercase tracking-wider">
-              Dedicated DGX Cloud
-            </div>
-            <h3 className="text-lg font-bold text-[#3E2C23] font-headline">Enterprise Air-Gapped</h3>
-            <div className="text-3xl font-black text-[#3E2C23] font-headline">
-              $35,000 <span className="text-xs font-normal text-[#3E2C23]/60 font-mono">/ month</span>
-            </div>
-            <p className="text-xs text-[#3E2C23]/80 leading-relaxed font-body">
-              Dedicated, private cluster instances for autonomous vehicle OEMs, defense contractors, and large robotics fleets.
-            </p>
-
-            <ul className="text-xs text-[#3E2C23] space-y-2.5 border-t border-[#3E2C23]/15 pt-4 font-mono font-bold">
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#E76F2E] shrink-0" />
-                <span>Unlimited Synthetic Episodes</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#E76F2E] shrink-0" />
-                <span>128+ Dedicated NVIDIA H100 / Blackwell Nodes</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#E76F2E] shrink-0" />
-                <span>VPC On-Premises or Private Cloud Deployment</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#E76F2E] shrink-0" />
-                <span>Hardware-Specific Sensor Profiling &amp; Noise Tuning</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-[#E76F2E] shrink-0" />
-                <span>24/7 Priority SLA &amp; SOTIF Compliance Dossiers</span>
-              </li>
-            </ul>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => alert('Enterprise DGX Cloud inquiry received. Enterprise director will coordinate.')}
-            className="w-full py-2.5 rounded-lg bg-[#3E2C23] hover:bg-[#3E2C23]/90 text-[#F5E9D8] text-xs font-bold font-mono transition-colors cursor-pointer"
-          >
-            Contact Enterprise Sales
-          </button>
+            Inquire About Dedicated Retainer
+          </a>
         </div>
       </div>
     </div>

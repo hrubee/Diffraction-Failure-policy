@@ -1,0 +1,562 @@
+[
+  {
+    "text": "Hello my dear curious people.",
+    "start": 1.8,
+    "duration": 4.92
+  },
+  {
+    "text": "Today I'm going to show you the demo of",
+    "start": 4.12,
+    "duration": 6.92
+  },
+  {
+    "text": "vision language action model from Nvidia",
+    "start": 6.72,
+    "duration": 6.2
+  },
+  {
+    "text": "Cosmo Sage.",
+    "start": 11.04,
+    "duration": 4.08
+  },
+  {
+    "text": "So in this model",
+    "start": 12.92,
+    "duration": 3.44
+  },
+  {
+    "text": "the",
+    "start": 15.12,
+    "duration": 3.52
+  },
+  {
+    "text": "action is taken based on the three",
+    "start": 16.36,
+    "duration": 4.8
+  },
+  {
+    "text": "camera inputs. As we can see here the",
+    "start": 18.64,
+    "duration": 5.52
+  },
+  {
+    "text": "Franka robot is used.",
+    "start": 21.16,
+    "duration": 6.72
+  },
+  {
+    "text": "So the action is taken by the camera",
+    "start": 24.16,
+    "duration": 5.28
+  },
+  {
+    "text": "inputs.",
+    "start": 27.88,
+    "duration": 4.2
+  },
+  {
+    "text": "And here the two models has been used.",
+    "start": 29.44,
+    "duration": 5.08
+  },
+  {
+    "text": "One is from the Nvidia Cosmo Sage and",
+    "start": 32.08,
+    "duration": 5.0
+  },
+  {
+    "text": "the another model is like van model",
+    "start": 34.52,
+    "duration": 5.08
+  },
+  {
+    "text": "which is world action model.",
+    "start": 37.08,
+    "duration": 3.88
+  },
+  {
+    "text": "Which",
+    "start": 39.6,
+    "duration": 3.76
+  },
+  {
+    "text": "which predicts the next frames like a",
+    "start": 40.96,
+    "duration": 3.76
+  },
+  {
+    "text": "world",
+    "start": 43.36,
+    "duration": 2.88
+  },
+  {
+    "text": "world action model.",
+    "start": 44.72,
+    "duration": 3.28
+  },
+  {
+    "text": "Like vans.",
+    "start": 46.24,
+    "duration": 5.36
+  },
+  {
+    "text": "So here the task is to perform the green",
+    "start": 48.0,
+    "duration": 5.6
+  },
+  {
+    "text": "on top of the red.",
+    "start": 51.6,
+    "duration": 4.88
+  },
+  {
+    "text": "So that task is getting performed.",
+    "start": 53.6,
+    "duration": 5.2
+  },
+  {
+    "text": "So we can see the endless possibilities",
+    "start": 56.48,
+    "duration": 4.0
+  },
+  {
+    "text": "with these things.",
+    "start": 58.8,
+    "duration": 4.8
+  },
+  {
+    "text": "So like in the warehouse picking and",
+    "start": 60.48,
+    "duration": 5.88
+  },
+  {
+    "text": "placing, like separation and in",
+    "start": 63.6,
+    "duration": 6.44
+  },
+  {
+    "text": "household tasks we can see",
+    "start": 66.36,
+    "duration": 5.36
+  },
+  {
+    "text": "like with the two hand how it can",
+    "start": 70.04,
+    "duration": 2.84
+  },
+  {
+    "text": "perform.",
+    "start": 71.72,
+    "duration": 3.48
+  },
+  {
+    "text": "Due to the hardware limitations",
+    "start": 72.88,
+    "duration": 5.56
+  },
+  {
+    "text": "I'm here using a robotic hand but this",
+    "start": 75.2,
+    "duration": 5.56
+  },
+  {
+    "text": "really model can also be deployed for",
+    "start": 78.44,
+    "duration": 6.72
+  },
+  {
+    "text": "humanoid robots and autonomous vehicles.",
+    "start": 80.76,
+    "duration": 7.36
+  },
+  {
+    "text": "And with the workarounds I'm running in",
+    "start": 85.16,
+    "duration": 6.0
+  },
+  {
+    "text": "this model in my Windows system.",
+    "start": 88.12,
+    "duration": 5.96
+  },
+  {
+    "text": "So here we can see the robot is able to",
+    "start": 91.16,
+    "duration": 5.04
+  },
+  {
+    "text": "perform the tasks",
+    "start": 94.08,
+    "duration": 4.12
+  },
+  {
+    "text": "in Isaac",
+    "start": 96.2,
+    "duration": 4.56
+  },
+  {
+    "text": "So here the simulation is performed",
+    "start": 98.2,
+    "duration": 4.24
+  },
+  {
+    "text": "using the RoboLab.",
+    "start": 100.76,
+    "duration": 5.2
+  },
+  {
+    "text": "And the RoboLab is built on top of the",
+    "start": 102.44,
+    "duration": 5.16
+  },
+  {
+    "text": "Isaac Lab",
+    "start": 105.96,
+    "duration": 4.44
+  },
+  {
+    "text": "environment.",
+    "start": 107.6,
+    "duration": 2.8
+  },
+  {
+    "text": "So after the task is performed the",
+    "start": 111.12,
+    "duration": 5.52
+  },
+  {
+    "text": "simulation will end.",
+    "start": 113.64,
+    "duration": 5.04
+  },
+  {
+    "text": "So I will show you the another one demo",
+    "start": 116.64,
+    "duration": 4.12
+  },
+  {
+    "text": "and the code for these things, like how",
+    "start": 118.68,
+    "duration": 3.96
+  },
+  {
+    "text": "the environment is developed in the",
+    "start": 120.76,
+    "duration": 3.92
+  },
+  {
+    "text": "RoboLab and everything",
+    "start": 122.64,
+    "duration": 6.56
+  },
+  {
+    "text": "after this simulation getting completed.",
+    "start": 124.68,
+    "duration": 4.52
+  },
+  {
+    "text": "So, we can see in the background",
+    "start": 129.84,
+    "duration": 4.64
+  },
+  {
+    "text": "the steps has been performed",
+    "start": 132.2,
+    "duration": 4.92
+  },
+  {
+    "text": "and the seed every value is given step",
+    "start": 134.48,
+    "duration": 5.2
+  },
+  {
+    "text": "by step.",
+    "start": 137.12,
+    "duration": 2.56
+  },
+  {
+    "text": "So, we can see here the reinforcement",
+    "start": 145.56,
+    "duration": 5.24
+  },
+  {
+    "text": "learning and various things can be used",
+    "start": 148.2,
+    "duration": 4.36
+  },
+  {
+    "text": "to for this model.",
+    "start": 150.8,
+    "duration": 5.2
+  },
+  {
+    "text": "And the policy deployed in the Cosmos",
+    "start": 152.56,
+    "duration": 5.72
+  },
+  {
+    "text": "thing.",
+    "start": 156.0,
+    "duration": 2.28
+  },
+  {
+    "text": "So, this is a general purpose model",
+    "start": 159.28,
+    "duration": 4.92
+  },
+  {
+    "text": "which can be deployed to various degree",
+    "start": 161.2,
+    "duration": 5.84
+  },
+  {
+    "text": "of freedom robotics like a five. So, now",
+    "start": 164.2,
+    "duration": 5.2
+  },
+  {
+    "text": "the task is completed.",
+    "start": 167.04,
+    "duration": 6.32
+  },
+  {
+    "text": "So, and the simulation is getting ended.",
+    "start": 169.4,
+    "duration": 6.36
+  },
+  {
+    "text": "I will show another one demo",
+    "start": 173.36,
+    "duration": 4.12
+  },
+  {
+    "text": "right now.",
+    "start": 175.76,
+    "duration": 5.4
+  },
+  {
+    "text": "So, we can see the background",
+    "start": 177.48,
+    "duration": 3.68
+  },
+  {
+    "text": "code for this here.",
+    "start": 181.72,
+    "duration": 3.08
+  },
+  {
+    "text": "So, this is the background code",
+    "start": 185.239,
+    "duration": 4.641
+  },
+  {
+    "text": "written in the RoboLab. So, various",
+    "start": 187.64,
+    "duration": 4.4
+  },
+  {
+    "text": "things has been given by the Nvidia team",
+    "start": 189.88,
+    "duration": 4.96
+  },
+  {
+    "text": "for benchmarking. Thank you for them.",
+    "start": 192.04,
+    "duration": 6.16
+  },
+  {
+    "text": "For the various tasks like diverse tasks",
+    "start": 194.84,
+    "duration": 5.2
+  },
+  {
+    "text": "that we can experiment with and we can",
+    "start": 198.2,
+    "duration": 4.88
+  },
+  {
+    "text": "also develop our own environment and",
+    "start": 200.04,
+    "duration": 5.64
+  },
+  {
+    "text": "train them.",
+    "start": 203.08,
+    "duration": 2.6
+  },
+  {
+    "text": "So, this is the background code for this",
+    "start": 206.28,
+    "duration": 4.76
+  },
+  {
+    "text": "thing. Like we can see the three cubes",
+    "start": 208.2,
+    "duration": 5.64
+  },
+  {
+    "text": "environment has been set and",
+    "start": 211.04,
+    "duration": 4.08
+  },
+  {
+    "text": "the",
+    "start": 213.84,
+    "duration": 3.84
+  },
+  {
+    "text": "like natural language inputs.",
+    "start": 215.12,
+    "duration": 5.24
+  },
+  {
+    "text": "And we can see",
+    "start": 217.68,
+    "duration": 5.92
+  },
+  {
+    "text": "like with the bottle on shelf",
+    "start": 220.36,
+    "duration": 5.36
+  },
+  {
+    "text": "and how various sensors can be",
+    "start": 223.6,
+    "duration": 4.32
+  },
+  {
+    "text": "implemented in the near future. We can",
+    "start": 225.72,
+    "duration": 3.36
+  },
+  {
+    "text": "also in",
+    "start": 227.92,
+    "duration": 3.48
+  },
+  {
+    "text": "So, this is the Cosmos Edge model.",
+    "start": 229.08,
+    "duration": 6.44
+  },
+  {
+    "text": "And this is the W A model.",
+    "start": 231.4,
+    "duration": 6.2
+  },
+  {
+    "text": "So, this is the Cosmos framework used.",
+    "start": 235.52,
+    "duration": 4.0
+  },
+  {
+    "text": "So, I will give you the another one",
+    "start": 237.6,
+    "duration": 4.88
+  },
+  {
+    "text": "example right now.",
+    "start": 239.52,
+    "duration": 2.96
+  },
+  {
+    "text": "So, I will show you the another one",
+    "start": 246.24,
+    "duration": 4.2
+  },
+  {
+    "text": "demo.",
+    "start": 248.0,
+    "duration": 2.44
+  },
+  {
+    "text": "If the time get constraints, I will end",
+    "start": 257.6,
+    "duration": 6.16
+  },
+  {
+    "text": "this simulation.",
+    "start": 260.72,
+    "duration": 3.04
+  },
+  {
+    "text": "So, now the model is load getting loaded",
+    "start": 264.32,
+    "duration": 5.8
+  },
+  {
+    "text": "under the GPU and the simulation is will",
+    "start": 267.8,
+    "duration": 5.08
+  },
+  {
+    "text": "be performed.",
+    "start": 270.12,
+    "duration": 2.76
+  },
+  {
+    "text": "Okay, so due to some error, the kernel",
+    "start": 273.12,
+    "duration": 4.48
+  },
+  {
+    "text": "got crashed.",
+    "start": 276.12,
+    "duration": 5.08
+  },
+  {
+    "text": "The GPU, so",
+    "start": 277.6,
+    "duration": 3.6
+  },
+  {
+    "text": "So, basically",
+    "start": 281.96,
+    "duration": 3.32
+  },
+  {
+    "text": "uh the this is the thing. Like the",
+    "start": 283.44,
+    "duration": 4.32
+  },
+  {
+    "text": "Cosmos model",
+    "start": 285.28,
+    "duration": 4.44
+  },
+  {
+    "text": "uh which is a VLA model has been used.",
+    "start": 287.76,
+    "duration": 4.48
+  },
+  {
+    "text": "The this VLA model is based on auto",
+    "start": 289.72,
+    "duration": 4.88
+  },
+  {
+    "text": "regressive and the diffusion model was",
+    "start": 292.24,
+    "duration": 3.56
+  },
+  {
+    "text": "both",
+    "start": 294.6,
+    "duration": 3.36
+  },
+  {
+    "text": "has been used to reduce the complexity",
+    "start": 295.8,
+    "duration": 6.119
+  },
+  {
+    "text": "and understand the user query clearly.",
+    "start": 297.96,
+    "duration": 8.08
+  },
+  {
+    "text": "So, thank you for your time.",
+    "start": 301.919,
+    "duration": 4.121
+  }
+]

@@ -59,18 +59,18 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
     },
     {
       stepNumber: 2,
-      actName: 'OpenUSD & Isaac Sim',
+      actName: 'USD & Cosmos Transfer',
       icon: <Layers className="w-4 h-4 text-[#2FA4D7]" />,
-      title: 'Procedural World Synthesis in NVIDIA Isaac Sim & Isaac Lab',
+      title: 'Procedural World Synthesis in Isaac Sim & NVIDIA Cosmos Transfer',
       summary:
-        'Diffraction orchestrates headless NVIDIA Isaac Lab worker clusters across hundreds of H100 GPUs to generate photorealistic demonstrations at scale.',
+        'Diffraction builds procedural OpenUSD stages and applies NVIDIA Cosmos Transfer 2.5 diffusion to generate photorealistic demonstrations with 100% action invariance.',
       bulletPoints: [
-        'Procedurally generates 10,000+ OpenUSD stages: fulfillment centers, loading docks, and cleanrooms.',
+        'Procedurally generates OpenUSD stages with Omniverse Replicator (lighting 50-95k Lux, clutter, dynamic friction).',
         'PhysX 5 GPU-accelerated rigid-body and contact mechanics compute realistic non-linear tire slip and joint torques.',
-        'RTX ray-tracing renders camera streams with realistic shadows, specular reflections, and auto-exposure lag.',
-        'Synthesizes 48,200+ frames per second across 64x GPU worker nodes.',
+        'NVIDIA Cosmos Transfer 2.5 diffusion augments simulation with photorealistic lighting bloom and floor reflections.',
+        'Geometry and physical action vectors remain 100% invariant via ControlNet segmentation locks.',
       ],
-      tag: 'ACT 2 • MASSIVE CLUSTER SIMULATION',
+      tag: 'ACT 2 • PROCEDURAL TOOLS & COSMOS DIFFUSION',
     },
     {
       stepNumber: 3,

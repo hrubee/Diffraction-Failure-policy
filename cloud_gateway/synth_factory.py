@@ -458,3 +458,217 @@ def get_sim2real_benchmark():
             {"name": "Payload Mass Variance", "synthetic_bounds": "±25%", "real_distribution_p99": "±20%"},
         ],
     }
+
+# ---------------------------------------------------------------------------
+# Productized Studio Service Router & Models
+# ---------------------------------------------------------------------------
+
+studio_router = APIRouter(prefix="/api/v1/studio", tags=["Productized Studio"])
+
+STUDIO_PACKAGES = [
+    {
+        "id": "robot_usd_rig",
+        "name": "Robot USD Physics Rig",
+        "tagline": "URDF / CAD to Calibrated PhysX 5 OpenUSD & Isaac Lab Articulation",
+        "price_usd": 7500,
+        "turnaround_days": 3,
+        "badge": "3-Day Turnaround",
+        "target_client": "Hardware & robotics startups with a physical robot URDF/CAD that need an Isaac Sim & Isaac Lab ready asset.",
+        "deliverables": [
+            "Turnkey OpenUSD (.usd) asset with PhysX 5 rigid bodies & collision envelopes",
+            "Joint limits, damping, drive stiffness, and inertia tensor calibration",
+            "Drop-in Python RobotCfg class for NVIDIA Isaac Lab / Orbit",
+            "Actuator saturation curves & 500Hz PD drive tuning suite",
+            "Automated joint verification test script + 10-episode sanity check video",
+            "Zero-drift physics verification guarantee",
+        ],
+        "tech_stack": ["NVIDIA Isaac Sim", "OpenUSD", "PhysX 5", "Isaac Lab", "URDF Parser"],
+        "sla": "72-Hour Guaranteed Delivery with 2 Revision Cycles",
+    },
+    {
+        "id": "procedural_stage",
+        "name": "Procedural Training Stage",
+        "tagline": "Custom Photorealistic OpenUSD Stage with Omniverse Replicator Domain Randomization",
+        "price_usd": 18500,
+        "turnaround_days": 7,
+        "badge": "Most Popular",
+        "target_client": "Teams training navigation, mobile manipulation, or bipedal locomotion in specialized environments (logistics, healthcare, offshore).",
+        "deliverables": [
+            "Production-grade OpenUSD stage tailored to your operational domain (Warehouse, Dock, Cleanroom, Clinic)",
+            "Omniverse Replicator procedural script with 50+ randomization parameters",
+            "Lighting randomization (50 to 95,000 Lux, CCT 2800K to 6500K, HDR skies)",
+            "Dynamic floor friction profiles (μ = 0.10 to 0.95, wet spills, ice patches)",
+            "Dynamic obstacles: automated forklifts, pedestrian rigs, falling clutter",
+            "Synchronized multi-camera sensor rigs (RGB, 16-bit Depth, Semantic Mask, 3D LiDAR)",
+            "Interactive Omniverse stage walkthrough & Isaac Lab environment wrapper",
+        ],
+        "tech_stack": ["NVIDIA Isaac Sim", "Omniverse Replicator", "OpenUSD Stage", "PhysX 5 Materials", "RTX Ray-Tracing"],
+        "sla": "7-Day Turnaround with Full Source Code & Python Recipes",
+    },
+    {
+        "id": "cosmos_dataset",
+        "name": "Cosmos Synthetic Dataset",
+        "tagline": "100k-500k Demonstration Trajectories Augmented with NVIDIA Cosmos Transfer 2.5",
+        "price_usd": 35000,
+        "turnaround_days": 14,
+        "badge": "Frontier AI Scale",
+        "target_client": "Labs training Vision-Language-Action (VLA) foundation models, Diffusion Policies, or ACT policies needing massive multimodal data.",
+        "deliverables": [
+            "100,000 to 500,000 demonstration trajectories executed across headless Isaac Lab GPU cluster",
+            "NVIDIA Cosmos Transfer 2.5 photorealistic diffusion augmentation with ControlNet conditioning",
+            "Multi-modal synchronized streams: 1080p RGB, 16-bit Depth, Semantic Masks, 32-beam LiDAR, 500Hz joint actions",
+            "Zero physics distortion: robot actions and joint kinematics remain 100% mathematically invariant",
+            "Packaged in Hugging Face LeRobot v2 or Open-X Embodiment RLDS format",
+            "Turnkey PyTorch streaming DataLoader with sub-millisecond batch feeding",
+            "Sim-to-Real Wasserstein fidelity certification report",
+        ],
+        "tech_stack": ["NVIDIA Cosmos Transfer 2.5", "Isaac Lab", "Hugging Face LeRobot v2", "PyTorch / JAX", "ControlNet"],
+        "sla": "14-Day Delivery • 100% Sim-to-Real Policy Transfer Guarantee",
+    },
+]
+
+STUDIO_SAMPLE_ASSETS = [
+    {
+        "id": "sample-usd-unitree-h1",
+        "title": "Unitree H1 Bipedal Humanoid PhysX 5 Rig",
+        "category": "usd_rig",
+        "file_format": "OpenUSD (.usd) + Isaac Lab Python Config",
+        "size_formatted": "48.2 MB",
+        "description": "Fully calibrated 19-DOF bipedal humanoid with PhysX 5 articulation, convex hull collision hulls, and 500Hz joint impedance drives.",
+        "tech_stack": ["OpenUSD", "PhysX 5", "Isaac Lab"],
+        "download_file_name": "unitree_h1_physics_rig.usd",
+    },
+    {
+        "id": "sample-procedural-stage-warehouse",
+        "title": "Omniverse Replicator Procedural Warehouse Recipe",
+        "category": "stage_recipe",
+        "file_format": "Python (.py) for Isaac Sim Replicator",
+        "size_formatted": "12.4 KB script + 180MB USD Assets",
+        "description": "Procedural generation script creating endless high-bay warehouse layouts with dynamic lighting (150-1200 Lux), randomized pallet clutter, and floor friction maps.",
+        "tech_stack": ["Omniverse Replicator", "Isaac Sim", "Python"],
+        "download_file_name": "procedural_warehouse_recipe.py",
+    },
+    {
+        "id": "sample-cosmos-controlnet-spec",
+        "title": "NVIDIA Cosmos Transfer 2.5 ControlNet Spec",
+        "category": "cosmos_spec",
+        "file_format": "JSON (.json) Schema Specification",
+        "size_formatted": "4.8 KB",
+        "description": "Exact ControlNet conditioning configuration binding Isaac Sim semantic segmentation and Canny edges to Cosmos Transfer 2.5 for photoreal video augmentation.",
+        "tech_stack": ["NVIDIA Cosmos Transfer 2.5", "ControlNet", "JSON Schema"],
+        "download_file_name": "cosmos_transfer_spec.json",
+    },
+    {
+        "id": "sample-lerobot-dataloader",
+        "title": "Hugging Face LeRobot v2 PyTorch Streaming Loader",
+        "category": "dataloader_script",
+        "file_format": "Python (.py) PyTorch / LeRobot",
+        "size_formatted": "8.2 KB",
+        "description": "Zero-copy streaming DataLoader reading parquet episodes and MP4 video shards directly into PyTorch for Diffusion Policy and OpenVLA training.",
+        "tech_stack": ["Hugging Face LeRobot", "PyTorch", "Parquet", "VLA"],
+        "download_file_name": "diffraction_lerobot_loader.py",
+    },
+]
+
+STUDIO_INQUIRIES: List[Dict[str, Any]] = []
+
+class QuoteRequest(BaseModel):
+    package_id: str = Field("procedural_stage", json_schema_extra={"example": "procedural_stage"})
+    robot_category: str = Field("Humanoid", json_schema_extra={"example": "Humanoid"})
+    robot_dof: int = Field(19, ge=1, le=100)
+    target_environment: str = Field("Warehouse", json_schema_extra={"example": "Warehouse"})
+    trajectory_count: Optional[int] = Field(100000, ge=1000, le=2000000)
+    cosmos_augmentation: bool = True
+    urgency: str = Field("standard", json_schema_extra={"example": "standard"})
+    company_name: str = Field("Acme Robotics", json_schema_extra={"example": "Acme Robotics"})
+    contact_email: str = Field("engineer@acme.ai", json_schema_extra={"example": "engineer@acme.ai"})
+    urdf_repo_url: Optional[str] = Field(None, json_schema_extra={"example": "https://github.com/acme/robot_description"})
+
+class InquiryRequest(BaseModel):
+    name: str = Field(..., json_schema_extra={"example": "Elena Rostova"})
+    email: str = Field(..., json_schema_extra={"example": "elena@frontier-robotics.com"})
+    company: str = Field(..., json_schema_extra={"example": "Frontier Physical AI"})
+    robot_type: str = Field(..., json_schema_extra={"example": "Bipedal Humanoid"})
+    package_interest: str = Field("procedural_stage", json_schema_extra={"example": "procedural_stage"})
+    notes: Optional[str] = Field(None, json_schema_extra={"example": "Looking to generate 200k trajectories with Isaac Lab and Cosmos."})
+    urdf_link: Optional[str] = Field(None, json_schema_extra={"example": "https://github.com/frontier/urdf"})
+
+@studio_router.get("/packages")
+def list_studio_packages():
+    """Returns fixed-scope productized sprint packages for Isaac Sim and Cosmos asset engineering."""
+    return {"packages": STUDIO_PACKAGES}
+
+@studio_router.get("/sample-assets")
+def list_sample_assets():
+    """Returns catalog of downloadable sample USD assets, Isaac Lab configs, and Cosmos specs."""
+    return {"sample_assets": STUDIO_SAMPLE_ASSETS}
+
+@studio_router.post("/quote")
+def calculate_studio_quote(req: QuoteRequest):
+    """
+    Computes instant SOW breakdown, timeline, and fixed sprint quote based on robot DOF and scope.
+    """
+    base_pkg = next((p for p in STUDIO_PACKAGES if p["id"] == req.package_id), STUDIO_PACKAGES[1])
+    price = base_pkg["price_usd"]
+    days = base_pkg["turnaround_days"]
+
+    # DoF complexity multiplier
+    if req.robot_dof > 20:
+        price += 3000
+        days += 2
+    elif req.robot_dof > 10:
+        price += 1500
+
+    # Large dataset volume add-on
+    if req.package_id == "cosmos_dataset" and req.trajectory_count:
+        if req.trajectory_count > 250000:
+            price += int(((req.trajectory_count - 250000) / 50000) * 4500)
+            days += int(((req.trajectory_count - 250000) / 100000) * 3)
+
+    # Rush turnaround multiplier
+    if req.urgency == "rush":
+        price = int(price * 1.4)
+        days = max(2, int(days * 0.6))
+
+    quote_id = f"SOW-2026-{random.randint(1000, 9999)}"
+
+    return {
+        "quote_id": quote_id,
+        "package_id": req.package_id,
+        "package_name": base_pkg["name"],
+        "company_name": req.company_name,
+        "contact_email": req.contact_email,
+        "robot_category": req.robot_category,
+        "robot_dof": req.robot_dof,
+        "target_environment": req.target_environment,
+        "trajectory_count": req.trajectory_count,
+        "cosmos_augmented": req.cosmos_augmentation,
+        "calculated_price_usd": price,
+        "estimated_turnaround_days": days,
+        "deliverables_summary": base_pkg["deliverables"],
+        "sla": base_pkg["sla"],
+        "sim2real_guarantee": "100% money-back or free sprint iteration if policy fails sim2real transfer check.",
+        "valid_until": "30 days from generation",
+    }
+
+@studio_router.post("/inquiry", status_code=status.HTTP_201_CREATED)
+def submit_studio_inquiry(req: InquiryRequest):
+    """Captures client inquiry for technical scoping and URDF / CAD review."""
+    inquiry_record = {
+        "id": f"INQ-{int(time.time())}-{random.randint(100, 999)}",
+        "name": req.name,
+        "email": req.email,
+        "company": req.company,
+        "robot_type": req.robot_type,
+        "package_interest": req.package_interest,
+        "notes": req.notes,
+        "urdf_link": req.urdf_link,
+        "created_at": time.time(),
+        "status": "RECEIVED",
+    }
+    STUDIO_INQUIRIES.append(inquiry_record)
+    return {
+        "message": "Inquiry successfully received. Our simulation lead will review your URDF within 24 hours.",
+        "inquiry": inquiry_record,
+    }
+

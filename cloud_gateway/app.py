@@ -33,7 +33,7 @@ from cloud_gateway.db import (
 from cloud_gateway.job_runner import dispatch_async_audit, run_audit_pipeline
 from cloud_gateway.mcap_parser import DecoupledIncident, McapParser
 from cloud_gateway.storage_backend import storage
-from cloud_gateway.synth_factory import router as synth_router
+from cloud_gateway.synth_factory import router as synth_router, studio_router
 from edge.safety_governor import DynamicSafetyGovernor
 from scripts.run_mock_robot import simulate_warehouse_amr_run
 from scripts.simulate_edge_case import SCENARIO_SIMULATORS
@@ -121,6 +121,7 @@ if os.path.exists(next_assets_dir):
 
 # Include Synthetic Data Factory router for Physical AI & Isaac Sim
 app.include_router(synth_router)
+app.include_router(studio_router)
 
 
 # ---------------------------------------------------------------------------

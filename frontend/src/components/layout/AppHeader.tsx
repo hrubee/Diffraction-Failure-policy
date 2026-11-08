@@ -28,12 +28,12 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   onToggleMobileDrawer,
 }) => {
   const navItems = [
-    { id: 'overview', label: '← Return to Website' },
-    { id: 'studio', label: 'Isaac Sim Studio' },
-    { id: 'catalog', label: 'Dataset Catalog' },
-    { id: 'sim2real', label: 'Sim2Real Lab' },
+    { id: 'overview', label: '← Studio Overview' },
+    { id: 'studio', label: 'Procedural Tooling & SOW' },
+    { id: 'catalog', label: 'Sample Deliverables' },
+    { id: 'sim2real', label: 'Sim2Real Proof' },
     { id: 'sdk', label: 'Python SDK' },
-    { id: 'pricing', label: 'Cloud GPU Pricing' },
+    { id: 'pricing', label: 'Sprint Pricing ($7.5k+)' },
   ];
 
   return (
@@ -72,7 +72,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 Diffraction
               </span>
               <span className="text-[#3E2C23]/40 text-xs">/</span>
-              <span className="text-xs text-[#3E2C23] font-bold hidden sm:inline">Isaac Sim Factory™</span>
+              <span className="text-xs text-[#3E2C23] font-bold hidden sm:inline">Isaac Sim &amp; Cosmos Studio™</span>
             </div>
             <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#2FA4D7]/15 text-[#2FA4D7] border border-[#2FA4D7]/30 mono">
               v3.0 (Omniverse)

@@ -172,7 +172,7 @@ export const LandingBentoGrid: React.FC<LandingBentoGridProps> = ({
             </div>
           </div>
 
-          {/* Card 6: Massive NVIDIA H100 Cloud GPU Cluster */}
+          {/* Card 6: NVIDIA Cosmos Transfer 2.5 Augmentation */}
           <div className="rounded-2xl bg-white border-2 border-[#3E2C23] p-6 flex flex-col justify-between space-y-6 shadow-xs hover:border-[#2FA4D7] transition-all">
             <div className="space-y-4">
               <div className="p-3 w-fit rounded-lg bg-[#E76F2E] text-white">
@@ -181,17 +181,17 @@ export const LandingBentoGrid: React.FC<LandingBentoGridProps> = ({
               <div className="space-y-1.5">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#E76F2E] font-mono">Pillar 06</span>
                 <h3 className="text-lg font-bold text-[#3E2C23] tracking-tight font-headline">
-                  NVIDIA H100 Cloud Clusters
+                  NVIDIA Cosmos Transfer 2.5
                 </h3>
                 <p className="text-xs text-[#3E2C23]/75 leading-relaxed font-body">
-                  Scale to 128+ NVIDIA H100 GPU workers executing headless Isaac Sim instances. Achieve 48,200+ FPS generation throughput to produce millions of demonstrations in hours.
+                  Apply diffusion video transfer guided by ControlNet semantic maps and Canny edges. Turns coarse simulation into cinematic photorealism with zero action drift—proven to deliver the highest Sim2Real transfer in Physical AI.
                 </p>
               </div>
             </div>
 
             <div className="p-3 rounded-lg bg-[#3E2C23] text-[#F5E9D8] font-mono text-[11px] space-y-1">
-              <div className="text-[#E76F2E] font-bold"># cluster_telemetry.status</div>
-              <div>Nodes: <span className="text-white">64x H100 SXM5</span> • Rate: <span className="text-white">48,200 FPS</span></div>
+              <div className="text-[#E76F2E] font-bold"># cosmos_transfer_spec.json</div>
+              <div>Model: <span className="text-white">Cosmos 2.5</span> • Kinematic Drift: <span className="text-emerald-400">0.000 mm</span></div>
             </div>
           </div>
         </div>

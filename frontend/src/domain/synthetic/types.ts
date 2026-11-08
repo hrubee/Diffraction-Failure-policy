@@ -112,3 +112,55 @@ export interface Sim2RealBenchmarkData {
     readonly realDistributionP99: string;
   }[];
 }
+
+export interface SprintPackage {
+  readonly id: string;
+  readonly name: string;
+  readonly tagline: string;
+  readonly priceUsd: number;
+  readonly turnaroundDays: number;
+  readonly badge?: string;
+  readonly isPopular?: boolean;
+  readonly targetClient: string;
+  readonly deliverables: readonly string[];
+  readonly techStack: readonly string[];
+  readonly sla: string;
+}
+
+export interface ClientProjectScope {
+  readonly packageId: string;
+  readonly robotCategory: RobotCategory;
+  readonly robotDof: number;
+  readonly targetEnvironment: string;
+  readonly datasetVolume: number;
+  readonly cosmosAugmentation: boolean;
+  readonly urgency: 'standard' | 'rush';
+  readonly companyName: string;
+  readonly contactEmail: string;
+  readonly urdfRepoUrl?: string;
+}
+
+export interface CosmosTransferSpec {
+  readonly model: string;
+  readonly prompt: string;
+  readonly negativePrompt: string;
+  readonly semanticWeight: number;
+  readonly edgeWeight: number;
+  readonly depthWeight: number;
+  readonly guidanceScale: number;
+  readonly numInferenceSteps: number;
+  readonly seed: number;
+}
+
+export interface SampleDeliverableAsset {
+  readonly id: string;
+  readonly title: string;
+  readonly category: 'usd_rig' | 'stage_recipe' | 'cosmos_spec' | 'dataloader_script';
+  readonly fileFormat: string;
+  readonly sizeFormatted: string;
+  readonly description: string;
+  readonly techStack: readonly string[];
+  readonly codePreview: string;
+  readonly downloadFileName: string;
+}
+

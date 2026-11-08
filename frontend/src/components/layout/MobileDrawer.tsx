@@ -25,12 +25,12 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
   if (!isOpen) return null;
 
   const navItems = [
-    { id: 'overview', label: 'Story & Overview' },
-    { id: 'studio', label: 'Isaac Sim Factory Studio' },
-    { id: 'catalog', label: 'Synthetic Dataset Hub' },
-    { id: 'sim2real', label: 'Sim-to-Real Lab' },
-    { id: 'sdk', label: 'Python SDK & APIs' },
-    { id: 'pricing', label: 'Cloud GPU Pricing' },
+    { id: 'overview', label: 'Studio Overview' },
+    { id: 'studio', label: 'Procedural Tooling & SOW' },
+    { id: 'catalog', label: 'Sample Deliverables Portfolio' },
+    { id: 'sim2real', label: 'Sim-to-Real Guarantee' },
+    { id: 'sdk', label: 'Python SDK & Docs' },
+    { id: 'pricing', label: 'Sprint Pricing ($7.5k+)' },
   ];
 
   return (
