@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 echo "================================================================================"
 echo "  DIFFRACTION REAL CLOUD GPU WORKER - PRODUCTION BOOTSTRAPPER"
@@ -19,9 +18,13 @@ if [ ! -f /workspace/wrist_seed.png ]; then
     curl -sSL https://raw.githubusercontent.com/hrubee/Diffraction-Failure-policy/main/storage/photorealistic_assets/sample_photorealistic_wrist.png -o /workspace/wrist_seed.png || true
 fi
 
-# 2. Upgrade PyTorch, Diffusers, and Cosmos dependencies
-echo "[*] Installing/verifying neural diffusion dependencies..."
-python3 -m pip install -q -U \
+# 2. Remove incompatible torchaudio before installing torch 2.6
+echo "[*] Removing legacy torchaudio to prevent pip conflict..."
+python3 -m pip uninstall -y torchaudio || true
+
+# 3. Upgrade PyTorch, Diffusers, and Cosmos dependencies
+echo "[*] Installing neural diffusion dependencies..."
+python3 -m pip install -U \
     torch==2.6.0 \
     torchvision \
     cosmos_guardrail \
@@ -30,9 +33,12 @@ python3 -m pip install -q -U \
     accelerate \
     "imageio[ffmpeg]" \
     requests \
-    pillow
+    pillow || true
 
-# 3. Patch diffusers for Cosmos on RTX 4090
+# Ensure torchaudio doesn't linger
+python3 -m pip uninstall -y torchaudio || true
+
+# 4. Patch diffusers for Cosmos on RTX 4090
 echo "[*] Applying Cosmos compatibility patches..."
 python3 -c "
 import os
@@ -52,9 +58,15 @@ if os.path.exists(p):
     c2 = c2.replace('if torch.accelerator.is_available():', 'if hasattr(torch, \"accelerator\") and torch.accelerator.is_available():\n            return torch.accelerator.current_accelerator().type\n        if torch.cuda.is_available():\n            return \"cuda\"')
     open(p, 'w').write(c2)
 print('[SUCCESS] Patches applied cleanly.')
-"
+" || true
 
-# 4. Pull latest worker daemon and execute
+# 5. Pull latest worker daemon and execute in an auto-restart loop
 echo "[*] Launching Diffraction NVIDIA Cosmos Worker Daemon..."
 curl -sSL https://raw.githubusercontent.com/hrubee/Diffraction-Failure-policy/main/backend/gpu_worker/worker_daemon.py -o /worker.py
-exec python3 -u /worker.py --control-plane https://app.diffraction.in
+
+while true; do
+    echo "[*] Starting worker daemon..."
+    python3 -u /worker.py --control-plane https://app.diffraction.in || true
+    echo "[WARN] Worker exited. Restarting in 5 seconds..."
+    sleep 5
+done
