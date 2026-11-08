@@ -57,25 +57,25 @@ def detect_gpu_hardware() -> Dict[str, Any]:
     return gpu_info
 
 def ensure_ml_packages():
-    """Installs required diffusion libraries on the GPU pod if missing."""
-    packages = ["diffusers", "transformers", "accelerate", "imageio", "imageio-ffmpeg", "requests"]
-    missing = []
-    for pkg in packages:
-        try:
-            __import__(pkg.replace("-", "_"))
-        except ImportError:
-            missing.append(pkg)
+    """Installs required diffusion libraries on the GPU pod if missing or outdated."""
+    try:
+        import diffusers
+        has_cosmos = hasattr(diffusers, "CosmosPipeline")
+    except ImportError:
+        has_cosmos = False
 
-    if missing:
-        print(f"[*] Installing missing ML diffusion packages on GPU pod: {missing}...")
+    if not has_cosmos:
+        print("[*] Installing latest diffusers with native NVIDIA Cosmos support (git+https://github.com/huggingface/diffusers.git)...")
         try:
             subprocess.check_call([
-                sys.executable, "-m", "pip", "install", "-q",
-                "diffusers", "transformers", "accelerate", "imageio[ffmpeg]", "requests", "sentencepiece"
+                sys.executable, "-m", "pip", "install", "-q", "-U",
+                "git+https://github.com/huggingface/diffusers.git",
+                "transformers", "accelerate", "imageio[ffmpeg]", "requests", "sentencepiece", "torchvision"
             ])
-            print("[SUCCESS] All diffusion packages installed.")
+            print("[SUCCESS] diffusers with CosmosPipeline installed.")
         except Exception as e:
-            print(f"[WARN] Error installing packages: {e}")
+            print(f"[WARN] Error installing git diffusers: {e}, falling back to pypi diffusers...")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "-U", "diffusers", "transformers", "accelerate", "imageio[ffmpeg]", "requests", "sentencepiece"])
 
 class DiffractionGpuWorker:
     def __init__(self, control_plane_url: str, worker_id: str, poll_interval_s: float = 5.0, hf_token: Optional[str] = None):
@@ -180,18 +180,28 @@ class DiffractionGpuWorker:
         if use_cosmos:
             model_id = target_model
             print(f"[🚀 HARDWARE] Loading NVIDIA Cosmos 7B Diffusion Model onto {self.hardware['gpu_name']}...")
-        else:
-            model_id = "THUDM/CogVideoX-2b"
-            print(f"[🚀 HARDWARE] Loading Open Physical AI Video Model ({model_id}) onto {self.hardware['gpu_name']}...")
+            try:
+                pipe = DiffusionPipeline.from_pretrained(
+                    model_id,
+                    torch_dtype=torch.bfloat16,
+                    token=self.hf_token
+                )
+                pipe = pipe.to("cuda")
+                self.pipeline = pipe
+                self.active_model_name = model_id
+                print(f"[SUCCESS] Model {model_id} loaded into GPU memory. Ready for inference!")
+                return pipe
+            except Exception as e:
+                print(f"[WARN] Could not load Cosmos 7B ({e}). Switching to open CogVideoX-2B...")
 
+        model_id = "THUDM/CogVideoX-2b"
+        print(f"[🚀 HARDWARE] Loading Open Physical AI Video Model ({model_id}) onto {self.hardware['gpu_name']}...")
         try:
             pipe = DiffusionPipeline.from_pretrained(
                 model_id,
-                torch_dtype=torch.bfloat16,
-                token=self.hf_token if use_cosmos else None
+                torch_dtype=torch.bfloat16
             )
             pipe = pipe.to("cuda")
-            pipe.enable_model_cpu_offload() if hasattr(pipe, "enable_model_cpu_offload") else None
             self.pipeline = pipe
             self.active_model_name = model_id
             print(f"[SUCCESS] Model {model_id} loaded into GPU memory. Ready for inference!")
