@@ -214,12 +214,17 @@ class RealTrajectorySimulator:
             rewards.append(round(reward, 4))
             dones.append(step == num_frames - 1)
 
-            # Render Photorealistic Egocentric Forward Camera & Wrist Camera (What the robot actually sees!)
-            ego_img = self._render_ego_camera(pos_x, pos_y, heading, step, num_frames, lux, mu, slip_ratio)
-            wrist_img = self._render_wrist_camera(pos_x, pos_y, heading, step, num_frames, lux, mu, slip_ratio)
-
-            overhead_frames[step] = ego_img
-            wrist_frames[step] = wrist_img
+            # Render Appropriate Real Camera Perspectives
+            if is_box_folding:
+                head_img = self._render_box_folding_head_camera(step, num_frames, lux)
+                wrist_img = self._render_box_folding_wrist_camera(step, num_frames, lux)
+                overhead_frames[step] = head_img
+                wrist_frames[step] = wrist_img
+            else:
+                ego_img = self._render_ego_camera(pos_x, pos_y, heading, step, num_frames, lux, mu, slip_ratio)
+                wrist_img = self._render_wrist_camera(pos_x, pos_y, heading, step, num_frames, lux, mu, slip_ratio)
+                overhead_frames[step] = ego_img
+                wrist_frames[step] = wrist_img
 
         return EpisodeTrajectory(
             episode_index=episode_idx,
@@ -377,3 +382,161 @@ class RealTrajectorySimulator:
         self, step: int, total_steps: int, heading: float, lux: float, mu: float, slip: float
     ) -> np.ndarray:
         return self._render_procedural_photoreal_ego(step, total_steps, heading, lux, mu, slip)
+
+    def _render_box_folding_head_camera(self, step: int, total_steps: int, lux: float) -> np.ndarray:
+        """
+        Renders the workstation context camera view of the Franka robot arm
+        folding an articulated cardboard carton box flat on an industrial workbench.
+        """
+        t_norm = step / max(1, total_steps - 1)
+        head_img = Image.new("RGB", (self.width, self.height), (60, 65, 70))
+        d_head = ImageDraw.Draw(head_img)
+
+        # 1. Industrial Workbench Surface
+        table_y = int(self.height * 0.32)
+        d_head.rectangle([0, table_y, self.width, self.height], fill=(175, 165, 150))
+        d_head.line([(0, table_y), (self.width, table_y)], fill=(120, 110, 100), width=2)
+
+        # 2. Cardboard Box Blank in Perspective
+        cx, cy = self.width // 2, int(self.height * 0.65)
+        bw, bh = 60, 40
+
+        # Base panel
+        d_head.polygon([
+            (cx - bw, cy - bh // 2),
+            (cx + bw, cy - bh // 2),
+            (cx + bw + 10, cy + bh // 2),
+            (cx - bw - 10, cy + bh // 2)
+        ], fill=(195, 145, 90), outline=(130, 90, 45), width=2)
+
+        # Shipping Barcode label
+        d_head.rectangle([cx - 15, cy - 8, cx + 15, cy + 8], fill=(240, 240, 240))
+        for bx in range(cx - 12, cx + 13, 3):
+            d_head.line([(bx, cy - 6), (bx, cy + 6)], fill=(20, 20, 20), width=1)
+
+        # Folding Angles across 4 Phases
+        if t_norm < 0.25:
+            flap1_angle = 0.0
+            flap2_angle = 0.0
+        elif t_norm < 0.50:
+            flap1_angle = ((t_norm - 0.25) / 0.25) * 90.0
+            flap2_angle = 0.0
+        elif t_norm < 0.75:
+            flap1_angle = 90.0
+            flap2_angle = ((t_norm - 0.50) / 0.25) * 90.0
+        else:
+            flap1_angle = 90.0
+            flap2_angle = 90.0
+
+        # Render Flap 1 (Front flap)
+        flap_h = 32
+        rad1 = math.radians(flap1_angle)
+        f1_top_y = cy - bh // 2 - int(flap_h * math.sin(rad1))
+        p_offset1 = int(flap_h * math.cos(rad1) * 0.2)
+
+        if flap1_angle > 0:
+            d_head.polygon([
+                (cx - bw, cy - bh // 2),
+                (cx + bw, cy - bh // 2),
+                (cx + bw - p_offset1, f1_top_y),
+                (cx - bw + p_offset1, f1_top_y)
+            ], fill=(215, 160, 100), outline=(140, 95, 50), width=2)
+        else:
+            d_head.polygon([
+                (cx - bw, cy - bh // 2),
+                (cx + bw, cy - bh // 2),
+                (cx + bw, cy - bh // 2 - flap_h),
+                (cx - bw, cy - bh // 2 - flap_h)
+            ], fill=(185, 138, 85), outline=(130, 90, 45))
+
+        # Render Flap 2 (Right side flap)
+        rad2 = math.radians(flap2_angle)
+        f2_w = int(25 * math.cos(rad2))
+        f2_h = int(25 * math.sin(rad2))
+        if flap2_angle > 0:
+            d_head.polygon([
+                (cx + bw, cy - bh // 2),
+                (cx + bw + 10, cy + bh // 2),
+                (cx + bw + 10, cy + bh // 2 - f2_h),
+                (cx + bw, cy - bh // 2 - f2_h)
+            ], fill=(180, 130, 75), outline=(120, 80, 40), width=2)
+
+        # 3. Robot Franka Gripper Position
+        if t_norm < 0.25:
+            grip_x = cx
+            grip_y = int(40 + (t_norm / 0.25) * (f1_top_y - 30))
+        elif t_norm < 0.50:
+            grip_x = cx
+            grip_y = f1_top_y - 5
+        elif t_norm < 0.75:
+            p = (t_norm - 0.50) / 0.25
+            grip_x = int(cx + p * (bw - 5))
+            grip_y = cy - int(f2_h * 0.5)
+        else:
+            p = (t_norm - 0.75) / 0.25
+            grip_x = cx + bw - 5
+            grip_y = int(cy - 20 - p * 60)
+
+        # Draw Franka Parallel Gripper & Flange
+        d_head.rectangle([grip_x - 18, grip_y - 25, grip_x - 12, grip_y + 10], fill=(40, 40, 45), outline=(15, 15, 20))
+        d_head.rectangle([grip_x + 12, grip_y - 25, grip_x + 18, grip_y + 10], fill=(40, 40, 45), outline=(15, 15, 20))
+        d_head.rectangle([grip_x - 22, grip_y - 38, grip_x + 22, grip_y - 25], fill=(225, 225, 230), outline=(90, 90, 95))
+        d_head.rectangle([grip_x - 14, grip_y - 65, grip_x + 14, grip_y - 38], fill=(240, 240, 245), outline=(100, 100, 105))
+
+        # Sensor Noise & Exposure
+        arr = np.array(head_img, dtype=np.float32)
+        lux_scale = min(1.3, max(0.7, lux / 850.0))
+        arr *= lux_scale
+        noise = np.random.normal(0, 2.5, arr.shape)
+        return np.clip(arr + noise, 0, 255).astype(np.uint8)
+
+    def _render_box_folding_wrist_camera(self, step: int, total_steps: int, lux: float) -> np.ndarray:
+        """
+        Renders the Intel RealSense D405 camera mounted on the robot gripper flange,
+        looking straight down between the two gripper fingers at the cardboard crease.
+        """
+        t_norm = step / max(1, total_steps - 1)
+        wrist_img = Image.new("RGB", (self.width, self.height), (175, 165, 150))
+        d_wrist = ImageDraw.Draw(wrist_img)
+
+        # Flap angles
+        if t_norm < 0.25:
+            flap1_angle = 0.0
+        elif t_norm < 0.50:
+            flap1_angle = ((t_norm - 0.25) / 0.25) * 90.0
+        else:
+            flap1_angle = 90.0
+
+        rad1 = math.radians(flap1_angle)
+        crease_y = int(self.height * 0.55)
+
+        # Lower panel (cardboard base)
+        d_wrist.rectangle([0, crease_y, self.width, self.height], fill=(195, 145, 90))
+
+        # Flap panel bending up into the camera field of view
+        if flap1_angle > 0:
+            flap_vis_h = int(crease_y * (1.0 - math.cos(rad1) * 0.6))
+            d_wrist.rectangle([0, crease_y - flap_vis_h, self.width, crease_y], fill=(215, 160, 100))
+            d_wrist.line([(0, crease_y), (self.width, crease_y)], fill=(110, 75, 35), width=3)
+        else:
+            d_wrist.rectangle([0, 0, self.width, crease_y], fill=(185, 138, 85))
+            d_wrist.line([(0, crease_y), (self.width, crease_y)], fill=(130, 90, 45), width=1)
+
+        # Cardboard paperboard grain lines
+        for ly in range(10, self.height, 8):
+            d_wrist.line([(0, ly), (self.width, ly)], fill=(0, 0, 0, 15), width=1)
+
+        # Franka Gripper Fingers Visible on Left and Right borders
+        finger_w = 45
+        d_wrist.rectangle([0, 0, finger_w, self.height], fill=(30, 30, 35))
+        d_wrist.rectangle([self.width - finger_w, 0, self.width, self.height], fill=(30, 30, 35))
+        d_wrist.rectangle([0, 0, finger_w - 12, self.height], fill=(80, 85, 90))
+        d_wrist.rectangle([self.width - finger_w + 12, 0, self.width, self.height], fill=(80, 85, 90))
+        d_wrist.line([(finger_w, 0), (finger_w, self.height)], fill=(60, 60, 65), width=2)
+        d_wrist.line([(self.width - finger_w, 0), (self.width - finger_w, self.height)], fill=(60, 60, 65), width=2)
+
+        arr = np.array(wrist_img, dtype=np.float32)
+        lux_scale = min(1.3, max(0.7, lux / 850.0))
+        arr *= lux_scale
+        noise = np.random.normal(0, 2.5, arr.shape)
+        return np.clip(arr + noise, 0, 255).astype(np.uint8)

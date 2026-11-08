@@ -148,3 +148,24 @@ def test_real_fulfillment_pipeline_and_download():
     assert download_resp.status_code == 200
     assert download_resp.headers["content-type"] == "application/zip"
     assert len(download_resp.content) > 1000
+
+
+def test_box_folding_fulfillment_pipeline():
+    """Verifies box folding simulation, Isaac Sim carton USD generation, and dual-camera rendering."""
+    job_id = "pytest-box-folding-001"
+    job = create_fulfillment_job(
+        job_id=job_id,
+        name="Franka Box Folding Sprint",
+        client_name="Packaging Automation Inc",
+        robot_name="FrankaPanda",
+        urdf_path="storage/sample_urdfs/franka_box_folder.urdf",
+        target_episodes=2,
+        fps=30,
+    )
+    assert job["id"] == job_id
+    res = execute_fulfillment_pipeline(job_id)
+    assert res["status"] == "COMPLETED"
+    assert res["progress_pct"] == 100.0
+    assert res["completed_episodes"] == 2
+    assert os.path.exists(res["zip_path"])
+
