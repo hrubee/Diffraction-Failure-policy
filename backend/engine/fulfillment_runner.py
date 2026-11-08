@@ -237,6 +237,21 @@ def execute_fulfillment_pipeline(job_id: str) -> Dict[str, Any]:
         # Episodes are simulated, written to Parquet and MP4, and discarded one-by-one
         # to ensure strictly minimal RAM footprint (<180MB) and zero host memory pressure.
         # -------------------------------------------------------------
+        # Check if real GPU workers are available in cluster
+        from backend.engine.gpu_bridge import GpuWorkerBridge
+        active_workers = GpuWorkerBridge.list_workers()
+        if len(active_workers) > 0:
+            worker_gpu = active_workers[0].get("gpu_name", "NVIDIA GPU")
+            logger.info(f"[{job_id}] Active GPU worker detected: {worker_gpu}. Handing off to GPU queue.")
+            update_job_record(
+                job_id,
+                status="QUEUED",
+                stage_name=f"Queued for Hardware Neural Rendering on {worker_gpu}",
+                progress_pct=30.0
+            )
+            return get_job_record(job_id)
+
+        # Fallback to local CPU simulation only if zero GPU hardware is attached
         dataset_dir = os.path.join(out_dir, "lerobot_dataset")
         camera_keys = ["observation.images.overhead", "observation.images.wrist"]
         RealLeRobotExporter.init_dataset(dataset_dir, camera_keys=camera_keys)

@@ -842,12 +842,20 @@ def complete_gpu_job(worker_id: str, payload: Dict[str, Any]):
     GpuWorkerBridge.heartbeat(worker_id, current_job_id=None)
     job_id = payload.get("job_id")
     if job_id:
-        from backend.engine.fulfillment_runner import update_job_record
+        from backend.engine.fulfillment_runner import update_job_record, get_job_record
+        rec = get_job_record(job_id)
+        zip_dest = None
+        if rec and rec.get("output_dir") and os.path.exists(rec["output_dir"]):
+            import shutil
+            shutil.make_archive(rec["output_dir"] + "_deliverable", "zip", rec["output_dir"])
+            zip_dest = f"{rec['output_dir']}_deliverable.zip"
+
         update_job_record(
             job_id,
             status="COMPLETED",
-            stage_name=f"GPU Accelerated Simulation Finished on {payload.get('gpu_used', 'NVIDIA GPU')}",
+            stage_name=f"Hardware Neural Diffusion Completed on {payload.get('gpu_used', 'NVIDIA GPU')}",
             progress_pct=100.0,
+            zip_path=zip_dest,
         )
     return {"status": "ACKNOWLEDGED"}
 

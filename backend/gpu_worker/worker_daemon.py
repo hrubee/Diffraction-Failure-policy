@@ -13,6 +13,7 @@ import json
 import argparse
 import platform
 import subprocess
+import threading
 import urllib.request
 import urllib.parse
 from typing import Dict, Any, Optional
@@ -86,6 +87,19 @@ class DiffractionGpuWorker:
         self.running = True
         self.pipeline = None
         self.active_model_name = None
+        self.current_job_id = None
+
+    def _heartbeat_loop(self):
+        """Continuously streams heartbeats even while heavy diffusion jobs or downloads are running."""
+        while self.running:
+            try:
+                self.post_json(
+                    f"/api/v1/factory/gpu-workers/{self.worker_id}/heartbeat",
+                    {"timestamp": time.time(), "current_job_id": self.current_job_id}
+                )
+            except Exception:
+                pass
+            time.sleep(5.0)
 
     def post_json(self, path: str, payload: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         url = f"{self.control_plane_url}{path}"
@@ -273,15 +287,19 @@ class DiffractionGpuWorker:
 
     def run(self):
         self.register()
+        threading.Thread(target=self._heartbeat_loop, daemon=True).start()
         print(f"[*] Starting GPU work-lease poll loop (Interval: {self.poll_interval_s}s)...")
         while self.running:
             try:
-                self.post_json(f"/api/v1/factory/gpu-workers/{self.worker_id}/heartbeat", {"timestamp": time.time()})
                 job_resp = self.get_json(f"/api/v1/factory/gpu-workers/lease?worker_id={self.worker_id}")
                 if job_resp and job_resp.get("job"):
                     job = job_resp["job"]
                     print(f"\n[>>> JOB LEASED] Acquired Job: {job['id']} - {job['name']}")
-                    self.execute_job(job)
+                    self.current_job_id = job["id"]
+                    try:
+                        self.execute_job(job)
+                    finally:
+                        self.current_job_id = None
                 else:
                     time.sleep(self.poll_interval_s)
             except KeyboardInterrupt:
