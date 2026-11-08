@@ -2,7 +2,8 @@
 """
 Diffraction Standalone NVIDIA GPU Worker Daemon.
 Executes genuine hardware-accelerated neural diffusion video generation
-(NVIDIA Cosmos World Foundation Model or open CogVideoX-2B) on an NVIDIA RTX 3090 / 4090 / A100.
+using NVIDIA Cosmos World Foundation Model (nvidia/Cosmos-1.0-Diffusion-7B-Video2World)
+on an NVIDIA GeForce RTX 4090 GPU node.
 Streams rendered optical MP4 videos directly back to the Diffraction Control Plane (https://app.diffraction.in).
 """
 
@@ -17,12 +18,18 @@ import threading
 import urllib.request
 import urllib.parse
 from typing import Dict, Any, Optional
+from PIL import Image
+
+CONTROL_PLANE_DEFAULT = "https://app.diffraction.in"
+COSMOS_WEIGHTS_DIR = "/workspace/cosmos_7b_weights"
+OVERHEAD_SEED_PATH = "/workspace/overhead_seed.png"
+WRIST_SEED_PATH = "/workspace/wrist_seed.png"
 
 def detect_gpu_hardware() -> Dict[str, Any]:
     """Detects local NVIDIA GPU model, VRAM, and driver details."""
     gpu_info = {
         "gpu_name": "Generic NVIDIA GPU",
-        "vram_gb": 16.0,
+        "vram_gb": 24.0,
         "driver_version": "550.00",
         "cuda_version": "12.4",
         "has_cuda": False,
@@ -40,53 +47,17 @@ def detect_gpu_hardware() -> Dict[str, Any]:
     except ImportError:
         pass
 
-    if not gpu_info["has_cuda"]:
-        try:
-            out = subprocess.check_output(
-                ["nvidia-smi", "--query-gpu=name,memory.total,driver_version", "--format=csv,noheader,nounits"],
-                encoding="utf-8"
-            ).strip().split(",")
-            if len(out) >= 3:
-                gpu_info["gpu_name"] = out[0].strip()
-                gpu_info["vram_gb"] = round(float(out[1].strip()) / 1024.0, 2)
-                gpu_info["driver_version"] = out[2].strip()
-                gpu_info["has_cuda"] = True
-        except Exception:
-            pass
-
     return gpu_info
 
-def ensure_ml_packages():
-    """Installs required diffusion libraries on the GPU pod if missing or outdated."""
-    try:
-        import diffusers
-        has_cosmos = hasattr(diffusers, "CosmosPipeline")
-    except ImportError:
-        has_cosmos = False
-
-    if not has_cosmos:
-        print("[*] Installing latest diffusers with native NVIDIA Cosmos support (git+https://github.com/huggingface/diffusers.git)...")
-        try:
-            subprocess.check_call([
-                sys.executable, "-m", "pip", "install", "-q", "-U",
-                "git+https://github.com/huggingface/diffusers.git",
-                "transformers", "accelerate", "imageio[ffmpeg]", "requests", "sentencepiece", "torchvision"
-            ])
-            print("[SUCCESS] diffusers with CosmosPipeline installed.")
-        except Exception as e:
-            print(f"[WARN] Error installing git diffusers: {e}, falling back to pypi diffusers...")
-            subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "-U", "diffusers", "transformers", "accelerate", "imageio[ffmpeg]", "requests", "sentencepiece"])
-
-class DiffractionGpuWorker:
-    def __init__(self, control_plane_url: str, worker_id: str, poll_interval_s: float = 5.0, hf_token: Optional[str] = None):
+class DiffractionCosmosWorker:
+    def __init__(self, control_plane_url: str, worker_id: str, poll_interval_s: float = 4.0):
         self.control_plane_url = control_plane_url.rstrip("/")
         self.worker_id = worker_id
         self.poll_interval_s = poll_interval_s
-        self.hf_token = hf_token or os.environ.get("HF_TOKEN")
         self.hardware = detect_gpu_hardware()
         self.running = True
         self.pipeline = None
-        self.active_model_name = None
+        self.active_model_name = "NVIDIA Cosmos 7B Video2World"
         self.current_job_id = None
 
     def _heartbeat_loop(self):
@@ -113,7 +84,6 @@ class DiffractionGpuWorker:
             with urllib.request.urlopen(req, timeout=10) as resp:
                 return json.loads(resp.read().decode("utf-8"))
         except Exception as e:
-            print(f"[WARN] Connection error to {url}: {e}")
             return None
 
     def get_json(self, path: str) -> Optional[Dict[str, Any]]:
@@ -125,8 +95,7 @@ class DiffractionGpuWorker:
         try:
             with urllib.request.urlopen(req, timeout=10) as resp:
                 return json.loads(resp.read().decode("utf-8"))
-        except Exception as e:
-            print(f"[WARN] Connection error to {url}: {e}")
+        except Exception:
             return None
 
     def upload_video(self, job_id: str, camera: str, episode_idx: int, video_path: str) -> bool:
@@ -135,7 +104,7 @@ class DiffractionGpuWorker:
         try:
             import requests
             with open(video_path, "rb") as f:
-                r = requests.post(url, files={"file": (os.path.basename(video_path), f, "video/mp4")}, timeout=30)
+                r = requests.post(url, files={"file": (os.path.basename(video_path), f, "video/mp4")}, timeout=60)
                 if r.status_code == 200:
                     print(f"    --> [UPLOADED] {camera} Ep {episode_idx} ({os.path.getsize(video_path) // 1024} KB)")
                     return True
@@ -146,72 +115,35 @@ class DiffractionGpuWorker:
             print(f"    --> [UPLOAD EXCEPTION] {e}")
             return False
 
-    def load_diffusion_model(self):
-        """Loads NVIDIA Cosmos or CogVideoX diffusion model onto GPU VRAM."""
+    def load_pipeline(self):
+        """Loads NVIDIA Cosmos 7B Video2World model with CPU offload onto GPU."""
         if self.pipeline is not None:
             return self.pipeline
 
-        ensure_ml_packages()
         import torch
-        from diffusers import DiffusionPipeline
+        from diffusers import CosmosVideoToWorldPipeline
 
-        cosmos_dir = "/workspace/cosmos_7b_weights"
-        target_model = "nvidia/Cosmos-1.0-Diffusion-7B-Video2World"
-        os.makedirs("/workspace", exist_ok=True)
+        print("================================================================================")
+        print(f"  [🚀 HARDWARE] LOADING REAL NVIDIA COSMOS 7B FOUNDATION MODEL")
+        print(f"  Weights Path: {COSMOS_WEIGHTS_DIR}")
+        print(f"  GPU Hardware: {self.hardware['gpu_name']} ({self.hardware['vram_gb']} GB VRAM)")
+        print("================================================================================")
 
-        cosmos_ready = os.path.exists(os.path.join(cosmos_dir, "model_index.json"))
-        if not cosmos_ready and self.hf_token:
-            print(f"[*] Downloading NVIDIA Cosmos 7B Video2World (~14GB diffusers weights) directly to persistent volume: {cosmos_dir}...")
-            try:
-                from huggingface_hub import snapshot_download
-                snapshot_download(
-                    repo_id=target_model,
-                    token=self.hf_token,
-                    local_dir=cosmos_dir,
-                    ignore_patterns=["nemo/*", "Cosmos-1.0-Guardrail/*", "*.pt", "*.zarray"],
-                    max_workers=8
-                )
-                print(f"[SUCCESS] NVIDIA Cosmos 7B downloaded and permanently saved on persistent volume at {cosmos_dir}!")
-                cosmos_ready = True
-            except Exception as e:
-                print(f"[WARN] Error downloading Cosmos 7B: {e}")
-
-        if cosmos_ready:
-            print(f"[🚀 HARDWARE] Loading NVIDIA Cosmos 7B directly from persistent volume ({cosmos_dir}) onto {self.hardware['gpu_name']}...")
-            try:
-                pipe = DiffusionPipeline.from_pretrained(
-                    cosmos_dir,
-                    torch_dtype=torch.bfloat16
-                )
-                pipe = pipe.to("cuda")
-                self.pipeline = pipe
-                self.active_model_name = "NVIDIA Cosmos 7B Video2World"
-                print(f"[SUCCESS] Model NVIDIA Cosmos 7B loaded into GPU memory. Ready for inference!")
-                return pipe
-            except Exception as e:
-                print(f"[WARN] Error initializing Cosmos from local files: {e}. Falling back to open weights...")
-
-        model_id = "THUDM/CogVideoX-2b"
-        print(f"[🚀 HARDWARE] Loading Open Physical AI Video Model ({model_id}) onto {self.hardware['gpu_name']}...")
-        try:
-            pipe = DiffusionPipeline.from_pretrained(
-                model_id,
-                torch_dtype=torch.bfloat16
-            )
-            pipe = pipe.to("cuda")
-            self.pipeline = pipe
-            self.active_model_name = model_id
-            print(f"[SUCCESS] Model {model_id} loaded into GPU memory. Ready for inference!")
-            return pipe
-        except Exception as e:
-            print(f"[ERROR] Failed to load {model_id}: {e}")
-            return None
+        pipe = CosmosVideoToWorldPipeline.from_pretrained(
+            COSMOS_WEIGHTS_DIR,
+            torch_dtype=torch.bfloat16,
+            safety_checker=None
+        )
+        pipe.enable_model_cpu_offload()
+        self.pipeline = pipe
+        print("[SUCCESS] Real NVIDIA Cosmos 7B loaded with CPU offload. VRAM overhead optimized!")
+        return pipe
 
     def execute_job(self, job: Dict[str, Any]):
         """Executes real neural video diffusion on NVIDIA GPU hardware for leased job."""
         job_id = job["id"]
-        target_episodes = min(job.get("target_episodes", 2), 5)  # Generate up to 5 real diffusion rollouts
-        robot_name = job.get("robot_name", "Franka_Box_Folder")
+        target_episodes = min(job.get("target_episodes", 1), 3)
+        robot_name = job.get("robot_name", "Franka Panda")
         task_name = job.get("name", "Cardboard Box Folding")
 
         print("================================================================================")
@@ -220,32 +152,45 @@ class DiffractionGpuWorker:
         print(f"  Episodes to Render: {target_episodes}")
         print("================================================================================")
 
-        pipe = self.load_diffusion_model()
-        if not pipe:
-            print("[ERROR] No diffusion pipeline available. Aborting job execution.")
-            return
-
+        pipe = self.load_pipeline()
         import imageio
         import numpy as np
 
         work_dir = f"/workspace/renders_{job_id}"
         os.makedirs(work_dir, exist_ok=True)
 
+        # Prepare seed frames
+        if os.path.exists(OVERHEAD_SEED_PATH):
+            overhead_seed = Image.open(OVERHEAD_SEED_PATH).convert("RGB").resize((1280, 704))
+        else:
+            overhead_seed = Image.new("RGB", (1280, 704), color=(180, 180, 180))
+
+        if os.path.exists(WRIST_SEED_PATH):
+            wrist_seed = Image.open(WRIST_SEED_PATH).convert("RGB").resize((1280, 704))
+        else:
+            wrist_seed = Image.new("RGB", (1280, 704), color=(160, 160, 160))
+
         for ep in range(target_episodes):
-            print(f"\n[*] Rendering Episode {ep+1}/{target_episodes} on {self.hardware['gpu_name']}...")
+            print(f"\n[*] Rendering Episode {ep+1}/{target_episodes} on {self.hardware['gpu_name']} with Cosmos 7B...")
 
             # 1. Render Overhead Camera Feed
             prompt_overhead = (
                 f"RealSense D405 optical sensor video feed: Industrial {robot_name} robotic manipulator arm "
                 f"folding the corrugated kraft cardboard flap on packaging table, overhead view, photorealistic, 4k, cinematic lighting"
             )
-            print(f"    --> Generating Overhead View with {self.active_model_name}...")
-            res_overhead = pipe(prompt=prompt_overhead, num_frames=16, guidance_scale=6.0)
+            print(f"    --> [1/2] Generating Overhead View with NVIDIA Cosmos 7B (8 diffusion steps)...")
+            res_overhead = pipe(
+                image=overhead_seed,
+                prompt=prompt_overhead,
+                num_frames=17,
+                num_inference_steps=8,
+                guidance_scale=6.0,
+                height=704,
+                width=1280
+            )
             frames_overhead = res_overhead.frames[0]
-
             overhead_path = os.path.join(work_dir, f"overhead_ep_{ep:06d}.mp4")
-            # Write frames to MP4
-            imageio.mimsave(overhead_path, [np.array(f) for f in frames_overhead], fps=8)
+            imageio.mimsave(overhead_path, [np.array(f) for f in frames_overhead], fps=10)
             self.upload_video(job_id, "overhead", ep, overhead_path)
 
             # 2. Render Wrist Camera Feed
@@ -253,12 +198,19 @@ class DiffractionGpuWorker:
                 f"Robot wrist-mounted camera view: End-effector robotic gripper contacting and pushing cardboard box flap, "
                 f"photorealistic surface texture, macro lens, subtle camera shake"
             )
-            print(f"    --> Generating Wrist View with {self.active_model_name}...")
-            res_wrist = pipe(prompt=prompt_wrist, num_frames=16, guidance_scale=6.0)
+            print(f"    --> [2/2] Generating Wrist Camera View with NVIDIA Cosmos 7B (8 diffusion steps)...")
+            res_wrist = pipe(
+                image=wrist_seed,
+                prompt=prompt_wrist,
+                num_frames=17,
+                num_inference_steps=8,
+                guidance_scale=6.0,
+                height=704,
+                width=1280
+            )
             frames_wrist = res_wrist.frames[0]
-
             wrist_path = os.path.join(work_dir, f"wrist_ep_{ep:06d}.mp4")
-            imageio.mimsave(wrist_path, [np.array(f) for f in frames_wrist], fps=8)
+            imageio.mimsave(wrist_path, [np.array(f) for f in frames_wrist], fps=10)
             self.upload_video(job_id, "wrist", ep, wrist_path)
 
         print(f"\n[SUCCESS] All {target_episodes} episodes rendered on GPU silicon and uploaded to Control Plane.")
@@ -318,17 +270,15 @@ class DiffractionGpuWorker:
 
 def main():
     parser = argparse.ArgumentParser(description="Diffraction NVIDIA GPU Worker Daemon")
-    parser.add_argument("--control-plane", type=str, default="https://app.diffraction.in", help="URL of Diffraction Control Plane")
-    parser.add_argument("--worker-id", type=str, default=f"gpu-node-{int(time.time())}", help="Unique Worker Node ID")
-    parser.add_argument("--poll-interval", type=float, default=5.0, help="Poll interval in seconds")
-    parser.add_argument("--hf-token", type=str, default=None, help="Hugging Face Access Token")
+    parser.add_argument("--control-plane", type=str, default=CONTROL_PLANE_DEFAULT, help="URL of Diffraction Control Plane")
+    parser.add_argument("--worker-id", type=str, default=f"gpu-node-4090", help="Unique Worker Node ID")
+    parser.add_argument("--poll-interval", type=float, default=4.0, help="Poll interval in seconds")
     args = parser.parse_args()
 
-    worker = DiffractionGpuWorker(
+    worker = DiffractionCosmosWorker(
         control_plane_url=args.control_plane,
         worker_id=args.worker_id,
         poll_interval_s=args.poll_interval,
-        hf_token=args.hf_token
     )
     worker.run()
 
