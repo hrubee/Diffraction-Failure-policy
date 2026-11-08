@@ -84,7 +84,7 @@ class GpuWorkerBridge:
 
         from backend.engine.fulfillment_runner import list_job_records, get_job_record, update_job_record
 
-        jobs = list_job_records(limit=20)
+        jobs = list_job_records()[:20]
         # Find queued jobs
         for j in jobs:
             if j["status"] in ["QUEUED", "RUNNING"] and j.get("active_gpu_workers", 0) == 0:

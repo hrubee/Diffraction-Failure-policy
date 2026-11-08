@@ -811,6 +811,30 @@ def lease_job_for_worker(worker_id: str):
     return {"job": job}
 
 
+@router.post("/jobs/{job_id}/upload-video")
+async def upload_job_video(
+    job_id: str,
+    camera: str = Query(..., description="Camera key, e.g. overhead or wrist"),
+    episode_idx: int = Query(..., description="Episode index, e.g. 0"),
+    file: UploadFile = File(...)
+):
+    """Receives genuine GPU-rendered neural diffusion MP4 video from a GPU worker."""
+    rec = get_job_record(job_id)
+    if not rec:
+        raise HTTPException(status_code=404, detail="Job not found")
+
+    out_dir = rec["output_dir"]
+    cam_dir = os.path.join(out_dir, "lerobot_dataset", "videos", "chunk-000", f"observation.images.{camera}")
+    os.makedirs(cam_dir, exist_ok=True)
+    video_path = os.path.join(cam_dir, f"episode_{episode_idx:06d}.mp4")
+
+    content = await file.read()
+    with open(video_path, "wb") as f:
+        f.write(content)
+
+    return {"status": "UPLOADED", "bytes": len(content), "path": video_path}
+
+
 @router.post("/gpu-workers/{worker_id}/complete-job")
 def complete_gpu_job(worker_id: str, payload: Dict[str, Any]):
     """Signals that a GPU node has finished RTX path-traced episode generation."""
