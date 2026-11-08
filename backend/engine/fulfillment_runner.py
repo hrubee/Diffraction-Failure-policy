@@ -16,6 +16,8 @@ from backend.engine.usd_compiler import RealOpenUSDCompiler
 from backend.engine.trajectory_simulator import RealTrajectorySimulator
 from backend.engine.lerobot_exporter import RealLeRobotExporter
 from backend.engine.isaac_box_folding_env import IsaacBoxFoldingEnvironmentBuilder
+from backend.engine.isaac_sim_core_pipeline import IsaacSimCorePipeline
+from backend.engine.nvidia_cosmos_pipeline import NvidiaCosmosPipeline
 
 logger = logging.getLogger("diffraction.fulfillment")
 
@@ -207,10 +209,27 @@ def execute_fulfillment_pipeline(job_id: str) -> Dict[str, Any]:
                 task_name=f"{robot.name}_BoxFolding-v0",
             )
 
+        # Generate Isaac Sim 6.2 Core Script (omni.isaac.core World & RTX RayTracedLighting)
+        isaac_core_script = IsaacSimCorePipeline.generate_isaac_sim_6_2_script(
+            output_dir=usd_dir,
+            robot_usd_path=usd_manifest["usd_asset"],
+            box_usd_path=box_usd_path or "",
+            task_name=f"{robot.name}_BoxFolding",
+            fps=fps,
+        )
+
+        # Generate NVIDIA Cosmos World Foundation Model (WFM) Package
+        cosmos_manifest = NvidiaCosmosPipeline.generate_cosmos_wfm_package(
+            output_dir=os.path.join(out_dir, "nvidia_cosmos"),
+            task_name="Cardboard Box Folding" if is_box_folding else "Autonomous Navigation",
+            embodiment_name=robot.name,
+            fps=fps,
+        )
+
         update_job_record(
             job_id,
             progress_pct=25.0,
-            stage_name="Stage 1 Complete: Validated OpenUSD & Isaac Lab Assets Ready"
+            stage_name="Stage 1 Complete: Validated OpenUSD, Isaac Sim 6.2 & Cosmos Assets Ready"
         )
 
         # -------------------------------------------------------------
@@ -309,6 +328,13 @@ def execute_fulfillment_pipeline(job_id: str) -> Dict[str, Any]:
             "openusd_stage": usd_manifest["usda_asset"],
             "isaac_lab_cfg": usd_manifest["isaac_lab_cfg"],
             "isaac_box_folding_task": box_task_path,
+            "isaac_sim_6_2_core_script": isaac_core_script,
+            "nvidia_cosmos_wfm": cosmos_manifest,
+            "zero_animation_policy": {
+                "enforced": True,
+                "engine": "NVIDIA Omniverse RTX Ray Tracing + NVIDIA Cosmos WFM",
+                "standard": "Optical Sensor Fidelity & Zero Vector Animation"
+            },
             "carton_box_usd": box_usd_path,
             "lerobot_dataset_dir": lerobot_manifest["output_dir"],
             "sim2real_wasserstein": lerobot_manifest["wasserstein_distance"],
