@@ -10,7 +10,7 @@ import os
 import random
 import time
 from typing import Any, Dict, List, Optional
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, status, File, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
