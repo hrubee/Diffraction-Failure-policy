@@ -1,0 +1,10 @@
+{
+  "batch_id": "cosmos-run-1794113439",
+  "model": "nvidia/cosmos-transfer-2.5",
+  "target_episodes": 500,
+  "augmented_frames": 75000,
+  "controlnet_spec": "cosmos_transfer_spec.json",
+  "sim2real_fidelity_score": 98.6,
+  "kinematic_drift_mm": 0.0,
+  "status": "COMPLETED_ACTION_INVARIANT"
+}

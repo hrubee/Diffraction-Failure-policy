@@ -1,0 +1,239 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1.0
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+    # 1. Procedural Epoxy Floor with PhysX Friction Material
+    def Mesh "Floor" (
+        prepend apiSchemas = ["PhysicsCollisionAPI", "PhysxCollisionAPI"]
+    )
+    {
+        point3f[] points = [(-20, -15, 0), (20, -15, 0), (20, 15, 0), (-20, 15, 0)]
+        int[] faceVertexCounts = [4]
+        int[] faceVertexIndices = [0, 1, 2, 3]
+        normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)]
+        rel material:binding = </World/Materials/EpoxyFloorMaterial>
+    }
+
+    def Scope "Materials"
+    {
+        def Material "EpoxyFloorMaterial"
+        {
+            token physics:materialType = "rigid"
+            float physics:dynamicFriction = 0.42
+            float physics:staticFriction = 0.55
+            float physics:restitution = 0.05
+        }
+    }
+
+    # 2. High-Bay Overhead Luminaires (RTX Ray-Traced)
+    def Scope "Lighting"
+    {
+        def RectLight "HighBay_0"
+        {
+            float intensity = 911.5
+            float colorTemperature = 3200.0
+            double3 xformOp:translate = (-12.0, 0, 8.5)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+        def RectLight "HighBay_1"
+        {
+            float intensity = 993.2
+            float colorTemperature = 3200.0
+            double3 xformOp:translate = (-4.0, 0, 8.5)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+        def RectLight "HighBay_2"
+        {
+            float intensity = 578.6
+            float colorTemperature = 6000.0
+            double3 xformOp:translate = (4.0, 0, 8.5)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+        def RectLight "HighBay_3"
+        {
+            float intensity = 482.0
+            float colorTemperature = 6000.0
+            double3 xformOp:translate = (12.0, 0, 8.5)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+    }
+
+    # 3. High-Bay Pallet Racks & Obstacle Clutter
+    def Scope "Racks"
+    {
+        def Xform "PalletRack_0" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            double3 xformOp:translate = (-15.0, -10.0, 0.0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            def Cube "Mesh"
+            {
+                double size = 1.0
+                double3 xformOp:scale = (3.5, 1.2, 6.73)
+                uniform token[] xformOpOrder = ["xformOp:scale"]
+            }
+        }
+        def Xform "PalletRack_1" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            double3 xformOp:translate = (-5.0, -10.0, 0.0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            def Cube "Mesh"
+            {
+                double size = 1.0
+                double3 xformOp:scale = (3.5, 1.2, 4.72)
+                uniform token[] xformOpOrder = ["xformOp:scale"]
+            }
+        }
+        def Xform "PalletRack_2" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            double3 xformOp:translate = (5.0, -10.0, 0.0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            def Cube "Mesh"
+            {
+                double size = 1.0
+                double3 xformOp:scale = (3.5, 1.2, 5.55)
+                uniform token[] xformOpOrder = ["xformOp:scale"]
+            }
+        }
+        def Xform "PalletRack_3" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            double3 xformOp:translate = (15.0, -10.0, 0.0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            def Cube "Mesh"
+            {
+                double size = 1.0
+                double3 xformOp:scale = (3.5, 1.2, 4.57)
+                uniform token[] xformOpOrder = ["xformOp:scale"]
+            }
+        }
+        def Xform "PalletRack_4" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            double3 xformOp:translate = (-15.0, 0.0, 0.0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            def Cube "Mesh"
+            {
+                double size = 1.0
+                double3 xformOp:scale = (3.5, 1.2, 5.05)
+                uniform token[] xformOpOrder = ["xformOp:scale"]
+            }
+        }
+        def Xform "PalletRack_5" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            double3 xformOp:translate = (-5.0, 0.0, 0.0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            def Cube "Mesh"
+            {
+                double size = 1.0
+                double3 xformOp:scale = (3.5, 1.2, 5.76)
+                uniform token[] xformOpOrder = ["xformOp:scale"]
+            }
+        }
+        def Xform "PalletRack_6" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            double3 xformOp:translate = (5.0, 0.0, 0.0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            def Cube "Mesh"
+            {
+                double size = 1.0
+                double3 xformOp:scale = (3.5, 1.2, 4.57)
+                uniform token[] xformOpOrder = ["xformOp:scale"]
+            }
+        }
+        def Xform "PalletRack_7" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            double3 xformOp:translate = (15.0, 0.0, 0.0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            def Cube "Mesh"
+            {
+                double size = 1.0
+                double3 xformOp:scale = (3.5, 1.2, 5.0)
+                uniform token[] xformOpOrder = ["xformOp:scale"]
+            }
+        }
+        def Xform "PalletRack_8" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            double3 xformOp:translate = (-15.0, 10.0, 0.0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            def Cube "Mesh"
+            {
+                double size = 1.0
+                double3 xformOp:scale = (3.5, 1.2, 6.12)
+                uniform token[] xformOpOrder = ["xformOp:scale"]
+            }
+        }
+        def Xform "PalletRack_9" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            double3 xformOp:translate = (-5.0, 10.0, 0.0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            def Cube "Mesh"
+            {
+                double size = 1.0
+                double3 xformOp:scale = (3.5, 1.2, 5.86)
+                uniform token[] xformOpOrder = ["xformOp:scale"]
+            }
+        }
+        def Xform "PalletRack_10" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            double3 xformOp:translate = (5.0, 10.0, 0.0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            def Cube "Mesh"
+            {
+                double size = 1.0
+                double3 xformOp:scale = (3.5, 1.2, 5.05)
+                uniform token[] xformOpOrder = ["xformOp:scale"]
+            }
+        }
+        def Xform "PalletRack_11" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            double3 xformOp:translate = (15.0, 10.0, 0.0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            def Cube "Mesh"
+            {
+                double size = 1.0
+                double3 xformOp:scale = (3.5, 1.2, 5.97)
+                uniform token[] xformOpOrder = ["xformOp:scale"]
+            }
+        }
+    }
+
+    # 4. Multi-Camera Sensor Rig Definitions
+    def Scope "Sensors"
+    {
+        def Camera "PrimaryCamera"
+        {
+            float focalLength = 24.0
+            float horizontalAperture = 20.955
+            float verticalAperture = 15.29
+            double3 xformOp:translate = (0.0, -8.0, 2.5)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+    }
+}

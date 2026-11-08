@@ -1,5 +1,5 @@
 """
-Playwright automated screenshot capture for Diffraction Productized Isaac Sim & Cosmos Studio.
+Playwright automated screenshot capture for Diffraction Productized Studio & Client Portal.
 Captures desktop, tablet, and mobile views and syncs to artifacts directory.
 """
 
@@ -17,7 +17,7 @@ async def capture():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
 
-        # 1. Desktop Landing Page with Productized Studio Hero & Sprints
+        # 1. Desktop Landing Page
         context = await browser.new_context(viewport={"width": 1440, "height": 900})
         page = await context.new_page()
         await page.goto("http://localhost:8080/#overview", wait_until="networkidle")
@@ -25,14 +25,17 @@ async def capture():
         shot1 = os.path.join(SCREENSHOTS_DIR, "studio_landing_desktop.png")
         await page.screenshot(path=shot1, full_page=False)
 
-        # 2. Interactive Procedural Tooling & Cosmos Pipeline Demo
+        # 2. Client Sprint Portal: Active Sprint Tracker
         await page.goto("http://localhost:8080/#studio", wait_until="networkidle")
-        await page.wait_for_timeout(1500)
-        shot2 = os.path.join(SCREENSHOTS_DIR, "studio_tooling_desktop.png")
+        await page.wait_for_timeout(1000)
+        tracker_btn = page.locator("button:has-text('Active Sprint Tracker')")
+        if await tracker_btn.count() > 0:
+            await tracker_btn.first.click()
+            await page.wait_for_timeout(1000)
+        shot2 = os.path.join(SCREENSHOTS_DIR, "studio_tracker_desktop.png")
         await page.screenshot(path=shot2, full_page=False)
 
-        # 3. Interactive Sprint SOW Configurator
-        # Click on Scope Sprint SOW button
+        # 3. Client Sprint Portal: SOW Builder
         sow_btn = page.locator("button:has-text('Scope Sprint SOW')")
         if await sow_btn.count() > 0:
             await sow_btn.first.click()

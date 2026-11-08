@@ -1,0 +1,15 @@
+{
+  "env_type": "warehouse",
+  "seed": 42,
+  "stage_usda": "warehouse_stage.usda",
+  "replicator_script": "randomize_warehouse.py",
+  "lighting_lux_range": [
+    150.0,
+    2500.0
+  ],
+  "friction_mu_range": [
+    0.12,
+    0.88
+  ],
+  "status": "PROCEDURAL_STAGE_READY"
+}

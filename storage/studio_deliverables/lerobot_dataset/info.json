@@ -1,0 +1,83 @@
+{
+  "codebase_version": "v2.0",
+  "robot_type": "AgileX Hunter SE",
+  "total_episodes": 250000,
+  "total_frames": 37500000,
+  "total_tasks": 1,
+  "fps": 60,
+  "features": {
+    "observation.images.primary_rgb": {
+      "dtype": "video",
+      "shape": [
+        1080,
+        1920,
+        3
+      ],
+      "names": [
+        "height",
+        "width",
+        "channel"
+      ],
+      "info": {
+        "video.fps": 60,
+        "video.codec": "av1",
+        "pix_fmt": "yuv420p"
+      }
+    },
+    "observation.images.depth_map": {
+      "dtype": "video",
+      "shape": [
+        1080,
+        1920,
+        1
+      ],
+      "names": [
+        "height",
+        "width",
+        "channel"
+      ],
+      "info": {
+        "video.fps": 60,
+        "video.codec": "ffv1",
+        "depth_scale_mm": 1.0
+      }
+    },
+    "observation.state": {
+      "dtype": "float32",
+      "shape": [
+        12
+      ],
+      "names": [
+        "joint_positions",
+        "joint_velocities"
+      ]
+    },
+    "action": {
+      "dtype": "float32",
+      "shape": [
+        8
+      ],
+      "names": [
+        "joint_torques_target"
+      ]
+    },
+    "next.reward": {
+      "dtype": "float32",
+      "shape": [
+        1
+      ]
+    },
+    "next.done": {
+      "dtype": "bool",
+      "shape": [
+        1
+      ]
+    }
+  },
+  "splits": {
+    "train": "0:225000",
+    "val": "225000:250000"
+  },
+  "data_path": "data/chunk-{episode_chunk:03d}/episode_{episode_index:06d}.parquet",
+  "video_path": "videos/chunk-{episode_chunk:03d}/{video_key}/episode_{episode_index:06d}.mp4"
+}

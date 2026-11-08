@@ -1,0 +1,9 @@
+{
+  "robot_name": "agilex_hunter_se",
+  "links_count": 5,
+  "joints_count": 4,
+  "total_mass_kg": 79.0,
+  "usd_file": "agilex_hunter_se_physx5.usda",
+  "isaac_lab_cfg": "agilex_hunter_se_cfg.py",
+  "status": "CALIBRATED_PHYSX_5"
+}

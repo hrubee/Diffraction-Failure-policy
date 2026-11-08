@@ -1,0 +1,39 @@
+{
+  "pipeline": "nvidia/cosmos-transfer-2.5",
+  "task": "sim2real_action_invariant_augmentation",
+  "conditioning_sources": {
+    "semantic_segmentation": {
+      "source": "omni.syntheticdata.SemanticsAPI",
+      "colormap": "ade20k_robotics_12class",
+      "control_weight": 1.0,
+      "guidance_start": 0.0,
+      "guidance_end": 1.0
+    },
+    "canny_edge_preservation": {
+      "detector": "canny_high_freq",
+      "threshold_low": 100,
+      "threshold_high": 200,
+      "control_weight": 0.85
+    },
+    "kinematic_invariance_lock": {
+      "enforce_action_invariance": true,
+      "max_kinematic_drift_mm": 0.0,
+      "rigid_body_boundary_lock": true
+    }
+  },
+  "generation_prompts": {
+    "positive": "photorealistic warehouse with sodium lighting and floor scratches",
+    "negative": "cartoon, 3d render, blurry, phantom limbs, geometry deformation, artifact noise"
+  },
+  "diffusion_inference": {
+    "guidance_scale": 7.5,
+    "num_inference_steps": 30,
+    "fps": 60,
+    "seed": 420881
+  },
+  "metadata": {
+    "studio": "Diffraction Physical AI Studio",
+    "sim2real_certification": "Wasserstein W1 < 0.05",
+    "timestamp": 1794113439.5297542
+  }
+}

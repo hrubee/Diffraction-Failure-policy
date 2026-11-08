@@ -29,7 +29,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 }) => {
   const navItems = [
     { id: 'overview', label: '← Studio Overview' },
-    { id: 'studio', label: 'Procedural Tooling & SOW' },
+    { id: 'studio', label: 'Client Sprint Portal' },
     { id: 'catalog', label: 'Sample Deliverables' },
     { id: 'sim2real', label: 'Sim2Real Proof' },
     { id: 'sdk', label: 'Python SDK' },

@@ -1,0 +1,15 @@
+{
+  "dataset_id": "amr_pallet_docking_250k",
+  "certified_by": "Diffraction Physical AI Studio",
+  "sim2real_fidelity_pct": 98.6,
+  "wasserstein_distance": 0.038,
+  "covariance_alignment_pct": 98.7,
+  "kinematic_drift_mm": 0.0,
+  "certified_architectures": [
+    "Diffusion Policy (DP)",
+    "Action Chunking with Transformers (ACT)",
+    "OpenVLA (Prismatic)",
+    "Physical Intelligence Pi-Zero (\u03c0\u2080)"
+  ],
+  "timestamp": 1794113463.920595
+}

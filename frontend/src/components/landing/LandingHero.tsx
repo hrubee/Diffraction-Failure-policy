@@ -150,9 +150,9 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                   </div>
                   <div>
                     <h3 className="text-xs font-bold text-[#F5E9D8] tracking-wide uppercase font-headline">
-                      Diffraction Procedural Engine
+                      Studio Deliverable Quality Assurance
                     </h3>
-                    <p className="text-[10px] text-[#F5E9D8]/70 font-mono">Isaac Sim + Cosmos 2.5 Pipeline</p>
+                    <p className="text-[10px] text-[#F5E9D8]/70 font-mono">NVIDIA Isaac Sim + Cosmos 2.5</p>
                   </div>
                 </div>
 

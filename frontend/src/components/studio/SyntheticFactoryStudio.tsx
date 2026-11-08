@@ -1,7 +1,8 @@
 /**
- * Presentation Component: Synthetic Factory Studio
- * Interactive 5-stage control center for configuring and launching
- * massively parallel synthetic data generation runs in NVIDIA Isaac Sim / Isaac Lab.
+ * Presentation Component: Client Sprint Portal & SOW Workspace
+ * Positions Diffraction as an elite productized service studio for Physical AI.
+ * Clients scope fixed-fee sprints, track active engineering milestones,
+ * and download certified PhysX 5 OpenUSD assets and Cosmos datasets.
  *
  * Strict Color Hunt 4-Color Palette: #2FA4D7, #F5E9D8, #3E2C23, #E76F2E (Zero Gradients).
  */
@@ -10,638 +11,346 @@
 
 import React, { useState } from 'react';
 import {
+  SPRINT_PACKAGES,
   SEED_EMBODIMENTS,
   SEED_ENVIRONMENTS,
-  SEED_JOBS,
 } from '@/domain/synthetic/catalog';
-import {
-  RobotEmbodiment,
-  ProceduralEnvironment,
-  SyntheticGenerationJob,
-  DatasetExportFormat,
-} from '@/domain/synthetic/types';
-import { MultimodalStreamInspector } from './MultimodalStreamInspector';
 import { ClientSowConfigurator } from './ClientSowConfigurator';
+import { MultimodalStreamInspector } from './MultimodalStreamInspector';
 import {
-  Cpu,
-  Layers,
-  Sliders,
-  Radio,
-  Play,
+  ShieldCheck,
   CheckCircle2,
-  AlertCircle,
-  Database,
+  Clock,
   Sparkles,
+  FileText,
+  Download,
+  Layers,
   ArrowRight,
-  Server,
+  Send,
   Zap,
+  Cpu,
+  UserCheck,
+  PackageCheck,
+  ExternalLink,
 } from 'lucide-react';
 
+interface ActiveClientSprint {
+  readonly id: string;
+  readonly clientName: string;
+  readonly packageName: string;
+  readonly packageId: string;
+  readonly embodiment: string;
+  readonly environment: string;
+  readonly fixedFeeUsd: number;
+  readonly turnaroundDays: number;
+  readonly currentDay: number;
+  readonly currentMilestone: string;
+  readonly progressPct: number;
+  readonly status: 'IN_PROGRESS' | 'COMPLETED' | 'IN_REVIEW';
+  readonly sim2realFidelity: string;
+  readonly assignedLead: string;
+  readonly deliverables: readonly string[];
+}
+
+const ACTIVE_CLIENT_SPRINTS: readonly ActiveClientSprint[] = [
+  {
+    id: 'SOW-2026-8812',
+    clientName: 'AgileX Robotics Corp',
+    packageName: 'Cosmos Synthetic Dataset Sprint',
+    packageId: 'cosmos_dataset',
+    embodiment: 'AgileX Hunter SE Industrial AMR',
+    environment: 'Automated High-Bay Logistics Fulfillment Center',
+    fixedFeeUsd: 35000,
+    turnaroundDays: 14,
+    currentDay: 11,
+    currentMilestone: 'Phase 4: NVIDIA Cosmos Transfer 2.5 Action-Invariant Diffusion Augmentation',
+    progressPct: 78,
+    status: 'IN_PROGRESS',
+    sim2realFidelity: '98.6% (Wasserstein W1 = 0.038)',
+    assignedLead: 'Dr. Elena Rostova (Senior Simulation Lead)',
+    deliverables: [
+      '250,000 demonstration trajectories across 500 warehouse lighting permutations',
+      'Synchronized 1080p RGB, 16-bit Depth, Semantic Segmentation, and 32-beam LiDAR',
+      'Hugging Face LeRobot v2 parquet shards + zero-copy PyTorch DataLoader',
+      'Signed Sim2Real Wasserstein distribution certification report',
+    ],
+  },
+  {
+    id: 'SOW-2026-8810',
+    clientName: 'Sanctuary Physical AI Labs',
+    packageName: 'Robot USD Physics Rig Sprint',
+    packageId: 'robot_usd_rig',
+    embodiment: 'Unitree H1 Bipedal Humanoid (19-DoF)',
+    environment: 'Domestic Kitchen & Living Environment',
+    fixedFeeUsd: 7500,
+    turnaroundDays: 3,
+    currentDay: 3,
+    currentMilestone: 'Sprint Complete: All assets verified & delivered',
+    progressPct: 100,
+    status: 'COMPLETED',
+    sim2realFidelity: '97.9% Verified (Zero Kinematic Drift)',
+    assignedLead: 'Marcus Vance (Principal PhysX Engineer)',
+    deliverables: [
+      'Turnkey unitree_h1_physx5.usda asset with rigid bodies & collision envelopes',
+      'Joint damping, drive stiffness, and inertia tensor calibration at 500Hz',
+      'Drop-in Python unitree_h1_cfg.py class for NVIDIA Isaac Lab / Orbit',
+      '10-episode sanity check verification video + physics stability log',
+    ],
+  },
+  {
+    id: 'SOW-2026-8806',
+    clientName: 'Apex Logistics Automation',
+    packageName: 'Procedural Training Stage Sprint',
+    packageId: 'procedural_stage',
+    embodiment: 'Autonomous High-Bay Forklift Fleet',
+    environment: 'Exterior Loading Dock with Solar Glare & Rain Slicks',
+    fixedFeeUsd: 18500,
+    turnaroundDays: 7,
+    currentDay: 7,
+    currentMilestone: 'Sprint Complete: OpenUSD Stage & Replicator Recipe Delivered',
+    progressPct: 100,
+    status: 'COMPLETED',
+    sim2realFidelity: '98.4% Surface Calibration',
+    assignedLead: 'Marcus Vance (Principal PhysX Engineer)',
+    deliverables: [
+      'Exterior loading dock OpenUSD stage with afternoon solar glare (>85,000 Lux)',
+      'Omniverse Replicator dynamic friction recipe (μ = 0.15 - 0.75, rain slicks)',
+      'Dynamic obstacle traffic generators (forklifts, pedestrians, chokepoints)',
+      'Multi-camera sensor rig definitions (Stereo RGB, LiDAR, Depth)',
+    ],
+  },
+];
+
 export const SyntheticFactoryStudio: React.FC = () => {
-  const [studioMode, setStudioMode] = useState<'tooling' | 'sow'>('tooling');
-
-  // Config state
-  const [selectedEmbodiment, setSelectedEmbodiment] = useState<RobotEmbodiment>(SEED_EMBODIMENTS[1]); // AgileX Hunter
-  const [selectedEnvironment, setSelectedEnvironment] = useState<ProceduralEnvironment>(SEED_ENVIRONMENTS[0]); // Warehouse
-  const [lightingLux, setLightingLux] = useState<number>(450);
-  const [frictionMu, setFrictionMu] = useState<number>(0.28);
-  const [massVariancePct, setMassVariancePct] = useState<number>(20);
-  const [latencyJitterMs, setLatencyJitterMs] = useState<number>(35);
-  const [includeDepth, setIncludeDepth] = useState<boolean>(true);
-  const [includeSeg, setIncludeSeg] = useState<boolean>(true);
-  const [includeLidar, setIncludeLidar] = useState<boolean>(true);
-  const [targetEpisodes, setTargetEpisodes] = useState<number>(50000);
-  const [exportFormat, setExportFormat] = useState<DatasetExportFormat>('LeRobot_v2');
-  const [clusterGpus, setClusterGpus] = useState<number>(64);
-
-  // Active jobs state
-  const [jobs, setJobs] = useState<readonly SyntheticGenerationJob[]>(SEED_JOBS);
-  const [isLaunching, setIsLaunching] = useState<boolean>(false);
-  const [launchSuccess, setLaunchSuccess] = useState<boolean>(false);
-
-  const handleLaunchJob = async () => {
-    setIsLaunching(true);
-    setLaunchSuccess(false);
-
-    try {
-      // Dispatch to FastAPI backend
-      const res = await fetch('/api/v1/factory/jobs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: `${selectedEmbodiment.name} - ${selectedEnvironment.name} [DR Run]`,
-          embodiment_id: selectedEmbodiment.id,
-          environment_id: selectedEnvironment.id,
-          target_episodes: targetEpisodes,
-          format: exportFormat,
-          lighting_lux_min: Math.max(50, lightingLux - 200),
-          lighting_lux_max: lightingLux + 500,
-          friction_mu_min: Math.max(0.1, frictionMu - 0.1),
-          friction_mu_max: Math.min(0.95, frictionMu + 0.2),
-          mass_variance_pct: massVariancePct,
-          sensor_latency_jitter_ms: latencyJitterMs,
-          include_depth: includeDepth,
-          include_semantic_seg: includeSeg,
-          include_lidar: includeLidar,
-          cluster_gpus: clusterGpus,
-        }),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data.job) {
-          const formattedJob: SyntheticGenerationJob = {
-            id: data.job.id,
-            name: data.job.name,
-            embodimentId: data.job.embodiment_id,
-            environmentId: data.job.environment_id,
-            targetEpisodes: data.job.target_episodes,
-            completedEpisodes: data.job.completed_episodes,
-            status: 'GENERATING',
-            fps: data.job.fps,
-            activeGpuWorkers: data.job.active_gpu_workers,
-            storageGb: data.job.storage_gb,
-            sim2realScore: data.job.sim2real_score,
-            format: data.job.format,
-            createdAt: data.job.created_at * 1000,
-            clusterNodes: data.job.cluster_nodes,
-            lightingLuxRange: data.job.lighting_lux_range,
-            frictionMuRange: data.job.friction_mu_range,
-            sensorSuite: data.job.sensor_suite,
-          };
-          setJobs((prev) => [formattedJob, ...prev]);
-        }
-      } else {
-        // Local client fallback job
-        const mockJob: SyntheticGenerationJob = {
-          id: `job-prod-${Math.floor(Math.random() * 900 + 100)}`,
-          name: `${selectedEmbodiment.name} - ${selectedEnvironment.name} [DR Run]`,
-          embodimentId: selectedEmbodiment.id,
-          environmentId: selectedEnvironment.id,
-          targetEpisodes,
-          completedEpisodes: 0,
-          status: 'GENERATING',
-          fps: clusterGpus * 750,
-          activeGpuWorkers: clusterGpus,
-          storageGb: 0.1,
-          sim2realScore: 98.5,
-          format: exportFormat,
-          createdAt: Date.now(),
-          clusterNodes: `${clusterGpus}x NVIDIA H100 SXM5 (Diffraction Cloud)`,
-          lightingLuxRange: [Math.max(50, lightingLux - 200), lightingLux + 500],
-          frictionMuRange: [Math.max(0.1, frictionMu - 0.1), Math.min(0.95, frictionMu + 0.2)],
-          sensorSuite: ['RGB 1080p', 'Depth', 'Semantic Seg', '32-Beam LiDAR', 'Proprioception (500Hz)'],
-        };
-        setJobs((prev) => [mockJob, ...prev]);
-      }
-      setLaunchSuccess(true);
-    } catch {
-      // Network fallback
-      const fallbackJob: SyntheticGenerationJob = {
-        id: `job-prod-${Math.floor(Math.random() * 900 + 100)}`,
-        name: `${selectedEmbodiment.name} - ${selectedEnvironment.name} [DR Run]`,
-        embodimentId: selectedEmbodiment.id,
-        environmentId: selectedEnvironment.id,
-        targetEpisodes,
-        completedEpisodes: 0,
-        status: 'GENERATING',
-        fps: clusterGpus * 750,
-        activeGpuWorkers: clusterGpus,
-        storageGb: 0.1,
-        sim2realScore: 98.5,
-        format: exportFormat,
-        createdAt: Date.now(),
-        clusterNodes: `${clusterGpus}x NVIDIA H100 SXM5 (Diffraction Cloud)`,
-        lightingLuxRange: [Math.max(50, lightingLux - 200), lightingLux + 500],
-        frictionMuRange: [Math.max(0.1, frictionMu - 0.1), Math.min(0.95, frictionMu + 0.2)],
-        sensorSuite: ['RGB 1080p', 'Depth', 'Semantic Seg', '32-Beam LiDAR', 'Proprioception (500Hz)'],
-      };
-      setJobs((prev) => [fallbackJob, ...prev]);
-      setLaunchSuccess(true);
-    } finally {
-      setIsLaunching(false);
-    }
-  };
+  const [activePortalTab, setActivePortalTab] = useState<'sow' | 'tracker' | 'quality'>('sow');
+  const [selectedSprint, setSelectedSprint] = useState<ActiveClientSprint>(ACTIVE_CLIENT_SPRINTS[0]);
 
   return (
     <div className="space-y-8">
-      {/* Studio Banner & Mode Selector */}
-      <div className="bg-[#3E2C23] text-[#F5E9D8] p-6 sm:p-8 rounded-2xl border-2 border-[#3E2C23] shadow-xs space-y-6">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div className="space-y-2 max-w-2xl">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-[#2FA4D7] text-white">
-                Diffraction Productized Studio
-              </span>
-              <span className="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-[#E76F2E] text-white">
-                Powered by NVIDIA Isaac Sim &amp; Cosmos 2.5
-              </span>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold font-headline tracking-tight text-[#F5E9D8]">
-              {studioMode === 'sow'
-                ? 'Configure Your Client Sprint Statement of Work'
-                : 'Proprietary Procedural Tools & Cosmos Replicator Engine'}
-            </h1>
-            <p className="text-sm sm:text-base text-[#F5E9D8]/80 leading-relaxed font-body">
-              {studioMode === 'sow'
-                ? 'Fixed-scope, fixed-fee engineering sprints for robotics startups and Physical AI foundation model labs. Delivered in 3 to 14 days with full source USD assets and 100% Sim-to-Real policy transfer guarantee.'
-                : 'Robotics teams hire Diffraction because we build environments and assets 5x faster than an in-house team. This interactive demo showcases the proprietary procedural OpenUSD scripts and Cosmos Transfer recipes our engineers use internally to deliver client sprints.'}
-            </p>
+      {/* Studio Banner */}
+      <div className="bg-[#3E2C23] text-[#F5E9D8] p-6 sm:p-8 rounded-2xl border-2 border-[#3E2C23] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="space-y-2 max-w-2xl">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-[#2FA4D7] text-white">
+              Diffraction Physical AI Studio
+            </span>
+            <span className="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-[#E76F2E] text-white">
+              Bespoke Engineering Sprints
+            </span>
           </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold font-headline tracking-tight text-[#F5E9D8]">
+            Client Sprint Portal &amp; SOW Workspace
+          </h1>
+          <p className="text-sm sm:text-base text-[#F5E9D8]/80 leading-relaxed font-body">
+            Diffraction delivers turnkey NVIDIA Isaac Sim OpenUSD assets, procedural training stages, and Cosmos demonstration datasets in 3 to 14 days. Configure your statement of work or track active sprint milestones below.
+          </p>
+        </div>
 
-          <div className="flex bg-[#2A1D17] p-1 rounded-xl border border-white/10 shrink-0 font-mono text-xs">
-            <button
-              type="button"
-              onClick={() => setStudioMode('tooling')}
-              className={`px-4 py-2.5 rounded-lg font-bold transition-all cursor-pointer flex items-center space-x-2 ${
-                studioMode === 'tooling' ? 'bg-[#2FA4D7] text-white shadow-xs' : 'text-[#F5E9D8]/70 hover:text-white'
-              }`}
-            >
-              <Cpu className="w-4 h-4" />
-              <span>Procedural Tooling Demo</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setStudioMode('sow')}
-              className={`px-4 py-2.5 rounded-lg font-bold transition-all cursor-pointer flex items-center space-x-2 ${
-                studioMode === 'sow' ? 'bg-[#2FA4D7] text-white shadow-xs' : 'text-[#F5E9D8]/70 hover:text-white'
-              }`}
-            >
-              <Sparkles className="w-4 h-4 text-[#E76F2E]" />
-              <span>Scope Sprint SOW ($7.5k+)</span>
-            </button>
-          </div>
+        {/* Portal Tab Switcher */}
+        <div className="flex bg-[#2A1D17] p-1 rounded-xl border border-white/10 shrink-0 font-mono text-xs">
+          <button
+            type="button"
+            onClick={() => setActivePortalTab('sow')}
+            className={`px-4 py-2.5 rounded-lg font-bold transition-all cursor-pointer flex items-center space-x-2 ${
+              activePortalTab === 'sow' ? 'bg-[#2FA4D7] text-white shadow-xs' : 'text-[#F5E9D8]/70 hover:text-white'
+            }`}
+          >
+            <Sparkles className="w-4 h-4 text-[#E76F2E]" />
+            <span>Scope Sprint SOW ($7.5k+)</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActivePortalTab('tracker')}
+            className={`px-4 py-2.5 rounded-lg font-bold transition-all cursor-pointer flex items-center space-x-2 ${
+              activePortalTab === 'tracker' ? 'bg-[#2FA4D7] text-white shadow-xs' : 'text-[#F5E9D8]/70 hover:text-white'
+            }`}
+          >
+            <Clock className="w-4 h-4" />
+            <span>Active Sprint Tracker (3)</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActivePortalTab('quality')}
+            className={`px-4 py-2.5 rounded-lg font-bold transition-all cursor-pointer flex items-center space-x-2 ${
+              activePortalTab === 'quality' ? 'bg-[#2FA4D7] text-white shadow-xs' : 'text-[#F5E9D8]/70 hover:text-white'
+            }`}
+          >
+            <ShieldCheck className="w-4 h-4" />
+            <span>Sim2Real Quality Inspector</span>
+          </button>
         </div>
       </div>
 
-      {studioMode === 'sow' ? (
-        <ClientSowConfigurator />
-      ) : (
-        <>
-          {/* 5-Channel Multimodal Stream Inspector Live Viewport */}
-          <section aria-label="Multimodal Stream Inspector">
-            <MultimodalStreamInspector
-              selectedEmbodimentId={selectedEmbodiment.name}
-              selectedEnvironmentId={selectedEnvironment.name}
-              lightingLux={lightingLux}
-              frictionMu={frictionMu}
-            />
-          </section>
+      {/* TAB 1: SOW CONFIGURATOR */}
+      {activePortalTab === 'sow' && <ClientSowConfigurator />}
 
-          {/* 5-Stage Job Configurator */}
-          <div className="bg-white border-2 border-[#3E2C23] rounded-2xl p-6 sm:p-8 shadow-xs space-y-8">
-        <div className="border-b-2 border-[#3E2C23] pb-4 flex items-center justify-between">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-extrabold text-[#3E2C23] font-headline">
-              Interactive Generation Job Configurator
-            </h2>
-            <p className="text-xs sm:text-sm text-[#3E2C23]/70 font-mono mt-0.5">
-              5-Step Parametric Specification for Autonomous Foundation Model Training
-            </p>
-          </div>
-          <span className="hidden sm:inline-flex px-3 py-1 rounded-full text-xs font-bold bg-[#F5E9D8] text-[#3E2C23] border border-[#3E2C23]/20">
-            Pipeline Ready
-          </span>
-        </div>
-
-        {/* Step 1: Embodiment Picker */}
-        <div className="space-y-3">
-          <label className="text-sm font-bold uppercase tracking-wide text-[#3E2C23] flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-[#2FA4D7]" /> Step 1: Select Robot Embodiment
-          </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {SEED_EMBODIMENTS.map((emb) => {
-              const isSelected = selectedEmbodiment.id === emb.id;
+      {/* TAB 2: ACTIVE SPRINT DELIVERY TRACKER */}
+      {activePortalTab === 'tracker' && (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {ACTIVE_CLIENT_SPRINTS.map((sprint) => {
+              const isSelected = selectedSprint.id === sprint.id;
               return (
-                <button
-                  type="button"
-                  key={emb.id}
-                  onClick={() => setSelectedEmbodiment(emb)}
-                  className={`p-4 rounded-xl border-2 text-left transition-all cursor-pointer flex flex-col justify-between min-h-[140px] ${
+                <div
+                  key={sprint.id}
+                  onClick={() => setSelectedSprint(sprint)}
+                  className={`p-5 rounded-xl border-2 transition-all cursor-pointer flex flex-col justify-between space-y-4 ${
                     isSelected
-                      ? 'border-[#2FA4D7] bg-[#2FA4D7]/10 ring-2 ring-[#2FA4D7]/30'
-                      : 'border-[#3E2C23]/20 bg-[#F5E9D8]/30 hover:border-[#3E2C23]'
+                      ? 'border-[#2FA4D7] bg-[#2FA4D7]/10 shadow-xs'
+                      : 'border-[#3E2C23]/20 bg-white hover:border-[#3E2C23]'
                   }`}
                 >
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#3E2C23] text-[#F5E9D8]">
-                        {emb.category}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-mono font-bold text-[#2FA4D7]">{sprint.id}</span>
+                      <span
+                        className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded ${
+                          sprint.status === 'COMPLETED'
+                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                            : 'bg-[#E76F2E] text-white'
+                        }`}
+                      >
+                        {sprint.status === 'COMPLETED' ? 'DELIVERED' : 'IN DELIVERY'}
                       </span>
-                      {isSelected && <CheckCircle2 className="w-4 h-4 text-[#2FA4D7]" />}
                     </div>
-                    <h3 className="font-bold text-sm text-[#3E2C23] mt-2 font-headline">{emb.name}</h3>
-                    <p className="text-xs text-[#3E2C23]/70 mt-1 line-clamp-2">{emb.description}</p>
+                    <h3 className="font-bold text-base text-[#3E2C23] font-headline">{sprint.clientName}</h3>
+                    <p className="text-xs text-[#3E2C23]/80 font-body">{sprint.packageName}</p>
                   </div>
-                  <div className="mt-3 pt-2 border-t border-[#3E2C23]/10 flex items-center justify-between text-[11px] font-mono text-[#3E2C23]">
-                    <span>{emb.dof} DoF</span>
-                    <span>{emb.massKg} kg</span>
-                    <span>{emb.controlFrequencyHz} Hz</span>
+
+                  <div className="space-y-2 pt-2 border-t border-[#3E2C23]/10">
+                    <div className="flex justify-between text-xs font-mono text-[#3E2C23]">
+                      <span>Progress: Day {sprint.currentDay} / {sprint.turnaroundDays}</span>
+                      <span className="font-bold text-[#2FA4D7]">{sprint.progressPct}%</span>
+                    </div>
+                    <div className="w-full h-2 bg-[#F5E9D8] rounded-full overflow-hidden border border-[#3E2C23]/20">
+                      <div
+                        className="h-full bg-[#2FA4D7] transition-all"
+                        style={{ width: `${sprint.progressPct}%` }}
+                      />
+                    </div>
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>
-        </div>
 
-        {/* Step 2: OpenUSD Environment */}
-        <div className="space-y-3">
-          <label className="text-sm font-bold uppercase tracking-wide text-[#3E2C23] flex items-center gap-2">
-            <Layers className="w-4 h-4 text-[#E76F2E]" /> Step 2: Select Procedural OpenUSD Stage
-          </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {SEED_ENVIRONMENTS.map((env) => {
-              const isSelected = selectedEnvironment.id === env.id;
-              return (
-                <button
-                  type="button"
-                  key={env.id}
-                  onClick={() => setSelectedEnvironment(env)}
-                  className={`p-4 rounded-xl border-2 text-left transition-all cursor-pointer flex flex-col justify-between min-h-[140px] ${
-                    isSelected
-                      ? 'border-[#E76F2E] bg-[#E76F2E]/10 ring-2 ring-[#E76F2E]/30'
-                      : 'border-[#3E2C23]/20 bg-[#F5E9D8]/30 hover:border-[#3E2C23]'
-                  }`}
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#3E2C23] text-[#F5E9D8]">
-                        {env.category}
-                      </span>
-                      {isSelected && <CheckCircle2 className="w-4 h-4 text-[#E76F2E]" />}
-                    </div>
-                    <h3 className="font-bold text-sm text-[#3E2C23] mt-2 font-headline">{env.name}</h3>
-                    <p className="text-xs text-[#3E2C23]/70 mt-1 line-clamp-2">{env.description}</p>
+          {/* Selected Sprint Detailed Dossier */}
+          {selectedSprint && (
+            <div className="bg-white border-2 border-[#3E2C23] rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#3E2C23]/15 pb-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono font-bold text-[#2FA4D7]">{selectedSprint.id}</span>
+                    <span className="text-xs font-mono px-2 py-0.5 rounded bg-[#3E2C23] text-white font-bold">
+                      ${selectedSprint.fixedFeeUsd.toLocaleString()} Fixed Contract
+                    </span>
+                    <span className="text-xs font-mono text-emerald-700 font-bold">
+                      {selectedSprint.turnaroundDays}-Day Delivery SLA
+                    </span>
                   </div>
-                  <div className="mt-3 pt-2 border-t border-[#3E2C23]/10 text-[10px] font-mono text-[#3E2C23]/80">
-                    μ: {env.frictionMuRange[0]} - {env.frictionMuRange[1]} | Lux: {env.lightingLuxRange[0]}-{env.lightingLuxRange[1]}
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-[#3E2C23] font-headline">
+                    {selectedSprint.clientName}: {selectedSprint.packageName}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-[#3E2C23]/80 font-body">
+                    <strong>Target Embodiment:</strong> {selectedSprint.embodiment} • <strong>Environment:</strong> {selectedSprint.environment}
+                  </p>
+                </div>
+
+                <div className="text-right shrink-0 font-mono text-xs text-[#3E2C23] space-y-1">
+                  <div className="flex items-center gap-1.5 justify-end text-[#3E2C23]/70">
+                    <UserCheck className="w-4 h-4 text-[#2FA4D7]" />
+                    <span>Sprint Lead:</span>
                   </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Step 3: Domain Randomization Matrix */}
-        <div className="space-y-4">
-          <label className="text-sm font-bold uppercase tracking-wide text-[#3E2C23] flex items-center gap-2">
-            <Sliders className="w-4 h-4 text-[#2FA4D7]" /> Step 3: Configure Domain Randomization (DR) Bounds
-          </label>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-5 rounded-xl bg-[#F5E9D8]/50 border-2 border-[#3E2C23]/20">
-            {/* Lighting Lux Slider */}
-            <div>
-              <div className="flex justify-between items-center text-xs font-mono mb-2">
-                <span className="font-bold text-[#3E2C23]">RTX Solar Illuminance</span>
-                <span className="px-2 py-0.5 rounded bg-[#3E2C23] text-[#F5E9D8] font-bold">
-                  {lightingLux} Lux
-                </span>
+                  <div className="font-bold">{selectedSprint.assignedLead}</div>
+                </div>
               </div>
-              <input
-                type="range"
-                min="50"
-                max="85000"
-                step="250"
-                value={lightingLux}
-                onChange={(e) => setLightingLux(Number(e.target.value))}
-                className="w-full accent-[#2FA4D7] cursor-pointer"
-              />
-              <span className="text-[10px] text-[#3E2C23]/60 block mt-1">
-                {lightingLux > 20000 ? 'Extreme Outdoor Glare Blowout' : 'Indoor Warehouse Ambient'}
-              </span>
-            </div>
 
-            {/* Friction Slider */}
-            <div>
-              <div className="flex justify-between items-center text-xs font-mono mb-2">
-                <span className="font-bold text-[#3E2C23]">Pacejka Friction (μ)</span>
-                <span className="px-2 py-0.5 rounded bg-[#3E2C23] text-[#F5E9D8] font-bold">
-                  μ = {frictionMu.toFixed(2)}
-                </span>
+              {/* Current Milestone Status */}
+              <div className="p-4 bg-[#F5E9D8]/60 rounded-xl border border-[#3E2C23]/20 space-y-2">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="font-bold text-[#E76F2E] uppercase">CURRENT SPRINT MILESTONE:</span>
+                  <span className="text-[#3E2C23]/70">Day {selectedSprint.currentDay} of {selectedSprint.turnaroundDays}</span>
+                </div>
+                <div className="text-sm font-bold text-[#3E2C23] font-headline">
+                  {selectedSprint.currentMilestone}
+                </div>
+                <div className="flex items-center gap-2 text-xs font-mono text-emerald-800">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Sim2Real Calibration Status: <strong>{selectedSprint.sim2realFidelity}</strong></span>
+                </div>
               </div>
-              <input
-                type="range"
-                min="0.10"
-                max="0.95"
-                step="0.02"
-                value={frictionMu}
-                onChange={(e) => setFrictionMu(Number(e.target.value))}
-                className="w-full accent-[#E76F2E] cursor-pointer"
-              />
-              <span className="text-[10px] text-[#3E2C23]/60 block mt-1">
-                {frictionMu < 0.25 ? 'Wet Resinous Epoxy (Low Traction)' : 'Dry Polished Concrete'}
-              </span>
-            </div>
 
-            {/* Mass Variance Slider */}
-            <div>
-              <div className="flex justify-between items-center text-xs font-mono mb-2">
-                <span className="font-bold text-[#3E2C23]">Payload Mass Variance</span>
-                <span className="px-2 py-0.5 rounded bg-[#3E2C23] text-[#F5E9D8] font-bold">
-                  ±{massVariancePct}%
-                </span>
-              </div>
-              <input
-                type="range"
-                min="0"
-                max="40"
-                step="5"
-                value={massVariancePct}
-                onChange={(e) => setMassVariancePct(Number(e.target.value))}
-                className="w-full accent-[#2FA4D7] cursor-pointer"
-              />
-              <span className="text-[10px] text-[#3E2C23]/60 block mt-1">
-                Center-of-gravity perturbation bounds
-              </span>
-            </div>
-
-            {/* Transport Latency Jitter */}
-            <div>
-              <div className="flex justify-between items-center text-xs font-mono mb-2">
-                <span className="font-bold text-[#3E2C23]">ROS 2 DDS Latency Jitter</span>
-                <span className="px-2 py-0.5 rounded bg-[#3E2C23] text-[#F5E9D8] font-bold">
-                  {latencyJitterMs} ms
-                </span>
-              </div>
-              <input
-                type="range"
-                min="5"
-                max="120"
-                step="5"
-                value={latencyJitterMs}
-                onChange={(e) => setLatencyJitterMs(Number(e.target.value))}
-                className="w-full accent-[#E76F2E] cursor-pointer"
-              />
-              <span className="text-[10px] text-[#3E2C23]/60 block mt-1">
-                {latencyJitterMs > 60 ? 'Severe Network/Compute Throttle' : 'Normal Low-Latency Bus'}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Step 4: Multimodal Sensors & Output Format */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-3">
-            <label className="text-sm font-bold uppercase tracking-wide text-[#3E2C23] flex items-center gap-2">
-              <Radio className="w-4 h-4 text-[#2FA4D7]" /> Step 4: Multimodal Sensor Suite
-            </label>
-            <div className="space-y-2 bg-[#F5E9D8]/30 p-4 rounded-xl border-2 border-[#3E2C23]/15 text-xs font-bold text-[#3E2C23]">
-              <label className="flex items-center justify-between cursor-pointer">
-                <span>RGB Photorealistic Camera (1080p @ 60Hz)</span>
-                <input type="checkbox" checked disabled className="accent-[#2FA4D7] w-4 h-4" />
-              </label>
-              <label className="flex items-center justify-between cursor-pointer">
-                <span>16-Bit Normalized Depth Maps</span>
-                <input
-                  type="checkbox"
-                  checked={includeDepth}
-                  onChange={(e) => setIncludeDepth(e.target.checked)}
-                  className="accent-[#2FA4D7] w-4 h-4 cursor-pointer"
-                />
-              </label>
-              <label className="flex items-center justify-between cursor-pointer">
-                <span>Ground Truth Semantic Segmentation Masks</span>
-                <input
-                  type="checkbox"
-                  checked={includeSeg}
-                  onChange={(e) => setIncludeSeg(e.target.checked)}
-                  className="accent-[#2FA4D7] w-4 h-4 cursor-pointer"
-                />
-              </label>
-              <label className="flex items-center justify-between cursor-pointer">
-                <span>32-Beam 3D LiDAR Spherical Scan (20Hz)</span>
-                <input
-                  type="checkbox"
-                  checked={includeLidar}
-                  onChange={(e) => setIncludeLidar(e.target.checked)}
-                  className="accent-[#2FA4D7] w-4 h-4 cursor-pointer"
-                />
-              </label>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <label className="text-sm font-bold uppercase tracking-wide text-[#3E2C23] flex items-center gap-2">
-              <Database className="w-4 h-4 text-[#E76F2E]" /> Step 5: Export Target & Compute Allocation
-            </label>
-            <div className="space-y-3 bg-[#F5E9D8]/30 p-4 rounded-xl border-2 border-[#3E2C23]/15 text-xs">
-              <div>
-                <span className="block font-bold text-[#3E2C23] mb-1">Target AI Dataset Format</span>
-                <div className="grid grid-cols-2 gap-2">
-                  {(['LeRobot_v2', 'OpenX_RLDS', 'HDF5_PyTorch', 'MCAP_ROS2'] as DatasetExportFormat[]).map((fmt) => (
-                    <button
-                      type="button"
-                      key={fmt}
-                      onClick={() => setExportFormat(fmt)}
-                      className={`px-3 py-1.5 rounded font-mono font-bold text-[11px] transition-colors cursor-pointer text-left border ${
-                        exportFormat === fmt
-                          ? 'bg-[#2FA4D7] text-white border-[#2FA4D7]'
-                          : 'bg-white text-[#3E2C23] border-[#3E2C23]/20 hover:border-[#3E2C23]'
-                      }`}
+              {/* Deliverables Checklist */}
+              <div className="space-y-3">
+                <h4 className="text-xs font-bold font-headline uppercase tracking-wide text-[#3E2C23]">
+                  Sprint Deliverables &amp; Artifacts:
+                </h4>
+                <div className="space-y-2">
+                  {selectedSprint.deliverables.map((del, i) => (
+                    <div
+                      key={i}
+                      className="p-3 bg-white rounded-lg border border-[#3E2C23]/20 flex items-center justify-between gap-4 text-xs font-body text-[#3E2C23]"
                     >
-                      {fmt.replace('_', ' ')}
-                    </button>
+                      <div className="flex items-center space-x-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-[#2FA4D7] shrink-0" />
+                        <span>{del}</span>
+                      </div>
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#F5E9D8] text-[#3E2C23] font-bold shrink-0 border border-[#3E2C23]/15">
+                        {selectedSprint.status === 'COMPLETED' ? 'DELIVERED' : 'IN QA REVIEW'}
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>
 
-              <div className="flex gap-4 pt-1">
-                <div className="flex-1">
-                  <span className="block font-bold text-[#3E2C23] mb-1">Target Episodes</span>
-                  <select
-                    value={targetEpisodes}
-                    onChange={(e) => setTargetEpisodes(Number(e.target.value))}
-                    className="w-full bg-white border border-[#3E2C23]/20 rounded p-1.5 font-mono text-xs font-bold text-[#3E2C23] cursor-pointer"
-                  >
-                    <option value={10000}>10,000 Episodes (15 GB)</option>
-                    <option value={50000}>50,000 Episodes (75 GB)</option>
-                    <option value={100000}>100,000 Episodes (150 GB)</option>
-                    <option value={250000}>250,000 Episodes (380 GB)</option>
-                  </select>
+              {/* Client Action Bar */}
+              <div className="pt-4 border-t border-[#3E2C23]/15 flex flex-wrap items-center justify-between gap-3">
+                <div className="text-xs font-mono text-[#3E2C23]/70">
+                  Backed by the <strong>100% Sim-to-Real Transfer Guarantee</strong>.
                 </div>
-
-                <div className="flex-1">
-                  <span className="block font-bold text-[#3E2C23] mb-1">GPU Cluster Workers</span>
-                  <select
-                    value={clusterGpus}
-                    onChange={(e) => setClusterGpus(Number(e.target.value))}
-                    className="w-full bg-white border border-[#3E2C23]/20 rounded p-1.5 font-mono text-xs font-bold text-[#3E2C23] cursor-pointer"
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => alert(`Deliverable archive for ${selectedSprint.id} is encrypted with your tenant private key. Please check your secure email drop.`)}
+                    className="px-4 py-2.5 rounded-lg bg-[#2FA4D7] hover:bg-[#258ec0] text-white text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
                   >
-                    <option value={32}>32x NVIDIA H100 (24,000 FPS)</option>
-                    <option value={64}>64x NVIDIA H100 (48,200 FPS)</option>
-                    <option value={128}>128x NVIDIA H100 (96,000 FPS)</option>
-                  </select>
+                    <Download className="w-4 h-4" />
+                    <span>Download Certified Deliverables</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActivePortalTab('sow');
+                    }}
+                    className="px-4 py-2.5 rounded-lg border-2 border-[#3E2C23] text-[#3E2C23] hover:bg-[#F5E9D8] text-xs font-mono font-bold cursor-pointer transition-colors"
+                  >
+                    Scope Next Sprint →
+                  </button>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
+      )}
 
-        {/* Launch Button Strip */}
-        <div className="pt-4 border-t-2 border-[#3E2C23] flex flex-wrap items-center justify-between gap-4">
-          <div className="text-xs font-mono text-[#3E2C23]/80">
-            Estimated generation duration:{' '}
-            <span className="font-bold text-[#3E2C23]">
-              {((targetEpisodes * 120) / (clusterGpus * 750) / 60).toFixed(1)} minutes
-            </span>{' '}
-            at full cluster capacity.
-          </div>
-
-          <button
-            type="button"
-            onClick={handleLaunchJob}
-            disabled={isLaunching}
-            className="px-6 py-3 rounded-xl bg-[#E76F2E] hover:bg-[#E76F2E]/90 text-white font-extrabold text-sm sm:text-base tracking-wide flex items-center gap-2 cursor-pointer shadow-xs transition-transform active:scale-95 disabled:opacity-50"
-          >
-            {isLaunching ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                Dispatching to Isaac Sim Workers...
-              </>
-            ) : (
-              <>
-                <Play className="w-4 h-4 fill-current" />
-                Launch Isaac Sim Generation Run
-              </>
-            )}
-          </button>
-        </div>
-
-        {launchSuccess && (
-          <div className="p-4 rounded-xl bg-emerald-50 border-2 border-emerald-600 text-emerald-900 text-xs font-bold flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-            Generation job successfully dispatched to {clusterGpus}x NVIDIA H100 GPU workers. Real-time telemetry streaming below.
-          </div>
-        )}
-      </div>
-
-      {/* Active Isaac Sim Cluster Jobs Queue */}
-      <div className="bg-white border-2 border-[#3E2C23] rounded-2xl p-6 sm:p-8 shadow-xs space-y-4">
-        <div className="flex items-center justify-between border-b-2 border-[#3E2C23] pb-3">
-          <div className="flex items-center gap-2">
-            <Server className="w-5 h-5 text-[#2FA4D7]" />
-            <h3 className="text-lg sm:text-xl font-extrabold text-[#3E2C23] font-headline">
-              Active Isaac Sim Generation Queue
+      {/* TAB 3: SIM2REAL QUALITY INSPECTOR */}
+      {activePortalTab === 'quality' && (
+        <section aria-label="Sim2Real Quality Assurance">
+          <div className="space-y-4 mb-4">
+            <h3 className="text-lg font-bold font-headline text-[#3E2C23]">
+              Sim-to-Real Multi-Modal Quality Assurance &amp; Kinematic Invariance
             </h3>
+            <p className="text-xs sm:text-sm text-[#3E2C23]/80 font-body">
+              Every deliverable produced by Diffraction Studio is verified against our 3-stage validation pipeline to guarantee that robot joint kinematics remain 100% invariant while visual streams achieve photorealism.
+            </p>
           </div>
-          <span className="text-xs font-mono font-bold text-[#3E2C23]/60">
-            {jobs.length} Active Runs
-          </span>
-        </div>
-
-        <div className="space-y-4">
-          {jobs.map((job) => {
-            const pct = Math.min(100, Math.round((job.completedEpisodes / job.targetEpisodes) * 100));
-            return (
-              <div
-                key={job.id}
-                className="p-5 rounded-xl border-2 border-[#3E2C23] bg-[#F5E9D8]/30 space-y-3"
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs font-extrabold px-2 py-0.5 rounded bg-[#3E2C23] text-[#F5E9D8]">
-                      {job.id}
-                    </span>
-                    <h4 className="font-bold text-sm sm:text-base text-[#3E2C23] font-headline">
-                      {job.name}
-                    </h4>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded text-[11px] font-mono font-bold bg-[#2FA4D7] text-white">
-                      {job.format}
-                    </span>
-                    <span
-                      className={`px-2.5 py-0.5 rounded text-[11px] font-mono font-bold ${
-                        job.status === 'GENERATING'
-                          ? 'bg-[#E76F2E] text-white animate-pulse'
-                          : 'bg-emerald-600 text-white'
-                      }`}
-                    >
-                      {job.status}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Progress bar */}
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs font-mono">
-                    <span className="text-[#3E2C23]/70">
-                      {job.completedEpisodes.toLocaleString()} / {job.targetEpisodes.toLocaleString()} Episodes Generated
-                    </span>
-                    <span className="font-bold text-[#3E2C23]">{pct}% Complete</span>
-                  </div>
-                  <div className="w-full h-3 bg-white border border-[#3E2C23]/30 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-[#2FA4D7] transition-all duration-300"
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
-                </div>
-
-                {/* Metrics strip */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-xs font-mono text-[#3E2C23]/80 border-t border-[#3E2C23]/10">
-                  <div>
-                    <span className="text-[#3E2C23]/50 block">Workers</span>
-                    <span className="font-bold text-[#3E2C23]">{job.activeGpuWorkers}x H100 Nodes</span>
-                  </div>
-                  <div>
-                    <span className="text-[#3E2C23]/50 block">Throughput</span>
-                    <span className="font-bold text-[#3E2C23]">{job.fps.toLocaleString()} FPS</span>
-                  </div>
-                  <div>
-                    <span className="text-[#3E2C23]/50 block">Dataset Size</span>
-                    <span className="font-bold text-[#3E2C23]">{job.storageGb} GB</span>
-                  </div>
-                  <div>
-                    <span className="text-[#3E2C23]/50 block">Sim2Real Score</span>
-                    <span className="font-bold text-emerald-700">{job.sim2realScore}% Verified</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      </>
+          <MultimodalStreamInspector
+            selectedEmbodimentId={SEED_EMBODIMENTS[1].name}
+            selectedEnvironmentId={SEED_ENVIRONMENTS[0].name}
+            lightingLux={450}
+            frictionMu={0.28}
+          />
+        </section>
       )}
     </div>
   );

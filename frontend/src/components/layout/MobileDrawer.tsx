@@ -26,7 +26,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
   const navItems = [
     { id: 'overview', label: 'Studio Overview' },
-    { id: 'studio', label: 'Procedural Tooling & SOW' },
+    { id: 'studio', label: 'Client Sprint Portal' },
     { id: 'catalog', label: 'Sample Deliverables Portfolio' },
     { id: 'sim2real', label: 'Sim-to-Real Guarantee' },
     { id: 'sdk', label: 'Python SDK & Docs' },

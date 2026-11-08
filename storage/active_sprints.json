@@ -1,0 +1,14 @@
+[
+  {
+    "sprint_id": "SPRINT-1794113506",
+    "client_name": "Cobalt Robotics",
+    "package": "robot_usd_rig",
+    "embodiment": "Cobalt Patrol AMR",
+    "fixed_fee_usd": 7500,
+    "turnaround_days": 3,
+    "start_time": 1794113506.005065,
+    "deadline_time": 1794372706.005065,
+    "status": "IN_PROGRESS",
+    "deliverables": []
+  }
+]

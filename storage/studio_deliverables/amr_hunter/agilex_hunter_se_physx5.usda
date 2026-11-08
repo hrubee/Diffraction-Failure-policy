@@ -1,0 +1,123 @@
+#usda 1.0
+(
+    defaultPrim = "agilex_hunter_se"
+    metersPerUnit = 1.0
+    upAxis = "Z"
+)
+
+def Xform "agilex_hunter_se" (
+    prepend apiSchemas = ["PhysicsArticulationRootAPI", "PhysxArticulationAPI"]
+)
+{
+    bool physxArticulation:enabledSelfCollisions = false
+    int physxArticulation:solverPositionIterationCount = 12
+    int physxArticulation:solverVelocityIterationCount = 4
+
+    def Xform "base_link" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysicsCollisionAPI"]
+    )
+    {
+        float physics:mass = 65.0
+        point3f physics:centerOfMass = (0.0, 0.0, 0.15)
+        float3 physics:diagonalInertia = (1.85, 2.45, 3.1)
+        bool physics:collisionEnabled = true
+        bool physics:rigidBodyEnabled = true
+    }
+
+    def Xform "front_left_wheel" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysicsCollisionAPI"]
+    )
+    {
+        float physics:mass = 3.5
+        point3f physics:centerOfMass = (0.0, 0.0, 0.0)
+        float3 physics:diagonalInertia = (0.024, 0.042, 0.024)
+        bool physics:collisionEnabled = true
+        bool physics:rigidBodyEnabled = true
+    }
+
+    def Xform "front_right_wheel" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysicsCollisionAPI"]
+    )
+    {
+        float physics:mass = 3.5
+        point3f physics:centerOfMass = (0.0, 0.0, 0.0)
+        float3 physics:diagonalInertia = (0.024, 0.042, 0.024)
+        bool physics:collisionEnabled = true
+        bool physics:rigidBodyEnabled = true
+    }
+
+    def Xform "rear_left_wheel" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysicsCollisionAPI"]
+    )
+    {
+        float physics:mass = 3.5
+        point3f physics:centerOfMass = (0.0, 0.0, 0.0)
+        float3 physics:diagonalInertia = (0.024, 0.042, 0.024)
+        bool physics:collisionEnabled = true
+        bool physics:rigidBodyEnabled = true
+    }
+
+    def Xform "rear_right_wheel" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysicsCollisionAPI"]
+    )
+    {
+        float physics:mass = 3.5
+        point3f physics:centerOfMass = (0.0, 0.0, 0.0)
+        float3 physics:diagonalInertia = (0.024, 0.042, 0.024)
+        bool physics:collisionEnabled = true
+        bool physics:rigidBodyEnabled = true
+    }
+
+    def PhysicsRevoluteJoint "front_left_wheel_joint" (
+        prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysxJointAPI"]
+    )
+    {
+        rel physics:body0 = </agilex_hunter_se/base_link>
+        rel physics:body1 = </agilex_hunter_se/front_left_wheel>
+        point3f physics:localPos0 = (0.32, 0.28, 0.16)
+        token physics:axis = "Y"
+        float drive:angular:physics:damping = 0.8
+        float drive:angular:physics:stiffness = 112.5
+        float drive:angular:physics:maxForce = 45.0
+    }
+
+    def PhysicsRevoluteJoint "front_right_wheel_joint" (
+        prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysxJointAPI"]
+    )
+    {
+        rel physics:body0 = </agilex_hunter_se/base_link>
+        rel physics:body1 = </agilex_hunter_se/front_right_wheel>
+        point3f physics:localPos0 = (0.32, -0.28, 0.16)
+        token physics:axis = "Y"
+        float drive:angular:physics:damping = 0.8
+        float drive:angular:physics:stiffness = 112.5
+        float drive:angular:physics:maxForce = 45.0
+    }
+
+    def PhysicsRevoluteJoint "rear_left_wheel_joint" (
+        prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysxJointAPI"]
+    )
+    {
+        rel physics:body0 = </agilex_hunter_se/base_link>
+        rel physics:body1 = </agilex_hunter_se/rear_left_wheel>
+        point3f physics:localPos0 = (-0.32, 0.28, 0.16)
+        token physics:axis = "Y"
+        float drive:angular:physics:damping = 0.8
+        float drive:angular:physics:stiffness = 112.5
+        float drive:angular:physics:maxForce = 45.0
+    }
+
+    def PhysicsRevoluteJoint "rear_right_wheel_joint" (
+        prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysxJointAPI"]
+    )
+    {
+        rel physics:body0 = </agilex_hunter_se/base_link>
+        rel physics:body1 = </agilex_hunter_se/rear_right_wheel>
+        point3f physics:localPos0 = (-0.32, -0.28, 0.16)
+        token physics:axis = "Y"
+        float drive:angular:physics:damping = 0.8
+        float drive:angular:physics:stiffness = 112.5
+        float drive:angular:physics:maxForce = 45.0
+    }
+
+}
