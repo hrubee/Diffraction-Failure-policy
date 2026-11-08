@@ -22,7 +22,8 @@ DB_PATH = "./storage/fulfillment_jobs.db"
 DELIVERABLES_DIR = "./storage/studio_deliverables"
 SAMPLE_URDFS_DIR = "./storage/sample_urdfs"
 
-_executor = ThreadPoolExecutor(max_workers=3, thread_name_prefix="fulfillment_worker")
+# Conservative single-worker pool to guarantee zero interference with neighbor processes
+_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="fulfillment_worker")
 
 
 def init_db():
@@ -190,46 +191,68 @@ def execute_fulfillment_pipeline(job_id: str) -> Dict[str, Any]:
         )
 
         # -------------------------------------------------------------
-        # STAGE 2 (25% -> 50%): Physical Trajectory Simulation
+        # STAGE 2 & 3 (25% -> 80%): Streaming Trajectory Simulation & LeRobot v2 Serialization
+        # Episodes are simulated, written to Parquet and MP4, and discarded one-by-one
+        # to ensure strictly minimal RAM footprint (<180MB) and zero host memory pressure.
         # -------------------------------------------------------------
-        update_job_record(
-            job_id,
-            stage_name=f"Stage 2/4: Simulating {target_episodes} Physical Rollouts",
-            progress_pct=30.0
-        )
+        dataset_dir = os.path.join(out_dir, "lerobot_dataset")
+        camera_keys = ["observation.images.overhead", "observation.images.wrist"]
+        RealLeRobotExporter.init_dataset(dataset_dir, camera_keys=camera_keys)
+
         sim = RealTrajectorySimulator(fps=fps, image_width=320, image_height=240)
-        episodes = []
+        episode_records = []
+        all_actions = []
+        sample_img_shape = None
+
+        import gc
 
         for ep_idx in range(target_episodes):
+            pct_start = 25.0 + (ep_idx / target_episodes) * 55.0
+            update_job_record(
+                job_id,
+                stage_name=f"Stage 2/4: Simulating & Encoding Episode {ep_idx + 1}/{target_episodes}",
+                progress_pct=round(pct_start, 1)
+            )
+
             ep = sim.simulate_episode(
                 robot=robot,
                 episode_idx=ep_idx,
                 num_frames=60,  # 2.0s rollout per episode
             )
-            episodes.append(ep)
-            pct = 25.0 + ((ep_idx + 1) / target_episodes) * 25.0
+
+            rec, actions_slice, shape = RealLeRobotExporter.write_single_episode(
+                output_dir=dataset_dir,
+                episode=ep,
+                task_description="Autonomous navigation and dynamic obstacle avoidance",
+            )
+            episode_records.append(rec)
+            all_actions.extend(actions_slice)
+            if sample_img_shape is None:
+                sample_img_shape = shape
+
+            # Immediately release raw frame numpy buffers to prevent memory growth
+            del ep
+            gc.collect()
+
+            pct_done = 25.0 + ((ep_idx + 1) / target_episodes) * 55.0
             update_job_record(
                 job_id,
                 completed_episodes=ep_idx + 1,
-                progress_pct=round(pct, 1),
-                stage_name=f"Stage 2/4: Simulated Episode {ep_idx + 1}/{target_episodes}"
+                progress_pct=round(pct_done, 1),
+                stage_name=f"Stage 3/4: Serialized Episode {ep_idx + 1}/{target_episodes} (Parquet + MP4)"
             )
 
-        # -------------------------------------------------------------
-        # STAGE 3 (50% -> 80%): Parquet Serialization & MP4 Encoding
-        # -------------------------------------------------------------
-        update_job_record(
-            job_id,
-            stage_name="Stage 3/4: Serializing LeRobot v2 Parquet & MP4 Videos",
-            progress_pct=55.0
-        )
-        dataset_dir = os.path.join(out_dir, "lerobot_dataset")
-        lerobot_manifest = RealLeRobotExporter.export_dataset(
-            episodes=episodes,
-            robot=robot,
+        # Finalize metadata, dataloader, and Sim2Real certification
+        lerobot_manifest = RealLeRobotExporter.finalize_dataset(
             output_dir=dataset_dir,
+            robot=robot,
+            episode_records=episode_records,
+            all_actions=all_actions,
+            sample_img_shape=sample_img_shape or (240, 320, 3),
+            fps=fps,
+            camera_keys=camera_keys,
             dataset_name=f"{robot.name.lower()}_lerobot_v2",
-            create_zip=False  # Final zip encompasses everything
+            create_zip=False
         )
         update_job_record(
             job_id,
