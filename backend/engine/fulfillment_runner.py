@@ -15,6 +15,7 @@ from typing import Dict, List, Optional, Any
 from backend.engine.usd_compiler import RealOpenUSDCompiler
 from backend.engine.trajectory_simulator import RealTrajectorySimulator
 from backend.engine.lerobot_exporter import RealLeRobotExporter
+from backend.engine.isaac_box_folding_env import IsaacBoxFoldingEnvironmentBuilder
 
 logger = logging.getLogger("diffraction.fulfillment")
 
@@ -184,10 +185,32 @@ def execute_fulfillment_pipeline(job_id: str) -> Dict[str, Any]:
             output_dir=usd_dir,
             asset_basename=f"{robot.name.lower()}_physx"
         )
+        # Check if task is contact-rich box folding / manipulation
+        is_box_folding = (robot.dof_count >= 6) or ("box" in record["name"].lower()) or ("franka" in robot.name.lower())
+        task_desc = (
+            "Autonomous sequential cardboard carton flap folding and crease interlocking"
+            if is_box_folding
+            else "Autonomous navigation and dynamic obstacle avoidance"
+        )
+        task_type = "box_folding" if is_box_folding else "navigation"
+
+        box_task_path = None
+        box_usd_path = None
+        if is_box_folding:
+            logger.info(f"[{job_id}] Compiling Isaac Sim Cardboard Box Folding Environment...")
+            box_env = IsaacBoxFoldingEnvironmentBuilder.generate_box_folding_usd_stage(usd_dir)
+            box_usd_path = box_env["usd"]
+            box_task_path = IsaacBoxFoldingEnvironmentBuilder.generate_isaac_lab_task_script(
+                usd_dir,
+                robot_usd_path=usd_manifest["usd_asset"],
+                box_usd_path=box_usd_path,
+                task_name=f"{robot.name}_BoxFolding-v0",
+            )
+
         update_job_record(
             job_id,
             progress_pct=25.0,
-            stage_name="Stage 1 Complete: Validated OpenUSD Asset Generated"
+            stage_name="Stage 1 Complete: Validated OpenUSD & Isaac Lab Assets Ready"
         )
 
         # -------------------------------------------------------------
@@ -205,6 +228,7 @@ def execute_fulfillment_pipeline(job_id: str) -> Dict[str, Any]:
         sample_img_shape = None
 
         import gc
+        rollout_frames = 120 if is_box_folding else 60
 
         for ep_idx in range(target_episodes):
             pct_start = 25.0 + (ep_idx / target_episodes) * 55.0
@@ -217,13 +241,14 @@ def execute_fulfillment_pipeline(job_id: str) -> Dict[str, Any]:
             ep = sim.simulate_episode(
                 robot=robot,
                 episode_idx=ep_idx,
-                num_frames=60,  # 2.0s rollout per episode
+                num_frames=rollout_frames,
+                task_type=task_type,
             )
 
             rec, actions_slice, shape = RealLeRobotExporter.write_single_episode(
                 output_dir=dataset_dir,
                 episode=ep,
-                task_description="Autonomous navigation and dynamic obstacle avoidance",
+                task_description=task_desc,
             )
             episode_records.append(rec)
             all_actions.extend(actions_slice)
@@ -252,6 +277,7 @@ def execute_fulfillment_pipeline(job_id: str) -> Dict[str, Any]:
             fps=fps,
             camera_keys=camera_keys,
             dataset_name=f"{robot.name.lower()}_lerobot_v2",
+            task_description=task_desc,
             create_zip=False
         )
         update_job_record(
@@ -274,13 +300,16 @@ def execute_fulfillment_pipeline(job_id: str) -> Dict[str, Any]:
             "job_id": job_id,
             "client_name": record["client_name"],
             "robot_name": robot.name,
+            "task_type": "Sequential Cardboard Box Folding" if is_box_folding else "Autonomous Navigation",
             "total_mass_kg": robot.total_mass_kg,
             "dof_count": robot.dof_count,
             "total_episodes": target_episodes,
-            "total_frames": target_episodes * 60,
+            "total_frames": target_episodes * rollout_frames,
             "fps": fps,
             "openusd_stage": usd_manifest["usda_asset"],
             "isaac_lab_cfg": usd_manifest["isaac_lab_cfg"],
+            "isaac_box_folding_task": box_task_path,
+            "carton_box_usd": box_usd_path,
             "lerobot_dataset_dir": lerobot_manifest["output_dir"],
             "sim2real_wasserstein": lerobot_manifest["wasserstein_distance"],
             "sim2real_certified": lerobot_manifest["certified"],

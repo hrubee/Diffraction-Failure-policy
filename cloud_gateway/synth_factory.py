@@ -449,8 +449,12 @@ def get_job(job_id: str):
 def create_job(req: CreateJobRequest):
     """Spawns a real asynchronous fulfillment job compiling OpenUSD and generating LeRobot v2 data."""
     job_id = f"job-sprint-{int(time.time())}"
-    clean_robot = req.embodiment_id.replace("amr_", "").replace("humanoid_", "").title()
-    urdf_sample = "./storage/sample_urdfs/amr_hunter.urdf"
+    if "franka" in req.embodiment_id.lower() or "arm" in req.embodiment_id.lower() or "box" in req.name.lower():
+        clean_robot = "Franka_Box_Folder"
+        urdf_sample = "./storage/sample_urdfs/franka_box_folder.urdf"
+    else:
+        clean_robot = req.embodiment_id.replace("amr_", "").replace("humanoid_", "").title()
+        urdf_sample = "./storage/sample_urdfs/amr_hunter.urdf"
 
     # Create real job in SQLite
     real_job = create_fulfillment_job(

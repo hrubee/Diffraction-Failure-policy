@@ -82,9 +82,11 @@ class RealTrajectorySimulator:
         num_frames: int = 60,
         target_friction: Optional[float] = None,
         target_lux: Optional[float] = None,
+        task_type: str = "navigation",
     ) -> EpisodeTrajectory:
         """
         Simulates a single autonomous trajectory rollout for the given robot embodiment.
+        Supports both mobile robot navigation and contact-rich sequential manipulation (e.g. Box Folding).
         """
         mu = target_friction if target_friction is not None else round(random.uniform(0.15, 0.85), 3)
         lux = target_lux if target_lux is not None else round(random.uniform(200.0, 2200.0), 1)
@@ -94,6 +96,7 @@ class RealTrajectorySimulator:
             if j.joint_type in ["revolute", "continuous", "prismatic"]
         ]
         num_dof = max(1, len(actuated_joints))
+        is_box_folding = (task_type == "box_folding") or (num_dof >= 7) or ("box" in robot.name.lower())
 
         timestamps: List[float] = []
         actions: List[List[float]] = []
@@ -116,55 +119,98 @@ class RealTrajectorySimulator:
         nominal_mu = 0.65
         slip_ratio = max(0.0, (nominal_mu - mu) / nominal_mu) if mu < nominal_mu else 0.0
 
-        current_joint_pos = [0.0] * num_dof
-        current_joint_vel = [0.0] * num_dof
-
         for step in range(num_frames):
             t = step * self.dt
             timestamps.append(round(t, 4))
+            tau_norm = step / max(1, num_frames - 1)
 
-            # Target motion profile with sinusoidal curvature
-            w_cmd = w_target * math.sin(2.0 * math.pi * t / (num_frames * self.dt))
-            v_cmd = v_target * (1.0 - 0.3 * abs(w_cmd))
-
-            # Apply surface slip to actual linear displacement
-            effective_v = v_cmd * (1.0 - 0.45 * slip_ratio)
-            heading += w_cmd * self.dt
-            pos_x += effective_v * math.cos(heading) * self.dt
-            pos_y += effective_v * math.sin(heading) * self.dt
-
-            # Joint positions and velocities based on kinematics
             step_actions = []
             step_states = []
             step_vels = []
             step_efforts = []
 
-            for j_idx in range(num_dof):
-                # Harmonic oscillation with phase offset per joint
-                target_q = 0.5 * math.sin(2.5 * t + (j_idx * 0.4))
-                target_qd = 1.25 * math.cos(2.5 * t + (j_idx * 0.4))
-                
-                # Encoder noise
-                noisy_q = target_q + random.gauss(0.0, 0.002)
-                noisy_qd = target_qd + random.gauss(0.0, 0.005)
+            if is_box_folding:
+                # -------------------------------------------------------------
+                # 4-Phase Sequential Cardboard Box Folding Kinematics
+                # Phase 1 (0.0-0.25): Pre-contact approach & flange descent
+                # Phase 2 (0.25-0.50): Bottom flap 1 upward crease fold (0° -> 90°)
+                # Phase 3 (0.50-0.75): Side flaps 2 & 3 lateral fold & crease sweep
+                # Phase 4 (0.75-1.00): Interlock tab pinch and ready retraction
+                # -------------------------------------------------------------
+                if tau_norm < 0.25:
+                    p_phase = tau_norm / 0.25
+                    q_arm = [0.0, 0.45 * p_phase, 0.0, -1.5 * p_phase, 0.0, 1.2 * p_phase, 0.0]
+                    q_grip = 0.08  # Gripper open
+                    contact_torque = 6.0
+                    reward = 0.25 * p_phase
+                elif tau_norm < 0.50:
+                    p_phase = (tau_norm - 0.25) / 0.25
+                    # Joint 4 and 6 press along crease, folding flap upwards
+                    q_arm = [0.05 * p_phase, 0.45 + 0.15 * p_phase, 0.0, -1.5 - 0.35 * p_phase, 0.1 * p_phase, 1.2 + 0.35 * p_phase, 0.0]
+                    q_grip = 0.08
+                    contact_torque = 38.5 * math.sin(p_phase * math.pi) + 12.0  # Cardboard crease resistance peak
+                    reward = 0.25 + 0.25 * p_phase
+                elif tau_norm < 0.75:
+                    p_phase = (tau_norm - 0.50) / 0.25
+                    # Joint 1 sweeps laterally across side flaps
+                    q_arm = [0.25 * math.sin(p_phase * math.pi), 0.60 - 0.1 * p_phase, 0.2 * p_phase, -1.85, 0.1, 1.55, -0.2 * p_phase]
+                    q_grip = 0.06 - 0.02 * p_phase
+                    contact_torque = 28.0 * (1.0 - 0.3 * p_phase)
+                    reward = 0.50 + 0.25 * p_phase
+                else:
+                    p_phase = (tau_norm - 0.75) / 0.25
+                    # Grip closes on locking tab, arm retracts upward
+                    q_arm = [0.0, 0.50 * (1.0 - p_phase), 0.0, -1.85 * (1.0 - 0.5 * p_phase), 0.0, 1.55 * (1.0 - 0.5 * p_phase), 0.0]
+                    q_grip = 0.01  # Fully pinched tab
+                    contact_torque = 15.0 * (1.0 - p_phase) + 4.0
+                    reward = 0.75 + 0.25 * p_phase
 
-                # PD effort calculation: tau = Kp*(q_des - q) + Kd*(qd_des - qd)
-                kp = actuated_joints[j_idx].stiffness if j_idx < len(actuated_joints) else 500.0
-                kd = actuated_joints[j_idx].damping if j_idx < len(actuated_joints) else 25.0
-                tau = kp * (target_q - noisy_q) + kd * (target_qd - noisy_qd)
+                # Synthesize 8-DOF action & state vectors
+                for j_idx in range(num_dof):
+                    target_q = q_arm[j_idx] if j_idx < len(q_arm) else q_grip
+                    noisy_q = target_q + random.gauss(0.0, 0.001)
+                    target_qd = (target_q - (q_arm[j_idx] if j_idx < len(q_arm) else q_grip)) / max(0.001, self.dt)
+                    tau = contact_torque if j_idx in [1, 3, 5] else contact_torque * 0.2
 
-                step_actions.append(round(target_qd, 4))
-                step_states.append(round(noisy_q, 4))
-                step_vels.append(round(noisy_qd, 4))
-                step_efforts.append(round(tau, 3))
+                    step_actions.append(round(target_q, 4))
+                    step_states.append(round(noisy_q, 4))
+                    step_vels.append(round(target_qd, 4))
+                    step_efforts.append(round(tau, 3))
+
+                heading = q_arm[0] if len(q_arm) > 0 else 0.0
+                pos_x = 0.55
+                pos_y = 0.0
+            else:
+                # Target motion profile with sinusoidal curvature
+                w_cmd = w_target * math.sin(2.0 * math.pi * t / (num_frames * self.dt))
+                v_cmd = v_target * (1.0 - 0.3 * abs(w_cmd))
+
+                effective_v = v_cmd * (1.0 - 0.45 * slip_ratio)
+                heading += w_cmd * self.dt
+                pos_x += effective_v * math.cos(heading) * self.dt
+                pos_y += effective_v * math.sin(heading) * self.dt
+
+                for j_idx in range(num_dof):
+                    target_q = 0.5 * math.sin(2.5 * t + (j_idx * 0.4))
+                    target_qd = 1.25 * math.cos(2.5 * t + (j_idx * 0.4))
+                    noisy_q = target_q + random.gauss(0.0, 0.002)
+                    noisy_qd = target_qd + random.gauss(0.0, 0.005)
+
+                    kp = actuated_joints[j_idx].stiffness if j_idx < len(actuated_joints) else 500.0
+                    kd = actuated_joints[j_idx].damping if j_idx < len(actuated_joints) else 25.0
+                    tau = kp * (target_q - noisy_q) + kd * (target_qd - noisy_qd)
+
+                    step_actions.append(round(target_qd, 4))
+                    step_states.append(round(noisy_q, 4))
+                    step_vels.append(round(noisy_qd, 4))
+                    step_efforts.append(round(tau, 3))
+
+                reward = math.exp(-slip_ratio * 2.0) * (1.0 - 0.1 * abs(w_cmd))
 
             actions.append(step_actions)
             states.append(step_states)
             velocities.append(step_vels)
             efforts.append(step_efforts)
-
-            # Reward: high when tracking velocity with low slip
-            reward = math.exp(-slip_ratio * 2.0) * (1.0 - 0.1 * abs(w_cmd))
             rewards.append(round(reward, 4))
             dones.append(step == num_frames - 1)
 
