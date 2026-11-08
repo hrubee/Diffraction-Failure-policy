@@ -105,6 +105,40 @@ def cmd_dataset_package(args):
     print(f"✓ PyTorch streaming DataLoader:  {results['loader_script']}")
     print(f"✓ Sim2Real Wasserstein dossier:  {results['sim2real_cert']}")
 
+def cmd_run_pipeline(args):
+    from backend.engine.fulfillment_runner import create_fulfillment_job, execute_fulfillment_pipeline
+
+    job_id = f"sprint-{int(time.time())}"
+    print(f"\n=======================================================")
+    print(f" [Diffraction Internal Studio] RUNNING FULL END-TO-END FULFILLMENT")
+    print(f"=======================================================")
+    print(f"  • Job ID: {job_id}")
+    print(f"  • Client: {args.client}")
+    print(f"  • Robot: {args.robot}")
+    print(f"  • URDF: {args.urdf}")
+    print(f"  • Episodes: {args.episodes}")
+    print(f"=======================================================")
+
+    job = create_fulfillment_job(
+        job_id=job_id,
+        name=f"{args.robot} Turnkey Physics & LeRobot v2 Sprint",
+        client_name=args.client,
+        robot_name=args.robot,
+        urdf_path=args.urdf,
+        target_episodes=args.episodes,
+        fps=30
+    )
+
+    print(f"[Stage 1/4] Compiling OpenUSD Physics Rig via Pixar pxr...")
+    res = execute_fulfillment_pipeline(job_id)
+    print(f"\n[Fulfillment Completed Successfully!]")
+    print(f"  • Final Status: {res['status']}")
+    print(f"  • Completed Episodes: {res['completed_episodes']}")
+    print(f"  • Output Directory: {res['output_dir']}")
+    print(f"  • Deliverable Zip Archive: {res['zip_path']} ({res['storage_mb']} MB)")
+    print(f"  • Sim2Real Fidelity Score: {res['sim2real_score']}%")
+    print(f"=======================================================\n")
+
 def cmd_sprint_list(args):
     sprints = load_sprints()
     print(f"\n=======================================================")
@@ -153,6 +187,13 @@ def main():
     p_pkg.add_argument("--episodes", type=int, default=100000)
     p_pkg.add_argument("--output-dir", required=True)
 
+    # run:pipeline
+    p_pipe = subparsers.add_parser("run:pipeline", help="Run full end-to-end fulfillment pipeline")
+    p_pipe.add_argument("--client", default="Acme Robotics", help="Client name")
+    p_pipe.add_argument("--robot", default="HunterSE", help="Robot name")
+    p_pipe.add_argument("--urdf", default="storage/sample_urdfs/amr_hunter.urdf", help="Path to URDF file")
+    p_pipe.add_argument("--episodes", type=int, default=5, help="Number of episodes to simulate")
+
     # sprint:list
     subparsers.add_parser("sprint:list", help="List active sprints")
 
@@ -167,6 +208,7 @@ def main():
         "stage:generate": cmd_stage_generate,
         "cosmos:augment": cmd_cosmos_augment,
         "dataset:package": cmd_dataset_package,
+        "run:pipeline": cmd_run_pipeline,
         "sprint:list": cmd_sprint_list,
     }
     dispatch[args.command](args)
