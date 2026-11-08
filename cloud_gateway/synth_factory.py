@@ -267,10 +267,10 @@ seed_demo_jobs()
 # ---------------------------------------------------------------------------
 
 class CreateJobRequest(BaseModel):
-    name: str = Field(..., json_schema_extra={"example": "Warehouse Pallet Docking - High Slip Randomization"})
-    embodiment_id: str = Field(..., json_schema_extra={"example": "amr_agilex_hunter"})
-    environment_id: str = Field(..., json_schema_extra={"example": "warehouse_fulfillment"})
-    target_episodes: int = Field(50000, ge=1000, le=5000000)
+    name: str = Field("Production Synthesis Sprint", json_schema_extra={"example": "Warehouse Pallet Docking - High Slip Randomization"})
+    embodiment_id: str = Field("amr_agilex_hunter", json_schema_extra={"example": "amr_agilex_hunter"})
+    environment_id: str = Field("warehouse_fulfillment", json_schema_extra={"example": "warehouse_fulfillment"})
+    target_episodes: int = Field(25, ge=1, le=5000000)
     format: str = Field("LeRobot_v2", json_schema_extra={"example": "LeRobot_v2"})
     lighting_lux_min: float = Field(150.0, ge=10.0)
     lighting_lux_max: float = Field(2500.0, le=100000.0)
@@ -281,7 +281,7 @@ class CreateJobRequest(BaseModel):
     include_depth: bool = True
     include_semantic_seg: bool = True
     include_lidar: bool = True
-    cluster_gpus: int = Field(32, ge=8, le=512)
+    cluster_gpus: int = Field(32, ge=1, le=512)
 
 # ---------------------------------------------------------------------------
 # REST Endpoints
