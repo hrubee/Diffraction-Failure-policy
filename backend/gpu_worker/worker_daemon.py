@@ -155,44 +155,41 @@ class DiffractionGpuWorker:
         import torch
         from diffusers import DiffusionPipeline
 
-        os.environ["HF_HOME"] = "/workspace/hf_cache"
-        os.makedirs("/workspace/hf_cache", exist_ok=True)
-
+        cosmos_dir = "/workspace/cosmos_7b_weights"
         target_model = "nvidia/Cosmos-1.0-Diffusion-7B-Video2World"
-        print(f"[*] Checking Hugging Face authorization for {target_model}...")
+        os.makedirs("/workspace", exist_ok=True)
 
-        use_cosmos = False
-        if self.hf_token:
+        cosmos_ready = os.path.exists(os.path.join(cosmos_dir, "model_index.json"))
+        if not cosmos_ready and self.hf_token:
+            print(f"[*] Downloading NVIDIA Cosmos 7B Video2World (~14GB diffusers weights) directly to persistent volume: {cosmos_dir}...")
             try:
-                import requests
-                chk = requests.get(
-                    f"https://huggingface.co/{target_model}/resolve/main/model_index.json",
-                    headers={"Authorization": f"Bearer {self.hf_token}"},
-                    timeout=5
+                from huggingface_hub import snapshot_download
+                snapshot_download(
+                    repo_id=target_model,
+                    token=self.hf_token,
+                    local_dir=cosmos_dir,
+                    ignore_patterns=["nemo/*", "Cosmos-1.0-Guardrail/*", "*.pt", "*.zarray"],
+                    max_workers=8
                 )
-                if chk.status_code == 200:
-                    use_cosmos = True
-                else:
-                    print(f"[*] Note: Cosmos license gate returned HTTP {chk.status_code}. Using open-weights fallback...")
-            except Exception:
-                pass
+                print(f"[SUCCESS] NVIDIA Cosmos 7B downloaded and permanently saved on persistent volume at {cosmos_dir}!")
+                cosmos_ready = True
+            except Exception as e:
+                print(f"[WARN] Error downloading Cosmos 7B: {e}")
 
-        if use_cosmos:
-            model_id = target_model
-            print(f"[🚀 HARDWARE] Loading NVIDIA Cosmos 7B Diffusion Model onto {self.hardware['gpu_name']}...")
+        if cosmos_ready:
+            print(f"[🚀 HARDWARE] Loading NVIDIA Cosmos 7B directly from persistent volume ({cosmos_dir}) onto {self.hardware['gpu_name']}...")
             try:
                 pipe = DiffusionPipeline.from_pretrained(
-                    model_id,
-                    torch_dtype=torch.bfloat16,
-                    token=self.hf_token
+                    cosmos_dir,
+                    torch_dtype=torch.bfloat16
                 )
                 pipe = pipe.to("cuda")
                 self.pipeline = pipe
-                self.active_model_name = model_id
-                print(f"[SUCCESS] Model {model_id} loaded into GPU memory. Ready for inference!")
+                self.active_model_name = "NVIDIA Cosmos 7B Video2World"
+                print(f"[SUCCESS] Model NVIDIA Cosmos 7B loaded into GPU memory. Ready for inference!")
                 return pipe
             except Exception as e:
-                print(f"[WARN] Could not load Cosmos 7B ({e}). Switching to open CogVideoX-2B...")
+                print(f"[WARN] Error initializing Cosmos from local files: {e}. Falling back to open weights...")
 
         model_id = "THUDM/CogVideoX-2b"
         print(f"[🚀 HARDWARE] Loading Open Physical AI Video Model ({model_id}) onto {self.hardware['gpu_name']}...")

@@ -860,3 +860,22 @@ def complete_gpu_job(worker_id: str, payload: Dict[str, Any]):
     return {"status": "ACKNOWLEDGED"}
 
 
+_WORKER_LOGS: Dict[str, List[str]] = {}
+
+@router.post("/gpu-workers/{worker_id}/logs")
+def post_worker_logs(worker_id: str, payload: Dict[str, Any]):
+    """Receives live terminal stdout/stderr stream from GPU worker."""
+    logs = payload.get("lines", [])
+    if worker_id not in _WORKER_LOGS:
+        _WORKER_LOGS[worker_id] = []
+    _WORKER_LOGS[worker_id].extend(logs)
+    _WORKER_LOGS[worker_id] = _WORKER_LOGS[worker_id][-500:]
+    return {"status": "OK"}
+
+
+@router.get("/gpu-workers/{worker_id}/logs")
+def get_worker_logs(worker_id: str):
+    """Retrieves live stdout/stderr log stream from GPU worker."""
+    return {"logs": _WORKER_LOGS.get(worker_id, [])}
+
+
