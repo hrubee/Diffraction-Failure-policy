@@ -767,3 +767,64 @@ def submit_studio_inquiry(req: InquiryRequest):
         "inquiry": inquiry_record,
     }
 
+
+# ---------------------------------------------------------------------------
+# Distributed NVIDIA GPU Worker Orchestration (RunPod, Lambda, AWS, On-Prem)
+# ---------------------------------------------------------------------------
+@router.post("/gpu-workers/register")
+def register_gpu_worker(payload: Dict[str, Any]):
+    """Registers an active NVIDIA GPU worker node into the cluster."""
+    from backend.engine.gpu_bridge import GpuWorkerBridge
+    worker = GpuWorkerBridge.register_worker(
+        worker_id=payload.get("worker_id", f"worker-{int(time.time())}"),
+        hostname=payload.get("hostname", "unknown"),
+        gpu_name=payload.get("gpu_name", "NVIDIA RTX"),
+        vram_gb=payload.get("vram_gb", 16.0),
+        driver_version=payload.get("driver_version", "unknown"),
+        cuda_version=payload.get("cuda_version", "unknown"),
+        isaac_sim_available=payload.get("isaac_sim_available", False),
+    )
+    return {"status": "REGISTERED", "worker": worker}
+
+
+@router.get("/gpu-workers")
+def list_gpu_workers():
+    """Lists all active and standby NVIDIA GPU nodes in the cluster."""
+    from backend.engine.gpu_bridge import GpuWorkerBridge
+    return {"workers": GpuWorkerBridge.list_workers()}
+
+
+@router.post("/gpu-workers/{worker_id}/heartbeat")
+def worker_heartbeat(worker_id: str, payload: Optional[Dict[str, Any]] = None):
+    """Refreshes worker lease and active task status."""
+    from backend.engine.gpu_bridge import GpuWorkerBridge
+    curr_job = payload.get("current_job_id") if payload else None
+    ok = GpuWorkerBridge.heartbeat(worker_id, current_job_id=curr_job)
+    return {"status": "OK" if ok else "NOT_FOUND"}
+
+
+@router.get("/gpu-workers/lease")
+def lease_job_for_worker(worker_id: str):
+    """Leases the next pending physical AI simulation job to an idle GPU worker."""
+    from backend.engine.gpu_bridge import GpuWorkerBridge
+    job = GpuWorkerBridge.lease_job_for_gpu_worker(worker_id)
+    return {"job": job}
+
+
+@router.post("/gpu-workers/{worker_id}/complete-job")
+def complete_gpu_job(worker_id: str, payload: Dict[str, Any]):
+    """Signals that a GPU node has finished RTX path-traced episode generation."""
+    from backend.engine.gpu_bridge import GpuWorkerBridge
+    GpuWorkerBridge.heartbeat(worker_id, current_job_id=None)
+    job_id = payload.get("job_id")
+    if job_id:
+        from backend.engine.fulfillment_runner import update_job_record
+        update_job_record(
+            job_id,
+            status="COMPLETED",
+            stage_name=f"GPU Accelerated Simulation Finished on {payload.get('gpu_used', 'NVIDIA GPU')}",
+            progress_pct=100.0,
+        )
+    return {"status": "ACKNOWLEDGED"}
+
+
