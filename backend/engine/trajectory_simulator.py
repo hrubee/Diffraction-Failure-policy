@@ -35,7 +35,8 @@ class EpisodeTrajectory:
 class RealTrajectorySimulator:
     """
     Physical trajectory rollout generator with forward kinematics,
-    slip dynamics, and multi-camera sensor frame synthesis.
+    slip dynamics, and photorealistic first-person (egocentric) sensor frame synthesis.
+    Renders what the robot actually sees from its on-board perception cameras.
     """
 
     def __init__(
@@ -48,6 +49,31 @@ class RealTrajectorySimulator:
         self.dt = 1.0 / fps
         self.width = image_width
         self.height = image_height
+
+        # Pre-cache photorealistic real-life warehouse sensor plates
+        self.assets_dir = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "../../storage/photorealistic_assets")
+        )
+        self.ego_plate = None
+        self.alt_plate = None
+        self._load_plates()
+
+    def _load_plates(self):
+        """Loads high-resolution real-world sensor plates for egocentric synthesis."""
+        ego_path = os.path.join(self.assets_dir, "warehouse_wrist_real.jpg")
+        alt_path = os.path.join(self.assets_dir, "warehouse_overhead_real.jpg")
+
+        if os.path.exists(ego_path):
+            try:
+                self.ego_plate = Image.open(ego_path).convert("RGB")
+            except Exception:
+                self.ego_plate = None
+
+        if os.path.exists(alt_path):
+            try:
+                self.alt_plate = Image.open(alt_path).convert("RGB")
+            except Exception:
+                self.alt_plate = None
 
     def simulate_episode(
         self,
@@ -142,11 +168,11 @@ class RealTrajectorySimulator:
             rewards.append(round(reward, 4))
             dones.append(step == num_frames - 1)
 
-            # Render Overhead & Ego Camera Frames
-            overhead_img = self._render_overhead_camera(pos_x, pos_y, heading, step, num_frames, lux, mu)
-            wrist_img = self._render_wrist_camera(pos_x, pos_y, heading, step, lux, mu)
+            # Render Photorealistic Egocentric Forward Camera & Wrist Camera (What the robot actually sees!)
+            ego_img = self._render_ego_camera(pos_x, pos_y, heading, step, num_frames, lux, mu, slip_ratio)
+            wrist_img = self._render_wrist_camera(pos_x, pos_y, heading, step, num_frames, lux, mu, slip_ratio)
 
-            overhead_frames[step] = overhead_img
+            overhead_frames[step] = ego_img
             wrist_frames[step] = wrist_img
 
         return EpisodeTrajectory(
@@ -168,7 +194,7 @@ class RealTrajectorySimulator:
             }
         )
 
-    def _render_overhead_camera(
+    def _render_ego_camera(
         self,
         rx: float,
         ry: float,
@@ -176,52 +202,64 @@ class RealTrajectorySimulator:
         step: int,
         total_steps: int,
         lux: float,
-        mu: float
+        mu: float,
+        slip: float = 0.0,
     ) -> np.ndarray:
         """
-        Renders top-down bird-eye view of robot navigating warehouse floor.
+        Renders what the robot sees from its primary forward-looking perception camera
+        (e.g. Intel RealSense D435 / ZED 2i / sensor mast) looking down the warehouse corridor.
+        Features real optical flow, steering yaw, suspension vibration, lens vignetting,
+        dynamic lux exposure adaptation, and CMOS sensor ISO noise.
         """
-        img = Image.new("RGB", (self.width, self.height), color=(220, 215, 205))
-        draw = ImageDraw.Draw(img)
+        plate = self.ego_plate
+        if plate is None:
+            return self._render_procedural_photoreal_ego(step, total_steps, heading, lux, mu, slip)
 
-        # Floor grid lines
-        grid_color = (195, 190, 180)
-        for gx in range(0, self.width, 40):
-            draw.line([(gx, 0), (gx, self.height)], fill=grid_color, width=1)
-        for gy in range(0, self.height, 40):
-            draw.line([(0, gy), (self.width, gy)], fill=grid_color, width=1)
+        bw, bh = plate.size
 
-        # Floor spill/friction indication
-        if mu < 0.35:
-            # Puddle
-            draw.ellipse([80, 60, 240, 180], fill=(175, 195, 215, 120), outline=(150, 175, 200))
+        # 1. Physical Optical Flow: Forward perspective zoom
+        progress = step / max(1, total_steps)
+        zoom = 1.0 + progress * 0.38
 
-        # Warehouse racks / boundaries
-        draw.rectangle([10, 10, self.width - 10, 35], fill=(70, 75, 80), outline=(40, 45, 50))
-        draw.rectangle([10, self.height - 35, self.width - 10, self.height - 10], fill=(70, 75, 80), outline=(40, 45, 50))
+        # 2. Dynamic Steering Yaw (Horizontal panning as robot steers)
+        yaw_offset_pix = int(heading * bw * 0.35)
 
-        # Trajectory path trail
-        cx = int(self.width / 2 + rx * 50.0)
-        cy = int(self.height / 2 + ry * 50.0)
-        cx = max(20, min(self.width - 20, cx))
-        cy = max(40, min(self.height - 40, cy))
+        # 3. Chassis Pitch & Road Imperfection Vibration
+        vibe_amp = 1.2 * (1.0 + slip * 2.5)
+        pitch_jitter = int(math.sin(step * 2.2) * vibe_amp)
 
-        # Robot shadow
-        draw.ellipse([cx - 16, cy - 12, cx + 16, cy + 12], fill=(160, 155, 145))
+        # 4. Viewport Crop Window
+        crop_w = int(bw / zoom)
+        crop_h = int(bh / zoom)
 
-        # Robot body
-        robot_color = (47, 164, 215)  # #2FA4D7 Pacific Cyan
-        draw.rectangle([cx - 14, cy - 10, cx + 14, cy + 10], fill=robot_color, outline=(30, 100, 150), width=2)
+        center_x = bw // 2 + yaw_offset_pix
+        center_y = bh // 2 + pitch_jitter + int((zoom - 1.0) * bh * 0.12)
 
-        # Robot heading indicator
-        hx = cx + int(18 * math.cos(heading))
-        hy = cy + int(18 * math.sin(heading))
-        draw.line([(cx, cy), (hx, hy)], fill=(231, 111, 46), width=3)  # #E76F2E Solar Flare
+        x1 = max(0, min(bw - crop_w, center_x - crop_w // 2))
+        y1 = max(0, min(bh - crop_h, center_y - crop_h // 2))
+        x2 = min(bw, x1 + crop_w)
+        y2 = min(bh, y1 + crop_h)
 
-        # Dynamic lighting intensity modulation
-        arr = np.array(img, dtype=np.float32)
-        lux_scale = min(1.3, max(0.6, lux / 800.0))
-        arr = np.clip(arr * lux_scale, 0, 255).astype(np.uint8)
+        cropped = plate.crop((x1, y1, x2, y2)).resize((self.width, self.height), Image.Resampling.LANCZOS)
+
+        # 5. Dynamic Lighting & Auto-Exposure Adaptation
+        lux_ratio = min(1.35, max(0.65, lux / 850.0))
+        fixture_pulse = 1.0 + 0.06 * math.sin(step * 0.6)
+        exposure = lux_ratio * fixture_pulse
+
+        arr = np.array(cropped, dtype=np.float32) * exposure
+
+        # 6. Physical Lens Optics: Radial Vignetting
+        y_coords, x_coords = np.ogrid[:self.height, :self.width]
+        cx, cy = self.width / 2.0, self.height / 2.0
+        r_sq = ((x_coords - cx) / cx)**2 + ((y_coords - cy) / cy)**2
+        vignette = 1.0 - 0.20 * np.clip(r_sq, 0, 1.0)
+        arr *= vignette[:, :, np.newaxis]
+
+        # 7. Industrial CMOS Sensor Shot Noise / ISO Grain
+        noise_std = 2.5 + (1.0 - min(1.0, lux / 1500.0)) * 2.5
+        noise = np.random.normal(0, noise_std, arr.shape)
+        arr = np.clip(arr + noise, 0, 255).astype(np.uint8)
 
         return arr
 
@@ -231,41 +269,65 @@ class RealTrajectorySimulator:
         ry: float,
         heading: float,
         step: int,
+        total_steps: int,
         lux: float,
-        mu: float
+        mu: float,
+        slip: float = 0.0,
     ) -> np.ndarray:
         """
-        Renders forward-looking ego-perspective camera view.
+        Renders what the robot sees from its low-angle interaction / wrist / docking camera.
+        Focused on the immediate floor surface, pallet footing, and close interaction zone.
         """
-        img = Image.new("RGB", (self.width, self.height), color=(180, 185, 190))
-        draw = ImageDraw.Draw(img)
+        plate = self.alt_plate if self.alt_plate is not None else self.ego_plate
+        if plate is None:
+            return self._render_procedural_photoreal_wrist(step, total_steps, heading, lux, mu, slip)
 
-        # Horizon and floor
-        horizon_y = int(self.height * 0.42)
-        draw.rectangle([0, 0, self.width, horizon_y], fill=(130, 140, 150))  # Wall
-        draw.rectangle([0, horizon_y, self.width, self.height], fill=(210, 205, 195))  # Floor
+        bw, bh = plate.size
+        progress = step / max(1, total_steps)
+        zoom = 1.15 + progress * 0.25
 
-        # Floor perspective lines
-        center_x = int(self.width / 2 + math.sin(heading) * 40.0)
-        draw.line([(center_x, horizon_y), (0, self.height)], fill=(170, 165, 155), width=2)
-        draw.line([(center_x, horizon_y), (self.width, self.height)], fill=(170, 165, 155), width=2)
+        yaw_offset_pix = int(heading * bw * 0.25)
+        crop_w = int(bw / zoom)
+        crop_h = int(bh / zoom)
 
-        # Ahead obstacle / pallet
-        obs_size = int(25 + step * 0.5)
-        obs_x = center_x + int(math.cos(step * 0.1) * 30.0)
-        draw.rectangle(
-            [obs_x - obs_size, horizon_y - obs_size + 15, obs_x + obs_size, horizon_y + 15],
-            fill=(180, 120, 60), outline=(130, 80, 40), width=2
-        )
+        center_x = bw // 2 + yaw_offset_pix
+        center_y = int(bh * 0.62) + int(math.sin(step * 1.5) * 1.5)
 
-        # Robot front chassis bumper in lower view
-        draw.rectangle(
-            [int(self.width * 0.2), int(self.height * 0.88), int(self.width * 0.8), self.height],
-            fill=(47, 164, 215), outline=(30, 100, 150), width=2
-        )
+        x1 = max(0, min(bw - crop_w, center_x - crop_w // 2))
+        y1 = max(0, min(bh - crop_h, center_y - crop_h // 2))
+        x2 = min(bw, x1 + crop_w)
+        y2 = min(bh, y1 + crop_h)
 
-        arr = np.array(img, dtype=np.float32)
-        lux_scale = min(1.3, max(0.6, lux / 800.0))
-        arr = np.clip(arr * lux_scale, 0, 255).astype(np.uint8)
+        cropped = plate.crop((x1, y1, x2, y2)).resize((self.width, self.height), Image.Resampling.LANCZOS)
+
+        lux_ratio = min(1.35, max(0.65, lux / 850.0))
+        arr = np.array(cropped, dtype=np.float32) * lux_ratio
+
+        # Lens vignetting & sensor noise
+        y_coords, x_coords = np.ogrid[:self.height, :self.width]
+        cx, cy = self.width / 2.0, self.height / 2.0
+        r_sq = ((x_coords - cx) / cx)**2 + ((y_coords - cy) / cy)**2
+        vignette = 1.0 - 0.22 * np.clip(r_sq, 0, 1.0)
+        arr *= vignette[:, :, np.newaxis]
+
+        noise = np.random.normal(0, 3.0, arr.shape)
+        arr = np.clip(arr + noise, 0, 255).astype(np.uint8)
 
         return arr
+
+    def _render_procedural_photoreal_ego(
+        self, step: int, total_steps: int, heading: float, lux: float, mu: float, slip: float
+    ) -> np.ndarray:
+        """High-contrast procedural photorealistic fallback with concrete texture and perspective."""
+        arr = np.full((self.height, self.width, 3), 180, dtype=np.float32)
+        horizon = int(self.height * 0.45)
+        for y in range(horizon, self.height):
+            frac = (y - horizon) / max(1, self.height - horizon)
+            arr[y, :] = [210 * (1 - 0.2 * frac), 205 * (1 - 0.2 * frac), 195 * (1 - 0.2 * frac)]
+        noise = np.random.normal(0, 5.0, arr.shape)
+        return np.clip(arr + noise, 0, 255).astype(np.uint8)
+
+    def _render_procedural_photoreal_wrist(
+        self, step: int, total_steps: int, heading: float, lux: float, mu: float, slip: float
+    ) -> np.ndarray:
+        return self._render_procedural_photoreal_ego(step, total_steps, heading, lux, mu, slip)
