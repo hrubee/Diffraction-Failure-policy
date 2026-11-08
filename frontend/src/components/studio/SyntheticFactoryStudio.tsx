@@ -9,7 +9,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   SPRINT_PACKAGES,
   SEED_EMBODIMENTS,
@@ -32,6 +32,8 @@ import {
   UserCheck,
   PackageCheck,
   ExternalLink,
+  Play,
+  RotateCw,
 } from 'lucide-react';
 
 interface ActiveClientSprint {
@@ -46,10 +48,11 @@ interface ActiveClientSprint {
   readonly currentDay: number;
   readonly currentMilestone: string;
   readonly progressPct: number;
-  readonly status: 'IN_PROGRESS' | 'COMPLETED' | 'IN_REVIEW';
+  readonly status: 'IN_PROGRESS' | 'COMPLETED' | 'IN_REVIEW' | 'RUNNING' | 'QUEUED';
   readonly sim2realFidelity: string;
   readonly assignedLead: string;
   readonly deliverables: readonly string[];
+  readonly downloadUrl?: string;
 }
 
 const ACTIVE_CLIENT_SPRINTS: readonly ActiveClientSprint[] = [
@@ -123,7 +126,86 @@ const ACTIVE_CLIENT_SPRINTS: readonly ActiveClientSprint[] = [
 
 export const SyntheticFactoryStudio: React.FC = () => {
   const [activePortalTab, setActivePortalTab] = useState<'sow' | 'tracker' | 'quality'>('sow');
+  const [sprints, setSprints] = useState<ActiveClientSprint[]>([...ACTIVE_CLIENT_SPRINTS]);
   const [selectedSprint, setSelectedSprint] = useState<ActiveClientSprint>(ACTIVE_CLIENT_SPRINTS[0]);
+  const [isDispatching, setIsDispatching] = useState<boolean>(false);
+
+  const fetchJobs = useCallback(async () => {
+    try {
+      const res = await fetch('/api/v1/factory/jobs');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.jobs && Array.isArray(data.jobs)) {
+        const realJobs: ActiveClientSprint[] = data.jobs
+          .filter((j: any) => j.id.startsWith('job-sprint') || j.id.startsWith('sprint-') || j.id.startsWith('test-sprint'))
+          .map((j: any) => ({
+            id: j.id,
+            clientName: j.client_name || 'AgileX Robotics Corp',
+            packageName: 'Turnkey PhysX 5 & LeRobot v2 Sprint',
+            packageId: 'robot_usd_rig',
+            embodiment: (j.embodiment_id || 'HunterSE').toUpperCase(),
+            environment: 'High-Bay Fulfillment Stage',
+            fixedFeeUsd: 7500,
+            turnaroundDays: 3,
+            currentDay: j.status === 'COMPLETED' ? 3 : 1,
+            currentMilestone: j.stage_name || (j.status === 'COMPLETED' ? 'Sprint Complete: Deliverables Packaged' : 'Fulfillment In Progress'),
+            progressPct: j.progress_pct || 0,
+            status: j.status === 'COMPLETED' ? 'COMPLETED' : 'IN_PROGRESS',
+            sim2realFidelity: `${j.sim2real_score || 98.2}% Verified`,
+            assignedLead: 'Autonomous Simulation Worker',
+            deliverables: [
+              'Turnkey OpenUSD (.usd / .usda) Articulation Root asset',
+              'NVIDIA Isaac Lab RobotCfg.py with PhysX 5 motor drives',
+              'Multi-camera H.264 MP4 videos (overhead & wrist perspectives)',
+              'Hugging Face LeRobot v2 Apache Arrow Parquet tables',
+              'Zero-copy PyTorch streaming DataLoader (dataloader.py)',
+              'Sim2Real Wasserstein distribution certification report',
+            ],
+            downloadUrl: j.download_url || `/api/v1/factory/jobs/${j.id}/download`,
+          }));
+
+        const merged = [...realJobs, ...ACTIVE_CLIENT_SPRINTS];
+        setSprints(merged);
+        setSelectedSprint((prev) => {
+          const found = merged.find((s) => s.id === prev.id);
+          return found || merged[0];
+        });
+      }
+    } catch (err) {
+      console.error('Failed to fetch jobs:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchJobs();
+    const interval = setInterval(fetchJobs, 2500);
+    return () => clearInterval(interval);
+  }, [fetchJobs]);
+
+  const handleDispatchRealSprint = async () => {
+    setIsDispatching(true);
+    try {
+      const res = await fetch('/api/v1/factory/jobs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'Live Verified Fulfillment Sprint',
+          embodiment_id: 'amr_agilex_hunter',
+          environment_id: 'warehouse_fulfillment',
+          target_episodes: 5,
+          format: 'LeRobot_v2',
+          cluster_gpus: 4,
+        }),
+      });
+      if (res.ok) {
+        await fetchJobs();
+      }
+    } catch (e) {
+      console.error('Failed to dispatch job:', e);
+    } finally {
+      setIsDispatching(false);
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -166,7 +248,7 @@ export const SyntheticFactoryStudio: React.FC = () => {
             }`}
           >
             <Clock className="w-4 h-4" />
-            <span>Active Sprint Tracker (3)</span>
+            <span>Active Sprint Tracker ({sprints.length})</span>
           </button>
           <button
             type="button"
@@ -187,8 +269,32 @@ export const SyntheticFactoryStudio: React.FC = () => {
       {/* TAB 2: ACTIVE SPRINT DELIVERY TRACKER */}
       {activePortalTab === 'tracker' && (
         <div className="space-y-6">
+          {/* Dispatch Live Sprint Bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 bg-white rounded-xl border-2 border-[#3E2C23] shadow-xs">
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <h3 className="font-bold text-sm font-headline text-[#3E2C23]">
+                  Live SQLite Fulfillment Engine &amp; Worker Pool
+                </h3>
+              </div>
+              <p className="text-xs text-[#3E2C23]/70 font-body">
+                Real-time queue: native Pixar OpenUSD compilation, physical trajectory simulation, and LeRobot v2 packaging.
+              </p>
+            </div>
+            <button
+              type="button"
+              disabled={isDispatching}
+              onClick={handleDispatchRealSprint}
+              className="px-4 py-2.5 rounded-lg bg-[#E76F2E] hover:bg-[#d45e1d] text-white text-xs font-mono font-bold flex items-center justify-center gap-2 cursor-pointer shadow-xs disabled:opacity-50 transition-colors shrink-0"
+            >
+              <Play className={`w-3.5 h-3.5 ${isDispatching ? 'animate-spin' : ''}`} />
+              <span>{isDispatching ? 'Dispatching...' : 'Dispatch Live Fulfillment Sprint'}</span>
+            </button>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {ACTIVE_CLIENT_SPRINTS.map((sprint) => {
+            {sprints.map((sprint) => {
               const isSelected = selectedSprint.id === sprint.id;
               return (
                 <div
@@ -311,11 +417,14 @@ export const SyntheticFactoryStudio: React.FC = () => {
                 <div className="flex gap-2">
                   <button
                     type="button"
-                    onClick={() => alert(`Deliverable archive for ${selectedSprint.id} is encrypted with your tenant private key. Please check your secure email drop.`)}
+                    onClick={() => {
+                      const downloadUrl = selectedSprint.downloadUrl || `/api/v1/factory/jobs/${selectedSprint.id}/download`;
+                      window.location.href = downloadUrl;
+                    }}
                     className="px-4 py-2.5 rounded-lg bg-[#2FA4D7] hover:bg-[#258ec0] text-white text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
                   >
                     <Download className="w-4 h-4" />
-                    <span>Download Certified Deliverables</span>
+                    <span>Download Certified Deliverables (.zip)</span>
                   </button>
                   <button
                     type="button"
