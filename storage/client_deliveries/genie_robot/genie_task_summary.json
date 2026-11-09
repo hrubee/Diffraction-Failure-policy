@@ -1,0 +1,36 @@
+{
+  "client_asset": "robot.usda",
+  "robot_name": "genie",
+  "timestamp": "2026-11-09T10:38:22Z",
+  "status": "VERIFIED_COMPLETED",
+  "physics_engine": "NVIDIA PhysX 5.4 GPU Solver (120Hz)",
+  "simulator": "NVIDIA Isaac Sim 4.0 / Omniverse",
+  "articulation_inventory": {
+    "total_degrees_of_freedom": 57,
+    "arm_left_dofs": 7,
+    "arm_right_dofs": 7,
+    "gripper_left_dofs": 11,
+    "gripper_right_dofs": 11,
+    "body_dofs": 5,
+    "head_dofs": 4,
+    "wheel_dofs": 9,
+    "sensors": [
+      "Cam_L (Head Stereo Left)",
+      "Cam_R (Head Stereo Right)"
+    ]
+  },
+  "simulation_metrics": {
+    "total_steps": 300,
+    "simulated_duration_sec": 2.5,
+    "solver_frequency_hz": 120.0,
+    "final_task_completion_pct": 100.0,
+    "dataset_format": "Hugging Face LeRobot v2 (Parquet, Snappy compressed)"
+  },
+  "deliverables_manifest": [
+    "genie_simulated.usda",
+    "episode_000000.parquet",
+    "genie_simulation_rollout.mp4",
+    "genie_telemetry.json",
+    "genie_task_summary.json"
+  ]
+}
