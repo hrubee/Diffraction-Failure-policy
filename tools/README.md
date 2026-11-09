@@ -102,6 +102,26 @@ python tools/studio_cli.py dataset:package \
 python tools/studio_cli.py sprint:list
 ```
 
+### Command 7: Autonomous Box Folding Simulation & Physical AI Pipeline
+```bash
+python tools/studio_cli.py simulate:folding \
+  --input storage/studio_deliverables/job-box-folding-isaacsim-4090/carton_box_flat.usda \
+  --output-dir storage/pipeline_output \
+  --steps 300
+```
+Or via standalone turnkey launcher:
+```bash
+./tools/run_folding_pipeline.sh \
+  --input storage/studio_deliverables/job-box-folding-isaacsim-4090/carton_box_flat.usda \
+  --output storage/pipeline_output
+```
+- **Outputs**:
+  - `box_folding_simulated.usda`: Animated OpenUSD stage with time-sampled 90° flap fold rotations for Omniverse timeline playback.
+  - `episode_000000.parquet`: Hugging Face LeRobot v2 parquet dataset with synchronized states and actions.
+  - `isaac_sim_render.mp4`: Multi-camera simulation rollout video (3D perspective + overhead tracking view + telemetry HUD).
+  - `folding_telemetry.json`: High-resolution kinematics & contact dynamics telemetry.
+  - `folding_task_summary.json`: Execution verification with 100% fold completion certification.
+
 ---
 
 ## 3. Verification & Testing

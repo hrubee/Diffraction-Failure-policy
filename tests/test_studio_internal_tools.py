@@ -18,6 +18,7 @@ from tools.urdf_to_physx_usd import UrdfToPhysxUsdConverter
 from tools.procedural_stage_generator import ProceduralStageGenerator
 from tools.cosmos_transfer_pipeline import CosmosTransferPipeline
 from tools.dataset_packager_lerobot import LeRobotDatasetPackager
+from tools.box_folding_pipeline import BoxFoldingPipeline
 from tools.studio_cli import load_sprints, save_sprints
 
 SAMPLE_URDF = "storage/sample_urdfs/amr_hunter.urdf"
@@ -119,3 +120,26 @@ def test_sprint_registry_persistence(temp_dir):
         loaded = json.load(f)
         assert len(loaded) == 1
         assert loaded[0]["sprint_id"] == "SPRINT-TEST-001"
+
+def test_box_folding_pipeline(temp_dir):
+    sample_carton = "storage/studio_deliverables/job-box-folding-isaacsim-4090/carton_box_flat.usda"
+    assert os.path.exists(sample_carton)
+    pipeline = BoxFoldingPipeline(input_usd=sample_carton, output_dir=temp_dir, total_steps=60)
+    results = pipeline.run()
+
+    assert results["status"] == "SUCCESS"
+    assert os.path.exists(results["usd_path"])
+    assert os.path.exists(results["parquet_path"])
+    assert os.path.exists(results["video_path"])
+    assert os.path.exists(results["summary_path"])
+
+    with open(results["usd_path"], "r") as f:
+        usd_content = f.read()
+        assert "Crease_FrontFlap" in usd_content
+        assert "xformOp:rotateXYZ.timeSamples" in usd_content
+
+    with open(results["summary_path"], "r") as f:
+        summary = json.load(f)
+        assert summary["status"] == "COMPLETED"
+        assert summary["simulation_metrics"]["total_steps"] == 60
+

@@ -26,6 +26,7 @@ from tools.urdf_to_physx_usd import UrdfToPhysxUsdConverter
 from tools.procedural_stage_generator import ProceduralStageGenerator
 from tools.cosmos_transfer_pipeline import CosmosTransferPipeline
 from tools.dataset_packager_lerobot import LeRobotDatasetPackager
+from tools.box_folding_pipeline import BoxFoldingPipeline
 
 SPRINT_REGISTRY_FILE = "storage/active_sprints.json"
 
@@ -139,6 +140,22 @@ def cmd_run_pipeline(args):
     print(f"  • Sim2Real Fidelity Score: {res['sim2real_score']}%")
     print(f"=======================================================\n")
 
+def cmd_simulate_folding(args):
+    pipeline = BoxFoldingPipeline(
+        input_usd=args.input,
+        output_dir=args.output_dir,
+        total_steps=args.steps
+    )
+    res = pipeline.run()
+    print(f"\n=======================================================")
+    print(f" [Diffraction Internal Studio] BOX FOLDING SIMULATION DELIVERED")
+    print(f"=======================================================")
+    print(f"  • OpenUSD Stage:      {res['usd_path']}")
+    print(f"  • LeRobot v2 Parquet: {res['parquet_path']}")
+    print(f"  • Rollout Video:      {res['video_path']}")
+    print(f"  • Completion Rate:    {res['overall_completion_pct']}%")
+    print(f"=======================================================\n")
+
 def cmd_sprint_list(args):
     sprints = load_sprints()
     print(f"\n=======================================================")
@@ -194,6 +211,12 @@ def main():
     p_pipe.add_argument("--urdf", default="storage/sample_urdfs/amr_hunter.urdf", help="Path to URDF file")
     p_pipe.add_argument("--episodes", type=int, default=5, help="Number of episodes to simulate")
 
+    # simulate:folding
+    p_fold = subparsers.add_parser("simulate:folding", help="Run PhysX 5 box folding simulation & dataset packaging")
+    p_fold.add_argument("--input", "-i", required=True, help="Input carton OpenUSD asset (.usda/.usd)")
+    p_fold.add_argument("--output-dir", "-o", default="storage/pipeline_output", help="Output directory")
+    p_fold.add_argument("--steps", "-s", type=int, default=300, help="Simulation steps")
+
     # sprint:list
     subparsers.add_parser("sprint:list", help="List active sprints")
 
@@ -209,6 +232,7 @@ def main():
         "cosmos:augment": cmd_cosmos_augment,
         "dataset:package": cmd_dataset_package,
         "run:pipeline": cmd_run_pipeline,
+        "simulate:folding": cmd_simulate_folding,
         "sprint:list": cmd_sprint_list,
     }
     dispatch[args.command](args)
