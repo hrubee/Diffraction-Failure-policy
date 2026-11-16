@@ -29,20 +29,20 @@ export const LandingPricingSection: React.FC<LandingPricingSectionProps> = ({
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-white border border-[#2FA4D7]/40 text-xs text-[#2FA4D7] font-mono">
             <Sparkles className="w-3.5 h-3.5 text-[#E76F2E]" />
             <span className="font-semibold uppercase tracking-wider text-[10px]">
-              Productized Studio Pricing
+              Turnkey Pilot &amp; Fleet Licensing
             </span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2C23] tracking-tight font-headline">
-            Fixed-Fee Sprints.
+            The 14-Day Zero-Collision Pilot.
             <br />
             <span className="text-[#2FA4D7]">
-              Delivered in 3 to 14 Days.
+              Fixed Fee. Guaranteed Clearance.
             </span>
           </h2>
 
           <p className="text-[#3E2C23]/80 text-sm sm:text-base leading-relaxed font-body">
-            Stop waiting 6 months to recruit a simulation engineer. We use proprietary procedural tooling to build your calibrated OpenUSD stages and Cosmos datasets at 5x the speed.
+            Stop losing 70% of customer deals in pilot purgatory. We recover true floor physics from a 5-second telemetry drop, flash our active-set CBF-QP governor, and deliver an ISO 13849 compliance dossier in 14 days.
           </p>
         </div>
 
@@ -61,7 +61,7 @@ export const LandingPricingSection: React.FC<LandingPricingSectionProps> = ({
               >
                 {isFeatured && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-md bg-[#2FA4D7] text-white font-bold text-[10px] uppercase tracking-wider shadow-sm font-mono">
-                    MOST POPULAR SPRINT
+                    RECOMMENDED BEACHHEAD
                   </div>
                 )}
 
@@ -80,7 +80,7 @@ export const LandingPricingSection: React.FC<LandingPricingSectionProps> = ({
                       <span className="text-4xl sm:text-5xl font-bold text-[#3E2C23] font-headline tracking-tight">
                         ${pkg.priceUsd.toLocaleString()}
                       </span>
-                      <span className="text-xs text-[#3E2C23]/60 font-mono">/ sprint</span>
+                      <span className="text-xs text-[#3E2C23]/60 font-mono">{pkg.id === 'fleet_governor' ? '/ year' : '/ pilot'}</span>
                     </div>
 
                     <h3 className="text-lg font-bold text-[#3E2C23] font-headline">
@@ -115,7 +115,7 @@ export const LandingPricingSection: React.FC<LandingPricingSectionProps> = ({
                     }`}
                   >
                     <Zap className="w-4 h-4 fill-current text-[#F5E9D8]" />
-                    <span>Configure Sprint SOW</span>
+                    <span>{pkg.id === 'turnkey_pilot' ? 'Request 14-Day Pilot SOW' : 'Request License Quote'}</span>
                   </button>
                   <span className="text-[10px] font-mono text-[#3E2C23]/60 text-center block">
                     {pkg.sla}
@@ -134,10 +134,10 @@ export const LandingPricingSection: React.FC<LandingPricingSectionProps> = ({
             </div>
             <div className="space-y-1">
               <h4 className="text-base sm:text-lg font-bold text-[#3E2C23] font-headline">
-                The 100% Sim-to-Real Policy Transfer Guarantee
+                The 100% Zero-Collision &amp; ISO 13849 Compliance Guarantee
               </h4>
               <p className="text-xs sm:text-sm text-[#3E2C23]/80 font-body max-w-3xl">
-                Every asset, procedural stage, and dataset undergoes Wasserstein distribution alignment verification. If your policy fails hardware deployment due to physical or visual simulation divergence, we re-calibrate at zero charge or refund 100% of your sprint fee.
+                Every pilot includes mathematically provable control barrier functions and unrolled inverse physics verification. If your AMR experiences an unprevented collision under our safety governor, or if the dossier fails ISO 3691-4 / ANSI R15.08 compliance review, we refund 100% of your pilot fee.
               </p>
             </div>
           </div>
@@ -147,7 +147,7 @@ export const LandingPricingSection: React.FC<LandingPricingSectionProps> = ({
             onClick={onLaunchConsole}
             className="px-6 py-3 rounded-lg bg-[#3E2C23] hover:bg-[#2A1D17] text-white text-xs sm:text-sm font-mono font-bold shrink-0 transition-colors cursor-pointer"
           >
-            Review Feasibility (24h)
+            Review Pilot SOW (24h)
           </button>
         </div>
       </div>

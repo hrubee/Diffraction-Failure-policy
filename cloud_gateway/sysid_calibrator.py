@@ -9,6 +9,7 @@ from dataclasses import dataclass, field
 import math
 from typing import Any, Dict, List, Optional
 from cloud_gateway.mcap_parser import DecoupledIncident
+from cloud_gateway.diff_physics_sysid import DifferentiablePhysicsSysID, DifferentiableSysIDResult
 
 
 @dataclass
@@ -24,6 +25,7 @@ class SysIDProfile:
     empirical_observations: List[str]
     telemetry_sample_count: int
     robot_kinematics: Dict[str, Any] = field(default_factory=dict)
+    differentiable_sysid_result: Optional[Dict[str, Any]] = None
 
 
 class SysIDCalibrator:
@@ -170,9 +172,68 @@ class SysIDCalibrator:
             "has_embedded_urdf": bool(incident.embedded_urdf),
         }
 
-        # 7. Anomaly & Confidence Grading
+        # 7. Differentiable Inverse Physics Optimization (Warp-SysID)
+        # Refines empirical parameters via backpropagation through time on the unrolled RK4 dynamics
+        diff_result_dict = None
+        diff_obs_str = None
+        if len(odom_msgs) >= 8:
+            try:
+                obs_x = []
+                obs_y = []
+                obs_th = []
+                obs_v = []
+                cmd_v = []
+                ts_list = []
+                for msg in odom_msgs:
+                    t_val = msg.get("timestamp_ns", 0) / 1e9
+                    d = msg.get("data", {})
+                    curr_p = d.get("current_pose", {})
+                    targ_p = d.get("target_pose", {})
+                    obs_x.append(float(curr_p.get("x", 0.0)))
+                    obs_y.append(float(curr_p.get("y", 0.0)))
+                    obs_th.append(float(curr_p.get("yaw", 0.0)))
+                    obs_v.append(float(d.get("linear_velocity", 0.0)))
+                    cmd_v.append(float(d.get("commanded_velocity", d.get("linear_velocity", 0.0))))
+                    ts_list.append(t_val)
+
+                if max(obs_v) > 0.05 and len(ts_list) == len(obs_x):
+                    optimizer = DifferentiablePhysicsSysID(device="cpu", max_adam_iterations=20, max_lbfgs_iterations=4)
+                    diff_res = optimizer.fit_from_telemetry(
+                        timestamps_s=ts_list,
+                        observed_x=obs_x,
+                        observed_y=obs_y,
+                        observed_theta=obs_th,
+                        observed_v=obs_v,
+                        commanded_v=cmd_v,
+                        initial_mu_guess=estimated_mu,
+                        robot_mass_kg=est_mass,
+                    )
+                    if diff_res.converged and diff_res.r_squared_fit > 0.65:
+                        estimated_mu = diff_res.mu_kinetic
+                        median_latency = diff_res.actuator_latency_ms
+                        diff_result_dict = {
+                            "mu_kinetic": diff_res.mu_kinetic,
+                            "mu_static": diff_res.mu_static,
+                            "stribeck_velocity_ms": diff_res.stribeck_velocity_ms,
+                            "actuator_latency_ms": diff_res.actuator_latency_ms,
+                            "viscous_damping": diff_res.viscous_damping,
+                            "r_squared_fit": diff_res.r_squared_fit,
+                            "computation_time_ms": diff_res.computation_time_ms,
+                            "converged": True,
+                        }
+                        diff_obs_str = (
+                            f"Differentiable Inverse Physics (Warp-SysID) converged in {diff_res.computation_time_ms}ms: "
+                            f"μ_kinetic={diff_res.mu_kinetic}, μ_static={diff_res.mu_static}, "
+                            f"actuator_τ={diff_res.actuator_latency_ms}ms (R²={diff_res.r_squared_fit})."
+                        )
+            except Exception:
+                pass
+
+        # 8. Anomaly & Confidence Grading
         traction_anomaly = observed_slip > 0.25 or max_tracking_error > 0.40
         confidence = round(min(99.4, 85.0 + (min(sample_count, 100) * 0.14)), 1)
+        if diff_result_dict and diff_result_dict.get("converged"):
+            confidence = round(min(99.8, confidence + 3.0), 1)
 
         empirical_observations = [
             f"Ingested {sample_count} high-resolution kinematic samples across {incident.duration_seconds}s time window.",
@@ -182,6 +243,8 @@ class SysIDCalibrator:
             f"Identified control bus update latency = {round(median_latency, 1)}ms with max lateral tracking error Δ = {round(max_tracking_error, 3)}m.",
             f"Auto-Identified Kinematic Chassis: {chassis_type} (Track: {track_width}m, Wheel R: {wheel_radius}m).",
         ]
+        if diff_obs_str:
+            empirical_observations.append(diff_obs_str)
 
         return SysIDProfile(
             estimated_surface_friction_mu=round(estimated_mu, 2),
@@ -195,6 +258,7 @@ class SysIDCalibrator:
             empirical_observations=empirical_observations,
             telemetry_sample_count=sample_count,
             robot_kinematics=robot_kinematics,
+            differentiable_sysid_result=diff_result_dict,
         )
 
     @classmethod

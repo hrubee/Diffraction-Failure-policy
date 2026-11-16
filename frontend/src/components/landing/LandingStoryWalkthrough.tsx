@@ -44,63 +44,63 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
   const storyActs: readonly StoryAct[] = [
     {
       stepNumber: 1,
-      actName: 'The Data Desert',
+      actName: 'Pilot Purgatory',
       icon: <AlertTriangle className="w-4 h-4 text-[#E76F2E]" />,
-      title: 'The Multi-Million Dollar Physical AI Teleoperation Bottleneck',
+      title: 'The $300,000 / 8-Week AMR Site Commissioning Crisis',
       summary:
-        'Large Language Models had trillions of text tokens on the public internet. Physical AI and robotics foundation models have almost zero demonstration data.',
+        'Robotics OEMs face sudden friction drops (smooth epoxy, dock condensation, forklift rubber) on customer floors. Wheel odometry decouples from LiDAR, triggering phantom E-stops and stalling 70% of customer pilots.',
       bulletPoints: [
-        'Collecting physical demonstrations with human teleoperators in VR rigs costs $150/hour.',
-        '100,000 hours of physical data collection costs $15,000,000 and takes over 2 years with a team of 20 operators.',
-        'Human teleoperation cannot capture extreme edge cases (slipping on wet oil, 95,000 Lux solar flares) without damaging expensive robots.',
-        'Result: Robotics foundation models remain starved of multimodal demonstration data.',
+        'Over 70% of warehouse robotics deployments stall indefinitely in "Pilot Purgatory" after the 3-robot trial.',
+        'Flying 2-3 Field Application Engineers (FAEs) to live in hotels for 8 to 12 weeks burns $150,000 to $300,000 per facility.',
+        'Engineers manually guess friction coefficients and PID gains using tape measures and joysticks.',
+        'Result: Multi-million dollar robotics contracts freeze when a robot slips and blocks a high-traffic aisle.',
       ],
-      tag: 'ACT 1 • THE PHYSICAL AI CRISIS',
+      tag: 'ACT 1 • THE COMMISSIONING CRISIS',
     },
     {
       stepNumber: 2,
-      actName: 'USD & Cosmos Transfer',
+      actName: 'Warp-SysID Inverse Physics',
       icon: <Layers className="w-4 h-4 text-[#2FA4D7]" />,
-      title: 'Procedural World Synthesis in Isaac Sim & NVIDIA Cosmos Transfer',
+      title: 'Automated Ground-Truth Friction Recovery from 5s of Telemetry',
       summary:
-        'Diffraction builds procedural OpenUSD stages and applies NVIDIA Cosmos Transfer 2.5 diffusion to generate photorealistic demonstrations with 100% action invariance.',
+        'The robot records a 5-second blackbox telemetry drop during its first slip. Diffraction unrolls continuous-time Runge-Kutta 4 physics and recovers ground truth in under 3 minutes.',
       bulletPoints: [
-        'Procedurally generates OpenUSD stages with Omniverse Replicator (lighting 50-95k Lux, clutter, dynamic friction).',
-        'PhysX 5 GPU-accelerated rigid-body and contact mechanics compute realistic non-linear tire slip and joint torques.',
-        'NVIDIA Cosmos Transfer 2.5 diffusion augments simulation with photorealistic lighting bloom and floor reflections.',
-        'Geometry and physical action vectors remain 100% invariant via ControlNet segmentation locks.',
+        'Ingests raw wheel encoder counts, IMU yaw rates, and motor currents via ROS 2 MCAP or CSV.',
+        'Unrolls continuous-time RK4 differential equations across 100 timesteps to compute autodiff gradients (∂L/∂μ).',
+        'Recovers true kinetic floor friction (μ = 0.22) and actuator delay (τ = 45ms) with R² fit > 0.99.',
+        'Eliminates 6 weeks of manual trial-and-error friction estimation on-site.',
       ],
-      tag: 'ACT 2 • PROCEDURAL TOOLS & COSMOS DIFFUSION',
+      tag: 'ACT 2 • WARP-SYSID INVERSE PHYSICS',
     },
     {
       stepNumber: 3,
-      actName: 'Sim-to-Real Calibration',
+      actName: '4D MAP-Elites Search',
       icon: <ShieldCheck className="w-4 h-4 text-emerald-600" />,
-      title: 'Closing the Reality Gap with Empirical Physical Distribution Matching',
+      title: 'Mining Catastrophic Edge Cases Across 5,000 Virtual Rollouts',
       summary:
-        'Synthetic data is useless if models fail when transferred to physical robots. Diffraction empirically aligns synthetic distributions against real hardware logs.',
+        'Instead of waiting weeks for a dangerous collision to happen in front of the customer, Diffraction illuminates the 4D behavioral archive in a digital twin before production.',
       bulletPoints: [
-        'Sensor noise profiles calibrated against real Intel RealSense D435 and Ouster OS1 LiDAR hardware.',
-        'Non-linear Pacejka tire curves match real-world wheel slip with Wasserstein distance W₁ = 0.038.',
-        'Domain randomization systematically widens bounds beyond the physical p99 operating envelope.',
-        'Achieves a verified 94.2% zero-shot policy transfer success rate on physical hardware testbeds.',
+        'Illuminates 7,200 behavioral niches across friction (μ), specular warehouse glare, CAN latency, and payload mass.',
+        'Discovers exact Pareto failure cliffs: e.g. turning sharper than 1.2 rad/s with > 180kg payload on μ < 0.23.',
+        'Generates contact-locked multi-modal sensor streams with 0.000 px drift across 10 environmental modalities.',
+        'Computes dynamic stopping distance and lateral rollover stability bounds automatically.',
       ],
-      tag: 'ACT 3 • REALITY GAP ERADICATION',
+      tag: 'ACT 3 • 4D FAILURE ILLUMINATION',
     },
     {
       stepNumber: 4,
-      actName: 'Foundation Model Export',
+      actName: 'CBF-QP Safety & ISO Dossier',
       icon: <Database className="w-4 h-4 text-[#2FA4D7]" />,
-      title: 'Zero-Copy Training in Hugging Face LeRobot, Open-X & PyTorch',
+      title: 'Sub-Millisecond Edge Governor & Insurance Signoff in 14 Days',
       summary:
-        'Export millions of demonstrations directly into standard robotics AI formats for immediate policy training in Diffusion Policy, ACT, and OpenVLA.',
+        'Flashes the compiled active-set CBF-QP governor directly to the robot. Intercepts dangerous commands in 62 microseconds and auto-generates the ISO 13849 compliance dossier.',
       bulletPoints: [
-        'First-class support for Hugging Face LeRobot v2 (Parquet metadata + MP4 synchronized video).',
-        'Google Open-X Embodiment (RLDS / TFDS) compatibility for cross-embodiment foundation models.',
-        'Pre-tokenized action vectors (joint torques, end-effector poses) synchronized at 500 Hz.',
-        'One-click PyTorch DataLoader loader snippet for immediate cluster training.',
+        'Active-set Quadratic Program solves in 62 μs (500 Hz control budget) on NVIDIA Jetson Orin / x86 compute.',
+        'Intercepts unverified neural network/navigation commands and mathematically guarantees forward invariance: h(x) ≥ 0.',
+        'Zero collisions and zero traction spin-outs across the 14-day customer evaluation.',
+        'Auto-compiles formal ISO 3691-4:2023 & ANSI/RIA R15.08 compliance dossiers ready for Munich Re / Zurich underwriters.',
       ],
-      tag: 'ACT 4 • IMMEDIATE ZERO-SHOT TRAINING',
+      tag: 'ACT 4 • CERTIFIED ZERO-COLLISION CLEARANCE',
     },
   ];
 
@@ -114,20 +114,20 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-[#F5E9D8] border border-[#3E2C23]/20 text-xs text-[#3E2C23] font-mono shadow-xs">
             <Zap className="w-3.5 h-3.5 text-[#2FA4D7]" />
             <span className="font-semibold uppercase tracking-wider text-[10px]">
-              The 4-Act Physical AI Data Factory
+              The 14-Day Automated Commissioning Lifecycle
             </span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2C23] tracking-tight leading-tight font-headline">
-            From data desert to
+            From 5s telemetry drop to
             <br />
             <span className="text-[#2FA4D7]">
-              frontier VLA foundation models.
+              zero-collision certified clearance.
             </span>
           </h2>
 
           <p className="text-[#3E2C23]/80 text-sm sm:text-base leading-relaxed font-body">
-            How Diffraction replaces millions of dollars in manual teleoperation with automated, physics-calibrated synthetic generation in NVIDIA Isaac Sim.
+            How Diffraction replaces 8 to 12 weeks of manual on-site engineering with unrolled inverse physics, 4D quality-diversity simulation, and sub-millisecond edge safety filtering.
           </p>
         </div>
 

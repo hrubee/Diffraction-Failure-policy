@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Diffraction | Physical AI Safety & Policy Verification Platform',
+  title: 'Diffraction | AMR Runtime Safety & Automated Commissioning Platform',
   description:
-    'Continuous physics verification and regulatory certification across Humanoids, Heavy Haulers, Manipulators, Wheeled AMRs & Sidewalk Rovers.',
+    'Automated site commissioning and certified runtime safety for AMRs in 14 days. Continuous Warp-SysID physics recovery and sub-millisecond CBF-QP safety governor.',
 };
 
 export default function RootLayout({

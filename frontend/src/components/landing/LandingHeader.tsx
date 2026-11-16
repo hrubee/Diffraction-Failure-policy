@@ -50,7 +50,7 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({
                 Diffraction
               </span>
               <span className="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-[#2FA4D7]/15 text-[#2FA4D7] border border-[#2FA4D7]/30 font-mono">
-                Isaac Sim &amp; Cosmos Studio
+                Runtime Safety &amp; Continuous SysID
               </span>
             </div>
           </a>
@@ -69,17 +69,17 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({
 
         {/* Center: Anchor Links */}
         <nav className="hidden md:flex items-center space-x-6 text-xs text-[#3E2C23]/80 font-medium font-body">
-          <a href="#sow-builder" onClick={onLaunchConsole} className="hover:text-[#3E2C23] font-bold text-[#2FA4D7] transition-colors">
-            Configure SOW ($7.5k+)
+          <a href="#pricing" className="hover:text-[#3E2C23] font-bold text-[#2FA4D7] transition-colors">
+            14-Day Pilot ($25k)
           </a>
-          <a href="#pricing" className="hover:text-[#3E2C23] transition-colors">
-            Sprint Tiers
-          </a>
-          <a href="#how-it-works" className="hover:text-[#3E2C23] transition-colors">
-            Cosmos Pipeline
+          <a href="#capabilities" className="hover:text-[#3E2C23] transition-colors">
+            4 Deep-Tech Pillars
           </a>
           <a href="#roi" className="hover:text-[#3E2C23] transition-colors">
-            Sim vs In-House ROI
+            Commissioning ROI
+          </a>
+          <a href="#how-it-works" className="hover:text-[#3E2C23] transition-colors">
+            Telemetry Workflow
           </a>
         </nav>
 
@@ -94,7 +94,7 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({
           >
             <span className="h-2 w-2 rounded-full bg-[#2FA4D7]" />
             <span className="font-semibold text-[#3E2C23] text-[11px] font-mono uppercase">
-              STUDIO PORTAL
+              CONTROL PLANE
             </span>
           </button>
 
@@ -105,8 +105,8 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({
             className="flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 rounded-lg bg-[#2FA4D7] hover:bg-[#248ab8] active:bg-[#1d7ca8] text-white text-xs font-bold transition-all cursor-pointer group shadow-sm"
           >
             <Zap className="w-3.5 h-3.5 fill-current text-white group-hover:scale-110 transition-transform" />
-            <span className="hidden sm:inline">Scope Sprint SOW</span>
-            <span className="sm:hidden">SOW</span>
+            <span className="hidden sm:inline">Request 14-Day Pilot</span>
+            <span className="sm:hidden">Pilot SOW</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>

@@ -41,3 +41,6 @@ def test_gpu_worker_registration_and_heartbeat():
     hb_resp = client.post(f"/api/v1/factory/gpu-workers/{worker_id}/heartbeat", json={"timestamp": 12345.0})
     assert hb_resp.status_code == 200
     assert hb_resp.json()["status"] == "OK"
+
+    # Cleanup worker so neighbor tests can run in CPU mode cleanly
+    ACTIVE_GPU_WORKERS.clear()
