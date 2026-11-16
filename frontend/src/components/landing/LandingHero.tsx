@@ -41,6 +41,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
   onExploreStory,
   onOpenPricing,
 }) => {
+  const [viewMode, setViewMode] = useState<'business' | 'engineering'>('business');
   const [activeChannel, setActiveChannel] = useState<'cbf_qp' | 'warp_sysid' | 'map_elites' | 'iso_audit'>('cbf_qp');
 
   return (
@@ -51,20 +52,20 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-white border border-[#3E2C23]/20 text-xs text-[#3E2C23] shadow-xs">
             <span className="h-2 w-2 rounded-full bg-[#2FA4D7] animate-pulse" />
             <span className="font-semibold tracking-wide uppercase text-[10px] font-mono">
-              RUNTIME SAFETY GOVERNOR • CONTINUOUS DIFFERENTIABLE SYSID
+              AUTOMATED SITE COMMISSIONING • ZERO-COLLISION GUARANTEE
             </span>
           </div>
 
           <span className="text-[#3E2C23]/40 hidden sm:inline">•</span>
 
           <span className="inline-flex items-center px-3 py-1 rounded bg-white border border-[#3E2C23]/20 text-[#3E2C23] text-xs font-mono shadow-xs">
-            ISO 3691-4:2023 • ANSI/RIA R15.08 • Sub-Millisecond Active-Set QP • Warp-SysID RK4
+            14-Day Deployment SLA • Zero Engineer Travel Cost
           </span>
 
           <span className="text-[#3E2C23]/40 hidden md:inline">•</span>
 
           <span className="hidden md:inline-flex px-3 py-1 rounded bg-[#E76F2E] text-white text-xs font-mono font-bold shadow-xs">
-            14-Day Pilot SLA • Zero Travel Cost
+            ISO 3691-4 &amp; Insurance Audit Ready
           </span>
         </div>
 
@@ -74,36 +75,36 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           <div className="lg:col-span-7 space-y-5">
             <div className="space-y-2">
               <span className="text-xs font-mono font-bold tracking-wider uppercase text-[#2FA4D7] block">
-                The Runtime Safety &amp; Commissioning Platform for AMRs
+                For Robotics Founders, Operations Leaders &amp; Warehouse Integrators
               </span>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#3E2C23] font-headline tracking-tight leading-[1.12]">
-                Eliminate AMR Wheel Slip &amp; Pilot Purgatory —{' '}
+                Stop Robot Crashes &amp; Slipping —{' '}
                 <span className="text-[#2FA4D7] underline decoration-[#2FA4D7]/40 decoration-4 underline-offset-4">
-                  Certified in 14 Days.
+                  Deploy in 14 Days.
                 </span>
               </h1>
             </div>
 
             <p className="text-base sm:text-lg text-[#3E2C23]/85 leading-relaxed font-body max-w-2xl">
-              Robotics OEMs spend{' '}
+              Every time robots enter a new warehouse, slippery floors cause spin-outs, delays, and{' '}
               <strong className="text-[#E76F2E] font-bold underline decoration-[#E76F2E]/80 decoration-2 underline-offset-4">
-                8 to 12 weeks
-              </strong>{' '}
-              and $300,000 flying field application engineers (FAEs) to manually tune robots on low-friction warehouse floors. Diffraction recovers ground-truth friction (μ) and motor delay from a 5-second telemetry drop and flashes a real-time active-set CBF-QP safety governor (&lt; 0.1ms solve) to guarantee zero collisions.
+                $250,000 in engineer travel costs
+              </strong>. 
+              Diffraction automatically diagnoses floor traction from a 5-second data drop and installs an intelligent safety guard on your robots—guaranteeing <strong>zero collisions</strong> and instant insurance signoff.
             </p>
 
             <p className="text-sm text-[#3E2C23]/80 leading-relaxed font-body max-w-2xl">
-              From unrolled continuous-time inverse physics (Warp-SysID RK4), to 4D MAP-Elites failure boundary discovery, to automated ISO 3691-4 and ANSI/RIA R15.08 compliance dossiers for insurance underwriters—packaged into a turnkey 25-asset delivery in under 10 seconds.
+              <strong>Zero code rewrites. Zero hardware modifications.</strong> Plug our software into your existing fleet to compress 8-week site deployments into 14 days with full money-back safety assurance.
             </p>
 
             {/* Micro ROI Stat Callout */}
             <div className="grid grid-cols-2 gap-3 max-w-lg p-3 rounded-xl bg-white border border-[#3E2C23]/20 font-mono text-xs">
               <div>
-                <span className="text-[#3E2C23]/50 block text-[10px]">MANUAL FAE COMMISSIONING</span>
+                <span className="text-[#3E2C23]/50 block text-[10px]">THE STATUS QUO</span>
                 <span className="text-rose-700 font-bold">$150k-$300k / site • 8-12 weeks • 70% stall</span>
               </div>
               <div>
-                <span className="text-[#3E2C23]/50 block text-[10px]">DIFFRACTION 14-DAY PILOT</span>
+                <span className="text-[#3E2C23]/50 block text-[10px]">WITH DIFFRACTION</span>
                 <span className="text-emerald-700 font-bold">$25,000 Fixed Fee • 14 Days • 0 Collisions</span>
               </div>
             </div>
@@ -116,36 +117,28 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 className="min-h-[48px] px-6 py-3 rounded-lg bg-[#2FA4D7] hover:bg-[#248ab8] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center space-x-2.5 cursor-pointer group"
               >
                 <Zap className="w-4 h-4 fill-current text-white group-hover:scale-110 transition-transform" />
-                <span>Scope 14-Day Pilot ($25k)</span>
+                <span>Request 14-Day Pilot ($25k)</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
               <button
                 type="button"
                 onClick={() => {
-                  window.location.hash = '#catalog';
+                  const target = document.getElementById('capabilities');
+                  if (target) target.scrollIntoView({ behavior: 'smooth' });
                 }}
                 className="min-h-[48px] px-5 py-3 rounded-lg bg-white hover:bg-[#FAF4EB] text-[#3E2C23] text-sm font-semibold border border-[#3E2C23]/25 transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-xs"
               >
-                <Database className="w-4 h-4 text-[#2FA4D7]" />
-                <span>Inspect Turnkey Package</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={onOpenPricing}
-                className="min-h-[44px] px-3 py-2 text-[#E76F2E] hover:text-[#d35b1d] text-xs sm:text-sm font-bold transition-colors flex items-center justify-center space-x-1.5 cursor-pointer"
-              >
-                <Sparkles className="w-4 h-4 text-[#E76F2E]" />
-                <span>Pilot Details →</span>
+                <Cpu className="w-4 h-4 text-[#2FA4D7]" />
+                <span>See Robotics Engineering Specs →</span>
               </button>
             </div>
           </div>
 
-          {/* Right Column: Interactive Multimodal Stream Preview Card */}
+          {/* Right Column: Dual-Mode Interactive Preview Card */}
           <div className="lg:col-span-5">
             <div className="relative rounded-2xl bg-[#3E2C23] text-[#F5E9D8] border-2 border-[#3E2C23] p-5 sm:p-6 shadow-2xl space-y-4">
-              {/* Card Header */}
+              {/* Card Header with View Mode Toggle */}
               <div className="flex items-center justify-between border-b border-[#F5E9D8]/15 pb-3">
                 <div className="flex items-center space-x-2">
                   <div className="p-1.5 rounded-md bg-[#2FA4D7] text-white">
@@ -153,199 +146,235 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                   </div>
                   <div>
                     <h3 className="text-xs font-bold text-[#F5E9D8] tracking-wide uppercase font-headline">
-                      Runtime Verification Engine
+                      {viewMode === 'business' ? 'Executive Safety Overview' : 'Robotics Control Telemetry'}
                     </h3>
-                    <p className="text-[10px] text-[#F5E9D8]/70 font-mono">Warp-SysID &amp; CBF-QP Governor</p>
+                    <p className="text-[10px] text-[#F5E9D8]/70 font-mono">
+                      {viewMode === 'business' ? 'Plain English Decision Summary' : 'Sub-millisecond Active-Set QP'}
+                    </p>
                   </div>
                 </div>
 
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-[#E76F2E] text-white">
-                  &lt; 0.1ms Edge Solve
-                </span>
-              </div>
-
-              {/* Channel Selector Pills */}
-              <div className="grid grid-cols-4 gap-1 bg-[#2A1D17] p-1 rounded-lg border border-[#F5E9D8]/10 text-[11px] font-mono">
-                <button
-                  type="button"
-                  onClick={() => setActiveChannel('cbf_qp')}
-                  className={`py-1.5 rounded font-bold transition-colors cursor-pointer text-center ${
-                    activeChannel === 'cbf_qp' ? 'bg-[#2FA4D7] text-white' : 'text-[#F5E9D8]/60 hover:text-white'
-                  }`}
-                >
-                  CBF-QP
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveChannel('warp_sysid')}
-                  className={`py-1.5 rounded font-bold transition-colors cursor-pointer text-center ${
-                    activeChannel === 'warp_sysid' ? 'bg-[#2FA4D7] text-white' : 'text-[#F5E9D8]/60 hover:text-white'
-                  }`}
-                >
-                  Warp-SysID
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveChannel('map_elites')}
-                  className={`py-1.5 rounded font-bold transition-colors cursor-pointer text-center ${
-                    activeChannel === 'map_elites' ? 'bg-[#2FA4D7] text-white' : 'text-[#F5E9D8]/60 hover:text-white'
-                  }`}
-                >
-                  4D Search
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveChannel('iso_audit')}
-                  className={`py-1.5 rounded font-bold transition-colors cursor-pointer text-center ${
-                    activeChannel === 'iso_audit' ? 'bg-[#2FA4D7] text-white' : 'text-[#F5E9D8]/60 hover:text-white'
-                  }`}
-                >
-                  ISO Audit
-                </button>
-              </div>
-
-              {/* Viewport Frame */}
-              <div className="relative aspect-4/3 bg-[#1A120E] rounded-xl overflow-hidden border border-white/10 flex items-center justify-center p-4">
-                {activeChannel === 'cbf_qp' && (
-                  <div className="w-full h-full flex flex-col justify-between font-mono text-xs">
-                    <div className="flex justify-between items-center text-[10px] text-[#2FA4D7] border-b border-white/10 pb-1">
-                      <span>ACTIVE-SET QUADRATIC PROGRAM</span>
-                      <span className="text-emerald-400">STATUS: SOLVED (0.062 ms)</span>
-                    </div>
-                    <div className="space-y-1.5 my-auto text-[11px]">
-                      <div className="flex justify-between text-[#F5E9D8]/70">
-                        <span>Commanded Velocity:</span>
-                        <span className="text-rose-400 font-bold">1.60 m/s (OVER LIMIT)</span>
-                      </div>
-                      <div className="flex justify-between text-[#F5E9D8]/70">
-                        <span>Physical Floor μ (Epoxy):</span>
-                        <span className="text-amber-300 font-bold">μ = 0.22 (SLICK)</span>
-                      </div>
-                      <div className="flex justify-between text-[#F5E9D8]/70">
-                        <span>Distance to Obstacle:</span>
-                        <span className="text-white">2.50 m → 0.389 m buffer</span>
-                      </div>
-                      <div className="p-2 rounded bg-emerald-950/40 border border-emerald-500/40 text-emerald-300 font-bold text-center">
-                        GOVERNOR INTERVENTION: 1.60 m/s → 0.01 m/s (0 COLLISIONS)
-                      </div>
-                    </div>
-                    <div className="text-[10px] text-[#F5E9D8]/50 flex justify-between pt-1 border-t border-white/10">
-                      <span>Control Frequency: 500 Hz</span>
-                      <span>Margin: 0.35m</span>
-                    </div>
-                  </div>
-                )}
-
-                {activeChannel === 'warp_sysid' && (
-                  <div className="w-full h-full flex flex-col justify-between font-mono text-xs">
-                    <div className="flex justify-between items-center text-[10px] text-[#2FA4D7] border-b border-white/10 pb-1">
-                      <span>UNROLLED RK4 INVERSE PHYSICS</span>
-                      <span className="text-emerald-400">R² = 0.9967 (CONVERGED)</span>
-                    </div>
-                    <div className="space-y-1.5 my-auto text-[11px]">
-                      <div className="flex justify-between text-[#F5E9D8]/70">
-                        <span>Observed Slip Trajectory:</span>
-                        <span className="text-white">5.0s Blackbox Window</span>
-                      </div>
-                      <div className="flex justify-between text-[#F5E9D8]/70">
-                        <span>Recovered Kinetic μ:</span>
-                        <span className="text-emerald-400 font-bold">0.3204 ± 0.008 (True: 0.320)</span>
-                      </div>
-                      <div className="flex justify-between text-[#F5E9D8]/70">
-                        <span>Actuator Latency (τ):</span>
-                        <span className="text-amber-300 font-bold">45.2 ms (True: 45.0 ms)</span>
-                      </div>
-                      <div className="p-2 rounded bg-blue-950/40 border border-blue-500/40 text-blue-300 font-bold text-center">
-                        AUTODIFF OPTIMIZER: 25 ADAM + 5 L-BFGS STEPS (2.8s)
-                      </div>
-                    </div>
-                    <div className="text-[10px] text-[#F5E9D8]/50 flex justify-between pt-1 border-t border-white/10">
-                      <span>Loss Gradient: ∂L/∂μ</span>
-                      <span>Sensor Noise: σ=0.005</span>
-                    </div>
-                  </div>
-                )}
-
-                {activeChannel === 'map_elites' && (
-                  <div className="w-full h-full flex flex-col justify-between font-mono text-xs">
-                    <div className="flex justify-between items-center text-[10px] text-[#2FA4D7] border-b border-white/10 pb-1">
-                      <span>4D BEHAVIORAL ARCHIVE ILLUMINATION</span>
-                      <span className="text-amber-400">60 ROLLOUTS MINED</span>
-                    </div>
-                    <div className="space-y-1.5 my-auto text-[11px]">
-                      <div className="flex justify-between text-[#F5E9D8]/70">
-                        <span>Pareto Failure Frontier:</span>
-                        <span className="text-rose-400 font-bold">μ &lt; 0.23 @ ω &gt; 1.2 rad/s</span>
-                      </div>
-                      <div className="flex justify-between text-[#F5E9D8]/70">
-                        <span>Evaluated Niches:</span>
-                        <span className="text-white">Friction × Glare × Lag × Mass</span>
-                      </div>
-                      <div className="flex justify-between text-[#F5E9D8]/70">
-                        <span>Archive Capacity:</span>
-                        <span className="text-white">7,200 Discretized Cells</span>
-                      </div>
-                      <div className="p-2 rounded bg-amber-950/40 border border-amber-500/40 text-amber-300 font-bold text-center">
-                        FRONTIER BOUND: Centripetal Clamping Required &gt; 180kg
-                      </div>
-                    </div>
-                    <div className="text-[10px] text-[#F5E9D8]/50 flex justify-between pt-1 border-t border-white/10">
-                      <span>Quality-Diversity Search</span>
-                      <span>Pareto Cliff Score: 0.94</span>
-                    </div>
-                  </div>
-                )}
-
-                {activeChannel === 'iso_audit' && (
-                  <div className="w-full h-full flex flex-col justify-between font-mono text-xs">
-                    <div className="flex justify-between items-center text-[10px] text-[#2FA4D7] border-b border-white/10 pb-1">
-                      <span>REGULATORY COMPLIANCE ORACLE</span>
-                      <span className="text-emerald-400">PASSED: ISO 13849 PL-d</span>
-                    </div>
-                    <div className="space-y-1.5 my-auto text-[11px]">
-                      <div className="flex justify-between text-[#F5E9D8]/70">
-                        <span>ISO 3691-4:2023 Cl. 5.2:</span>
-                        <span className="text-emerald-400 font-bold">COMPLIANT (Stopping Distance)</span>
-                      </div>
-                      <div className="flex justify-between text-[#F5E9D8]/70">
-                        <span>ANSI/RIA R15.08 Part 2:</span>
-                        <span className="text-emerald-400 font-bold">VERIFIED (Traction Limits)</span>
-                      </div>
-                      <div className="flex justify-between text-[#F5E9D8]/70">
-                        <span>Forward Invariance:</span>
-                        <span className="text-emerald-400 font-bold">h(x) ≥ 0 ∀ t ∈ [0, T]</span>
-                      </div>
-                      <div className="p-2 rounded bg-emerald-950/40 border border-emerald-500/40 text-emerald-300 font-bold text-center">
-                        INSURANCE DOSSIER: Ready for Zurich / Munich Re
-                      </div>
-                    </div>
-                    <div className="text-[10px] text-[#F5E9D8]/50 flex justify-between pt-1 border-t border-white/10">
-                      <span>Audit Hash: SHA-256</span>
-                      <span>Deliverable: 01_AUDIT.html</span>
-                    </div>
-                  </div>
-                )}
-
-                <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-[#F5E9D8]">
-                  Mathematical Watchdog Active
+                {/* Perspective Switcher */}
+                <div className="inline-flex p-0.5 rounded-lg bg-[#2A1D17] border border-[#F5E9D8]/15 text-[10px] font-mono">
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('business')}
+                    className={`px-2 py-1 rounded transition-colors cursor-pointer ${
+                      viewMode === 'business' ? 'bg-[#2FA4D7] text-white font-bold' : 'text-[#F5E9D8]/60 hover:text-white'
+                    }`}
+                  >
+                    Business
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('engineering')}
+                    className={`px-2 py-1 rounded transition-colors cursor-pointer ${
+                      viewMode === 'engineering' ? 'bg-[#E76F2E] text-white font-bold' : 'text-[#F5E9D8]/60 hover:text-white'
+                    }`}
+                  >
+                    Engineering
+                  </button>
                 </div>
               </div>
 
-              {/* Live Sensor Metrics Grid */}
-              <div className="grid grid-cols-3 gap-2 text-center text-xs font-mono bg-white/5 p-2.5 rounded-lg border border-white/10">
-                <div>
-                  <span className="text-[#F5E9D8]/50 text-[10px] block">QP LATENCY</span>
-                  <span className="font-bold text-white">0.062 ms</span>
+              {/* View Mode 1: Business Decision Maker View */}
+              {viewMode === 'business' ? (
+                <div className="space-y-4 font-body">
+                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2 text-xs">
+                    <div className="flex items-center justify-between text-[11px] font-mono">
+                      <span className="text-[#2FA4D7] font-bold">INCIDENT TEST CASE #042</span>
+                      <span className="text-emerald-400 font-bold">100% COLLISION PREVENTED</span>
+                    </div>
+                    <div className="text-[#F5E9D8]/90 leading-relaxed text-xs">
+                      <strong>Scenario:</strong> 500kg autonomous robot entered warehouse loading dock with unexpected surface moisture and forklift tire marks.
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 text-xs font-mono">
+                    <div className="flex justify-between items-center bg-[#2A1D17] p-2 rounded border border-white/5">
+                      <span className="text-[#F5E9D8]/60">Without Diffraction:</span>
+                      <span className="text-rose-400 font-bold">Skids past safety zone • Crushes wall</span>
+                    </div>
+                    <div className="flex justify-between items-center bg-emerald-950/40 p-2 rounded border border-emerald-500/30">
+                      <span className="text-emerald-200">With Diffraction:</span>
+                      <span className="text-emerald-300 font-bold">Brakes smoothly • 38.9 cm safe stop</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2 text-center text-xs font-mono bg-white/5 p-2.5 rounded-lg border border-white/10">
+                    <div>
+                      <span className="text-[#F5E9D8]/50 text-[10px] block">COMMISSIONING</span>
+                      <span className="font-bold text-white">14 Days</span>
+                    </div>
+                    <div>
+                      <span className="text-[#F5E9D8]/50 text-[10px] block">CRASHES</span>
+                      <span className="font-bold text-[#2FA4D7]">ZERO</span>
+                    </div>
+                    <div>
+                      <span className="text-[#F5E9D8]/50 text-[10px] block">INSURANCE</span>
+                      <span className="font-bold text-emerald-400">PASSED</span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-[#F5E9D8]/50 text-[10px] block">COLLISIONS</span>
-                  <span className="font-bold text-[#2FA4D7]">0 / 1,000</span>
+              ) : (
+                /* View Mode 2: Robotics Engineer Deep-Dive View */
+                <div className="space-y-3">
+                  {/* Channel Selector Pills for Engineers */}
+                  <div className="grid grid-cols-4 gap-1 bg-[#2A1D17] p-1 rounded-lg border border-[#F5E9D8]/10 text-[11px] font-mono">
+                    <button
+                      type="button"
+                      onClick={() => setActiveChannel('cbf_qp')}
+                      className={`py-1 rounded font-bold transition-colors cursor-pointer text-center ${
+                        activeChannel === 'cbf_qp' ? 'bg-[#E76F2E] text-white' : 'text-[#F5E9D8]/60 hover:text-white'
+                      }`}
+                    >
+                      CBF-QP
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveChannel('warp_sysid')}
+                      className={`py-1 rounded font-bold transition-colors cursor-pointer text-center ${
+                        activeChannel === 'warp_sysid' ? 'bg-[#E76F2E] text-white' : 'text-[#F5E9D8]/60 hover:text-white'
+                      }`}
+                    >
+                      Warp-SysID
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveChannel('map_elites')}
+                      className={`py-1 rounded font-bold transition-colors cursor-pointer text-center ${
+                        activeChannel === 'map_elites' ? 'bg-[#E76F2E] text-white' : 'text-[#F5E9D8]/60 hover:text-white'
+                      }`}
+                    >
+                      4D MAP
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveChannel('iso_audit')}
+                      className={`py-1 rounded font-bold transition-colors cursor-pointer text-center ${
+                        activeChannel === 'iso_audit' ? 'bg-[#E76F2E] text-white' : 'text-[#F5E9D8]/60 hover:text-white'
+                      }`}
+                    >
+                      ISO PL-d
+                    </button>
+                  </div>
+
+                  {/* Engineering Viewport Frame */}
+                  <div className="relative aspect-4/3 bg-[#1A120E] rounded-xl overflow-hidden border border-white/10 flex items-center justify-center p-3 font-mono text-xs">
+                    {activeChannel === 'cbf_qp' && (
+                      <div className="w-full h-full flex flex-col justify-between">
+                        <div className="flex justify-between items-center text-[10px] text-[#2FA4D7] border-b border-white/10 pb-1">
+                          <span>ACTIVE-SET QUADRATIC PROGRAM</span>
+                          <span className="text-emerald-400">LATENCY: 0.062 ms (500 Hz)</span>
+                        </div>
+                        <div className="space-y-1 my-auto text-[11px]">
+                          <div className="flex justify-between text-[#F5E9D8]/70">
+                            <span>Commanded u_des:</span>
+                            <span className="text-rose-400 font-bold">[1.60 m/s, 0.0 rad/s]</span>
+                          </div>
+                          <div className="flex justify-between text-[#F5E9D8]/70">
+                            <span>Traction Barrier (h1):</span>
+                            <span className="text-amber-300">μ = 0.22 (Braking limit: μg)</span>
+                          </div>
+                          <div className="flex justify-between text-[#F5E9D8]/70">
+                            <span>Forward Invariance:</span>
+                            <span className="text-emerald-300">h(x) ≥ 0 strictly satisfied</span>
+                          </div>
+                          <div className="p-1.5 rounded bg-emerald-950/40 border border-emerald-500/40 text-emerald-300 text-center font-bold">
+                            OUTPUT u_safe: [0.01 m/s, 0.0 rad/s] (0 Collisions)
+                          </div>
+                        </div>
+                        <div className="text-[10px] text-[#F5E9D8]/50 flex justify-between pt-1 border-t border-white/10">
+                          <span>Safety Margin: 0.35m</span>
+                          <span>Final Clearance: 0.389m</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeChannel === 'warp_sysid' && (
+                      <div className="w-full h-full flex flex-col justify-between">
+                        <div className="flex justify-between items-center text-[10px] text-[#2FA4D7] border-b border-white/10 pb-1">
+                          <span>UNROLLED RK4 INVERSE DYNAMICS</span>
+                          <span className="text-emerald-400">R² = 0.9967 (CONVERGED)</span>
+                        </div>
+                        <div className="space-y-1 my-auto text-[11px]">
+                          <div className="flex justify-between text-[#F5E9D8]/70">
+                            <span>Loss Function:</span>
+                            <span className="text-white">L = ||x_sim - x_obs||² + ||v||²</span>
+                          </div>
+                          <div className="flex justify-between text-[#F5E9D8]/70">
+                            <span>Recovered Kinetic μ:</span>
+                            <span className="text-emerald-400 font-bold">0.3204 (True: 0.3200)</span>
+                          </div>
+                          <div className="flex justify-between text-[#F5E9D8]/70">
+                            <span>Actuator Lag (τ):</span>
+                            <span className="text-amber-300 font-bold">45.2 ms (True: 45.0 ms)</span>
+                          </div>
+                          <div className="p-1.5 rounded bg-blue-950/40 border border-blue-500/40 text-blue-300 text-center font-bold">
+                            GRADIENT SOLVE: 25 Adam + 5 L-BFGS (2.8s total)
+                          </div>
+                        </div>
+                        <div className="text-[10px] text-[#F5E9D8]/50 flex justify-between pt-1 border-t border-white/10">
+                          <span>Autodiff: PyTorch BPTT</span>
+                          <span>Noise Tolerance: σ = 0.005</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeChannel === 'map_elites' && (
+                      <div className="w-full h-full flex flex-col justify-between">
+                        <div className="flex justify-between items-center text-[10px] text-[#2FA4D7] border-b border-white/10 pb-1">
+                          <span>4D BEHAVIORAL ARCHIVE SEARCH</span>
+                          <span className="text-amber-400">7,200 DISCRETIZED CELLS</span>
+                        </div>
+                        <div className="space-y-1 my-auto text-[11px]">
+                          <div className="flex justify-between text-[#F5E9D8]/70">
+                            <span>Search Space:</span>
+                            <span className="text-white">Friction × Glare × Lag × Mass</span>
+                          </div>
+                          <div className="flex justify-between text-[#F5E9D8]/70">
+                            <span>Pareto Boundary:</span>
+                            <span className="text-rose-400 font-bold">μ &lt; 0.23 @ ω &gt; 1.2 rad/s</span>
+                          </div>
+                          <div className="p-1.5 rounded bg-amber-950/40 border border-amber-500/40 text-amber-300 text-center font-bold">
+                            FAILURE MINED: Rollover risk with &gt; 180kg payload
+                          </div>
+                        </div>
+                        <div className="text-[10px] text-[#F5E9D8]/50 flex justify-between pt-1 border-t border-white/10">
+                          <span>Evaluations: 60 rollouts</span>
+                          <span>Cliff Score: 0.94</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeChannel === 'iso_audit' && (
+                      <div className="w-full h-full flex flex-col justify-between">
+                        <div className="flex justify-between items-center text-[10px] text-[#2FA4D7] border-b border-white/10 pb-1">
+                          <span>REGULATORY ORACLE EVALUATION</span>
+                          <span className="text-emerald-400">PASSED: ISO 13849 PL-d</span>
+                        </div>
+                        <div className="space-y-1 my-auto text-[11px]">
+                          <div className="flex justify-between text-[#F5E9D8]/70">
+                            <span>ISO 3691-4:2023 Cl. 5.2:</span>
+                            <span className="text-emerald-400 font-bold">COMPLIANT (Stopping Distance)</span>
+                          </div>
+                          <div className="flex justify-between text-[#F5E9D8]/70">
+                            <span>ANSI/RIA R15.08 Part 2:</span>
+                            <span className="text-emerald-400 font-bold">VERIFIED (Traction Bounds)</span>
+                          </div>
+                          <div className="p-1.5 rounded bg-emerald-950/40 border border-emerald-500/40 text-emerald-300 text-center font-bold">
+                            FORMAL DOSSIER: Ready for Zurich / Munich Re
+                          </div>
+                        </div>
+                        <div className="text-[10px] text-[#F5E9D8]/50 flex justify-between pt-1 border-t border-white/10">
+                          <span>Audit File: 01_AUDIT.html</span>
+                          <span>Format: Machine-Readable JSON</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <span className="text-[#F5E9D8]/50 text-[10px] block">PACKAGE TIME</span>
-                  <span className="font-bold text-[#E76F2E]">7.16s</span>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

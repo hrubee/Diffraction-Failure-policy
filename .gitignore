@@ -45,6 +45,10 @@ storage/usd_stages/
 storage/remediation_patches/
 storage/screenshots/
 storage/studio_deliverables/
+storage/cosmos_augmented/
+storage/gr00t_showcase/
+storage/pilot_packages/
+storage/photorealistic_assets/
 storage/*.db
 *.db
 *.db-wal
