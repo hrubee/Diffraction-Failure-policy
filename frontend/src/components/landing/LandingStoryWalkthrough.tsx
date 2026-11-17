@@ -199,9 +199,9 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
             <button
               type="button"
               onClick={onLaunchConsole}
-              className="px-6 py-3 rounded-xl bg-[#2FA4D7] hover:bg-[#2FA4D7]/90 text-white font-extrabold text-xs sm:text-sm tracking-wide flex items-center gap-2 cursor-pointer shadow-xs transition-transform active:scale-95"
+              className="px-6 py-3 rounded-xl bg-[#2FA4D7] hover:bg-[#2FA4D7]/90 text-white font-extrabold text-xs sm:text-sm tracking-wide flex items-center gap-2 cursor-pointer shadow-xs transition-transform active:scale-95 font-mono"
             >
-              <span>Launch Isaac Sim Studio</span>
+              <span>Request 14-Day Pilot ($25k)</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
