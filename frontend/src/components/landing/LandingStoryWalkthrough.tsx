@@ -587,7 +587,7 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
                     2. Cloud Inverse Physics Calibration
                   </h4>
                   <p className="text-xs text-[#3E2C23]/75 leading-relaxed font-body">
-                    Diffraction unrolls continuous Runge-Kutta 4 dynamics on GPU cloud instances to extract true floor friction ($\mu$), CAN latency ($\tau$), and center-of-mass bounds in 3 minutes.
+                    Diffraction unrolls continuous Runge-Kutta 4 dynamics on GPU cloud instances to extract true floor friction (&mu;), CAN latency (&tau;), and center-of-mass bounds in 3 minutes.
                   </p>
                 </div>
                 <div className="p-2.5 rounded bg-[#F5E9D8]/60 text-[11px] font-mono text-[#3E2C23]/80 border border-[#3E2C23]/10">
