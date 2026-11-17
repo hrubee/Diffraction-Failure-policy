@@ -286,7 +286,7 @@ export const ClientSowConfigurator: React.FC = () => {
                   onChange={(e) => setSelectedEnvironment(e.target.value)}
                   className="w-full p-2 bg-[#F5E9D8]/50 border border-[#3E2C23]/30 rounded-lg text-xs font-mono focus:outline-none focus:border-[#2FA4D7]"
                 >
-                  <option value="Warehouse & Logistics">Amazon-Class High-Bay Warehouse</option>
+                  <option value="Warehouse & Logistics">Automated High-Bay Warehouse (ISO 3691-4)</option>
                   <option value="Exterior Loading Dock">Exterior Loading Dock (Glare / Rain)</option>
                   <option value="Cleanroom Assembly">Electronics Assembly Cleanroom</option>
                   <option value="Domestic Living">Domestic Kitchen & Living Room</option>

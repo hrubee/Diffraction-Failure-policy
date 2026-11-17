@@ -12,7 +12,7 @@ export const ProvingGroundsTable: React.FC = () => {
         <h3 className="text-sm font-bold text-slate-900 tracking-tight">
           Autonomous Operational Design Domain (ODD) Compliance &amp; Proving Grounds
         </h3>
-        <span className="text-xs text-slate-500 mono">5 Global Proving Grounds Live Telematics</span>
+        <span className="text-xs text-slate-500 mono">5 Standard Physics Benchmark Baselines</span>
       </div>
 
       <div className="overflow-x-auto">

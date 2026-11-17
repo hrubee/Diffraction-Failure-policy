@@ -363,7 +363,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                             <span className="text-emerald-400 font-bold">VERIFIED (Traction Bounds)</span>
                           </div>
                           <div className="p-1.5 rounded bg-emerald-950/40 border border-emerald-500/40 text-emerald-300 text-center font-bold">
-                            FORMAL DOSSIER: Ready for Zurich / Munich Re
+                            FORMAL DOSSIER: Ready for Safety &amp; Insurance Audit
                           </div>
                         </div>
                         <div className="text-[10px] text-[#F5E9D8]/50 flex justify-between pt-1 border-t border-white/10">

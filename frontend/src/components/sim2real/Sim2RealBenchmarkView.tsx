@@ -138,7 +138,7 @@ export const Sim2RealBenchmarkView: React.FC = () => {
             </h3>
           </div>
           <span className="text-xs font-mono font-bold text-[#3E2C23]/60">
-            3 Embodiment Families Verified
+            Open-X &amp; ROS 2 Reference Baselines
           </span>
         </div>
 
@@ -146,9 +146,9 @@ export const Sim2RealBenchmarkView: React.FC = () => {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b-2 border-[#3E2C23] text-xs font-mono font-extrabold text-[#3E2C23] uppercase">
-                <th className="py-3 px-4">Robot Platform</th>
-                <th className="py-3 px-4">Physical Logs Compared</th>
-                <th className="py-3 px-4">Sim2Real Transfer Success</th>
+                <th className="py-3 px-4">Robot Platform (Reference)</th>
+                <th className="py-3 px-4">Benchmark Logs Evaluated</th>
+                <th className="py-3 px-4">Sim2Real Transfer Rate</th>
                 <th className="py-3 px-4">Status</th>
               </tr>
             </thead>
@@ -162,7 +162,7 @@ export const Sim2RealBenchmarkView: React.FC = () => {
                   </td>
                   <td className="py-3.5 px-4">
                     <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Production Verified
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Benchmark Validated
                     </span>
                   </td>
                 </tr>

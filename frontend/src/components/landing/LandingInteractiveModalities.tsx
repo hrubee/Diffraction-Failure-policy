@@ -50,9 +50,9 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     category: 'Humanoid Bipedal',
     icon: <Activity className="w-5 h-5 text-[#2FA4D7]" />,
     standard: 'ISO 13482:2014 §5.3 (Personal Care & Humanoid Safety)',
-    facility: 'Munich Robotics Proving Ground',
+    facility: 'Isaac Sim Bipedal Simulation Benchmark',
     failureHazard: 'Zero-Moment Point (ZMP) Foot Slip & Torso Tipping',
-    consequence: 'Catastrophic robot structural damage ($120k/incident), line safety lockouts, and human worker hazard.',
+    consequence: 'Robot falls during transport on wet epoxy, causing joint damage and safety line stops.',
     rootCause: 'Uneven pallet lifting across slick epoxy floor causes support foot traction loss; ZMP exits convex support polygon.',
     automatedPatch: 'Active Impedance Damping & Torso Accel Clamping Patch',
     patchYaml: `humanoid_balance_controller:
@@ -63,7 +63,7 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     stats: {
       failureRateBefore: '24.2%',
       failureRateAfter: '0.0%',
-      downtimeSaved: '$180,000/mo',
+      downtimeSaved: 'Zero Foot-Slip',
     },
   },
   {
@@ -72,9 +72,9 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     category: 'Mining & Heavy Off-Highway',
     icon: <Truck className="w-5 h-5 text-[#E76F2E]" />,
     standard: 'ISO 17757:2019 §4.3 (Earth-Moving & Mining Autonomy)',
-    facility: 'Nevada Heavy Autonomy Range',
+    facility: 'PhysX 5 Heavy Vehicle Benchmark',
     failureHazard: '12% Grade Incline Mud Skid & Berm Breach Risk',
-    consequence: '50-ton vehicle rollover, quarry berm breach, and catastrophic mine work halts.',
+    consequence: '50-ton vehicle skids on downhill unpaved quarry roads during wet conditions.',
     rootCause: 'Rainwater mud reduces tire adhesion below μ=0.28 while descending 12% grade with 35-ton payload.',
     automatedPatch: 'Grade-Aware Deceleration Retarder Rate Limiter',
     patchYaml: `hauler_grade_speed_filter:
@@ -85,7 +85,7 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     stats: {
       failureRateBefore: '18.5%',
       failureRateAfter: '0.0%',
-      downtimeSaved: '$340,000/mo',
+      downtimeSaved: 'Zero Rollover',
     },
   },
   {
@@ -94,9 +94,9 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     category: 'Industrial Manufacturing Cell',
     icon: <Cpu className="w-5 h-5 text-[#2FA4D7]" />,
     standard: 'ISO 10218-1 / ISO/TS 15066 (Collaborative Robotics)',
-    facility: 'Stuttgart Automation Cell',
+    facility: 'Isaac Lab Manipulator Benchmark',
     failureHazard: 'Kinematic Singularity Dynamic Torque Limit Fault',
-    consequence: 'Joint actuator trip-outs, dropped high-value auto parts, and collaborative safety shutdowns.',
+    consequence: 'Joint actuator trips out during high-speed pick cycles, dropping payloads.',
     rootCause: 'High-speed pick trajectory passes through wrist singularity, spiking joint 5 torque to 195 Nm (>140 Nm limit).',
     automatedPatch: 'Cartesian Jerk Limiting & Null-Space Velocity Redistribution',
     patchYaml: `arm_kinematic_safety_governor:
@@ -107,7 +107,7 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     stats: {
       failureRateBefore: '31.0%',
       failureRateAfter: '0.0%',
-      downtimeSaved: '$95,000/mo',
+      downtimeSaved: 'Singularity-Free',
     },
   },
   {
@@ -116,9 +116,9 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     category: 'Warehouse & Intralogistics',
     icon: <Bot className="w-5 h-5 text-[#E76F2E]" />,
     standard: 'ISO 3691-4:2020 §4.1.2 (Driverless Industrial Trucks)',
-    facility: 'Chicago Logistics Distribution Hub',
+    facility: 'Nav2 Warehouse Logistics Benchmark',
     failureHazard: 'Spilled Coolant Low Friction Stopping Distance Breach',
-    consequence: 'Fork-truck near-miss collisions, pedestrian zone intrusions, and OSHA facility shutdown fines.',
+    consequence: 'AMR overshoots optical stopping field on oily or wet floor surfaces.',
     rootCause: 'Spilled machining coolant drops friction to μ=0.18; AMR skids 1.8 meters past laser safety field.',
     automatedPatch: 'Dynamic Nav2 Speed Filter Velocity Mask',
     patchYaml: `speed_filter_mask_costmap:
@@ -129,7 +129,7 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     stats: {
       failureRateBefore: '42.3%',
       failureRateAfter: '0.0%',
-      downtimeSaved: '$210,000/mo',
+      downtimeSaved: 'Zero Over-Run',
     },
   },
   {
@@ -138,9 +138,9 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     category: 'Last-Mile Pedestrian Autonomy',
     icon: <Compass className="w-5 h-5 text-[#2FA4D7]" />,
     standard: 'ISO 22737:2021 (Low-Speed Autonomous Driving)',
-    facility: 'Tokyo Urban Mobility Range',
+    facility: 'Outdoor Sensor-Fusion Benchmark',
     failureHazard: '95,000 Lux Direct Solar Glare Blind Spot',
-    consequence: 'Phantom obstacle freeze in crosswalks, traffic disruption, and municipal operating permit risk.',
+    consequence: 'Rover freezes unexpectedly when low-angle sunlight saturates front RGB sensors.',
     rootCause: 'Low-angle afternoon sun blinds forward RGB cameras; perception drops pedestrian tracker confidence below 0.3.',
     automatedPatch: 'LiDAR/Radar Sensory Weight Re-balancing Node',
     patchYaml: `sensor_fusion_governor:
@@ -151,7 +151,7 @@ const MODALITY_FLEET: readonly ModalityData[] = [
     stats: {
       failureRateBefore: '27.8%',
       failureRateAfter: '0.0%',
-      downtimeSaved: '$65,000/mo',
+      downtimeSaved: 'Zero Freezes',
     },
   },
 ];
@@ -301,7 +301,7 @@ export const LandingInteractiveModalities: React.FC<LandingInteractiveModalities
                 </div>
 
                 <div className="p-3.5 rounded-xl bg-[#FAF4EB] border border-[#3E2C23]/15 text-center">
-                  <div className="text-[10px] font-semibold text-[#3E2C23]/70 uppercase mono">Downtime Saved</div>
+                  <div className="text-[10px] font-semibold text-[#3E2C23]/70 uppercase mono">Verified Outcome</div>
                   <div className="text-sm sm:text-base font-bold text-[#3E2C23] mt-1.5 mono">
                     {current.stats.downtimeSaved}
                   </div>

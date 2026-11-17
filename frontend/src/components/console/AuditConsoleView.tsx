@@ -16,7 +16,7 @@ import { TrajectoryScatterPlot } from './TrajectoryScatterPlot';
 import { RegulatoryComplianceTable } from './RegulatoryComplianceTable';
 import { CertificationArtifactsGrid } from './CertificationArtifactsGrid';
 import { PolicyRemediationTabs } from './PolicyRemediationTabs';
-import { SimulationMissionControl } from './SimulationMissionControl';
+import { Cpu, Loader2 } from 'lucide-react';
 
 interface AuditConsoleViewProps {
   readonly audit: UseVerificationAuditReturn;
@@ -96,15 +96,20 @@ export const AuditConsoleView: React.FC<AuditConsoleViewProps> = ({ audit }) => 
 
         {/* Right Column: Active Intelligence & Artifacts OR Mission Control */}
         <div className="col-span-12 lg:col-span-7 space-y-6">
-          {/* If currently simulating, render the High-Density Mission Control Stream */}
           {isSimulating ? (
-            <SimulationMissionControl
-              scenarioCount={scenarioCount}
-              robotName={activeScenario.name}
-              standard={activeScenario.standard}
-              onComplete={finishSimulation}
-              onSkip={skipSimulation}
-            />
+            <div className="p-8 rounded-2xl bg-[#3E2C23] border-2 border-[#2FA4D7] text-[#F5E9D8] card-shadow space-y-4 text-center">
+              <div className="w-12 h-12 rounded-xl bg-[#2FA4D7] text-white flex items-center justify-center mx-auto shadow-md">
+                <Loader2 className="w-6 h-6 animate-spin" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-base font-bold font-headline text-white">
+                  Executing Physics Verification Pipeline
+                </h3>
+                <p className="text-xs text-[#F5E9D8]/80 max-w-md mx-auto">
+                  Running continuous inverse dynamics and safety barrier checks across {scenarioCount} rollouts against {activeScenario.standard}…
+                </p>
+              </div>
+            </div>
           ) : (
             <>
               <div className="p-6 rounded-2xl bg-white border border-[rgba(55,53,47,0.09)] card-shadow space-y-5">

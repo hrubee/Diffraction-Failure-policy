@@ -86,7 +86,7 @@ export const DatasetCatalogView: React.FC = () => {
             Sample Deliverables &amp; Asset Catalog
           </h1>
           <p className="text-sm sm:text-base text-[#F5E9D8]/80 leading-relaxed font-body">
-            Inspect real source assets delivered to robotics startups: PhysX 5 OpenUSD articulation rigs, procedural Omniverse Replicator recipes, NVIDIA Cosmos ControlNet specs, and Hugging Face LeRobot demonstration corpora.
+            Inspect reference source assets and templates: PhysX 5 OpenUSD articulation rigs, procedural Omniverse Replicator recipes, NVIDIA Cosmos ControlNet specs, and Hugging Face LeRobot demonstration corpora.
           </p>
         </div>
 

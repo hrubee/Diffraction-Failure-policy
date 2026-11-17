@@ -130,12 +130,15 @@ export const useVerificationAudit = (): UseVerificationAuditReturn => {
     setIsLoading(true);
     setIsSimulating(true);
     setVerdict(null);
-    setStatusText(`Allocating 8x GPU workers for ${scenarioCount} rollouts…`);
+    setStatusText(`Running verification audit across ${scenarioCount} rollouts…`);
 
     try {
-      // Execute backend audit pipeline asynchronously while UI streams simulation telemetry
+      // Execute backend audit pipeline
       const res = await executeVerificationAudit(scenarioCount, currentIncidentId || undefined);
-      pendingVerdictRef.current = res;
+      setVerdict(res);
+      setStatusText(res.status);
+      setIsSimulating(false);
+      setIsLoading(false);
     } catch (err) {
       console.error('Audit failed:', err);
       setIsSimulating(false);

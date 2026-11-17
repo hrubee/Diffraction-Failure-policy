@@ -98,7 +98,7 @@ export const LandingStoryWalkthrough: React.FC<LandingStoryWalkthroughProps> = (
         'Active-set Quadratic Program solves in 62 μs (500 Hz control budget) on NVIDIA Jetson Orin / x86 compute.',
         'Intercepts unverified neural network/navigation commands and mathematically guarantees forward invariance: h(x) ≥ 0.',
         'Zero collisions and zero traction spin-outs across the 14-day customer evaluation.',
-        'Auto-compiles formal ISO 3691-4:2023 & ANSI/RIA R15.08 compliance dossiers ready for Munich Re / Zurich underwriters.',
+        'Auto-compiles formal ISO 3691-4:2023 & ANSI/RIA R15.08 compliance dossiers ready for plant safety inspectors and insurance underwriters.',
       ],
       tag: 'ACT 4 • CERTIFIED ZERO-COLLISION CLEARANCE',
     },

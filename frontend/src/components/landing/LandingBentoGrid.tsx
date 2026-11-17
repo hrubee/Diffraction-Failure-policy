@@ -134,7 +134,7 @@ export const LandingBentoGrid: React.FC<LandingBentoGridProps> = ({
       icon: <Database className="w-5 h-5 text-white" />,
       businessTitle: '1-Click Safety & Insurance Signoff',
       businessBenefit:
-        'Turns months of safety bureaucracy into instant approvals. Generates audited mathematical safety proofs ready for plant safety managers, Zurich, and Munich Re underwriters.',
+        'Turns months of safety bureaucracy into instant approvals. Generates audited mathematical safety proofs ready for plant safety managers and insurance underwriters.',
       businessPill: 'ISO 3691-4 & ANSI R15.08 Certified',
       engineeringTitle: 'Automated Regulatory Oracle',
       engineeringSpecs:

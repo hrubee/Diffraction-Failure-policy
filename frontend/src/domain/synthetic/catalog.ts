@@ -68,7 +68,7 @@ export const SEED_EMBODIMENTS: readonly RobotEmbodiment[] = [
 export const SEED_ENVIRONMENTS: readonly ProceduralEnvironment[] = [
   {
     id: 'warehouse_fulfillment',
-    name: 'Amazon-Class Automated Fulfillment Center',
+    name: 'Automated High-Bay Fulfillment Center',
     category: 'Logistics',
     description: 'High-bay pallet racking, dynamic autonomous forklift traffic, smooth epoxy flooring, and sodium/LED overhead lighting.',
     usdStage: 'omniverse://diffraction/environments/warehouse_fulfillment_center.usd',
@@ -295,7 +295,7 @@ export const SPRINT_PACKAGES: readonly SprintPackage[] = [
       'Multi-modal sensor channels: 1080p RGB, 16-bit Depth, FLIR LWIR Thermal, LiDAR, and UV inspection',
       'Sim-to-Real Wasserstein metric certification report for policy transfer',
       'Hugging Face LeRobot v2 and Open-X Embodiment RLDS streaming data loader',
-      'Formal safety case ready for Zurich / Munich Re insurance underwriter approval',
+      'Formal safety case ready for plant safety inspector and insurance underwriter review',
     ],
     techStack: ['NVIDIA Cosmos 2.5', 'Isaac Lab', 'OpenUSD', 'Hugging Face LeRobot v2', 'PyTorch / JAX', 'SDF Manifold'],
     sla: '21-Day Turnaround • 100% Mathematically Bound Policy Transfer Guarantee',

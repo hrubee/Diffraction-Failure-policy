@@ -26,8 +26,7 @@ export const EnterprisePricingView: React.FC = () => {
           Fixed-Fee Sprints. Turnkey Deliverables.
         </h2>
         <p className="text-xs sm:text-sm text-[#3E2C23]/75 font-body leading-relaxed">
-          Robotics startups don&apos;t have 6 months to hire a $220,000/yr simulation engineer. 
-          Diffraction delivers calibrated PhysX 5 OpenUSD assets and Cosmos synthetic datasets in 3 to 14 days, backed by a 100% Sim-to-Real policy transfer guarantee.
+          Diffraction delivers automated site commissioning, runtime safety governors, and 4D digital twin verification in 14 days, backed by a 100% money-back safety guarantee.
         </p>
       </div>
 
