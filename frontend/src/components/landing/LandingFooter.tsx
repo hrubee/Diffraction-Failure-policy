@@ -1,26 +1,18 @@
 /**
- * Presentation Component: Enterprise Landing Footer
+ * Presentation Component: Clean Enterprise Landing Footer
  * Sleek espresso footer with standard compliance links, platform status, and enterprise info.
- * Palette: #2FA4D7 (Blue), #F5E9D8 (Beige Canvas), #3E2C23 (Espresso Brown), #E76F2E (Safety Orange)
+ * Palette: #2FA4D7, #F5E9D8, #3E2C23, #E76F2E (Zero Gradients).
  */
 
 'use client';
 
 import React from 'react';
 
-interface LandingFooterProps {
-  readonly onLaunchConsole: () => void;
-  readonly onOpenPricing: () => void;
-}
-
-export const LandingFooter: React.FC<LandingFooterProps> = ({
-  onLaunchConsole,
-  onOpenPricing,
-}) => {
+export const LandingFooter: React.FC = () => {
   return (
     <footer className="w-full border-t border-[#3E2C23] bg-[#3E2C23] text-[#F5E9D8]/80 text-xs py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center space-x-2.5">
@@ -36,120 +28,84 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
                 Diffraction
               </span>
               <span className="text-[10px] px-2 py-0.5 rounded bg-[#4A372E] text-[#2FA4D7] border border-[#2FA4D7]/40 font-mono font-semibold">
-                Isaac Sim v3.0
+                Autonomous Safety Platform
               </span>
             </div>
 
             <p className="text-[#F5E9D8]/80 text-xs leading-relaxed max-w-sm font-body">
-              <strong>Diffraction</strong>: The synthetic data factory for Physical AI and robotics foundation models. Powered by NVIDIA Isaac Sim, Isaac Lab, and OpenUSD.
+              <strong>Diffraction</strong>: Runtime safety and automated site commissioning for autonomous mobile robots. Eliminates floor slip, prevents warehouse collisions, and cuts site deployment from 8 weeks to 14 days.
             </p>
 
             <div className="flex items-center space-x-2 text-[11px] text-[#F5E9D8]/70 font-mono">
-              <span className="h-2 w-2 rounded-full bg-[#2FA4D7]" />
-              <span>NVIDIA Isaac Lab Worker Cluster: Operational</span>
+              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+              <span>Safety Governor System: Active (500 Hz deterministic)</span>
             </div>
           </div>
 
-          {/* Column 1: Capabilities */}
+          {/* Column 1: Navigation */}
           <div className="space-y-3">
-            <h4 className="font-bold text-xs uppercase tracking-wider text-white mono">Platform</h4>
-            <ul className="space-y-2 text-[#F5E9D8]/70">
+            <h4 className="font-bold text-xs uppercase tracking-wider text-white font-mono">Navigation</h4>
+            <ul className="space-y-2 text-[#F5E9D8]/70 font-body">
               <li>
-                <button type="button" onClick={onLaunchConsole} className="hover:text-white transition-colors cursor-pointer">
-                  Data Factory Studio
-                </button>
-              </li>
-              <li>
-                <a href="#catalog" onClick={() => { window.location.hash = '#catalog'; }} className="hover:text-white transition-colors">
-                  Dataset Hub (575K)
+                <a href="#how-it-works" className="hover:text-white transition-colors">
+                  How It Works (3 Steps)
                 </a>
               </li>
               <li>
-                <a href="#sim2real" onClick={() => { window.location.hash = '#sim2real'; }} className="hover:text-white transition-colors">
-                  Sim-to-Real Benchmark
+                <a href="#simulator" className="hover:text-white transition-colors">
+                  Interactive Test Drive
                 </a>
               </li>
               <li>
-                <a href="#sdk" onClick={() => { window.location.hash = '#sdk'; }} className="hover:text-white transition-colors">
-                  Python SDK &amp; API
+                <a href="#capabilities" className="hover:text-white transition-colors">
+                  4 Deep-Tech Pillars
                 </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 2: Modalities */}
-          <div className="space-y-3">
-            <h4 className="font-bold text-xs uppercase tracking-wider text-white mono">Modalities</h4>
-            <ul className="space-y-2 text-[#F5E9D8]/70">
-              <li>
-                <a href="#modalities" className="hover:text-white transition-colors">
-                  Bipedal Humanoid
-                </a>
-              </li>
-              <li>
-                <a href="#modalities" className="hover:text-white transition-colors">
-                  Heavy Mining Hauler
-                </a>
-              </li>
-              <li>
-                <a href="#modalities" className="hover:text-white transition-colors">
-                  6-DOF Robotic Arm
-                </a>
-              </li>
-              <li>
-                <a href="#modalities" className="hover:text-white transition-colors">
-                  Industrial AMR
-                </a>
-              </li>
-              <li>
-                <a href="#modalities" className="hover:text-white transition-colors">
-                  Urban Sidewalk Rover
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3: Commercial */}
-          <div className="space-y-3">
-            <h4 className="font-bold text-xs uppercase tracking-wider text-white mono">Commercial</h4>
-            <ul className="space-y-2 text-[#F5E9D8]/70">
-              <li>
-                <button type="button" onClick={onOpenPricing} className="hover:text-white transition-colors cursor-pointer">
-                  30-Day Turnkey Pilot ($15k)
-                </button>
               </li>
               <li>
                 <a href="#roi" className="hover:text-white transition-colors">
-                  Fleet Downtime ROI Model
+                  Commissioning ROI Calculator
                 </a>
               </li>
               <li>
-                <button type="button" onClick={onOpenPricing} className="hover:text-white transition-colors cursor-pointer">
-                  Commercial Fleet License
-                </button>
+                <a href="#pricing" className="hover:text-white transition-colors">
+                  14-Day Pilot ($25,000)
+                </a>
               </li>
-              <li>
-                <button type="button" onClick={onOpenPricing} className="hover:text-white transition-colors cursor-pointer">
-                  OEM Enterprise Agreement
-                </button>
+            </ul>
+          </div>
+
+          {/* Column 2: Safety Standards */}
+          <div className="space-y-3">
+            <h4 className="font-bold text-xs uppercase tracking-wider text-white font-mono">Compliance &amp; Standards</h4>
+            <ul className="space-y-2 text-[#F5E9D8]/70 font-mono text-[11px]">
+              <li className="flex items-center space-x-1.5">
+                <span className="text-[#2FA4D7]">✓</span>
+                <span>ISO 3691-4:2023 Cl. 5.2</span>
+              </li>
+              <li className="flex items-center space-x-1.5">
+                <span className="text-[#2FA4D7]">✓</span>
+                <span>ANSI/RIA R15.08 Part 2</span>
+              </li>
+              <li className="flex items-center space-x-1.5">
+                <span className="text-[#2FA4D7]">✓</span>
+                <span>ISO 13849-1 (PL-d Category 3)</span>
+              </li>
+              <li className="flex items-center space-x-1.5">
+                <span className="text-[#2FA4D7]">✓</span>
+                <span>ROS 2 Humble / Iron / Jazzy</span>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-[#F5E9D8]/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#F5E9D8]/60">
+        <div className="pt-8 border-t border-[#F5E9D8]/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-[#F5E9D8]/50 font-mono">
           <div>
-            &copy; 2026 Diffraction AI Inc. All rights reserved. Physical AI Safety &amp; Verification Platform.
+            &copy; {new Date().getFullYear()} Diffraction AI, Inc. All rights reserved. Zero-collision runtime safety.
           </div>
-          <div className="flex flex-wrap items-center gap-4 text-[#F5E9D8]/80 mono">
-            <span>ISO 3691-4</span>
-            <span>•</span>
-            <span>ISO 13482</span>
-            <span>•</span>
-            <span>ISO 17757</span>
-            <span>•</span>
-            <span>ISO 10218</span>
+          <div className="flex space-x-6">
+            <span>Air-Gapped &amp; On-Premises Ready</span>
+            <span>Made for Autonomous Fleets</span>
           </div>
         </div>
       </div>

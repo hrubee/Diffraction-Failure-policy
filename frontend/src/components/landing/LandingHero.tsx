@@ -113,24 +113,21 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-3">
               <button
                 type="button"
-                onClick={() => onLaunchConsole()}
-                className="min-h-[48px] px-6 py-3 rounded-lg bg-[#2FA4D7] hover:bg-[#248ab8] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center space-x-2.5 cursor-pointer group"
+                onClick={() => {
+                  const target = document.getElementById('simulator');
+                  if (target) target.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="min-h-[48px] px-6 py-3 rounded-lg bg-[#E76F2E] hover:bg-[#E76F2E]/90 text-white text-sm font-bold shadow-md transition-all flex items-center justify-center space-x-2.5 cursor-pointer group font-mono"
               >
-                <Zap className="w-4 h-4 fill-current text-white group-hover:scale-110 transition-transform" />
-                <span>Request 14-Day Pilot ($25k)</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <span>Test Live Braking Simulator ↓</span>
               </button>
 
               <button
                 type="button"
-                onClick={() => {
-                  const target = document.getElementById('capabilities');
-                  if (target) target.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="min-h-[48px] px-5 py-3 rounded-lg bg-white hover:bg-[#FAF4EB] text-[#3E2C23] text-sm font-semibold border border-[#3E2C23]/25 transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-xs"
+                onClick={() => onOpenPricing()}
+                className="min-h-[48px] px-5 py-3 rounded-lg bg-[#2FA4D7] hover:bg-[#248ab8] text-white text-sm font-semibold transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-xs font-mono"
               >
-                <Cpu className="w-4 h-4 text-[#2FA4D7]" />
-                <span>See Robotics Engineering Specs →</span>
+                <span>Request 14-Day Pilot ($25k) →</span>
               </button>
             </div>
           </div>

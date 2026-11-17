@@ -1,24 +1,21 @@
 /**
- * Presentation Component: Super Banger Landing Header Navigation Bar
- * Dark obsidian glassmorphic header with navigation anchors, compliance badge,
- * and direct Launch Console gateway CTA.
+ * Presentation Component: Clean Landing Header Navigation Bar
+ * Simplified, honest navigation focusing on How It Works, Interactive Demo, ROI, and Pilot.
+ * Palette: #2FA4D7, #F5E9D8, #3E2C23, #E76F2E (Zero Gradients).
  */
 
 'use client';
 
 import React from 'react';
-import { PROVING_GROUNDS } from '@/domain/proving-grounds/models';
-import { Zap, ShieldCheck, ArrowRight, Menu } from 'lucide-react';
+import { Zap, Menu, ArrowRight } from 'lucide-react';
 
 interface LandingHeaderProps {
-  readonly onLaunchConsole: () => void;
-  readonly onOpenWorkspaceModal: () => void;
+  readonly onLaunchPilotModal: () => void;
   readonly onToggleMobileDrawer: () => void;
 }
 
 export const LandingHeader: React.FC<LandingHeaderProps> = ({
-  onLaunchConsole,
-  onOpenWorkspaceModal,
+  onLaunchPilotModal,
   onToggleMobileDrawer,
 }) => {
   return (
@@ -50,63 +47,37 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({
                 Diffraction
               </span>
               <span className="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-[#2FA4D7]/15 text-[#2FA4D7] border border-[#2FA4D7]/30 font-mono">
-                Runtime Safety &amp; Continuous SysID
+                Autonomous Robot Safety &amp; Commissioning
               </span>
             </div>
           </a>
-
-          {/* Hidden proving ground selector for DOM selector compatibility */}
-          <div className="hidden">
-            <select id="fleetSelect" aria-label="Select Autonomous Proving Ground">
-              {PROVING_GROUNDS.map((pg) => (
-                <option key={pg.id} value={pg.id}>
-                  {pg.name}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
 
         {/* Center: Anchor Links */}
         <nav className="hidden md:flex items-center space-x-6 text-xs text-[#3E2C23]/80 font-medium font-body">
-          <a href="#pricing" className="hover:text-[#3E2C23] font-bold text-[#2FA4D7] transition-colors">
-            14-Day Pilot ($25k)
+          <a href="#how-it-works" className="hover:text-[#3E2C23] transition-colors">
+            How It Works
           </a>
-          <a href="#capabilities" className="hover:text-[#3E2C23] transition-colors">
-            4 Deep-Tech Pillars
+          <a href="#simulator" className="hover:text-[#3E2C23] font-bold text-[#2FA4D7] transition-colors">
+            Interactive Test Drive
           </a>
           <a href="#roi" className="hover:text-[#3E2C23] transition-colors">
-            Commissioning ROI
+            Cost Savings (ROI)
           </a>
-          <a href="#how-it-works" className="hover:text-[#3E2C23] transition-colors">
-            Telemetry Workflow
+          <a href="#pricing" className="hover:text-[#3E2C23] transition-colors">
+            14-Day Pilot ($25k)
           </a>
         </nav>
 
-        {/* Right: Tenant Status & Direct Gateway to Console */}
+        {/* Right: Primary Call to Action */}
         <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
           <button
             type="button"
-            id="licensePill"
-            onClick={onOpenWorkspaceModal}
-            className="hidden sm:flex items-center space-x-2 px-2.5 py-1 rounded bg-white hover:bg-[#FAF4EB] border border-[#3E2C23]/25 text-xs transition-colors cursor-pointer"
-            title="Configure Enterprise Workspace & Cloud API"
-          >
-            <span className="h-2 w-2 rounded-full bg-[#2FA4D7]" />
-            <span className="font-semibold text-[#3E2C23] text-[11px] font-mono uppercase">
-              CONTROL PLANE
-            </span>
-          </button>
-
-          <button
-            type="button"
-            id="navConsole"
-            onClick={onLaunchConsole}
-            className="flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 rounded-lg bg-[#2FA4D7] hover:bg-[#248ab8] active:bg-[#1d7ca8] text-white text-xs font-bold transition-all cursor-pointer group shadow-sm"
+            onClick={onLaunchPilotModal}
+            className="flex items-center space-x-1.5 sm:space-x-2 px-3.5 sm:px-4 py-2 rounded-lg bg-[#E76F2E] hover:bg-[#E76F2E]/90 text-white text-xs font-bold transition-all cursor-pointer group shadow-sm font-mono"
           >
             <Zap className="w-3.5 h-3.5 fill-current text-white group-hover:scale-110 transition-transform" />
-            <span className="hidden sm:inline">Request 14-Day Pilot</span>
-            <span className="sm:hidden">Pilot SOW</span>
+            <span>Request 14-Day Pilot</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
