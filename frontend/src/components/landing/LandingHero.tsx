@@ -78,7 +78,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 For Robotics Founders, Operations Leaders &amp; Warehouse Integrators
               </span>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#3E2C23] font-headline tracking-tight leading-[1.12]">
-                Stop Robot Crashes &amp; Slipping —{' '}
+                Stop Robot Crashes, Skids &amp; Phantom Stops —{' '}
                 <span className="text-[#2FA4D7] underline decoration-[#2FA4D7]/40 decoration-4 underline-offset-4">
                   Deploy in 14 Days.
                 </span>
@@ -86,15 +86,15 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             </div>
 
             <p className="text-base sm:text-lg text-[#3E2C23]/85 leading-relaxed font-body max-w-2xl">
-              Every time robots enter a new warehouse, slippery floors cause spin-outs, delays, and{' '}
+              Every time robots enter a real facility, <strong>4 physical edge cases</strong> stall deployments: slick floors, skylight sensor glare, heavy payload shifts, and communication latency—burning{' '}
               <strong className="text-[#E76F2E] font-bold underline decoration-[#E76F2E]/80 decoration-2 underline-offset-4">
                 $250,000 in engineer travel costs
               </strong>. 
-              Diffraction automatically diagnoses floor traction from a 5-second data drop and installs an intelligent safety guard on your robots—guaranteeing <strong>zero collisions</strong> and instant insurance signoff.
+              Diffraction diagnoses all 4 failure modes from a 5-second driving log and installs an intelligent safety guard—guaranteeing <strong>zero collisions</strong>, zero phantom freezes, and instant insurance signoff.
             </p>
 
             <p className="text-sm text-[#3E2C23]/80 leading-relaxed font-body max-w-2xl">
-              <strong>Zero code rewrites. Zero hardware modifications.</strong> Plug our software into your existing fleet to compress 8-week site deployments into 14 days with full money-back safety assurance.
+              <strong>Zero code rewrites. Zero hardware modifications.</strong> Plug our runtime guard directly into your existing ROS 2 fleet to compress 8-week site deployments into 14 days with full money-back assurance.
             </p>
 
             {/* Micro ROI Stat Callout */}
