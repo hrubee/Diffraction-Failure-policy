@@ -77,9 +77,9 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
               <span className="text-xs font-mono font-bold tracking-wider uppercase text-[#2FA4D7] block">
                 For Robotics Founders, Operations Leaders &amp; Warehouse Integrators
               </span>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#3E2C23] font-headline tracking-tight leading-[1.12]">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#3E2C23] font-headline tracking-tight leading-[1.15]">
                 Stop Robot Crashes, Skids &amp; Phantom Stops —{' '}
-                <span className="text-[#2FA4D7] underline decoration-[#2FA4D7]/40 decoration-4 underline-offset-4">
+                <span className="text-[#2FA4D7] underline decoration-[#2FA4D7]/40 decoration-4 underline-offset-8 inline-block whitespace-nowrap">
                   Deploy in 14 Days.
                 </span>
               </h1>
