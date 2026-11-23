@@ -52,11 +52,11 @@ At the conclusion of the 14-day engagement, Customer receives a self-contained h
 
 ### 4. Pricing & Commercial Terms
 
-* **Fixed Pilot Engagement Fee:** **\$25,000 USD** (flat fee for 1 robot embodiment at 1 customer facility).
-* **100% Credit Toward Annual Enterprise License:** 100% of the \$25,000 pilot fee is credited towards Customer's first-year Diffraction Annual Enterprise License (\$65,000–\$180,000/year depending on fleet volume) if executed within 60 days of pilot completion.
+* **Fixed Pilot Engagement Fee:** **\$19,500 USD** (flat fee for 1 robot embodiment at 1 customer facility).
+* **100% Credit Toward Annual Enterprise License:** 100% of the \$19,500 pilot fee is credited towards Customer's first-year Diffraction Annual Enterprise License (\$45,000–\$120,000/year depending on fleet volume) if executed within 60 days of pilot completion.
 * **Payment Schedule:**
-  * **50% (\$12,500 USD)** invoiced upon contract execution (commencement of Milestone 1).
-  * **50% (\$12,500 USD)** invoiced upon final delivery of the complete Pilot Package and Executive Dossier (completion of Milestone 4).
+  * **50% (\$9,750 USD)** invoiced upon contract execution (commencement of Milestone 1).
+  * **50% (\$9,750 USD)** invoiced upon final delivery of the complete Pilot Package and Executive Dossier (completion of Milestone 4).
 * **Payment Terms:** Net 15 days from invoice date.
 
 ---
@@ -69,7 +69,15 @@ At the conclusion of the 14-day engagement, Customer receives a self-contained h
 
 ---
 
-### 6. Signatures & Acceptance
+### 6. Warranty Protection & Liability Containment
+
+1. **Warranty Neutrality:** The 14-Day Pilot operates via offline telemetry ingestion and headless physics simulation. Diffraction does not modify robot firmware or hardware during the audit phase, ensuring zero impact on Customer’s original equipment manufacturer (OEM) warranties or Master Service Agreements (MSAs).
+2. **Operational Advisory Role:** Diffraction’s deliverables, reports, and software nodes serve as an Operational Stability Governor to reduce wheel slip and optimize velocity within the navigation software layer. They do NOT replace or supersede Customer's legally mandated ISO 13849 PL-d safety PLCs, safety laser scanners, or mechanical emergency stop (E-stop) interlocks. Customer retains ultimate responsibility for machine safety risk assessments and operational deployment on plant floors.
+3. **Limitation of Liability:** In no event shall Diffraction’s aggregate liability arising out of or related to this Statement of Work exceed the total fees paid by Customer under Section 4 (\$19,500 USD).
+
+---
+
+### 7. Signatures & Acceptance
 
 IN WITNESS WHEREOF, the parties hereto have executed this Statement of Work as of the date first written above.
 

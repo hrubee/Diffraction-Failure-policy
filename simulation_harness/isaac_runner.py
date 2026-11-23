@@ -1,7 +1,9 @@
 """
-Headless Isaac Sim / Isaac Lab Execution Harness.
-Orchestrates parallel GPU simulation environments to evaluate robot policies
-under Cosmos-generated adversarial perturbations.
+Headless Physics & Simulation Execution Harness.
+Provides a deterministic analytical kinematic & physics surrogate for high-throughput
+local verification and stopping-distance evaluation.
+When connected to an NVIDIA RTX workstation or cluster, interfaces with native Isaac Sim / Isaac Lab
+via the IsaacSimCorePipeline and GPU worker daemon.
 """
 
 from dataclasses import dataclass

@@ -10,7 +10,7 @@ import os
 import shutil
 import time
 from typing import Any, Dict, List, Optional
-from fastapi import Depends, FastAPI, File, Header, HTTPException, UploadFile, status
+from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -113,6 +113,10 @@ app.add_middleware(
 app.mount("/reports", StaticFiles(directory=REPORTS_DIR), name="reports")
 app.mount("/stages", StaticFiles(directory=STAGES_DIR), name="stages")
 app.mount("/patches", StaticFiles(directory=PATCHES_DIR), name="patches")
+
+PILOT_PACKAGES_DIR = "./storage/pilot_packages"
+os.makedirs(PILOT_PACKAGES_DIR, exist_ok=True)
+app.mount("/pilot_packages", StaticFiles(directory=PILOT_PACKAGES_DIR), name="pilot_packages")
 
 # Mount compiled Next.js enterprise frontend assets if present
 next_assets_dir = os.path.join(FRONTEND_OUT_DIR, "_next")
@@ -636,3 +640,112 @@ def api_list_tenant_jobs(
         "count": len(jobs),
         "jobs": jobs,
     }
+
+
+# ---------------------------------------------------------------------------
+# Pilot Customer Delivery & Admin Endpoints
+# ---------------------------------------------------------------------------
+
+@app.get("/admin")
+@app.get("/admin/")
+def serve_admin():
+    """Serves the administrative portal for rapid MCAP ingestion and pilot delivery."""
+    admin_index = os.path.join(FRONTEND_OUT_DIR, "admin", "index.html")
+    if os.path.exists(admin_index):
+        return FileResponse(admin_index)
+    next_index = os.path.join(FRONTEND_OUT_DIR, "index.html")
+    if os.path.exists(next_index):
+        return FileResponse(next_index)
+    return {"message": "Admin portal build not found."}
+
+
+@app.get("/api/v1/pilot/packages")
+def api_list_pilot_packages():
+    """Lists all generated pilot packages with downloadable zip links."""
+    packages = []
+    if os.path.exists(PILOT_PACKAGES_DIR):
+        for item in sorted(os.listdir(PILOT_PACKAGES_DIR), reverse=True):
+            item_path = os.path.join(PILOT_PACKAGES_DIR, item)
+            if item.endswith(".zip") and os.path.isfile(item_path):
+                stat = os.stat(item_path)
+                pilot_id = os.path.splitext(item)[0]
+                packages.append({
+                    "pilot_id": pilot_id,
+                    "filename": item,
+                    "size_bytes": stat.st_size,
+                    "size_kb": round(stat.st_size / 1024, 1),
+                    "created_at": stat.st_mtime,
+                    "download_url": f"/pilot_packages/{item}",
+                })
+    return {"packages": packages, "total": len(packages)}
+
+
+@app.post("/api/v1/pilot/generate")
+async def api_generate_pilot_package(
+    file: Optional[UploadFile] = File(None),
+    incident_id: Optional[str] = Form(None),
+    robot_id: str = Form("amr_tugger_042"),
+    facility_id: str = Form("Chicago_Hub_Bay7"),
+    scenarios: int = Form(30),
+):
+    """
+    Ingests an MCAP incident or selects an existing drop, runs full differentiable SysID,
+    adversarial physics verification, and packages 25 client deliverables into a downloadable ZIP.
+    """
+    mcap_path = None
+    if file and file.filename:
+        raw_filename = os.path.basename(file.filename)
+        clean_filename = "".join(c for c in raw_filename if c.isalnum() or c in "._-")
+        if not clean_filename.endswith(".mcap"):
+            clean_filename += ".mcap"
+        dest_path = os.path.join(UPLOAD_DIR, clean_filename)
+        with open(dest_path, "wb") as buffer:
+            while True:
+                chunk = await file.read(1024 * 1024)
+                if not chunk:
+                    break
+                buffer.write(chunk)
+        mcap_path = dest_path
+    elif incident_id and incident_id in INCIDENT_REGISTRY:
+        candidate = INCIDENT_REGISTRY[incident_id].get("file_path")
+        if candidate and os.path.exists(candidate):
+            mcap_path = candidate
+
+    if not mcap_path:
+        drops = [os.path.join(UPLOAD_DIR, f) for f in os.listdir(UPLOAD_DIR) if f.endswith(".mcap")]
+        if drops:
+            mcap_path = sorted(drops, key=os.path.getmtime)[-1]
+        else:
+            mcap_path = simulate_warehouse_amr_run(output_dir=UPLOAD_DIR)
+
+    from cloud_gateway.pilot_packager import PilotCustomerPackager
+    packager = PilotCustomerPackager(base_output_dir=PILOT_PACKAGES_DIR)
+    result = packager.execute_pilot_run(
+        mcap_path=mcap_path,
+        robot_id=robot_id,
+        facility_id=facility_id,
+        adversarial_episodes=scenarios,
+    )
+
+    zip_filename = os.path.basename(result.zip_path)
+    report_file = None
+    for f in result.deliverable_files:
+        if f.endswith(".html") and "AUDIT" in f:
+            report_file = os.path.basename(f)
+            break
+
+    return {
+        "status": "success",
+        "pilot_id": result.pilot_id,
+        "robot_id": result.robot_id,
+        "facility_id": result.facility_id,
+        "execution_time_s": round(result.execution_time_s, 2),
+        "zip_filename": zip_filename,
+        "zip_download_url": f"/pilot_packages/{zip_filename}",
+        "report_url": f"/reports/{report_file}" if report_file else None,
+        "deliverable_count": len(result.deliverable_files),
+        "sysid_summary": result.sysid_summary,
+        "certification_summary": result.certification_summary,
+        "deliverables": [os.path.basename(f) for f in result.deliverable_files],
+    }
+

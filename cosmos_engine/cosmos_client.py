@@ -1,7 +1,8 @@
 """
-NVIDIA Cosmos Generative World Model Client.
-Interfaces with NVIDIA Cosmos Transfer (Diffusion-based photorealism)
-and Cosmos Predict (Autoregressive future state rollouts).
+Adversarial World Model & Counterfactual Trajectory Perturbation Client.
+Implements counterfactual slip dynamics, visual glare degradation, and latency injection.
+Provides programmatic specification generation for NVIDIA Cosmos Transfer & Predict pipelines
+while maintaining a zero-dependency analytical local evaluation pathway.
 """
 
 from dataclasses import asdict, dataclass

@@ -44,15 +44,15 @@ export const LandingPricingSection: React.FC<LandingPricingSectionProps> = () =>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2C23] tracking-tight font-headline">
-            The 14-Day Zero-Collision Pilot.
+            The 14-Day Braking Stability Pilot.
             <br />
             <span className="text-[#2FA4D7]">
-              Fixed Fee. Guaranteed Clearance.
+              Fixed Fee. Guaranteed Stopping Invariance.
             </span>
           </h2>
 
           <p className="text-[#3E2C23]/80 text-sm sm:text-base leading-relaxed font-body">
-            Stop losing deals in pilot purgatory. We diagnose floor friction from a 5-second driving log, install our active-set safety governor, and deliver an ISO compliance dossier in 14 days.
+            Stop running fleets de-tuned to 0.6 m/s. We diagnose real-world floor friction from a 5-second driving log, simulate stopping envelopes across 10,000 edge cases, and deliver an ISO compliance audit with a drop-in ROS 2 governor in 14 days.
           </p>
         </div>
 

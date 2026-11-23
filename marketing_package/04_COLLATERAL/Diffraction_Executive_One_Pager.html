@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diffraction // Executive One-Pager & Product Overview</title>
+    <style>
+        :root {
+            --primary: #2FA4D7;
+            --primary-dark: #1b7ba6;
+            --accent: #E76F2E;
+            --text-dark: #3E2C23;
+            --text-muted: #64748B;
+            --bg-cream: #F5E9D8;
+            --bg-light: #F8FAFC;
+            --card-border: #E2E8F0;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.45;
+            color: var(--text-dark);
+            background: #EAEEF3;
+            margin: 0;
+            padding: 30px 15px;
+        }
+        .page {
+            max-width: 860px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            padding: 44px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            border: 1px solid #CBD5E1;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 18px;
+            margin-bottom: 24px;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand-badge {
+            background: var(--text-dark);
+            color: #FFFFFF;
+            font-weight: 900;
+            font-size: 14px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            letter-spacing: 1px;
+        }
+        .brand-name {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-dark);
+        }
+        .brand-name span { color: var(--primary); }
+        .tagline {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+        .header-meta {
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .headline-banner {
+            background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+            border: 1px solid #BAE6FD;
+            border-left: 5px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        .headline-banner h1 {
+            margin: 0 0 6px 0;
+            font-size: 19px;
+            font-weight: 800;
+            color: #0369A1;
+            letter-spacing: -0.3px;
+        }
+        .headline-banner p {
+            margin: 0;
+            font-size: 13px;
+            color: #0C4A6E;
+            font-weight: 500;
+        }
+        h2 {
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--primary-dark);
+            margin: 22px 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        h2::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--card-border);
+        }
+        p {
+            font-size: 13px;
+            margin: 8px 0;
+            color: #334155;
+            line-height: 1.5;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin: 14px 0;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 14px 0;
+        }
+        .card {
+            background: #FFFFFF;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+        .card.highlight {
+            background: #FFFDF9;
+            border-color: #FDE68A;
+        }
+        .metric-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+        .metric-val {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 4px 0;
+        }
+        .metric-val.blue { color: var(--primary); }
+        .metric-val.orange { color: var(--accent); }
+        .metric-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.35;
+        }
+        .flow-diagram {
+            background: var(--bg-light);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin: 14px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .flow-box {
+            background: #FFFFFF;
+            border: 1px solid #CBD5E1;
+            border-radius: 6px;
+            padding: 10px 14px;
+            text-align: center;
+            flex: 1;
+        }
+        .flow-box.core {
+            background: #F0F9FF;
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 8px -2px rgba(47, 164, 215, 0.2);
+        }
+        .flow-box-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+        .flow-box-sub {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .flow-arrow {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 14px;
+        }
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin: 12px 0;
+        }
+        .table-custom th {
+            background: #F1F5F9;
+            color: var(--text-dark);
+            text-align: left;
+            padding: 8px 12px;
+            font-weight: 700;
+            border: 1px solid var(--card-border);
+        }
+        .table-custom td {
+            padding: 8px 12px;
+            border: 1px solid var(--card-border);
+            color: #334155;
+        }
+        .badge-safe {
+            background: #DCFCE7;
+            color: #166534;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 11px;
+            display: inline-block;
+        }
+        .badge-hazard {
+            background: #FEE2E2;
+            color: #991B1B;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 11px;
+            display: inline-block;
+        }
+        .pilot-box {
+            background: var(--bg-cream);
+            border: 1px solid #E5D5C0;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .pilot-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+        .pilot-desc {
+            font-size: 12px;
+            color: #5C4A3E;
+            margin-top: 3px;
+        }
+        .pilot-cta {
+            background: var(--text-dark);
+            color: #FFFFFF;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .footer {
+            margin-top: 26px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            border-top: 1px solid #F1F5F9;
+            padding-top: 12px;
+        }
+        @media print {
+            body { background: #FFFFFF; padding: 0; }
+            .page { border: none; box-shadow: none; padding: 20px 25px; }
+            .pilot-cta { border: 1px solid #000; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+    <div class="header">
+        <div>
+            <div class="brand">
+                <div class="brand-badge">DFX</div>
+                <div class="brand-name">DIFFRACTION <span>SYSTEMS</span></div>
+            </div>
+            <div class="tagline">Real-Time Operational Safety Governor for Autonomous Mobile Robots</div>
+        </div>
+        <div class="header-meta">
+            <strong>Enterprise Product Brief</strong><br>
+            https://app.diffraction.in<br>
+            partner@diffraction.in
+        </div>
+    </div>
+
+    <div class="headline-banner">
+        <h1>Stop Robot Crashes, Skids & Phantom Stops — Deploy in 14 Days.</h1>
+        <p>Recover up to 40% in lost warehouse throughput by enabling AMRs to run at full rated speed (1.8 m/s) on slick floors, dock glare, and heavy payloads without tripping E-stops or losing odometry.</p>
+    </div>
+
+    <h2>1. The Industry Problem: The Speed vs. Skid Paradox</h2>
+    <p>AMR makers build robots capable of 2.0 m/s. However, field engineers frequently hard-cap fleet velocity down to <strong>0.6–0.8 m/s</strong> in customer warehouses because they cannot predict floor friction or payload center-of-mass shifts. Unscheduled sudden stops cause wheel lockup, odometry desync, and costly disengagements.</p>
+
+    <div class="grid-3">
+        <div class="card">
+            <div class="metric-title">Facility Downtime Cost</div>
+            <div class="metric-val orange">$50,000<span style="font-size:14px; font-weight:600;"> / hr</span></div>
+            <div class="metric-sub">Average cost of fulfillment stoppage across high-throughput 3PL hubs.</div>
+        </div>
+        <div class="card">
+            <div class="metric-title">Typical Speed Penalty</div>
+            <div class="metric-val">0.6 m/s</div>
+            <div class="metric-sub">Default detuned velocity vs. 1.8–2.0 m/s advertised hardware capability.</div>
+        </div>
+        <div class="card">
+            <div class="metric-title">Disengagement Friction</div>
+            <div class="metric-val blue">25+ min</div>
+            <div class="metric-sub">Average time required for manual reset after an odometry-loss skid fault.</div>
+        </div>
+    </div>
+
+    <h2>2. The Solution: 62-Microsecond Drop-in Safety Governor</h2>
+    <p>Diffraction sits directly between standard ROS 2 / Nav2 path planning and the motor controllers. It continuously evaluates an analytical braking barrier equation. If a trajectory risks wheel slip, tip-over, or a hardware laser breach, Diffraction smoothly intervenes in real time.</p>
+
+    <div class="flow-diagram">
+        <div class="flow-box">
+            <div class="flow-box-title">ROS 2 / Nav2</div>
+            <div class="flow-box-sub">Global Path Planner (/cmd_vel)</div>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box core">
+            <div class="flow-box-title" style="color:var(--primary-dark);">DIFFRACTION GOVERNOR</div>
+            <div class="flow-box-sub">62µs QP Closed-Form Barrier Filter</div>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-box">
+            <div class="flow-box-title">Motor Inverters</div>
+            <div class="flow-box-sub">Safe Commanded Wheel Torque (/cmd_vel_safe)</div>
+        </div>
+    </div>
+
+    <h2>3. Field Performance Comparison</h2>
+    <table class="table-custom">
+        <thead>
+            <tr>
+                <th>Operational Scenario</th>
+                <th>Standard Nav2 Stack (Without Diffraction)</th>
+                <th>With Diffraction Drop-In Governor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Slick Epoxy / Wet Dock Floor (&mu; = 0.22)</strong></td>
+                <td><span class="badge-hazard">CRITICAL SKID</span> Wheels lock, odometry lost, robot slides 0.6m into obstacle.</td>
+                <td><span class="badge-safe">SMOOTH STOP</span> Dynamically modulated deceleration; stops with 39cm clearance.</td>
+            </tr>
+            <tr>
+                <td><strong>Dock Door Sun Glare & LiDAR False Positive</strong></td>
+                <td><span class="badge-hazard">PHANTOM E-STOP</span> Aggressive brake trips safety circuit, causing aisle gridlock.</td>
+                <td><span class="badge-safe">STABLE RE-ROUTE</span> Controlled deceleration prevents sudden jolts and payload shifts.</td>
+            </tr>
+            <tr>
+                <td><strong>Top-Heavy Tote / High Center-of-Mass</strong></td>
+                <td><span class="badge-hazard">TIP HAZARD</span> Sudden high-speed cornering causes load destabilization.</td>
+                <td><span class="badge-safe">ACTIVE TILT GUARD</span> Lateral acceleration clamped relative to live height/weight.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>4. 14-Day Site Braking & ISO Audit ($19,500 Fixed-Scope)</h2>
+    <p>Zero warehouse downtime. No hardware retrofits. We ingest a 5-second incident log from your fleet, run adversarial physics simulations in our headless cluster, and deliver an ISO 3691-4 certification report and a calibrated drop-in ROS 2 package.</p>
+
+    <div class="pilot-box">
+        <div>
+            <div class="pilot-title">14-Day Site Braking & ISO 3691-4 Audit Program</div>
+            <div class="pilot-desc">Includes 5-second MCAP ingestion, ISO 3691-4 certification audit report, and ROS 2 safety governor node.</div>
+        </div>
+        <a href="https://app.diffraction.in" class="pilot-cta">Explore Live Platform &rarr;</a>
+    </div>
+
+    <div class="footer">
+        &copy; 2026 Diffraction Autonomous Systems Inc. &bull; Drop-in Autonomous Stability &bull; All Rights Reserved.
+    </div>
+</div>
+
+</body>
+</html>

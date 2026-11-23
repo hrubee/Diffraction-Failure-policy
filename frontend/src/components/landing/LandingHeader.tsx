@@ -65,7 +65,10 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({
             Cost Savings (ROI)
           </a>
           <a href="#pricing" className="hover:text-[#3E2C23] transition-colors">
-            14-Day Pilot ($25k)
+            14-Day Audit ($19.5k)
+          </a>
+          <a href="/admin/" className="font-mono text-[11px] font-bold bg-[#3E2C23]/5 hover:bg-[#3E2C23]/10 text-[#3E2C23] px-2.5 py-1 rounded border border-[#3E2C23]/20 transition-colors">
+            Ops Portal (/admin)
           </a>
         </nav>
 

@@ -81,16 +81,16 @@ export const LandingBentoGrid: React.FC<LandingBentoGridProps> = ({
       id: 'cbf_qp',
       number: '02',
       icon: <ShieldCheck className="w-5 h-5 text-white" />,
-      businessTitle: 'Zero-Collision Safety Shield',
+      businessTitle: 'Real-Time Wheel Slip & Stability Guard',
       businessBenefit:
-        'Guarantees zero physical crashes on wet or polished warehouse floors. An on-robot guard overrides unsafe commands in 62 microseconds before wheels can slip into people or racks.',
-      businessPill: '100% Money-Back Crash Guarantee',
+        'Dynamically modulates commanded velocity in 62 microseconds before wheels can lock up, skid, or lose odometry localization on low-friction warehouse floors.',
+      businessPill: 'Zero Wheel Lockup & Odometry Drift',
       engineeringTitle: 'Active-Set CBF-QP Governor',
       engineeringSpecs:
         'Deterministic active-set Quadratic Program running at 500 Hz on edge compute. Solves in 62 μs to enforce Control Barrier Functions h(x) ≥ 0 with Lyapunov stability proofs.',
       engineeringSnippet: {
         file: '# safety_governor.py (Edge Active-Set)',
-        line1: 'Solve Time: 0.062 ms • Collisions: 0 / 1,000',
+        line1: 'Solve Time: 0.062 ms • Skid Prevention: 100%',
         line2: 'Invariance: h(x) ≥ 0.04m (Safe Manifold)',
       },
     },
@@ -132,16 +132,16 @@ export const LandingBentoGrid: React.FC<LandingBentoGridProps> = ({
       id: 'regulatory_oracle',
       number: '05',
       icon: <Database className="w-5 h-5 text-white" />,
-      businessTitle: '1-Click Safety & Insurance Signoff',
+      businessTitle: 'Automated ISO 3691-4 & ANSI R15.08 Audit',
       businessBenefit:
-        'Turns months of safety bureaucracy into instant approvals. Generates audited mathematical safety proofs ready for plant safety managers and insurance underwriters.',
-      businessPill: 'ISO 3691-4 & ANSI R15.08 Certified',
+        'Turns weeks of physical track stopping-distance trials into automated verifiable reports. Evaluates dynamic braking envelopes against international robotics standards from telemetry.',
+      businessPill: 'Automated Stopping Distance Verification',
       engineeringTitle: 'Automated Regulatory Oracle',
       engineeringSpecs:
         'Automated compliance compiler evaluating stopping envelopes against ISO 3691-4:2023 Cl. 5.2, ISO 13849 (PL-d), and ANSI/RIA R15.08 Part 2. Auto-generates verifiable JSON/HTML dossiers.',
       engineeringSnippet: {
         file: '# regulatory_audit_dossier.html',
-        line1: 'Standard: ISO 13849 PL-d • Status: PASSED',
+        line1: 'Standard: ISO 3691-4 Cl 5.2 • Status: COMPLIANT',
         line2: 'Forward Reachability: Verified Convex Hull',
       },
     },

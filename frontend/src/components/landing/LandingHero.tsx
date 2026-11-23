@@ -52,20 +52,20 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-white border border-[#3E2C23]/20 text-xs text-[#3E2C23] shadow-xs">
             <span className="h-2 w-2 rounded-full bg-[#2FA4D7] animate-pulse" />
             <span className="font-semibold tracking-wide uppercase text-[10px] font-mono">
-              AUTOMATED SITE COMMISSIONING • ZERO-COLLISION GUARANTEE
+              DETERMINISTIC 62µs CBF-QP GOVERNOR • ISO 3691-4 COMPLIANT
             </span>
           </div>
 
           <span className="text-[#3E2C23]/40 hidden sm:inline">•</span>
 
           <span className="inline-flex items-center px-3 py-1 rounded bg-white border border-[#3E2C23]/20 text-[#3E2C23] text-xs font-mono shadow-xs">
-            14-Day Deployment SLA • Zero Engineer Travel Cost
+            14-Day Pilot • Zero Hardware Rewiring
           </span>
 
           <span className="text-[#3E2C23]/40 hidden md:inline">•</span>
 
           <span className="hidden md:inline-flex px-3 py-1 rounded bg-[#E76F2E] text-white text-xs font-mono font-bold shadow-xs">
-            ISO 3691-4 &amp; Insurance Audit Ready
+            Warranty-Neutral Offline Ingest
           </span>
         </div>
 
@@ -86,26 +86,26 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             </div>
 
             <p className="text-base sm:text-lg text-[#3E2C23]/85 leading-relaxed font-body max-w-2xl">
-              Every time robots enter a real facility, <strong>4 physical edge cases</strong> stall deployments: slick floors, skylight sensor glare, heavy payload shifts, and communication latency—burning{' '}
+              Robots are sold to run at <strong>1.8–2.0 m/s</strong>, but field engineers detune them down to <strong>0.6 m/s</strong> on slick epoxy to prevent violent skids, tipping totes, and odometry desync—burning throughput and risking{' '}
               <strong className="text-[#E76F2E] font-bold underline decoration-[#E76F2E]/80 decoration-2 underline-offset-4">
-                $250,000 in engineer travel costs
+                $50,000/hr in warehouse downtime
               </strong>. 
-              Diffraction diagnoses all 4 failure modes from a 5-second driving log and installs an intelligent safety guard—guaranteeing <strong>zero collisions</strong>, zero phantom freezes, and instant insurance signoff.
+              Diffraction diagnoses surface friction and inertia limits from a 5-second telemetry log and inserts a 62µs mathematical safety governor—<strong>uncapping full rated velocity</strong> without wheel slip or phantom stops.
             </p>
 
             <p className="text-sm text-[#3E2C23]/80 leading-relaxed font-body max-w-2xl">
-              <strong>Zero code rewrites. Zero hardware modifications.</strong> Plug our runtime guard directly into your existing ROS 2 fleet to compress 8-week site deployments into 14 days with full money-back assurance.
+              <strong>Zero hardware rewires. Zero warranty risk.</strong> We start with a 100% offline simulation audit of your incident log to prove stopping distances under ISO 3691-4, followed by a drop-in ROS 2 velocity filter node.
             </p>
 
             {/* Micro ROI Stat Callout */}
             <div className="grid grid-cols-2 gap-3 max-w-lg p-3 rounded-xl bg-white border border-[#3E2C23]/20 font-mono text-xs">
               <div>
                 <span className="text-[#3E2C23]/50 block text-[10px]">THE STATUS QUO</span>
-                <span className="text-rose-700 font-bold">$150k-$300k / site • 8-12 weeks • 70% stall</span>
+                <span className="text-rose-700 font-bold">0.6 m/s speed cap • Skid odometry loss • $50k/hr downtime</span>
               </div>
               <div>
                 <span className="text-[#3E2C23]/50 block text-[10px]">WITH DIFFRACTION</span>
-                <span className="text-emerald-700 font-bold">$25,000 Fixed Fee • 14 Days • 0 Collisions</span>
+                <span className="text-emerald-700 font-bold">1.8 m/s full speed • 0 wheel lockup • +35% picks/hr</span>
               </div>
             </div>
 
@@ -127,7 +127,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 onClick={() => onOpenPricing()}
                 className="min-h-[48px] px-5 py-3 rounded-lg bg-[#2FA4D7] hover:bg-[#248ab8] text-white text-sm font-semibold transition-colors flex items-center justify-center space-x-2 cursor-pointer shadow-xs font-mono"
               >
-                <span>Request 14-Day Pilot ($25k) →</span>
+                <span>Request 14-Day Audit ($19.5k) →</span>
               </button>
             </div>
           </div>
@@ -204,11 +204,11 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                       <span className="font-bold text-white">14 Days</span>
                     </div>
                     <div>
-                      <span className="text-[#F5E9D8]/50 text-[10px] block">CRASHES</span>
-                      <span className="font-bold text-[#2FA4D7]">ZERO</span>
+                      <span className="text-[#F5E9D8]/50 text-[10px] block">WHEEL SLIP</span>
+                      <span className="font-bold text-[#2FA4D7]">0.00%</span>
                     </div>
                     <div>
-                      <span className="text-[#F5E9D8]/50 text-[10px] block">INSURANCE</span>
+                      <span className="text-[#F5E9D8]/50 text-[10px] block">ISO 3691-4</span>
                       <span className="font-bold text-emerald-400">PASSED</span>
                     </div>
                   </div>
