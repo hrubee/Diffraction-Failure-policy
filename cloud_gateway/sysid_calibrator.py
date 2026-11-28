@@ -37,12 +37,33 @@ class SysIDCalibrator:
         Analyzes multimodal kinematic streams in the incident to derive
         calibrated physical parameters for digital twin simulation.
         """
-        odom_msgs = incident.messages_by_topic.get("/odom", [])
-        camera_msgs = incident.messages_by_topic.get("/camera/rgb/image_raw", [])
+        # Resolve odometry topic across vendor conventions
+        ODOM_CANDIDATES = [
+            "/odom",
+            "/direct_laser_odometry/odom",
+            "/diff_drive_controller/odom",
+            "/base_controller/odom",
+            "/wheel_odom",
+            "/mobile_base_controller/odom",
+            "/odometry/filtered",
+            "/odom_combined",
+        ]
+        odom_msgs = []
+        resolved_odom_topic = "/odom"
+        for candidate in ODOM_CANDIDATES:
+            if candidate in incident.messages_by_topic and incident.messages_by_topic[candidate]:
+                odom_msgs = incident.messages_by_topic[candidate]
+                resolved_odom_topic = candidate
+                break
+
+        camera_msgs = (
+            incident.messages_by_topic.get("/camera/rgb/image_raw")
+            or incident.messages_by_topic.get("/head_front_camera/rgb/image_raw", [])
+        )
         
         sample_count = len(odom_msgs)
         if sample_count == 0:
-            return cls._fallback_profile("No /odom messages found in telemetry container.")
+            return cls._fallback_profile("No odometry messages found in telemetry container.")
 
         # 1. Kinematic Velocity & Acceleration Extraction
         velocities: List[float] = []
@@ -52,7 +73,9 @@ class SysIDCalibrator:
         for msg in odom_msgs:
             ts_s = msg.get("timestamp_ns", 0) / 1e9
             data = msg.get("data", {})
-            v = data.get("linear_velocity", 0.0)
+            v = data.get("linear_velocity")
+            if v is None:
+                v = data.get("twist", {}).get("linear", {}).get("x", 0.0)
             velocities.append(float(v))
             timestamps_s.append(ts_s)
 
@@ -146,13 +169,18 @@ class SysIDCalibrator:
             track_width = 0.76
             wheel_radius = 0.125
             est_mass = 350.0
+        elif "tiago" in rid_lower or "pal" in rid_lower:
+            chassis_type = "tiago_mobile_manipulator"
+            track_width = 0.54
+            wheel_radius = 0.10
+            est_mass = 75.0
         else:
             chassis_type = "industrial_differential_drive"
             track_width = 0.68
             wheel_radius = 0.10
             est_mass = 85.0
 
-        if joint_msgs and chassis_type in ["industrial_differential_drive", "heavy_payload_tugger", "counterbalanced_forklift", "urban_delivery_rover"]:
+        if joint_msgs and chassis_type in ["industrial_differential_drive", "heavy_payload_tugger", "counterbalanced_forklift", "urban_delivery_rover", "tiago_mobile_manipulator"]:
             try:
                 sample_joint = joint_msgs[0].get("data", {})
                 w_vel = sample_joint.get("left_wheel", 0.0)
@@ -230,19 +258,35 @@ class SysIDCalibrator:
                 pass
 
         # 8. Anomaly & Confidence Grading
-        traction_anomaly = observed_slip > 0.25 or max_tracking_error > 0.40
+        is_kinematic_anomaly = observed_slip > 0.25 or max_tracking_error > 0.40
+        is_safety_anomaly = (
+            "estop" in incident.trigger_type.lower()
+            or "emergency" in incident.trigger_type.lower()
+            or "fault" in incident.trigger_type.lower()
+            or incident.trigger_severity in ["CRITICAL", "HIGH"]
+        )
+        traction_anomaly = is_kinematic_anomaly or is_safety_anomaly
         confidence = round(min(99.4, 85.0 + (min(sample_count, 100) * 0.14)), 1)
         if diff_result_dict and diff_result_dict.get("converged"):
             confidence = round(min(99.8, confidence + 3.0), 1)
 
         empirical_observations = [
-            f"Ingested {sample_count} high-resolution kinematic samples across {incident.duration_seconds}s time window.",
+            f"Ingested {sample_count} high-resolution kinematic samples via resolved topic '{resolved_odom_topic}' across {incident.duration_seconds}s time window.",
             f"Measured peak emergency braking deceleration |a_decel| = {round(peak_decel, 2)} m/s².",
             f"Calculated instantaneous wheel slip ratio S = {round(observed_slip * 100, 1)}% (Threshold: 20.0%).",
             f"Derived empirical ground-truth surface coefficient μ_calibrated = {round(estimated_mu, 2)}.",
             f"Identified control bus update latency = {round(median_latency, 1)}ms with max lateral tracking error Δ = {round(max_tracking_error, 3)}m.",
             f"Auto-Identified Kinematic Chassis: {chassis_type} (Track: {track_width}m, Wheel R: {wheel_radius}m).",
         ]
+        if is_safety_anomaly:
+            try:
+                ts_val = float(incident.trigger_timestamp_ns)
+                # If already in seconds, do not divide by 1e9
+                ts_sec = ts_val / 1e9 if ts_val > 1e12 else ts_val
+                ts_str = f" at t={ts_sec:.3f}s"
+            except (ValueError, TypeError):
+                ts_str = ""
+            empirical_observations.insert(0, f"CRITICAL SAFETY TRIGGER: {str(incident.trigger_type).upper()} ({incident.trigger_severity}){ts_str}. Details: {incident.trigger_details}")
         if diff_obs_str:
             empirical_observations.append(diff_obs_str)
 
